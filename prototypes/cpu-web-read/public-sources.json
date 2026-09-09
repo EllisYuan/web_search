@@ -1,0 +1,34 @@
+[
+  {
+    "id": "public-image-zh",
+    "url": "https://raw.githubusercontent.com/RapidAI/RapidOCR/4a3070f304467e6d426e78a82afea5cb1181f305/python/tests/test_files/ch_en_num.jpg",
+    "sha256": "b94c1bf68af9ceb3c550b86931d7b48d4181c26c9f5ace2492e64042f36a02ca",
+    "bytes": 70680,
+    "resolution": [
+      323,
+      430
+    ]
+  },
+  {
+    "id": "public-image-en",
+    "url": "https://raw.githubusercontent.com/RapidAI/RapidOCR/4a3070f304467e6d426e78a82afea5cb1181f305/python/tests/test_files/en.jpg",
+    "sha256": "7945522d6cf648b4bfb0a9480efdec00b833d1df5b60aef8ce815a1bc1a82f41",
+    "bytes": 40594,
+    "resolution": [
+      709,
+      132
+    ]
+  },
+  {
+    "id": "model-card",
+    "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/README.md",
+    "status": 200,
+    "sha256": "3dc91bb3cb667df783178917d69b38bfabb8c935596f34243a1c9f0d36916b6e"
+  },
+  {
+    "id": "scan-fixture-readme",
+    "url": "https://raw.githubusercontent.com/ocrmypdf/OCRmyPDF/ffee83231532f4f67b8c0e756cddec67446570c9/tests/resources/README.rst",
+    "status": 200,
+    "sha256": "b89cf17db636d9821d1741ef0d3cb638c385e5d915cd5bec6da4860f407f2953"
+  }
+]

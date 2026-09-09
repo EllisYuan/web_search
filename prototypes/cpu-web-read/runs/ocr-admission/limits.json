@@ -1,0 +1,17 @@
+{
+  "http_timeout_s": 30,
+  "browser_timeout_ms": 30000,
+  "case_timeout_s": 180,
+  "max_bytes": 20971520,
+  "max_pages": 12,
+  "max_pixels": 12000000,
+  "dpi": 150,
+  "intra_threads": 2,
+  "inter_threads": 1,
+  "concurrency": 1,
+  "max_tree_rss_bytes": 3221225472,
+  "min_available_bytes": 2147483648,
+  "gate_cpu_percent": 25,
+  "monitor_interval_s": 0.1,
+  "retries": 1
+}

@@ -1,0 +1,24 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><title>Web Read prototype trace</title>
+<style>body{font:16px/1.6 system-ui;max-width:1050px;margin:40px auto;padding:0 24px;color:#203035;background:#fafaf7}h1{font-size:28px}button,select{font:inherit;padding:8px 12px;margin:5px;border:1px solid #9caeaa;border-radius:4px;background:white}button{cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eef2ef;padding:20px}#scope{border-left:4px solid #187468;padding:14px}small{color:#536761}</style>
+<h1>Web Read：先读片段，再继续原文</h1>
+<p>Throwaway prototype。这里回放真实 pipeline 保存的 trace：first preview 是否显示未处理页？关键词定位是否说明搜索范围？失败后还能否继续读取？页面不运行 OCR，不产生性能数据。</p>
+<select id="scenario"></select><div><button id="reset">从头查看</button><button id="previous">上一步</button><button id="next">下一步</button><button id="preview">首次 preview</button><button id="search">关键词定位</button><button id="end">读取结束状态</button></div>
+<div id="scope"></div><h2 id="action"></h2><pre id="text"></pre><details><summary>完整相关状态</summary><pre id="state"></pre></details><small>所有内容从同一 commit 的 JSON trace 嵌入；无 server、无外部请求。可双击打开。</small>
+<script>
+const traces=[];
+let selected=0,step=0;
+const el=id=>document.getElementById(id);
+function show(){
+ if(!traces.length){el('scope').textContent='尚无可回放实测。resource gate 拒绝不会生成模拟成功 trace。';return;}
+ const item=traces[selected].trace[step],value=item.preview||item.result||item,scope=value.scope||item.scope||{};
+ el('action').textContent=`${step+1} / ${traces[selected].trace.length} · ${item.action}`;
+ el('scope').textContent=`已处理 ${scope.processed_units??'—'} / ${scope.total_units??'—'}，待处理 ${scope.pending_units??'—'}，失败 ${scope.failed_units??'—'}。完整：${scope.complete??'—'}`;
+ el('text').textContent=value.text??JSON.stringify(value,null,2);el('state').textContent=JSON.stringify(item,null,2);
+}
+function jump(action){if(!traces.length)return;const index=traces[selected].trace.findIndex(x=>x.action===action);if(index>=0){step=index;show();}}
+traces.forEach((x,i)=>{const option=document.createElement('option');option.value=i;option.textContent=x.name;el('scenario').append(option);});
+el('scenario').onchange=e=>{selected=Number(e.target.value);step=0;show();};
+el('reset').onclick=()=>{step=0;show();};el('previous').onclick=()=>{step=Math.max(0,step-1);show();};
+el('next').onclick=()=>{if(traces.length)step=Math.min(traces[selected].trace.length-1,step+1);show();};
+el('preview').onclick=()=>jump('open');el('search').onclick=()=>jump('find_before_full_processing');el('end').onclick=()=>jump('end');show();
+</script></html>

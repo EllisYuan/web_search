@@ -1,0 +1,59 @@
+{
+  "results": [],
+  "admissions": [
+    {
+      "run": "ocr-admission",
+      "id": "image-en",
+      "at": "2026-09-09T05:59:31.538064+00:00",
+      "cpu_percent": 34.7,
+      "available_bytes": 1026793472,
+      "other_workloads": [],
+      "allowed": false
+    },
+    {
+      "run": "ocr-admission",
+      "id": "image-zh",
+      "at": "2026-09-09T05:59:41.192396+00:00",
+      "cpu_percent": 23.1,
+      "available_bytes": 952283136,
+      "other_workloads": [],
+      "allowed": false
+    },
+    {
+      "run": "ocr-admission",
+      "id": "inline-en",
+      "at": "2026-09-09T05:59:38.022235+00:00",
+      "cpu_percent": 35.1,
+      "available_bytes": 1008115712,
+      "other_workloads": [],
+      "allowed": false
+    },
+    {
+      "run": "ocr-admission",
+      "id": "inline-zh",
+      "at": "2026-09-09T05:59:47.504246+00:00",
+      "cpu_percent": 20.8,
+      "available_bytes": 849436672,
+      "other_workloads": [],
+      "allowed": false
+    },
+    {
+      "run": "ocr-admission",
+      "id": "scan-en",
+      "at": "2026-09-09T05:59:34.766421+00:00",
+      "cpu_percent": 42.3,
+      "available_bytes": 1111465984,
+      "other_workloads": [],
+      "allowed": false
+    },
+    {
+      "run": "ocr-admission",
+      "id": "scan-zh",
+      "at": "2026-09-09T05:59:44.332870+00:00",
+      "cpu_percent": 30.6,
+      "available_bytes": 864694272,
+      "other_workloads": [],
+      "allowed": false
+    }
+  ]
+}

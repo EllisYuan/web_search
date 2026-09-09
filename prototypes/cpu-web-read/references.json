@@ -1,0 +1,20 @@
+{
+  "method": "Agent visually transcribed source image before OCR; user review pending. NFKC then remove Unicode whitespace; retain punctuation/case. Region selection uses box center in normalized source image coordinates; CER computed against all OCR text in each fixed region, not a best-match substring.",
+  "public-image-en": {
+    "source_sha256": "7945522d6cf648b4bfb0a9480efdec00b833d1df5b60aef8ce815a1bc1a82f41",
+    "regions": [
+      {"name": "title", "bounds": [0, 0, 1, 0.25], "reference": "3 MovieShots Dataset"},
+      {"name": "body", "bounds": [0, 0.3, 1, 1], "reference": "To facilitate the shot type analysis in videos, we collect MovieShots, a large-scale shot type annotation set that contains 46K shots from 7858 movies. The details of this dataset are specified as follows."}
+    ]
+  },
+  "public-image-zh": {
+    "source_sha256": "b94c1bf68af9ceb3c550b86931d7b48d4181c26c9f5ace2492e64042f36a02ca",
+    "regions": [
+      {"name": "title", "bounds": [0, 0, 1, 0.21], "reference": "正品促销"},
+      {"name": "subtitle", "bounds": [0, 0.21, 1, 0.31], "reference": "大桶装 更划算"},
+      {"name": "claims", "bounds": [0, 0.32, 1, 0.44], "reference": "强力去污 符合国标 -40℃深度防冻不结冰"},
+      {"name": "price", "bounds": [0.36, 0.67, 0.73, 0.79], "reference": "5.8起"},
+      {"name": "footer", "bounds": [0, 0.835, 1, 1], "reference": "极速发货 冰点标准 破损就赔 假一赔十"}
+    ]
+  }
+}

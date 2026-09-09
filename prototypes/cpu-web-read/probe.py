@@ -4,7 +4,7 @@ Run with: .venv/Scripts/python.exe prototypes/cpu-web-read/probe.py run --group 
 No model summaries, hosted OCR, GPU, production MCP or persistent reader service.
 """
 import argparse
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from datetime import datetime, timezone
 from functools import partial
 import hashlib
@@ -209,47 +209,50 @@ class Reader:
             for index in range(min(len(pdf),LIMITS['max_pages'])):
                 locator=dict(page=index+1)
                 for attempt in range(2):
+                    page = None
                     try:
                         if self.case.get('inject_fail_page')==index+1: raise RuntimeError('injected_page_ocr_failure')
-                        with pdf[index] as page:
-                            with self.stage('text_extraction',page=index+1):
-                                with page.get_textpage() as textpage:
-                                    text=textpage.get_text_range().replace('\r\n','\n').strip()
-                                    # Capture only image regions with no covering native text. A text
-                                    # layer elsewhere on the page must not suppress these regions.
-                                    images=[]
-                                    if text:
-                                        for obj in page.get_objects(filter=[raw.FPDF_PAGEOBJ_IMAGE]):
-                                            bounds=obj.get_bounds()
-                                            covered=textpage.get_text_bounded(*bounds).strip()
-                                            images.append((obj,bounds,bool(covered)))
-                            boxes=[]; mode='text_layer'
-                            if not text:
-                                with self.stage('raster',page=index+1,dpi=LIMITS['dpi']):
-                                    width,height=page.get_size()
-                                    if width*height*(LIMITS['dpi']/72)**2>LIMITS['max_pixels']:
-                                        raise ValueError('raster_pixel_limit')
-                                    bitmap=page.render(scale=LIMITS['dpi']/72)
-                                    image=bitmap.to_pil().copy(); bitmap.close()
-                                text,boxes=self.ocr(image,locator)
-                                mode='ocr'
-                            else:
-                                for image_index,(obj,bounds,covered) in enumerate(images):
-                                    if covered:
-                                        self.events.append(dict(event='skip_image_with_text_overlay',page=index+1,bounds=bounds))
-                                        continue
-                                    image_locator=dict(page=index+1,image_index=image_index,bounds_pdf_points=list(bounds))
-                                    try:
-                                        with self.stage('raster_image',**image_locator):
-                                            bitmap=obj.get_bitmap(render=True)
-                                            image=bitmap.to_pil().copy();bitmap.close()
-                                        image_text,image_boxes=self.ocr(image,image_locator)
-                                        text+='\n'+image_text; boxes.extend(image_boxes); mode='text_layer+ocr'
-                                    except Exception as exc:
-                                        self.failures.append(dict(locator=image_locator,error=str(exc)))
-                            self.add_unit(locator,text,mode,boxes=boxes,attempts=attempt+1)
+                        page = pdf[index]
+                        with self.stage('text_extraction',page=index+1):
+                            with closing(page.get_textpage()) as textpage:
+                                text=textpage.get_text_range().replace('\r\n','\n').strip()
+                                # Capture only image regions with no covering native text. A text
+                                # layer elsewhere on the page must not suppress these regions.
+                                images=[]
+                                if text:
+                                    for obj in page.get_objects(filter=[raw.FPDF_PAGEOBJ_IMAGE]):
+                                        bounds=obj.get_bounds()
+                                        covered=textpage.get_text_bounded(*bounds).strip()
+                                        images.append((obj,bounds,bool(covered)))
+                        boxes=[]; mode='text_layer'
+                        if not text:
+                            with self.stage('raster',page=index+1,dpi=LIMITS['dpi']):
+                                width,height=page.get_size()
+                                if width*height*(LIMITS['dpi']/72)**2>LIMITS['max_pixels']:
+                                    raise ValueError('raster_pixel_limit')
+                                bitmap=page.render(scale=LIMITS['dpi']/72)
+                                image=bitmap.to_pil().copy(); bitmap.close()
+                            text,boxes=self.ocr(image,locator)
+                            mode='ocr'
+                        else:
+                            for image_index,(obj,bounds,covered) in enumerate(images):
+                                if covered:
+                                    self.events.append(dict(event='skip_image_with_text_overlay',page=index+1,bounds=bounds))
+                                    continue
+                                image_locator=dict(page=index+1,image_index=image_index,bounds_pdf_points=list(bounds))
+                                try:
+                                    with self.stage('raster_image',**image_locator):
+                                        bitmap=obj.get_bitmap(render=True)
+                                        image=bitmap.to_pil().copy();bitmap.close()
+                                    image_text,image_boxes=self.ocr(image,image_locator)
+                                    text+='\n'+image_text; boxes.extend(image_boxes); mode='text_layer+ocr'
+                                except Exception as exc:
+                                    self.failures.append(dict(locator=image_locator,error=str(exc)))
+                        self.add_unit(locator,text,mode,boxes=boxes,attempts=attempt+1)
+                        page.close(); page = None
                         break
                     except Exception as exc:
+                        if page is not None: page.close()
                         self.events.append(dict(event='page_attempt_failed',page=index+1,attempt=attempt+1,error=str(exc)))
                         if attempt==1: self.fail_unit(locator,exc,attempts=2,injected=bool(self.case.get('inject_fail_page')))
                 if index==len(pdf)-1: self.done=True
@@ -285,19 +288,30 @@ class Reader:
             tree=html.fromstring(markup)
             xml=trafilatura.extract(markup,output_format='xml',include_comments=False,include_tables=True,
                                     include_images=False,favor_recall=True)
-            if not xml: raise ValueError('empty_extraction')
-            extracted=etree.fromstring(xml.encode())
+            fallback=False
+            if xml:
+                extracted=etree.fromstring(xml.encode())
+            else:
+                # Trafilatura can reject very small controlled pages or pages
+                # whose meaningful text is Chinese. Keep a transparent DOM
+                # fallback rather than silently dropping the source.
+                roots=tree.xpath('//article | //main')
+                if not roots: raise ValueError('empty_extraction')
+                extracted=roots[0]
+                fallback=True
             pieces=[]; length=0
-            for elem in extracted.xpath('.//main//*[self::head or self::p or self::item or self::cell or self::quote or self::code]'):
+            candidates=extracted.xpath('.//*[self::head or self::h1 or self::h2 or self::h3 or self::h4 or self::h5 or self::h6 or self::p or self::item or self::cell or self::quote or self::code]')
+            for elem in candidates:
                 if any(parent.tag in ('p','item','cell','quote','code') for parent in elem.iterancestors()): continue
                 value=''.join(elem.itertext()).strip()
                 if not value: continue
-                if elem.tag=='head':
+                if elem.tag in ('head','h1','h2','h3','h4','h5','h6'):
                     self.toc.append(dict(section=f'section-{len(self.toc)+1}',title=value,position=length))
                 pieces.append(value); length+=len(value)+1
             text='\n'.join(pieces)
             if not text: text='\n'.join(extracted.itertext()).strip()
-            self.metadata.update(title=tree.findtext('.//title'),rendered=rendered)
+            if not text: raise ValueError('empty_extraction')
+            self.metadata.update(title=tree.findtext('.//title'),rendered=rendered,extraction_fallback=fallback)
             image_urls=[]
             for img in tree.xpath('//article//img | //main//img'):
                 # Preserve common lazy-loading discovery; this is not an exhaustive web image resolver.
@@ -470,6 +484,11 @@ def monitor(process):
 
 
 def run(args):
+    if args.constrained:
+        # User-approved functional smoke mode. These relaxed guards are not a
+        # performance baseline and are recorded in limits.json.
+        LIMITS.update(min_available_bytes=512*1024**2, gate_cpu_percent=60,
+                      max_tree_rss_bytes=2*1024**3)
     cases=json.loads((ROOT/'corpus.json').read_text(encoding='utf-8'))
     if args.ids: cases=[x for x in cases if x['id'] in args.ids.split(',')]
     elif args.group=='ocr': cases=[x for x in cases if x['kind'] in ('image','inline') or x.get('expected_mode')=='ocr']
@@ -504,6 +523,8 @@ def main():
     batch.add_argument('--ids');batch.add_argument('--name',default='baseline')
     batch.add_argument('--repeats',type=int,default=1);batch.add_argument('--inject-page',type=int)
     batch.add_argument('--eager',action='store_true')
+    batch.add_argument('--constrained',action='store_true',
+                       help='user-approved functional smoke mode; not a performance baseline')
     child=sub.add_parser('worker');child.add_argument('--case',type=Path);child.add_argument('--out',type=Path);child.add_argument('--repeats',type=int,default=1)
     sub.add_parser('gate')
     args=parser.parse_args()

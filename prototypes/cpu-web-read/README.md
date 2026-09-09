@@ -5,7 +5,7 @@ Throwaway prototype，用于评审「验证 CPU-only web_read 的完整读取范
 Windows / Python 3.12。所有命令从本 worktree 根目录执行。
 
 ```powershell
-./prototypes/cpu-web-read/run.ps1 -Group ocr -Name ocr-baseline
+./prototypes/cpu-web-read/run.ps1 -Group ocr -Name ocr-baseline -Constrained
 ```
 
 首次执行建立独立 `.venv`，安装 `requirements.lock` 的 pinned wheels 和开源 Chromium headless shell，生成中英文 fixture，通过 localhost:8767 提供固定 URL。默认串行；不修改其他 session 的进程或 container。存在 resource gate 拒绝时，记录 deferred 并跳过，不计为格式成功或失败。
@@ -13,6 +13,8 @@ Windows / Python 3.12。所有命令从本 worktree 根目录执行。
 ```powershell
 # 完整读取范围
 ./prototypes/cpu-web-read/run.ps1 -Group read -Name read-baseline
+# 用户授权的受限功能 smoke（不是性能基线）
+.venv-system/Scripts/python.exe prototypes/cpu-web-read/probe.py run --ids image-en,image-zh --name constrained-images --constrained
 # 重复 cold / retained-engine warm；PDF 12 页渐进处理
 .venv/Scripts/python.exe prototypes/cpu-web-read/probe.py run --ids long-scan --name long-progressive --repeats 2
 # 保留成功页 + page 2 两次注入失败
@@ -24,6 +26,8 @@ Windows / Python 3.12。所有命令从本 worktree 根目录执行。
 `runs/<name>/<case>-0.json` 保存原文、page/image locator、OCR confidence / bbox、逐阶段 wall time 和 process CPU time、first preview、全文 position 续读、关键词范围、失效 state 和完整重建 trace。`*-resources.json` 记录 100 ms sampled process-tree peak RSS / CPU，包含 worker 的 browser 子进程；短命子进程可能漏采，fixture HTTP server 不计入 worker RSS。RSS 相加可能重复计共享页；不能等同 private memory。
 
 默认护栏：HTTP / browser 30 s，case 180 s，文件 20 MiB，12 pages，150 DPI，12 million pixels，OCR intra/inter threads 2/1，tree RSS 3 GiB，available RAM 至少 2 GiB，启动 CPU 三秒均值不高于 25%。这些均是本次运行护栏，不能作为产品要求。逐阶段 `cpu_self_s` 不含 browser 子进程；总量见资源文件。download 单独列出，`advance` 包含子阶段，禁止重复求和。
+
+`--constrained` 是用户明确授权的功能 smoke 模式，将 available RAM 门槛降至 512 MiB、CPU 门槛放宽至 60%、tree RSS 上限设为 2 GiB。它只判断 pipeline 是否可以运行；其耗时、CPU/RAM 不作为正式性能基线。Windows 上优先使用 standalone CPython；Anaconda Python 曾使 ONNX Runtime DLL 初始化失败。
 
 首个 preview 只处理 PDF 第一页或 HTML 正文；`process_next` 再处理下一页或 image。搜索只覆盖已处理范围。失败页显式保留，有限重试耗尽后读后续页；`end_of_available` 不等于 `end_of_document`。version 指向抓取的 source / rendered DOM snapshot；当前不做远端 revalidation，state expiry/version mismatch 演示明确标记为注入。
 

@@ -1,6 +1,1321 @@
 {
-  "results": [],
+  "results": [
+    {
+      "run": "constrained-html-fallback-system",
+      "id": "html-zh",
+      "kind": "html",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 0.45683749997988343,
+      "first_preview_s": 0.4567117000115104,
+      "process_tree_rss_peak_mib": 66.609375,
+      "process_tree_cpu_sampled_s": 0.34375,
+      "stage_wall_s": {
+        "download": 0.004045100009534508,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.11578560003545135,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": {
+        "京东20260917": true,
+        "12345.67": true,
+        "兰花": true
+      },
+      "line_coverage": 0.8,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 61,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-html-fallback-system/html-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 12.425,
+      "min_available_mib": 1959.44921875
+    },
+    {
+      "run": "constrained-html-fallback-system",
+      "id": "inline-en",
+      "kind": "inline",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 3.1047927000327036,
+      "first_preview_s": 0.524569800007157,
+      "process_tree_rss_peak_mib": 397.984375,
+      "process_tree_cpu_sampled_s": 6.40625,
+      "stage_wall_s": {
+        "download": 0.07976239995332435,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.11548139998922125,
+        "model_load": 0.5606013999786228,
+        "raster": 0,
+        "ocr": 1.9142013000091538
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 200,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-html-fallback-system/inline-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 22.35,
+      "min_available_mib": 1611.3125
+    },
+    {
+      "run": "constrained-html-fallback-system",
+      "id": "inline-zh",
+      "kind": "inline",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 3.0270298999967054,
+      "first_preview_s": 0.4692122000269592,
+      "process_tree_rss_peak_mib": 403.9765625,
+      "process_tree_cpu_sampled_s": 6.0,
+      "stage_wall_s": {
+        "download": 0.022224500018637627,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.11106399999698624,
+        "model_load": 0.6616120000253431,
+        "raster": 0,
+        "ocr": 1.7882607000065036
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "京东20260917": true,
+        "12345.67": true,
+        "兰花": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 121,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-html-fallback-system/inline-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 21.4,
+      "min_available_mib": 1652.671875
+    },
+    {
+      "run": "constrained-image-en",
+      "id": "image-en",
+      "kind": "image",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": null,
+      "wall_s": 6.810951599967666,
+      "first_preview_s": 6.81077360000927,
+      "process_tree_rss_peak_mib": 136.28515625,
+      "process_tree_cpu_sampled_s": 3.71875,
+      "stage_wall_s": {
+        "download": 0.2754996999865398,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0,
+        "model_load": 4.913910000002943,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 1.0,
+      "keyword_checks": {
+        "AX-2026-0917": false,
+        "12345.67": false,
+        "ORCHID": false
+      },
+      "line_coverage": 0.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 1,
+        "failures": [
+          {
+            "locator": {
+              "image_url": "http://127.0.0.1:8767/image-en.png"
+            },
+            "error": "ImportError: DLL load failed while importing onnxruntime_pybind11_state: 动态链接库(DLL)初始化例程失败。"
+          }
+        ],
+        "extraction_done": true,
+        "complete": false,
+        "searchable_chars": 1,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-image-en/image-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 14.803636363636365,
+      "min_available_mib": 1715.265625
+    },
+    {
+      "run": "constrained-images-system",
+      "id": "image-en",
+      "kind": "image",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 3.8786521999863908,
+      "first_preview_s": 3.876468400005251,
+      "process_tree_rss_peak_mib": 313.6953125,
+      "process_tree_cpu_sampled_s": 6.40625,
+      "stage_wall_s": {
+        "download": 0.0628224000101909,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0,
+        "model_load": 1.5965901000308804,
+        "raster": 0,
+        "ocr": 1.92580560001079
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 149,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-images-system/image-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 26.326470588235296,
+      "min_available_mib": 1479.15625
+    },
+    {
+      "run": "constrained-images-system",
+      "id": "image-zh",
+      "kind": "image",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 2.6074452999746427,
+      "first_preview_s": 2.5653261999832466,
+      "process_tree_rss_peak_mib": 327.38671875,
+      "process_tree_cpu_sampled_s": 5.46875,
+      "stage_wall_s": {
+        "download": 0.026154299965128303,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0,
+        "model_load": 0.6583819999941625,
+        "raster": 0,
+        "ocr": 1.7917018999578431
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "京东20260917": true,
+        "12345.67": true,
+        "兰花": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 70,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-images-system/image-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 29.27391304347826,
+      "min_available_mib": 1477.85546875
+    },
+    {
+      "run": "constrained-long-eager-system",
+      "id": "long-scan",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 17.668230999959633,
+      "first_preview_s": 17.665059899969492,
+      "process_tree_rss_peak_mib": 577.9375,
+      "process_tree_cpu_sampled_s": 46.640625,
+      "stage_wall_s": {
+        "download": 0.05316020001191646,
+        "browser_render": 0,
+        "text_extraction": 0.0004967001150362194,
+        "html_extraction": 0,
+        "model_load": 0.5055825000163168,
+        "raster": 0.1537544001475908,
+        "ocr": 16.813422700040974
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 12,
+        "total_units": 12,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 1788,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-long-eager-system/long-scan-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 28.10774193548387,
+      "min_available_mib": 1450.58984375
+    },
+    {
+      "run": "constrained-long-progressive-system",
+      "id": "long-scan",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 17.596241799998097,
+      "first_preview_s": 2.372268300037831,
+      "process_tree_rss_peak_mib": 558.26171875,
+      "process_tree_cpu_sampled_s": 46.375,
+      "stage_wall_s": {
+        "download": 0.06372030003694817,
+        "browser_render": 0,
+        "text_extraction": 0.0004965000553056598,
+        "html_extraction": 0,
+        "model_load": 0.5005586000042967,
+        "raster": 0.15273279999382794,
+        "ocr": 16.74140440003248
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 12,
+        "total_units": 12,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 1788,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-long-progressive-system/long-scan-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 26.67820512820513,
+      "min_available_mib": 1504.74609375
+    },
+    {
+      "run": "constrained-mixed-failure-system",
+      "id": "mixed",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "partial",
+      "error": null,
+      "wall_s": 2.356991200009361,
+      "first_preview_s": 0.1328360000043176,
+      "process_tree_rss_peak_mib": 276.75390625,
+      "process_tree_cpu_sampled_s": 5.3125,
+      "stage_wall_s": {
+        "download": 0.0682585000176914,
+        "browser_render": 0,
+        "text_extraction": 0.0002565999748185277,
+        "html_extraction": 0,
+        "model_load": 0.5046429000212811,
+        "raster": 0.020402199996169657,
+        "ocr": 1.63980810000794
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 3,
+        "total_units": 3,
+        "failed_units": 1,
+        "failures": [
+          {
+            "locator": {
+              "page": 2
+            },
+            "error": "RuntimeError: injected_page_ocr_failure",
+            "attempts": 2,
+            "injected": true
+          }
+        ],
+        "extraction_done": true,
+        "complete": false,
+        "searchable_chars": 299,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-mixed-failure-system/mixed-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 24.509523809523813,
+      "min_available_mib": 2052.94140625
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "html-en",
+      "kind": "html",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 1.227614600036759,
+      "first_preview_s": 1.2275237999856472,
+      "process_tree_rss_peak_mib": 75.0078125,
+      "process_tree_cpu_sampled_s": 0.796875,
+      "stage_wall_s": {
+        "download": 0.04174030001740903,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.15645609999774024,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 152,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-read-system/html-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 9.30909090909091,
+      "min_available_mib": 2239.49609375
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "html-zh",
+      "kind": "html",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": "ValueError: empty_extraction",
+      "wall_s": 0.5760755999945104,
+      "first_preview_s": null,
+      "process_tree_rss_peak_mib": 72.26953125,
+      "process_tree_cpu_sampled_s": 0.40625,
+      "stage_wall_s": {
+        "download": 0.036748900020029396,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.13079979998292401,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": null,
+      "line_coverage": null,
+      "regions": [],
+      "scope": {
+        "processed_units": 0,
+        "total_units": null,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": false,
+        "complete": false,
+        "searchable_chars": 0,
+        "pending_units": 0
+      },
+      "reconstruction": null,
+      "source": "runs/constrained-read-system/html-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 20.0,
+      "min_available_mib": 1932.87109375
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "inline-en",
+      "kind": "inline",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": "ValueError: empty_extraction",
+      "wall_s": 0.4932212000130676,
+      "first_preview_s": null,
+      "process_tree_rss_peak_mib": 64.203125,
+      "process_tree_cpu_sampled_s": 0.34375,
+      "stage_wall_s": {
+        "download": 0.024471100012306124,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.12032409996027127,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": null,
+      "line_coverage": null,
+      "regions": [],
+      "scope": {
+        "processed_units": 0,
+        "total_units": null,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": false,
+        "complete": false,
+        "searchable_chars": 0,
+        "pending_units": 0
+      },
+      "reconstruction": null,
+      "source": "runs/constrained-read-system/inline-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 11.0,
+      "min_available_mib": 2118.40234375
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "inline-zh",
+      "kind": "inline",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": "ValueError: empty_extraction",
+      "wall_s": 0.46593360003316775,
+      "first_preview_s": null,
+      "process_tree_rss_peak_mib": 66.05078125,
+      "process_tree_cpu_sampled_s": 0.328125,
+      "stage_wall_s": {
+        "download": 0.005388099991250783,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0.11203979997662827,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": null,
+      "line_coverage": null,
+      "regions": [],
+      "scope": {
+        "processed_units": 0,
+        "total_units": null,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": false,
+        "complete": false,
+        "searchable_chars": 0,
+        "pending_units": 0
+      },
+      "reconstruction": null,
+      "source": "runs/constrained-read-system/inline-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 11.025,
+      "min_available_mib": 1892.50390625
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "js-en",
+      "kind": "js",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 2.338834099995438,
+      "first_preview_s": 2.3387400999781676,
+      "process_tree_rss_peak_mib": 366.5625,
+      "process_tree_cpu_sampled_s": 1.796875,
+      "stage_wall_s": {
+        "download": 0.004963699961081147,
+        "browser_render": 1.860733900044579,
+        "text_extraction": 0,
+        "html_extraction": 0.11636109999381006,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 152,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-read-system/js-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 11.523809523809524,
+      "min_available_mib": 1930.64453125
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "js-zh",
+      "kind": "js",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 1.2794346999726258,
+      "first_preview_s": 1.2792532999883406,
+      "process_tree_rss_peak_mib": 367.37109375,
+      "process_tree_cpu_sampled_s": 1.28125,
+      "stage_wall_s": {
+        "download": 0.019664999970700592,
+        "browser_render": 0.777804900018964,
+        "text_extraction": 0,
+        "html_extraction": 0.13305269996635616,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": null,
+      "keyword_checks": {
+        "京东20260917": true,
+        "12345.67": true,
+        "兰花": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 1,
+        "total_units": 1,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 78,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-read-system/js-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 15.081818181818182,
+      "min_available_mib": 1701.0859375
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "text-en",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 0.1823288999730721,
+      "first_preview_s": 0.1782542999717407,
+      "process_tree_rss_peak_mib": 48.9375,
+      "process_tree_cpu_sampled_s": 0.0625,
+      "stage_wall_s": {
+        "download": 0.0946303999517113,
+        "browser_render": 0,
+        "text_extraction": 0.009198799962177873,
+        "html_extraction": 0,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 298,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-read-system/text-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 12.55,
+      "min_available_mib": 2271.51953125
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "text-zh",
+      "kind": "pdf",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 0.14154210005654022,
+      "first_preview_s": 0.13968250004108995,
+      "process_tree_rss_peak_mib": 48.453125,
+      "process_tree_cpu_sampled_s": null,
+      "stage_wall_s": {
+        "download": 0.004806999990250915,
+        "browser_render": 0,
+        "text_extraction": 0.0009804999572224915,
+        "html_extraction": 0,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "京东20260917": true,
+        "12345.67": true,
+        "兰花": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 140,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-read-system/text-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 9.6,
+      "min_available_mib": 2028.5078125
+    },
+    {
+      "run": "constrained-scans-system",
+      "id": "scan-en",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": null,
+      "wall_s": 0.2641202000086196,
+      "first_preview_s": 0.26353880000533536,
+      "process_tree_rss_peak_mib": 55.71875,
+      "process_tree_cpu_sampled_s": 0.140625,
+      "stage_wall_s": {
+        "download": 0.05271089996676892,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 1.0,
+      "keyword_checks": {
+        "AX-2026-0917": false,
+        "12345.67": false,
+        "ORCHID": false
+      },
+      "line_coverage": 0.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 2,
+        "failures": [
+          {
+            "locator": {
+              "page": 1
+            },
+            "error": "TypeError: 'PdfPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          },
+          {
+            "locator": {
+              "page": 2
+            },
+            "error": "TypeError: 'PdfPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          }
+        ],
+        "extraction_done": true,
+        "complete": false,
+        "searchable_chars": 2,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-scans-system/scan-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 15.966666666666667,
+      "min_available_mib": 1936.984375
+    },
+    {
+      "run": "constrained-scans-system",
+      "id": "scan-zh",
+      "kind": "pdf",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": null,
+      "wall_s": 0.14607800001977012,
+      "first_preview_s": 0.1452856999821961,
+      "process_tree_rss_peak_mib": 44.44921875,
+      "process_tree_cpu_sampled_s": null,
+      "stage_wall_s": {
+        "download": 0.03665070002898574,
+        "browser_render": 0,
+        "text_extraction": 0,
+        "html_extraction": 0,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 1.0,
+      "keyword_checks": {
+        "京东20260917": false,
+        "12345.67": false,
+        "兰花": false
+      },
+      "line_coverage": 0.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 2,
+        "failures": [
+          {
+            "locator": {
+              "page": 1
+            },
+            "error": "TypeError: 'PdfPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          },
+          {
+            "locator": {
+              "page": 2
+            },
+            "error": "TypeError: 'PdfPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          }
+        ],
+        "extraction_done": true,
+        "complete": false,
+        "searchable_chars": 2,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-scans-system/scan-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 12.7,
+      "min_available_mib": 1912.88671875
+    },
+    {
+      "run": "constrained-scans-system-v2",
+      "id": "scan-en",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": null,
+      "wall_s": 0.1440015999833122,
+      "first_preview_s": 0.14368149999063462,
+      "process_tree_rss_peak_mib": 44.38671875,
+      "process_tree_cpu_sampled_s": null,
+      "stage_wall_s": {
+        "download": 0.06741590000456199,
+        "browser_render": 0,
+        "text_extraction": 0.0010035999584943056,
+        "html_extraction": 0,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 1.0,
+      "keyword_checks": {
+        "AX-2026-0917": false,
+        "12345.67": false,
+        "ORCHID": false
+      },
+      "line_coverage": 0.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 2,
+        "failures": [
+          {
+            "locator": {
+              "page": 1
+            },
+            "error": "TypeError: 'PdfTextPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          },
+          {
+            "locator": {
+              "page": 2
+            },
+            "error": "TypeError: 'PdfTextPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          }
+        ],
+        "extraction_done": true,
+        "complete": false,
+        "searchable_chars": 2,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-scans-system-v2/scan-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 17.2,
+      "min_available_mib": 2083.64453125
+    },
+    {
+      "run": "constrained-scans-system-v2",
+      "id": "scan-zh",
+      "kind": "pdf",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "failed",
+      "error": null,
+      "wall_s": 0.0964187000063248,
+      "first_preview_s": 0.09608230000594631,
+      "process_tree_rss_peak_mib": 48.75390625,
+      "process_tree_cpu_sampled_s": null,
+      "stage_wall_s": {
+        "download": 0.016816000046674162,
+        "browser_render": 0,
+        "text_extraction": 7.149996235966682e-05,
+        "html_extraction": 0,
+        "model_load": 0,
+        "raster": 0,
+        "ocr": 0
+      },
+      "cer": 1.0,
+      "keyword_checks": {
+        "京东20260917": false,
+        "12345.67": false,
+        "兰花": false
+      },
+      "line_coverage": 0.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 2,
+        "failures": [
+          {
+            "locator": {
+              "page": 1
+            },
+            "error": "TypeError: 'PdfTextPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          },
+          {
+            "locator": {
+              "page": 2
+            },
+            "error": "TypeError: 'PdfTextPage' object does not support the context manager protocol",
+            "attempts": 2,
+            "injected": false
+          }
+        ],
+        "extraction_done": true,
+        "complete": false,
+        "searchable_chars": 2,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-scans-system-v2/scan-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 17.6,
+      "min_available_mib": 2073.21875
+    },
+    {
+      "run": "constrained-scans-system-v3",
+      "id": "scan-en",
+      "kind": "pdf",
+      "language": "en",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 4.057719199976418,
+      "first_preview_s": 2.5805570000084117,
+      "process_tree_rss_peak_mib": 404.109375,
+      "process_tree_cpu_sampled_s": 9.546875,
+      "stage_wall_s": {
+        "download": 0.059017599967774004,
+        "browser_render": 0,
+        "text_extraction": 0.00011019996600225568,
+        "html_extraction": 0,
+        "model_load": 0.5227956000017002,
+        "raster": 0.05254030000651255,
+        "ocr": 3.289153099991381
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "AX-2026-0917": true,
+        "12345.67": true,
+        "ORCHID": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 298,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-scans-system-v3/scan-en-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 22.538888888888888,
+      "min_available_mib": 1689.484375
+    },
+    {
+      "run": "constrained-scans-system-v3",
+      "id": "scan-zh",
+      "kind": "pdf",
+      "language": "zh",
+      "temperature": "process_cold",
+      "status": "ok",
+      "error": null,
+      "wall_s": 3.553985000005923,
+      "first_preview_s": 2.2335446000215597,
+      "process_tree_rss_peak_mib": 433.49609375,
+      "process_tree_cpu_sampled_s": 8.21875,
+      "stage_wall_s": {
+        "download": 0.019516800006385893,
+        "browser_render": 0,
+        "text_extraction": 9.959994349628687e-05,
+        "html_extraction": 0,
+        "model_load": 0.5016739999991842,
+        "raster": 0.031677499995566905,
+        "ocr": 2.878814199997578
+      },
+      "cer": 0.0,
+      "keyword_checks": {
+        "京东20260917": true,
+        "12345.67": true,
+        "兰花": true
+      },
+      "line_coverage": 1.0,
+      "regions": [],
+      "scope": {
+        "processed_units": 2,
+        "total_units": 2,
+        "failed_units": 0,
+        "failures": [],
+        "extraction_done": true,
+        "complete": true,
+        "searchable_chars": 140,
+        "pending_units": 0
+      },
+      "reconstruction": true,
+      "source": "runs/constrained-scans-system-v3/scan-zh-0.json",
+      "resource_stop_reason": null,
+      "host_cpu_percent_mean": 23.003225806451614,
+      "min_available_mib": 1727.6875
+    }
+  ],
   "admissions": [
+    {
+      "run": "constrained-html-fallback-system",
+      "id": "html-zh",
+      "at": "2026-09-09T08:48:36.534349+00:00",
+      "cpu_percent": 6.3,
+      "available_bytes": 2107924480,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-html-fallback-system",
+      "id": "inline-en",
+      "at": "2026-09-09T08:48:29.821307+00:00",
+      "cpu_percent": 4.8,
+      "available_bytes": 1911222272,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-html-fallback-system",
+      "id": "inline-zh",
+      "at": "2026-09-09T08:48:40.522676+00:00",
+      "cpu_percent": 5.9,
+      "available_bytes": 2132066304,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-image-en",
+      "id": "image-en",
+      "at": "2026-09-09T08:42:38.271709+00:00",
+      "cpu_percent": 5.3,
+      "available_bytes": 1801670656,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-images-system",
+      "id": "image-en",
+      "at": "2026-09-09T08:44:43.443323+00:00",
+      "cpu_percent": 12.5,
+      "available_bytes": 1858220032,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-images-system",
+      "id": "image-zh",
+      "at": "2026-09-09T08:44:50.811721+00:00",
+      "cpu_percent": 11.7,
+      "available_bytes": 1861386240,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-long-eager-system",
+      "id": "long-scan",
+      "at": "2026-09-09T08:49:40.684406+00:00",
+      "cpu_percent": 5.9,
+      "available_bytes": 2044174336,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-long-progressive-system",
+      "id": "long-scan",
+      "at": "2026-09-09T08:49:14.063744+00:00",
+      "cpu_percent": 8.2,
+      "available_bytes": 2116153344,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-mixed-failure-system",
+      "id": "mixed",
+      "at": "2026-09-09T08:50:14.678818+00:00",
+      "cpu_percent": 7.5,
+      "available_bytes": 2446585856,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "html-en",
+      "at": "2026-09-09T08:47:22.636985+00:00",
+      "cpu_percent": 4.7,
+      "available_bytes": 2409308160,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "html-zh",
+      "at": "2026-09-09T08:47:40.919276+00:00",
+      "cpu_percent": 8.5,
+      "available_bytes": 2079461376,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "inline-en",
+      "at": "2026-09-09T08:47:33.311933+00:00",
+      "cpu_percent": 7.7,
+      "available_bytes": 2255802368,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "inline-zh",
+      "at": "2026-09-09T08:47:49.862209+00:00",
+      "cpu_percent": 8.0,
+      "available_bytes": 2046517248,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "js-en",
+      "at": "2026-09-09T08:47:27.395039+00:00",
+      "cpu_percent": 15.6,
+      "available_bytes": 2298454016,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "js-zh",
+      "at": "2026-09-09T08:47:45.030532+00:00",
+      "cpu_percent": 4.6,
+      "available_bytes": 2023845888,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "text-en",
+      "at": "2026-09-09T08:47:18.979702+00:00",
+      "cpu_percent": 8.0,
+      "available_bytes": 2406944768,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-read-system",
+      "id": "text-zh",
+      "at": "2026-09-09T08:47:37.302947+00:00",
+      "cpu_percent": 7.5,
+      "available_bytes": 2154029056,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-scans-system",
+      "id": "scan-en",
+      "at": "2026-09-09T08:45:37.429961+00:00",
+      "cpu_percent": 10.5,
+      "available_bytes": 2065563648,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-scans-system",
+      "id": "scan-zh",
+      "at": "2026-09-09T08:45:41.164029+00:00",
+      "cpu_percent": 17.0,
+      "available_bytes": 2026606592,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-scans-system-v2",
+      "id": "scan-en",
+      "at": "2026-09-09T08:46:29.991933+00:00",
+      "cpu_percent": 4.5,
+      "available_bytes": 2205265920,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-scans-system-v2",
+      "id": "scan-zh",
+      "at": "2026-09-09T08:46:33.626955+00:00",
+      "cpu_percent": 9.5,
+      "available_bytes": 2177085440,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-scans-system-v3",
+      "id": "scan-en",
+      "at": "2026-09-09T08:46:51.315050+00:00",
+      "cpu_percent": 5.6,
+      "available_bytes": 2155991040,
+      "other_workloads": [],
+      "allowed": true
+    },
+    {
+      "run": "constrained-scans-system-v3",
+      "id": "scan-zh",
+      "at": "2026-09-09T08:46:58.950335+00:00",
+      "cpu_percent": 10.7,
+      "available_bytes": 2126041088,
+      "other_workloads": [],
+      "allowed": true
+    },
     {
       "run": "ocr-admission",
       "id": "image-en",

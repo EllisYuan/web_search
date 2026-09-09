@@ -1,0 +1,42 @@
+{
+  "returncode": 0,
+  "stop_reason": null,
+  "sampled_peak_tree_rss_bytes": 53440512,
+  "sampled_tree_cpu_s": 0.203125,
+  "wall_s": 0.45849019999150187,
+  "samples": [
+    {
+      "elapsed_s": 0.021,
+      "perf": 325930.0438944,
+      "tree_rss_bytes": 11284480,
+      "tree_cpu_s": 0.015625,
+      "host_cpu_percent": 15.2,
+      "available_bytes": 2203676672
+    },
+    {
+      "elapsed_s": 0.135,
+      "perf": 325930.1575255,
+      "tree_rss_bytes": 38014976,
+      "tree_cpu_s": 0.09375,
+      "host_cpu_percent": 8.4,
+      "available_bytes": 2189352960
+    },
+    {
+      "elapsed_s": 0.246,
+      "perf": 325930.2688166,
+      "tree_rss_bytes": 46542848,
+      "tree_cpu_s": 0.171875,
+      "host_cpu_percent": 17.2,
+      "available_bytes": 2184859648
+    },
+    {
+      "elapsed_s": 0.358,
+      "perf": 325930.3808045,
+      "tree_rss_bytes": 53440512,
+      "tree_cpu_s": 0.203125,
+      "host_cpu_percent": 6.3,
+      "available_bytes": 2184003584
+    }
+  ],
+  "measurement": "100 ms sampling; RSS sum incl browser children, excludes controller/fixture server; CPU last observed per PID, short-lived children may be missed"
+}

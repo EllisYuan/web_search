@@ -12,8 +12,30 @@
 - 39 条 manifest entries：六类必需输入各有中文/英文可再生成受控 fixture；再含 mixed PDF、同页 text/image、多栏、90° rotation、低清晰度、12-page scan、13-page limit、无目录长文和失败样本。不是 39 份独立真实网站样本，也没有全部下载/运行。
 - 两份官方公开 OCR 图片已固定到 source commit、下载并记录 hash/resolution；在 OCR 前目视转写的区域 reference 位于 `references.json`。真实图片的本机 HTML/PDF wrapper 显式标记 `public-derived-*`。独立公开扫描 PDF、公开 HTML/JS/PDF 和公开 404 URL 已入 manifest，尚未执行读取。
 - `probe.py` 已写入 HTTP fetch → HTML / rendered DOM / PDF / OCR → 原文 state 的候选 pipeline；包含原文 preview、逐 page/image 推进、section / position 读取、关键词覆盖范围、page/image locator、有限失败重试和完整重建 trace。**这些路径尚未 runtime 验证**，不能把代码中存在相应分支当作范围已通过。
-- `run.ps1` 是单命令入口；`summarize.py` 可重算观测并生成单文件 `trace-viewer.html`。当前 viewer 明确显示无实测，不嵌入模拟成功数据。
-- 已通过 Python syntax compile、PowerShell Parser syntax 检查、fixture 生成、三份 model hash 比对、summary 重算。未执行 end-to-end OCR/browser/PDF 质量验证。
+- `run.ps1` 是单命令入口；`summarize.py` 可重算观测并生成单文件 `trace-viewer.html`。viewer 只嵌入实际保存的 trace，不生成模拟成功数据。
+- 已通过 Python syntax compile、PowerShell Parser syntax 检查、fixture 生成、三份 model hash 比对、summary 重算，以及受限 smoke 的 end-to-end OCR/browser/PDF 运行。
+
+## 受限 smoke 新进展
+
+用户随后明确授权降低门槛。使用 standalone CPython 3.12（避开 Anaconda DLL search path）和 `--constrained` 后，英文/中文独立图片已成功完成真实 OCR：两条结果均 `status=ok`、CER=0、reference line coverage=1.0；三个 ONNX Runtime sessions（det/cls/rec）均记录 `['CPUExecutionProvider']`，intra/inter threads=2/1。worker process-tree sampled peak RSS 分别约 313.7 / 327.4 MiB，wall time 4.208 / 2.956 s；这些只是受限 smoke 观测，不是性能基线。原始 JSON 位于 `runs/constrained-images-system/`。
+
+先前 Anaconda-based `.venv` 的第一条 smoke 在 model load 阶段失败，错误是 `DLL load failed while importing onnxruntime_pybind11_state: 动态链接库(DLL)初始化例程失败。`。换用 standalone CPython 新 venv 后，直接 import `onnxruntime 1.29.0` 成功并列出 `AzureExecutionProvider` / `CPUExecutionProvider`；probe 的实际 sessions 仍严格断言只使用 `CPUExecutionProvider`。这属于 Windows Python runtime 环境问题，不能归因于 CPU OCR 质量。
+
+新增受限 smoke 结果：
+
+| 范围 | 结果 |
+|---|---|
+| 独立图片，中文/英文 | 均 `ok`，CER=0，reference line coverage=1.0；det/cls/rec 均 `CPUExecutionProvider`；sampled peak RSS 约 327/314 MiB |
+| 扫描 PDF，中文/英文，各 2 pages | 均 `ok`，每页保留 `page` locator，CER=0，coverage=1.0；sampled peak RSS 约 434/404 MiB |
+| 网页内文字图片，中文/英文 | 均 `ok`；正文 unit 与 OCR image unit 分开，image locator 保留；CER=0 |
+| 静态 HTML，英文/中文 | 均 `ok`；中文小页面使用透明 DOM fallback，heading 已纳入目录候选 |
+| JS HTML，英文/中文 | 均 `ok`；browser render stage 执行，关键词均命中 |
+| text PDF，中文/英文 | 均 `ok`；text layer 模式，未重复 OCR |
+| 12-page long scan，progressive | `ok`；首个 preview 约 2.37 s、只含 page 1；全文约 17.6 s |
+| 12-page long scan，eager 对照 | `ok`；首个 preview 约 17.7 s，全文约 17.7 s |
+| mixed PDF，第 2 页注入两次失败 | `partial`；第 1/3 页保留，第 2 页 failure locator/attempts 可见；重建文本一致，`end_of_document=false` |
+
+以上均是用户授权的 `--constrained` 功能 smoke，不是稳定性能 benchmark；CPU/RAM 受 host 负载影响，不能据少量 controlled fixture 推导生产 SLA。原始结果位于 `runs/constrained-images-system/`、`runs/constrained-scans-system-v3/`、`runs/constrained-read-system/`、`runs/constrained-html-fallback-system/`、`runs/constrained-long-progressive-system/`、`runs/constrained-long-eager-system/` 和 `runs/constrained-mixed-failure-system/`。
 
 ## 为什么没有 benchmark
 

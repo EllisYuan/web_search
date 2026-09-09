@@ -1,0 +1,186 @@
+{
+  "query_id": "zh07",
+  "query": "Python 3.14 最新 安全 发布 2026",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:45:26.607168+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T01:45:26.674614+00:00",
+      "status_code": 200,
+      "bytes": 226212,
+      "sha256": "2849c8467501e059bdfb55df6cbeee9575fc1af3a43e192fe1b4f3ebfd0ca981",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/freshness-smoke/zh07-ddgs-brave/http-0.html",
+      "latency_ms": 2079.33
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "Python Release Python 3.12.14 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-31214/",
+      "body": "1 month ago - Release date: Aug. 12, 2026"
+    },
+    {
+      "title": "Python Release Python 3.14.6 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3146/",
+      "body": "Release date: June 10, 2026 · Python 3.14.6 is the sixth maintenance release of 3.14, containing around 179 bugfixes, build improvements and documentation changes since 3.14.5. Some of the major new features and changes in Python 3.14 are: ..."
+    },
+    {
+      "title": "Python Release Python 3.14.7 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3147/",
+      "body": "August 5, 2026 - Release date: Aug. 5, 2026"
+    },
+    {
+      "title": "Python Release Python 3.13.14 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-31314/",
+      "body": "June 10, 2026 - Release date: June 10, 2026 · Note: This is Python 3.13.14, a maintenance release for Python 3.13. Python 3.14 is now the latest feature release series of Python 3. Get the latest release of 3.14.x here."
+    },
+    {
+      "title": "Python Release Python 3.14.4 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3144/",
+      "body": "April 4, 2026 - Release date: April 7, 2026 · Python 3.14.4 is the fourth maintenance release of 3.14, containing around 337 bugfixes, build improvements and documentation changes since 3.14.3. Some of the major new features and changes in Python 3.14 are: ..."
+    },
+    {
+      "title": "Download Python | Python.org",
+      "href": "https://www.python.org/downloads/",
+      "body": "Python 3.10.20 March 3, 2026 Download Release notes · Python 3.10.19 Oct. 9, 2025 Download Release notes · Python 3.10.18 June 3, 2025 Download Release notes · Python 3.10.17 April 8, 2025 Download Release notes · Python 3.10.16 Dec."
+    },
+    {
+      "title": "Python 3.14.6 and 3.13.14 are now available! | Python Insider",
+      "href": "https://blog.python.org/2026/06/python-3146-31314/",
+      "body": "June 10, 2026 - Python 3.14.6 is the sixth maintenance release of 3.14, containing around 179 bugfixes, build improvements and documentation changes since 3.14.5 · python.org/downloads/release/python-3146"
+    },
+    {
+      "title": "Python Release Python 3.14.0 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3140/",
+      "body": "The official home of the Python Programming Language"
+    },
+    {
+      "title": "Python 3.14.3 and 3.13.12 are now available! | Python Insider",
+      "href": "https://blog.python.org/2026/02/python-3143-and-31312-are-now-available/",
+      "body": "February 3, 2026 - Python 3.14.3 is now available! This is third maintenance release of Python 3.14 Python 3.14.3 is the third maintenance release of 3.14, containing around ..."
+    },
+    {
+      "title": "PEP 745 – Python 3.14 Release Schedule | peps.python.org",
+      "href": "https://peps.python.org/pep-0745/",
+      "body": "April 24, 2024 - 3.14.3: Tuesday, 2026-02-03 · 3.14.4: Tuesday, 2026-04-07 · 3.14.5 candidate 1: Monday, 2026-05-04 · 3.14.5: Sunday, 2026-05-10 · 3.14.6: Wednesday, 2026-06-10 · 3.14.7: Wednesday, 2026-08-05 · Expected: 3.14.8: Tuesday, 2026-10-06 · ..."
+    },
+    {
+      "title": "Python 3.14 in 2026: What’s New, What’s Faster, and When You’ll Actually Feel It (with code) | by gautam soni | Medium",
+      "href": "https://medium.com/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+      "body": "March 5, 2026 - As of Feb 3, 2026, the latest maintenance release is Python 3.14.3."
+    },
+    {
+      "title": "Python 3.14.7 and 3.13.15 are now available! | Python Insider",
+      "href": "https://blog.python.org/2026/08/python-3147-31315/",
+      "body": "August 5, 2026 - Thomas Wouters/August 5, 2026 · releases · Python 3.14.7 is the seventh maintenance release of 3.14, containing around 499 bugfixes, build improvements and documentation changes from 86 contributors since 3.14.6. python.org/downloads/rele..."
+    },
+    {
+      "title": "What's new in Python 3.14 — Python 3.14.7 documentation",
+      "href": "https://docs.python.org/3/whatsnew/3.14.html",
+      "body": "Editors, Adam Turner and Hugo van Kemenade,. This article explains the new features in Python 3.14, compared to 3.13. Python 3.14 was released on 7 October 2025. For full details, see the changelog..."
+    },
+    {
+      "title": "Oracle Linux Python 3.14 Security Update ELSA-2026-58928 CVE-2026-11940",
+      "href": "https://linuxsecurity.com/advisories/oracle/oracle10-elsa-2026-58928-python3-14",
+      "body": "2 weeks ago - Oracle Linux 10 updates released for Python 3.14 addressing important security issue, CVE-2026-11940, with new RPMs."
+    },
+    {
+      "title": "Python 3.14_百度百科",
+      "href": "https://baike.baidu.com/item/Python+3.14/67551899",
+      "body": "Python 3.14是Python编程语言的一个主要稳定版本，其最终正式版（3.14.0）于2025年10月7日发布。该版本在3.13的基础上引入了多项重要新特性与改进，主要包括：通过PEP 779正式支持自由线程（Free-threaded Python）；通过PEP 649实现注解的延迟求值；新增模板字符串字面量（t-strings，PEP 750）；以及在标准库中增加多解释器支持（PEP 734）等。此外，版本在错误提示、性能（包含实验性JIT编译器）和C API方面亦有显著优化。根据PEP 2026，Python 3.14是最后一个沿用“3.x”传统命名规则的主要版本，其后版本将采用基于发布年份的新版本号。"
+    },
+    {
+      "title": "Python 3.14正式发布！这5大新特性太炸裂了-腾讯云开发者社区-腾讯云",
+      "href": "https://cloud.tencent.com/developer/article/2574311",
+      "body": "更快、更安全、更强大 · 国庆期间（2025.10.7），Python 3.14正式亮相！作为圆周率π的近似值，3.14这个版本号对Python来说具有里程碑意义。此次更新带来了一系列令人振奋的新特性，从性能优化到语法增强，从安全改进到开..."
+    },
+    {
+      "title": "Python 3.14 新特性盘点，更新了些什么？ - 豌豆花下猫 - 博客园",
+      "href": "https://www.cnblogs.com/pythonista/p/18870129",
+      "body": "May 10, 2025 - Python 3.14 版本将告别 PGP 签名，改用更现代的签名和验证方式来发布官方软件包。这一改变其实是 Python 跟上了开源软件分发领域的潮流，和当下大多数主流项目的做法一致。"
+    },
+    {
+      "title": "Python3.14 即将带来的变化 - wang_yb - 博客园",
+      "href": "https://www.cnblogs.com/wang_yb/p/18827953",
+      "body": "改用现代签名系统（如RSA/ECC）验证CPython工件，提升安全性 · map函数：新增严格参数，不再静默忽略额外值 · memoryview：支持下标访问，成为通用可订阅类型 · 路径处理：pathlib新增copy_to()、move_to()等方法 ... Python 3.14聚焦于代码规范优化（如finally块限制）、性能提升（尾调用解释器、IO优化）和开发者体验改进（延迟注释、配置API）。"
+    },
+    {
+      "title": "下载 Python | Python.org - Python 编程语言",
+      "href": "https://pythonlang.cn/downloads/",
+      "body": "3.15 预发布 2026-10-07 (计划) 2031-10 PEP 790 · 3.14 错误修复 2025-10-07 2030-10 PEP 745 · 3.13 错误修复 2024-10-07 2029-10 PEP 719 · 3.12 安全修复 2023-10-02 2028-10 PEP 693 · 3.11 安全修复 2022-10-24 2027-10 PEP 664 · 3.10 安全修复 2021-10-04 2026-10 PEP 619 ·"
+    },
+    {
+      "title": "Python 3.14 正式发布！新特性太炸裂了-CSDN博客",
+      "href": "https://blog.csdn.net/mingongge/article/details/153081910",
+      "body": "October 12, 2025 - Python 3.14重磅发布：五大核心特性解析 2025年10月7日，Python 3.14正式发布，带来多项突破性更新：1）子解释器功能实现真正的并行计算，突破GIL限制；2）增强的模式匹配支持嵌套结构和类实例；3）类型系统升级，引入更精确的静态分析和类型守卫；4）优化发布周期，采用12个月固定周期；5）安全性与开发体验全面提升。新版本在科学计算、数据处理等领域性能显著提升，同时保持Python一贯的简洁优雅。每个版本将获得5年长期支持，为开发者提供稳定可靠的技术基础。"
+    }
+  ],
+  "results": [
+    {
+      "title": "Python Release Python 3.12.14 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-31214/",
+      "body": "1 month ago - Release date: Aug. 12, 2026"
+    },
+    {
+      "title": "Python Release Python 3.14.6 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3146/",
+      "body": "Release date: June 10, 2026 · Python 3.14.6 is the sixth maintenance release of 3.14, containing around 179 bugfixes, build improvements and documentation changes since 3.14.5. Some of the major new features and changes in Python 3.14 are: ..."
+    },
+    {
+      "title": "Python Release Python 3.14.7 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3147/",
+      "body": "August 5, 2026 - Release date: Aug. 5, 2026"
+    },
+    {
+      "title": "Python Release Python 3.13.14 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-31314/",
+      "body": "June 10, 2026 - Release date: June 10, 2026 · Note: This is Python 3.13.14, a maintenance release for Python 3.13. Python 3.14 is now the latest feature release series of Python 3. Get the latest release of 3.14.x here."
+    },
+    {
+      "title": "Python Release Python 3.14.4 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3144/",
+      "body": "April 4, 2026 - Release date: April 7, 2026 · Python 3.14.4 is the fourth maintenance release of 3.14, containing around 337 bugfixes, build improvements and documentation changes since 3.14.3. Some of the major new features and changes in Python 3.14 are: ..."
+    },
+    {
+      "title": "Download Python | Python.org",
+      "href": "https://www.python.org/downloads/",
+      "body": "Python 3.10.20 March 3, 2026 Download Release notes · Python 3.10.19 Oct. 9, 2025 Download Release notes · Python 3.10.18 June 3, 2025 Download Release notes · Python 3.10.17 April 8, 2025 Download Release notes · Python 3.10.16 Dec."
+    },
+    {
+      "title": "Python 3.14.6 and 3.13.14 are now available! | Python Insider",
+      "href": "https://blog.python.org/2026/06/python-3146-31314/",
+      "body": "June 10, 2026 - Python 3.14.6 is the sixth maintenance release of 3.14, containing around 179 bugfixes, build improvements and documentation changes since 3.14.5 · python.org/downloads/release/python-3146"
+    },
+    {
+      "title": "Python Release Python 3.14.0 | Python.org",
+      "href": "https://www.python.org/downloads/release/python-3140/",
+      "body": "The official home of the Python Programming Language"
+    },
+    {
+      "title": "Python 3.14.3 and 3.13.12 are now available! | Python Insider",
+      "href": "https://blog.python.org/2026/02/python-3143-and-31312-are-now-available/",
+      "body": "February 3, 2026 - Python 3.14.3 is now available! This is third maintenance release of Python 3.14 Python 3.14.3 is the third maintenance release of 3.14, containing around ..."
+    },
+    {
+      "title": "PEP 745 – Python 3.14 Release Schedule | peps.python.org",
+      "href": "https://peps.python.org/pep-0745/",
+      "body": "April 24, 2024 - 3.14.3: Tuesday, 2026-02-03 · 3.14.4: Tuesday, 2026-04-07 · 3.14.5 candidate 1: Monday, 2026-05-04 · 3.14.5: Sunday, 2026-05-10 · 3.14.6: Wednesday, 2026-06-10 · 3.14.7: Wednesday, 2026-08-05 · Expected: 3.14.8: Tuesday, 2026-10-06 · ..."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2154.0,
+  "finished_at": "2026-09-09T01:45:28.761092+00:00",
+  "url_count": 10,
+  "hostname_count": 3,
+  "exact_url_duplicates": 0
+}

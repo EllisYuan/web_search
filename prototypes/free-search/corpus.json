@@ -1,0 +1,290 @@
+[
+  {
+    "id": "zh01",
+    "language": "zh-Hans",
+    "category": "技术文档",
+    "query": "Python asyncio TaskGroup 异常处理 官方文档",
+    "intent": "查找 TaskGroup 异常传播和 ExceptionGroup 行为",
+    "relevance_rule": "解释 TaskGroup 异常或官方 asyncio task 文档",
+    "known_relevant_urls": [
+      "https://docs.python.org/zh-cn/3/library/asyncio-task.html"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh02",
+    "language": "zh-Hant",
+    "category": "事实查找",
+    "query": "臺灣 玉山 主峰 海拔 國家公園",
+    "intent": "确认玉山主峰海拔",
+    "relevance_rule": "明确指向玉山主峰高度，排除银行和其他同名事物",
+    "known_relevant_urls": [
+      "https://www.ysnp.gov.tw/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh03",
+    "language": "zh-Hans",
+    "category": "时效性",
+    "query": "中国气象局 2026 年 9 月 台风",
+    "intent": "寻找指定时间台风资料",
+    "relevance_rule": "同时匹配台风和指定月份，旧年份不相关",
+    "known_relevant_urls": [
+      "https://www.cma.gov.cn/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh04",
+    "language": "zh-Hant",
+    "category": "多网站对比",
+    "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+    "intent": "发现三个地区的官方法规来源",
+    "relevance_rule": "涉及至少一个指定地区的个人资料保护规则",
+    "known_relevant_urls": [
+      "https://www.pdpc.gov.sg/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh05",
+    "language": "zh-Hans",
+    "category": "技术文档",
+    "query": "PostgreSQL 多列索引 最左前缀 官方",
+    "intent": "查找多列 B-tree 的列顺序规则",
+    "relevance_rule": "明确讨论 PostgreSQL multicolumn index",
+    "known_relevant_urls": [
+      "https://www.postgresql.org/docs/current/indexes-multicolumn.html"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh06",
+    "language": "zh-Hant",
+    "category": "事实查找",
+    "query": "香港天文台 熱帶氣旋 警告 信號 八號",
+    "intent": "查找八号信号定义",
+    "relevance_rule": "直接解释香港八号热带气旋警告",
+    "known_relevant_urls": [
+      "https://www.hko.gov.hk/tc/informtc/tcsignal.htm"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh07",
+    "language": "zh-Hans",
+    "category": "时效性",
+    "query": "Python 3.14 最新 安全 发布 2026",
+    "intent": "查找 Python 3.14 发布信息",
+    "relevance_rule": "官方 release 或具体 3.14 版本发布资料；时间须另核验",
+    "known_relevant_urls": [
+      "https://www.python.org/downloads/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "zh08",
+    "language": "zh-Hans",
+    "category": "多网站对比",
+    "query": "DuckDB SQLite 分析查询 对比",
+    "intent": "寻找独立网站对两种数据库的比较",
+    "relevance_rule": "同时涉及 DuckDB 与 SQLite 分析工作负载",
+    "known_relevant_urls": [
+      "https://duckdb.org/why_duckdb"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en01",
+    "language": "en",
+    "category": "技术文档",
+    "query": "PostgreSQL multicolumn indexes official documentation",
+    "intent": "Find column order rules for multicolumn indexes",
+    "relevance_rule": "PostgreSQL multicolumn index documentation or direct explanation",
+    "known_relevant_urls": [
+      "https://www.postgresql.org/docs/current/indexes-multicolumn.html"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en02",
+    "language": "en",
+    "category": "多网站对比",
+    "query": "SQLite DuckDB analytical queries comparison",
+    "intent": "Find independent comparisons of analytical workloads",
+    "relevance_rule": "Discusses both SQLite and DuckDB with analytical workload tradeoffs",
+    "known_relevant_urls": [
+      "https://duckdb.org/why_duckdb"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en03",
+    "language": "en",
+    "category": "事实查找",
+    "query": "speed of light vacuum SI exact value BIPM",
+    "intent": "Find authoritative exact SI value",
+    "relevance_rule": "Explicit vacuum speed of light definition or SI constants",
+    "known_relevant_urls": [
+      "https://www.bipm.org/en/measurement-units"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en04",
+    "language": "en",
+    "category": "时效性",
+    "query": "Python 3.14 release September 2026",
+    "intent": "Find releases in target time window",
+    "relevance_rule": "Python 3.14 release information; date relevance must be checked separately",
+    "known_relevant_urls": [
+      "https://www.python.org/downloads/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en05",
+    "language": "en",
+    "category": "技术文档",
+    "query": "SearXNG search API JSON formats settings",
+    "intent": "Find how to enable JSON output",
+    "relevance_rule": "SearXNG JSON API configuration and formats",
+    "known_relevant_urls": [
+      "https://docs.searxng.org/dev/search_api.html"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en06",
+    "language": "en",
+    "category": "事实查找",
+    "query": "Mount Everest height 8848.86 Nepal survey",
+    "intent": "Find evidence for Everest measured height",
+    "relevance_rule": "Everest height measurement with numeric height and attribution",
+    "known_relevant_urls": [
+      "https://www.dos.gov.np/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en07",
+    "language": "en",
+    "category": "时效性",
+    "query": "PostgreSQL latest release September 2026",
+    "intent": "Find current releases for requested month",
+    "relevance_rule": "Official release announcements; exact target-month relevance separately checked",
+    "known_relevant_urls": [
+      "https://www.postgresql.org/docs/release/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "en08",
+    "language": "en",
+    "category": "多网站对比",
+    "query": "Playwright Selenium browser automation comparison",
+    "intent": "Find independent technical comparisons",
+    "relevance_rule": "Both tools compared with concrete browser automation tradeoffs",
+    "known_relevant_urls": [
+      "https://playwright.dev/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix01",
+    "language": "mixed",
+    "category": "技术文档",
+    "query": "SearXNG JSON API 配置 formats",
+    "intent": "查找 SearXNG JSON 开启方式",
+    "relevance_rule": "涉及 settings.yml formats 或 Search API JSON 配置",
+    "known_relevant_urls": [
+      "https://docs.searxng.org/dev/search_api.html"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix02",
+    "language": "mixed",
+    "category": "技术文档",
+    "query": "Docker Desktop Windows WSL 2 backend 官方",
+    "intent": "查找 Windows WSL2 backend 的官方安装运行约束",
+    "relevance_rule": "涉及 Docker Desktop WSL2 配置、要求或排障",
+    "known_relevant_urls": [
+      "https://docs.docker.com/desktop/features/wsl/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix03",
+    "language": "mixed",
+    "category": "多网站对比",
+    "query": "Redis Valkey license 开源 对比",
+    "intent": "发现独立来源的 license 比较",
+    "relevance_rule": "同时讨论 Redis 与 Valkey license，时效另核查",
+    "known_relevant_urls": [
+      "https://valkey.io/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix04",
+    "language": "mixed",
+    "category": "事实查找",
+    "query": "HTTP 429 Retry-After RFC 含义",
+    "intent": "查找 429 和 Retry-After 的规范",
+    "relevance_rule": "RFC 6585/9110 或直接解释相关语义",
+    "known_relevant_urls": [
+      "https://www.rfc-editor.org/rfc/rfc6585"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix05",
+    "language": "mixed",
+    "category": "时效性",
+    "query": "Kubernetes 2026 September release 最新",
+    "intent": "查找指定时期 release",
+    "relevance_rule": "Kubernetes release 信息并单独检查日期",
+    "known_relevant_urls": [
+      "https://kubernetes.io/releases/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix06",
+    "language": "mixed",
+    "category": "多网站对比",
+    "query": "pgvector HNSW IVFFlat recall 中文 对比",
+    "intent": "寻找两种索引的检索取舍",
+    "relevance_rule": "同时涉及 pgvector 两种索引及 recall 或性能",
+    "known_relevant_urls": [
+      "https://github.com/pgvector/pgvector"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix07",
+    "language": "mixed",
+    "category": "事实查找",
+    "query": "UTF-8 BOM EF BB BF Unicode 官方",
+    "intent": "核实 UTF-8 BOM 字节",
+    "relevance_rule": "明确给出 BOM 字节或 Unicode FAQ",
+    "known_relevant_urls": [
+      "https://www.unicode.org/faq/utf_bom.html"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  },
+  {
+    "id": "mix08",
+    "language": "mixed",
+    "category": "时效性",
+    "query": "Firefox release notes 2026 9月",
+    "intent": "查找 Firefox 2026 年 9 月 release",
+    "relevance_rule": "Firefox release notes；日期须独立验证",
+    "known_relevant_urls": [
+      "https://www.mozilla.org/firefox/releases/"
+    ],
+    "reference_set_note": "非完整 ground truth；有些为官方入口，只作 known URL/site 命中参考，不用于全网 Recall"
+  }
+]

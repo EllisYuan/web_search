@@ -1,0 +1,56 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:44:19.603697+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SearXNG JSON API 配置 formats",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:44:19.795736+00:00",
+      "status_code": 200,
+      "bytes": 204,
+      "sha256": "0a2cf7b17403a7ac5ea5fa6f266295e81a9335126da6243d317e0e06c08802bc",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/smoke-2/mix01-searxng-brave/response.json",
+      "latency_ms": 21.71
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SearXNG JSON API 配置 formats",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 214.44,
+  "finished_at": "2026-09-09T01:44:19.817941+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

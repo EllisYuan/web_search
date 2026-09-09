@@ -1,0 +1,56 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:43:56.738274+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SQLite DuckDB analytical queries comparison",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:43:56.929630+00:00",
+      "status_code": 200,
+      "bytes": 210,
+      "sha256": "520838540120efef50cd57fcc7d6329324caffe1e8f578d2b252b79bddb13c6d",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/smoke-2/en02-searxng-brave/response.json",
+      "latency_ms": 5.53
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SQLite DuckDB analytical queries comparison",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 197.82,
+  "finished_at": "2026-09-09T01:43:56.935853+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

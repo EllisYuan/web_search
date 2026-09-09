@@ -1,0 +1,37 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:43:24.996178+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-09T01:43:24.997187+00:00",
+      "status_code": 202,
+      "bytes": 14301,
+      "sha256": "cac033a5e20659042932b6387ffb8e72754e35459df5d204d5a17e54e67e97b5",
+      "marker_hints": [
+        "anomaly.js",
+        "challenge-form"
+      ],
+      "local_body": "raw-private/smoke-2/en01-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 1688.81
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "challenge",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "latency_ms": 1689.92,
+  "finished_at": "2026-09-09T01:43:26.685227+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

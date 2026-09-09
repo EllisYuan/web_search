@@ -1,0 +1,56 @@
+{
+  "query_id": "zh02",
+  "query": "臺灣 玉山 主峰 海拔 國家公園",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:43:07.612815+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "臺灣 玉山 主峰 海拔 國家公園",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:43:07.806183+00:00",
+      "status_code": 200,
+      "bytes": 232,
+      "sha256": "44ae5431e74b2413b59916e2c7a87159c3b83e207c6e9da13c1224b0599b7198",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/smoke-2/zh02-searxng-brave/response.json",
+      "latency_ms": 353.19
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "臺灣 玉山 主峰 海拔 國家公園",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 546.72,
+  "finished_at": "2026-09-09T01:43:08.159296+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

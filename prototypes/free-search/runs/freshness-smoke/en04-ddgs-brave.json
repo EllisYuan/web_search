@@ -1,0 +1,36 @@
+{
+  "query_id": "en04",
+  "query": "Python 3.14 release September 2026",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:45:37.104650+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T01:45:37.105657+00:00",
+      "status_code": 429,
+      "bytes": 73773,
+      "sha256": "dd5f1835c4adea9f2be9ef27ede8c00ab48aa1d822fbe9360390b3baac61b028",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/freshness-smoke/en04-ddgs-brave/http-0.html",
+      "latency_ms": 1718.94
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "latency_ms": 1720.2,
+  "finished_at": "2026-09-09T01:45:38.824495+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

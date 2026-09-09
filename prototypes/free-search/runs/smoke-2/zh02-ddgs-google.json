@@ -1,0 +1,129 @@
+{
+  "query_id": "zh02",
+  "query": "臺灣 玉山 主峰 海拔 國家公園",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:43:13.973731+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:43:13.974736+00:00",
+      "status_code": 200,
+      "bytes": 20450,
+      "sha256": "5de7a018e5cf09ee151132c16db391c479559090c54593eef07d5cd5affa4f67",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-2/zh02-ddgs-google/http-0.html",
+      "latency_ms": 2033.59
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "Jade Mountain (玉山) - Josh Ellis Photography",
+      "href": "https://www.goteamjosh.com/blog/tag/玉山國家公園",
+      "body": "The Main Peak (玉山主峰) - 3,952 m (12,966 ft.) · The Eastern Peak (玉山東峰) - 3,869 m (12,694 ft.) · The Northern Peak (玉山北峰) - 3,858 m (12,657 ft.) · The ..."
+    },
+    {
+      "title": "太美了東彰大道直擊玉山主峰 - Facebook",
+      "href": "https://www.facebook.com/groups/1376116512611976/posts/太美了東彰大道直擊玉山主峰httpsnewsltncomtwnewslifebreakingnews5075693/3990190454537889/",
+      "body": "#臺灣 #玉山國家公園 管理處推出「#線上玉山國家公園 ... 玉山東峰｜海拔3869公尺 攀登玉山東峰的途中，有多處 ... 玉山主峰的雄偉搭配左下方登山客 更充實畫面的緊湊。"
+    },
+    {
+      "title": "玉山只剩下殘雪了#玉山北峰#玉山主峰#殘雪 - Facebook",
+      "href": "https://www.facebook.com/groups/641885055934863/posts/25113465425016819/",
+      "body": "Jan 8, 2026 · OCR: 0.5km 玉山主峰Mt. Jade Main Peak 111_ 111 玉山北峰 Mt. Jade North Peak 1.9km. 00000 . . Other posts."
+    },
+    {
+      "title": "Category:Yushan Main Peak - Wikimedia Commons",
+      "href": "https://commons.wikimedia.org/wiki/Category:Yushan_Main_Peak",
+      "body": "Apr 5, 2026 · 中文（臺灣）：玉山海拔3,952公尺，是臺灣最高峰，位於臺灣島中央位置 ... 玉山主峰08.jpg 5,760 × 3,840; 11.19 MB. Last edited 5 months ago ..."
+    },
+    {
+      "title": "Mt. Jade 台湾玉山 - Wikiloc",
+      "href": "https://sr.wikiloc.com/rute-pjesacenje-po-planinama/mt-jade-tai-wan-yu-shan-269818187",
+      "body": "玉山，台湾及东北亚最高峰，海拔3,952公尺，是无数登山者心中向往的圣殿。感谢玉山的接纳，让渺小的我有机会站上峰顶，完成这趟梦想中的旅程。 两天的登山行程几乎都在雨中 ..."
+    },
+    {
+      "title": "On my birthday today, I fulfilled one of my greatest dreams in Taiwan ...",
+      "href": "https://www.threads.com/@lutzguellner/post/Db7tMvIgEZh/on-my-birthday-today-i-fulfilled-one-of-my-greatest-dreams-in-taiwan-climbing-mo/",
+      "body": "～進入玉山國家公園的人數，哪個國家連續蟬聯兩年的NO.1？ 24h ... #台湾#玉山主峰#玉山西峰#合欢山高山杜鹃. 百岳「五岳」之一 台湾第一高峰-玉山主峰(海拔3,952么尺)."
+    },
+    {
+      "title": "Taiwan's Top 100 Mountains - The Bai Yue (百岳)",
+      "href": "https://taiwanoutdoors.com/taiwans-top-100-mountains-baiyue/",
+      "body": "玉山東峰, 3874, Jade Mountain Peaks Route, 玉山群峰, Yushan National Park, 玉山國家公園 ... (玉山主峰), Snow Mountain Main-East Peaks Route (雪山東主峰), Qilai ..."
+    },
+    {
+      "title": "#南投#高雄#嘉義#花蓮玉山主峰vs. 奇萊主山稜線at Main Peak ...",
+      "href": "https://www.facebook.com/samshiue.fans/videos/南投-高雄-嘉義-花蓮玉山主峰-vs-奇萊主山稜線-at-main-peak-at-mountain-jade-3952m-vs-mt-qilai-main-p/233725429199924/",
+      "body": "Apr 18, 2023 · #南投 #高雄 #嘉義 #花蓮玉山主峰 vs. 奇萊主山稜線at Main Peak at Mountain Jade, 3,952m, vs. Mt."
+    },
+    {
+      "title": "Taishun_hiking_club/event03.html at main - GitHub",
+      "href": "https://github.com/tim94173/Taishun_hiking_club/blob/main/event03.html",
+      "body": "... 臺灣的最高山，其最高峰玉山主峰海拔3,952.43±0.045公尺 ... 玉山國家公園。 玉山主峰. <div class=\"row ..."
+    },
+    {
+      "title": "#玉山北峰 #玉山氣象站 為交通部中央氣象署所屬的一個 ... - TikTok",
+      "href": "https://www.tiktok.com/@sunglasses_molly/photo/7429330065097329925",
+      "body": "Oct 24, 2024 · #玉山北峰 #玉山氣象站 為交通部中央氣象署所屬的一個氣象站.位於玉山北峰峰頂,海拔標高3844.784公尺,是臺灣海拔最高的氣象站,也是臺灣海拔最高的建築物。"
+    }
+  ],
+  "results": [
+    {
+      "title": "太美了東彰大道直擊玉山主峰 - Facebook",
+      "href": "https://www.facebook.com/groups/1376116512611976/posts/太美了東彰大道直擊玉山主峰httpsnewsltncomtwnewslifebreakingnews5075693/3990190454537889/",
+      "body": "#臺灣 #玉山國家公園 管理處推出「#線上玉山國家公園 ... 玉山東峰｜海拔3869公尺 攀登玉山東峰的途中，有多處 ... 玉山主峰的雄偉搭配左下方登山客 更充實畫面的緊湊。"
+    },
+    {
+      "title": "On my birthday today, I fulfilled one of my greatest dreams in Taiwan ...",
+      "href": "https://www.threads.com/@lutzguellner/post/Db7tMvIgEZh/on-my-birthday-today-i-fulfilled-one-of-my-greatest-dreams-in-taiwan-climbing-mo/",
+      "body": "～進入玉山國家公園的人數，哪個國家連續蟬聯兩年的NO.1？ 24h ... #台湾#玉山主峰#玉山西峰#合欢山高山杜鹃. 百岳「五岳」之一 台湾第一高峰-玉山主峰(海拔3,952么尺)."
+    },
+    {
+      "title": "Taiwan's Top 100 Mountains - The Bai Yue (百岳)",
+      "href": "https://taiwanoutdoors.com/taiwans-top-100-mountains-baiyue/",
+      "body": "玉山東峰, 3874, Jade Mountain Peaks Route, 玉山群峰, Yushan National Park, 玉山國家公園 ... (玉山主峰), Snow Mountain Main-East Peaks Route (雪山東主峰), Qilai ..."
+    },
+    {
+      "title": "Taishun_hiking_club/event03.html at main - GitHub",
+      "href": "https://github.com/tim94173/Taishun_hiking_club/blob/main/event03.html",
+      "body": "... 臺灣的最高山，其最高峰玉山主峰海拔3,952.43±0.045公尺 ... 玉山國家公園。 玉山主峰. <div class=\"row ..."
+    },
+    {
+      "title": "Jade Mountain (玉山) - Josh Ellis Photography",
+      "href": "https://www.goteamjosh.com/blog/tag/玉山國家公園",
+      "body": "The Main Peak (玉山主峰) - 3,952 m (12,966 ft.) · The Eastern Peak (玉山東峰) - 3,869 m (12,694 ft.) · The Northern Peak (玉山北峰) - 3,858 m (12,657 ft.) · The ..."
+    },
+    {
+      "title": "玉山只剩下殘雪了#玉山北峰#玉山主峰#殘雪 - Facebook",
+      "href": "https://www.facebook.com/groups/641885055934863/posts/25113465425016819/",
+      "body": "Jan 8, 2026 · OCR: 0.5km 玉山主峰Mt. Jade Main Peak 111_ 111 玉山北峰 Mt. Jade North Peak 1.9km. 00000 . . Other posts."
+    },
+    {
+      "title": "Mt. Jade 台湾玉山 - Wikiloc",
+      "href": "https://sr.wikiloc.com/rute-pjesacenje-po-planinama/mt-jade-tai-wan-yu-shan-269818187",
+      "body": "玉山，台湾及东北亚最高峰，海拔3,952公尺，是无数登山者心中向往的圣殿。感谢玉山的接纳，让渺小的我有机会站上峰顶，完成这趟梦想中的旅程。 两天的登山行程几乎都在雨中 ..."
+    },
+    {
+      "title": "#南投#高雄#嘉義#花蓮玉山主峰vs. 奇萊主山稜線at Main Peak ...",
+      "href": "https://www.facebook.com/samshiue.fans/videos/南投-高雄-嘉義-花蓮玉山主峰-vs-奇萊主山稜線-at-main-peak-at-mountain-jade-3952m-vs-mt-qilai-main-p/233725429199924/",
+      "body": "Apr 18, 2023 · #南投 #高雄 #嘉義 #花蓮玉山主峰 vs. 奇萊主山稜線at Main Peak at Mountain Jade, 3,952m, vs. Mt."
+    },
+    {
+      "title": "#玉山北峰 #玉山氣象站 為交通部中央氣象署所屬的一個 ... - TikTok",
+      "href": "https://www.tiktok.com/@sunglasses_molly/photo/7429330065097329925",
+      "body": "Oct 24, 2024 · #玉山北峰 #玉山氣象站 為交通部中央氣象署所屬的一個氣象站.位於玉山北峰峰頂,海拔標高3844.784公尺,是臺灣海拔最高的氣象站,也是臺灣海拔最高的建築物。"
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2041.56,
+  "finished_at": "2026-09-09T01:43:16.015149+00:00",
+  "url_count": 9,
+  "hostname_count": 7,
+  "exact_url_duplicates": 0
+}

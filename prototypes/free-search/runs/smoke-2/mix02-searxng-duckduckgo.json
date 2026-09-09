@@ -1,0 +1,56 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:44:24.059336+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Docker Desktop Windows WSL 2 backend 官方",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:44:24.248359+00:00",
+      "status_code": 200,
+      "bytes": 200,
+      "sha256": "89a07344170af2898fcd92cd52a53a94b4a7ec89882882182bebc6872efc9e64",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-2/mix02-searxng-duckduckgo/response.json",
+      "latency_ms": 1669.6
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Docker Desktop Windows WSL 2 backend 官方",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 1859.2,
+  "finished_at": "2026-09-09T01:44:25.918415+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

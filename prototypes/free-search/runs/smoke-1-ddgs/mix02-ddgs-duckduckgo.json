@@ -1,0 +1,37 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:39:41.025761+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-09T01:39:41.025761+00:00",
+      "status_code": 202,
+      "bytes": 14263,
+      "sha256": "623c6be75d74c6a4255166896344ed62a98615fb5a4cdb42be1540f5d88bb417",
+      "marker_hints": [
+        "anomaly.js",
+        "challenge-form"
+      ],
+      "local_body": "raw-private/smoke-1-ddgs/mix02-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 1655.93
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "challenge",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "latency_ms": 1657.08,
+  "finished_at": "2026-09-09T01:39:42.682547+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

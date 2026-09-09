@@ -1,0 +1,186 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:43:21.562392+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T01:43:21.562900+00:00",
+      "status_code": 200,
+      "bytes": 220606,
+      "sha256": "3465d31579be240b2cd786d5277f1b8b615ebdc62b8d58254c6eace38e86e797",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-2/en01-ddgs-brave/http-0.html",
+      "latency_ms": 1420.97
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "PostgreSQL: Documentation: 18: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+      "body": "1 month ago - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 12: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/12/indexes-multicolumn.html",
+      "body": "November 21, 2024 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 7.1: Multi-Column Indices",
+      "href": "https://www.postgresql.org/docs/7.1/indices-multicolumn.html",
+      "body": "January 1, 2012 - The query optimizer can use a multi-column index for queries that involve the first n consecutive columns in the index (when used with appropriate operators), up to the total number of columns specified in the index definition. For example, an index on (a, b, c) can be used in queries involving all of a, b, and c, or in queries involving both a and b, or in queries involving only a, but not in other combinations."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 16: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/16/indexes-multicolumn.html",
+      "body": "May 14, 2026 - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 17: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/17/indexes-multicolumn.html",
+      "body": "August 14, 2025 - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.6: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.6/indexes-multicolumn.html",
+      "body": "August 12, 2021 - This index could in principle be used for queries that have constraints on b and/or c with no constraint on a — but the entire index would have to be scanned, so in most cases the planner would prefer a sequential table scan over using the index. A multicolumn GiST index can be used with ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 13: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/13/indexes-multicolumn.html",
+      "body": "August 14, 2025 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.3: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.3/indexes-multicolumn.html",
+      "body": "November 8, 2018 - This index could in principle be used for queries that have constraints on b and/or c with no constraint on a — but the entire index would have to be scanned, so in most cases the planner would prefer a sequential table scan over using the index. A multicolumn GiST index can be used with ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: devel: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/devel/indexes-multicolumn.html",
+      "body": "August 28, 2025 - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.5: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.5/indexes-multicolumn.html",
+      "body": "February 11, 2021 - This index could in principle be used for queries that have constraints on b and/or c with no constraint on a — but the entire index would have to be scanned, so in most cases the planner would prefer a sequential table scan over using the index. A multicolumn GiST index can be used with ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.2: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.2/indexes-multicolumn.html",
+      "body": "November 9, 2017 - Currently, only the B-tree, GiST and GIN index types support multicolumn indexes. Up to 32 columns can be specified."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.0: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.0/indexes-multicolumn.html",
+      "body": "October 8, 2015 - Currently, only the B-tree, GiST and GIN index types support multicolumn indexes. Up to 32 columns can be specified."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 10: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/10/indexes-multicolumn.html",
+      "body": "November 10, 2022 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 14: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/14/indexes-multicolumn.html",
+      "body": "November 13, 2025 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 11: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/11/indexes-multicolumn.html",
+      "body": "November 9, 2023 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 8.3: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/8.3/indexes-multicolumn.html",
+      "body": "February 7, 2013 - Currently, only the B-tree and GiST index types support multicolumn indexes. Up to 32 columns can be specified."
+    },
+    {
+      "title": "PostgreSQL : Documentation: 18: 11.3. Multicolumn Indexes : Postgres Professional",
+      "href": "https://postgrespro.com/docs/postgresql/current/indexes-multicolumn",
+      "body": "Indexes can have up to 32 columns, including INCLUDE columns. (This limit can be altered when building PostgreSQL; see the file pg_config_manual.h.) A multicolumn B-tree index can be used with query conditions that involve any subset of the ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 8.1: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/8.1/indexes-multicolumn.html",
+      "body": "January 1, 2012 - Currently, only the B-tree and GiST index types support multicolumn indexes. Up to 32 columns may be specified."
+    },
+    {
+      "title": "PostgreSQL Multicolumn Indexes",
+      "href": "https://neon.com/postgresql/indexes/multicolumn-indexes",
+      "body": "However, if a query does not constrain the first column of the index, PostgreSQL must evaluate whether a full index scan on this index is more efficient than alternative indexes or a table scan. For instance, consider a query with only later columns in the WHERE clause: ... Note that you can also use the WHERE clause to define a partially multicolumn index."
+    },
+    {
+      "title": "Multicolumn Indexes - pgEdge Documentation",
+      "href": "https://docs.pgedge.com/postgresql/v17/the-sql-language/indexes/multicolumn-indexes/",
+      "body": "Indexes can have up to 32 columns, including INCLUDE columns. (This limit can be altered when building PostgreSQL; see the file pg_config_manual.h.) A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns, but the index is most efficient when there are constraints on the leading (leftmost) columns."
+    }
+  ],
+  "results": [
+    {
+      "title": "PostgreSQL: Documentation: 18: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+      "body": "1 month ago - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 12: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/12/indexes-multicolumn.html",
+      "body": "November 21, 2024 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 16: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/16/indexes-multicolumn.html",
+      "body": "May 14, 2026 - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 17: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/17/indexes-multicolumn.html",
+      "body": "August 14, 2025 - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.6: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.6/indexes-multicolumn.html",
+      "body": "August 12, 2021 - This index could in principle be used for queries that have constraints on b and/or c with no constraint on a — but the entire index would have to be scanned, so in most cases the planner would prefer a sequential table scan over using the index. A multicolumn GiST index can be used with ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 13: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/13/indexes-multicolumn.html",
+      "body": "August 14, 2025 - 11.3. Multicolumn Indexes An index can be defined on more than one column of a table. For example, if you have …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.3: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.3/indexes-multicolumn.html",
+      "body": "November 8, 2018 - This index could in principle be used for queries that have constraints on b and/or c with no constraint on a — but the entire index would have to be scanned, so in most cases the planner would prefer a sequential table scan over using the index. A multicolumn GiST index can be used with ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: devel: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/devel/indexes-multicolumn.html",
+      "body": "August 28, 2025 - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.5: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.5/indexes-multicolumn.html",
+      "body": "February 11, 2021 - This index could in principle be used for queries that have constraints on b and/or c with no constraint on a — but the entire index would have to be scanned, so in most cases the planner would prefer a sequential table scan over using the index. A multicolumn GiST index can be used with ..."
+    },
+    {
+      "title": "PostgreSQL: Documentation: 9.2: Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/9.2/indexes-multicolumn.html",
+      "body": "November 9, 2017 - Currently, only the B-tree, GiST and GIN index types support multicolumn indexes. Up to 32 columns can be specified."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 1431.43,
+  "finished_at": "2026-09-09T01:43:22.993941+00:00",
+  "url_count": 10,
+  "hostname_count": 1,
+  "exact_url_duplicates": 0
+}

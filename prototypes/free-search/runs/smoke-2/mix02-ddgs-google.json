@@ -1,0 +1,134 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:44:27.922476+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:44:27.923486+00:00",
+      "status_code": 200,
+      "bytes": 24028,
+      "sha256": "741b4827490f76a4c39c45900009aba27ecca9928424343e42482fb09c60bf2f",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-2/mix02-ddgs-google/http-0.html",
+      "latency_ms": 2225.57
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "href": "https://docs.docker.com/desktop/features/wsl/",
+      "body": "With Docker Desktop running on WSL 2, users can leverage Linux workspaces and avoid maintaining both Linux and Windows build scripts. Prerequisites · Turn on Docker Desktop WSL 2"
+    },
+    {
+      "title": "Introducing the Docker Desktop WSL 2 Backend",
+      "href": "https://www.docker.com/blog/new-docker-desktop-wsl2-backend/",
+      "body": "Oct 24, 2019 · Earlier this year, we released a technical preview of our vision for the future of Docker development on Windows using WSL 2. What is new? · Introducing our new architecture"
+    },
+    {
+      "title": "Install Docker Desktop on Windows",
+      "href": "https://docs.docker.com/desktop/setup/install/windows-install/",
+      "body": "Docker Desktop for Windows supports three backends: WSL 2, Hyper-V, and Docker VMM (Beta). WSL 2 is the default and works for most users without administrator ..."
+    },
+    {
+      "title": "Docker Desktop: The #1 Containerization Tool for Developers",
+      "href": "https://www.docker.com/products/docker-desktop/",
+      "body": "Docker Desktop is collaborative containerization software for developers. Get started and download Docker Desktop today on Mac, Windows, or Linux."
+    },
+    {
+      "title": "WSL+Docker: Kubernetes on the Windows Desktop",
+      "href": "https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/",
+      "body": "May 21, 2020 · New to Windows 10 and WSL2, or new to. Welcome to this blog post where we will install from scratch Kubernetes in Docker KinD and Minikube. ..."
+    },
+    {
+      "title": "Novel Docker Desktop VM Escape Techniques Under WSL2",
+      "href": "https://www.trendaisecurity.com/zh-hk/resources-insights/deep-research/cracking-the-isolation-novel-docker-desktop-vm-escape-techniques-under-wsl2",
+      "body": "TrendAI™ Research has discovered several new methods that enable attackers to escape Docker Desktop's WSL2 VM and run arbitrary code on the host."
+    },
+    {
+      "title": "Issues · docker/for-win - GitHub",
+      "href": "https://github.com/docker/for-win/issues",
+      "body": "Docker Desktop 4.85.0 WSL2 integration starts Ubuntu-22.04 integration but does not provide usable Docker socket after fresh reinstall."
+    },
+    {
+      "title": "Docker Desktop",
+      "href": "https://docs.docker.com/desktop/",
+      "body": "Docker Desktop is a one-click-install application for your Mac, Linux, or Windows environment that lets you build, share, and run containerized applications ..."
+    },
+    {
+      "title": "Change your Docker Desktop settings",
+      "href": "https://docs.docker.com/desktop/settings-and-maintenance/settings/",
+      "body": "Use the WSL 2 based engine, WSL 2 provides better performance than the Hyper-V backend. For more information, see Docker Desktop WSL 2 backend. Disabled ..."
+    },
+    {
+      "title": "The Windows Subsystem for Linux BUILD 2020 Summary",
+      "href": "https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-build-2020-summary/",
+      "body": "May 19, 2020 · Docker Desktop released a new version using WSL 2 as their backend. Copy link. WSL 2's new capabilities have not gone unnoticed by our partners ..."
+    }
+  ],
+  "results": [
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "href": "https://docs.docker.com/desktop/features/wsl/",
+      "body": "With Docker Desktop running on WSL 2, users can leverage Linux workspaces and avoid maintaining both Linux and Windows build scripts. Prerequisites · Turn on Docker Desktop WSL 2"
+    },
+    {
+      "title": "Introducing the Docker Desktop WSL 2 Backend",
+      "href": "https://www.docker.com/blog/new-docker-desktop-wsl2-backend/",
+      "body": "Oct 24, 2019 · Earlier this year, we released a technical preview of our vision for the future of Docker development on Windows using WSL 2. What is new? · Introducing our new architecture"
+    },
+    {
+      "title": "Install Docker Desktop on Windows",
+      "href": "https://docs.docker.com/desktop/setup/install/windows-install/",
+      "body": "Docker Desktop for Windows supports three backends: WSL 2, Hyper-V, and Docker VMM (Beta). WSL 2 is the default and works for most users without administrator ..."
+    },
+    {
+      "title": "Docker Desktop: The #1 Containerization Tool for Developers",
+      "href": "https://www.docker.com/products/docker-desktop/",
+      "body": "Docker Desktop is collaborative containerization software for developers. Get started and download Docker Desktop today on Mac, Windows, or Linux."
+    },
+    {
+      "title": "WSL+Docker: Kubernetes on the Windows Desktop",
+      "href": "https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/",
+      "body": "May 21, 2020 · New to Windows 10 and WSL2, or new to. Welcome to this blog post where we will install from scratch Kubernetes in Docker KinD and Minikube. ..."
+    },
+    {
+      "title": "Novel Docker Desktop VM Escape Techniques Under WSL2",
+      "href": "https://www.trendaisecurity.com/zh-hk/resources-insights/deep-research/cracking-the-isolation-novel-docker-desktop-vm-escape-techniques-under-wsl2",
+      "body": "TrendAI™ Research has discovered several new methods that enable attackers to escape Docker Desktop's WSL2 VM and run arbitrary code on the host."
+    },
+    {
+      "title": "Issues · docker/for-win - GitHub",
+      "href": "https://github.com/docker/for-win/issues",
+      "body": "Docker Desktop 4.85.0 WSL2 integration starts Ubuntu-22.04 integration but does not provide usable Docker socket after fresh reinstall."
+    },
+    {
+      "title": "Docker Desktop",
+      "href": "https://docs.docker.com/desktop/",
+      "body": "Docker Desktop is a one-click-install application for your Mac, Linux, or Windows environment that lets you build, share, and run containerized applications ..."
+    },
+    {
+      "title": "Change your Docker Desktop settings",
+      "href": "https://docs.docker.com/desktop/settings-and-maintenance/settings/",
+      "body": "Use the WSL 2 based engine, WSL 2 provides better performance than the Hyper-V backend. For more information, see Docker Desktop WSL 2 backend. Disabled ..."
+    },
+    {
+      "title": "The Windows Subsystem for Linux BUILD 2020 Summary",
+      "href": "https://devblogs.microsoft.com/commandline/the-windows-subsystem-for-linux-build-2020-summary/",
+      "body": "May 19, 2020 · Docker Desktop released a new version using WSL 2 as their backend. Copy link. WSL 2's new capabilities have not gone unnoticed by our partners ..."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2229.69,
+  "finished_at": "2026-09-09T01:44:30.151578+00:00",
+  "url_count": 10,
+  "hostname_count": 6,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,1910 @@
+{
+  "scope": "Two smoke windows only; freshness-smoke separate; top3 agent manual SERP review; no global recall or accepted thresholds",
+  "unique_reviewed_query_urls": 52,
+  "summary": [
+    {
+      "route": "ddgs",
+      "backend": "brave",
+      "requests": 12,
+      "statuses": {
+        "success": 12
+      },
+      "returned_urls": 120,
+      "latency_ms_sorted": [
+        1431.43,
+        1462.53,
+        1478.15,
+        1501.94,
+        1543.21,
+        1601.72,
+        1978.0,
+        1994.91,
+        2019.47,
+        2072.15,
+        2151.93,
+        2332.24
+      ],
+      "median_ms_all_outcomes": 1789.8600000000001,
+      "min_ms": 1431.43,
+      "max_ms": 2332.24,
+      "relevant_top3": 34,
+      "reviewed_top3": 36,
+      "precision_among_returned_top3": 0.9444444444444444,
+      "relevant_over_all_requested_top3_slots": 0.9444444444444444,
+      "known_url_hit_top10_requests": 8,
+      "known_site_hit_top10_requests": 10,
+      "exact_url_duplicates_top10": 0
+    },
+    {
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "requests": 12,
+      "statuses": {
+        "challenge": 9,
+        "success": 3
+      },
+      "returned_urls": 30,
+      "latency_ms_sorted": [
+        1551.64,
+        1611.68,
+        1627.93,
+        1640.65,
+        1656.32,
+        1657.08,
+        1667.41,
+        1689.92,
+        1769.63,
+        2321.58,
+        2374.04,
+        2518.44
+      ],
+      "median_ms_all_outcomes": 1662.245,
+      "min_ms": 1551.64,
+      "max_ms": 2518.44,
+      "relevant_top3": 5,
+      "reviewed_top3": 9,
+      "precision_among_returned_top3": 0.5555555555555556,
+      "relevant_over_all_requested_top3_slots": 0.1388888888888889,
+      "known_url_hit_top10_requests": 0,
+      "known_site_hit_top10_requests": 3,
+      "exact_url_duplicates_top10": 0
+    },
+    {
+      "route": "ddgs",
+      "backend": "google",
+      "requests": 12,
+      "statuses": {
+        "empty_or_parse_failure": 5,
+        "success": 7
+      },
+      "returned_urls": 68,
+      "latency_ms_sorted": [
+        2041.56,
+        2080.71,
+        2125.15,
+        2155.73,
+        2169.92,
+        2209.53,
+        2226.65,
+        2229.69,
+        2269.38,
+        2319.49,
+        2465.78,
+        2974.05
+      ],
+      "median_ms_all_outcomes": 2218.09,
+      "min_ms": 2041.56,
+      "max_ms": 2974.05,
+      "relevant_top3": 14,
+      "reviewed_top3": 21,
+      "precision_among_returned_top3": 0.6666666666666666,
+      "relevant_over_all_requested_top3_slots": 0.3888888888888889,
+      "known_url_hit_top10_requests": 1,
+      "known_site_hit_top10_requests": 5,
+      "exact_url_duplicates_top10": 0
+    },
+    {
+      "route": "searxng",
+      "backend": "brave",
+      "requests": 12,
+      "statuses": {
+        "success": 7,
+        "upstream_failure": 5
+      },
+      "returned_urls": 70,
+      "latency_ms_sorted": [
+        197.82,
+        214.44,
+        227.53,
+        238.26,
+        546.72,
+        878.78,
+        880.93,
+        947.9,
+        998.91,
+        1032.29,
+        2962.1,
+        3260.41
+      ],
+      "median_ms_all_outcomes": 879.855,
+      "min_ms": 197.82,
+      "max_ms": 3260.41,
+      "relevant_top3": 17,
+      "reviewed_top3": 21,
+      "precision_among_returned_top3": 0.8095238095238095,
+      "relevant_over_all_requested_top3_slots": 0.4722222222222222,
+      "known_url_hit_top10_requests": 6,
+      "known_site_hit_top10_requests": 6,
+      "exact_url_duplicates_top10": 0
+    },
+    {
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "requests": 12,
+      "statuses": {
+        "upstream_failure": 12
+      },
+      "returned_urls": 0,
+      "latency_ms_sorted": [
+        534.4,
+        537.28,
+        570.84,
+        589.77,
+        590.67,
+        606.95,
+        1797.43,
+        1811.08,
+        1811.9,
+        1859.2,
+        1891.01,
+        2200.82
+      ],
+      "median_ms_all_outcomes": 1202.19,
+      "min_ms": 534.4,
+      "max_ms": 2200.82,
+      "relevant_top3": 0,
+      "reviewed_top3": 0,
+      "precision_among_returned_top3": null,
+      "relevant_over_all_requested_top3_slots": 0.0,
+      "known_url_hit_top10_requests": 0,
+      "known_site_hit_top10_requests": 0,
+      "exact_url_duplicates_top10": 0
+    },
+    {
+      "route": "searxng",
+      "backend": "google",
+      "requests": 12,
+      "statuses": {
+        "success": 12
+      },
+      "returned_urls": 120,
+      "latency_ms_sorted": [
+        901.8,
+        951.09,
+        1009.59,
+        1013.94,
+        1040.8,
+        1041.82,
+        1063.01,
+        1068.02,
+        1121.57,
+        1125.66,
+        2308.77,
+        2523.23
+      ],
+      "median_ms_all_outcomes": 1052.415,
+      "min_ms": 901.8,
+      "max_ms": 2523.23,
+      "relevant_top3": 30,
+      "reviewed_top3": 36,
+      "precision_among_returned_top3": 0.8333333333333334,
+      "relevant_over_all_requested_top3_slots": 0.8333333333333334,
+      "known_url_hit_top10_requests": 8,
+      "known_site_hit_top10_requests": 10,
+      "exact_url_duplicates_top10": 0
+    }
+  ],
+  "per_query": [
+    {
+      "observation": "runs/smoke-1-ddgs/en01-ddgs-brave.json",
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 1978.0,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "postgresql.org"
+      ],
+      "hostname_count_top3": 1,
+      "site_groups_top3": [
+        "postgresql.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/en01-ddgs-duckduckgo.json",
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-1-ddgs",
+      "status": "challenge",
+      "latency_ms": 1769.63,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/en01-ddgs-google.json",
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-1-ddgs",
+      "status": "empty_or_parse_failure",
+      "latency_ms": 2269.38,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/en02-ddgs-brave.json",
+      "query_id": "en02",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 1994.91,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "datacamp.com",
+        "medium.com",
+        "motherduck.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "datacamp.com",
+        "medium.com",
+        "motherduck.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/en02-ddgs-duckduckgo.json",
+      "query_id": "en02",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-1-ddgs",
+      "status": "challenge",
+      "latency_ms": 1656.32,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/en02-ddgs-google.json",
+      "query_id": "en02",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2169.92,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/mix01-ddgs-brave.json",
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2019.47,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 2,
+      "source_groups_top3_relevant": [
+        "csdn.net",
+        "searxng.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "csdn.net",
+        "searxng.org"
+      ],
+      "languages_top3": {
+        "en": 2,
+        "zh-Hans": 1
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/mix01-ddgs-duckduckgo.json",
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-1-ddgs",
+      "status": "challenge",
+      "latency_ms": 1667.41,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/mix01-ddgs-google.json",
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-1-ddgs",
+      "status": "empty_or_parse_failure",
+      "latency_ms": 2125.15,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/mix02-ddgs-brave.json",
+      "query_id": "mix02",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2072.15,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "docker.com",
+        "github.com"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "docker.com",
+        "github.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/mix02-ddgs-duckduckgo.json",
+      "query_id": "mix02",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-1-ddgs",
+      "status": "challenge",
+      "latency_ms": 1657.08,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/mix02-ddgs-google.json",
+      "query_id": "mix02",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-1-ddgs",
+      "status": "empty_or_parse_failure",
+      "latency_ms": 2080.71,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/zh01-ddgs-brave.json",
+      "query_id": "zh01",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2332.24,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "python.org"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "bookstack.cn",
+        "python.org",
+        "runebook.dev"
+      ],
+      "languages_top3": {
+        "zh-Hans": 2,
+        "en": 1
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/zh01-ddgs-duckduckgo.json",
+      "query_id": "zh01",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2518.44,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 1,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "python.org",
+        "runebook.dev"
+      ],
+      "languages_top3": {
+        "zh-Hans": 2,
+        "en": 1
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/zh01-ddgs-google.json",
+      "query_id": "zh01",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-1-ddgs",
+      "status": "empty_or_parse_failure",
+      "latency_ms": 2319.49,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/zh02-ddgs-brave.json",
+      "query_id": "zh02",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2151.93,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "languages_top3": {
+        "zh-Hant": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/zh02-ddgs-duckduckgo.json",
+      "query_id": "zh02",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2321.58,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "csu.edu.tw-google-sites-author",
+        "wikipedia.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "csu.edu.tw-google-sites-author",
+        "wikipedia.org"
+      ],
+      "languages_top3": {
+        "zh-Hant": 2,
+        "zh-Hans": 1
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-ddgs/zh02-ddgs-google.json",
+      "query_id": "zh02",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-1-ddgs",
+      "status": "success",
+      "latency_ms": 2226.65,
+      "url_count": 9,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "facebook.com",
+        "taiwanoutdoors.com",
+        "threads.com"
+      ],
+      "languages_top3": {
+        "zh-Hant": 1,
+        "mixed": 1,
+        "en": 1
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/en01-searxng-brave.json",
+      "query_id": "en01",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 878.78,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "postgresql.org"
+      ],
+      "hostname_count_top3": 1,
+      "site_groups_top3": [
+        "postgresql.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/en01-searxng-duckduckgo.json",
+      "query_id": "en01",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-1-searxng",
+      "status": "upstream_failure",
+      "latency_ms": 606.95,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/en01-searxng-google.json",
+      "query_id": "en01",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 901.8,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 2,
+      "source_groups_top3_relevant": [
+        "neon.com",
+        "postgresql.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "neon.com",
+        "postgresql.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/en02-searxng-brave.json",
+      "query_id": "en02",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 880.93,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "ai2sql.io",
+        "datacamp.com",
+        "reddit.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "ai2sql.io",
+        "datacamp.com",
+        "reddit.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/en02-searxng-duckduckgo.json",
+      "query_id": "en02",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-1-searxng",
+      "status": "upstream_failure",
+      "latency_ms": 537.28,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/en02-searxng-google.json",
+      "query_id": "en02",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 1068.02,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/mix01-searxng-brave.json",
+      "query_id": "mix01",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 947.9,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 1,
+      "source_groups_top3_relevant": [
+        "searxng.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "reddit.com",
+        "searxng.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/mix01-searxng-duckduckgo.json",
+      "query_id": "mix01",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-1-searxng",
+      "status": "upstream_failure",
+      "latency_ms": 589.77,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/mix01-searxng-google.json",
+      "query_id": "mix01",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 951.09,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 1,
+      "source_groups_top3_relevant": [
+        "searxng.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "github.com",
+        "searxng.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/mix02-searxng-brave.json",
+      "query_id": "mix02",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 998.91,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "docker.com",
+        "mcsaguru.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "docker.com",
+        "github.com",
+        "mcsaguru.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/mix02-searxng-duckduckgo.json",
+      "query_id": "mix02",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-1-searxng",
+      "status": "upstream_failure",
+      "latency_ms": 590.67,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/mix02-searxng-google.json",
+      "query_id": "mix02",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 1041.82,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "docker.com",
+        "reddit.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "docker.com",
+        "reddit.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/zh01-searxng-brave.json",
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 3260.41,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "python.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "bookstack.cn",
+        "python.org"
+      ],
+      "languages_top3": {
+        "zh-Hans": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/zh01-searxng-duckduckgo.json",
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-1-searxng",
+      "status": "upstream_failure",
+      "latency_ms": 2200.82,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/zh01-searxng-google.json",
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 2308.77,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "python.org"
+      ],
+      "hostname_count_top3": 1,
+      "site_groups_top3": [
+        "python.org"
+      ],
+      "languages_top3": {
+        "en": 1,
+        "zh-Hans": 2
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/zh02-searxng-brave.json",
+      "query_id": "zh02",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 1032.29,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 1,
+      "source_groups_top3_relevant": [
+        "ysnp.gov.tw"
+      ],
+      "hostname_count_top3": 1,
+      "site_groups_top3": [
+        "ysnp.gov.tw"
+      ],
+      "languages_top3": {
+        "zh-Hant": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-1-searxng/zh02-searxng-duckduckgo.json",
+      "query_id": "zh02",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-1-searxng",
+      "status": "upstream_failure",
+      "latency_ms": 534.4,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-1-searxng/zh02-searxng-google.json",
+      "query_id": "zh02",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-1-searxng",
+      "status": "success",
+      "latency_ms": 1009.59,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "tripadvisor.com",
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "tripadvisor.com",
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "languages_top3": {
+        "zh-Hant": 2,
+        "zh-Hans": 1
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/en01-ddgs-brave.json",
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1431.43,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "postgresql.org"
+      ],
+      "hostname_count_top3": 1,
+      "site_groups_top3": [
+        "postgresql.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/en01-ddgs-duckduckgo.json",
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "challenge",
+      "latency_ms": 1689.92,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en01-ddgs-google.json",
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2209.53,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 2,
+      "source_groups_top3_relevant": [
+        "neon.com",
+        "postgresql.org"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "atlassian.com",
+        "mit.edu",
+        "neon.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/en01-searxng-brave.json",
+      "query_id": "en01",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 227.53,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en01-searxng-duckduckgo.json",
+      "query_id": "en01",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 1797.43,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en01-searxng-google.json",
+      "query_id": "en01",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1063.01,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 2,
+      "source_groups_top3_relevant": [
+        "neon.com",
+        "postgresql.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "neon.com",
+        "postgresql.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/en02-ddgs-brave.json",
+      "query_id": "en02",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1601.72,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "datacamp.com",
+        "medium.com",
+        "motherduck.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "datacamp.com",
+        "medium.com",
+        "motherduck.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en02-ddgs-duckduckgo.json",
+      "query_id": "en02",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "challenge",
+      "latency_ms": 1551.64,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en02-ddgs-google.json",
+      "query_id": "en02",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2465.78,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/en02-searxng-brave.json",
+      "query_id": "en02",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 197.82,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en02-searxng-duckduckgo.json",
+      "query_id": "en02",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 1811.9,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/en02-searxng-google.json",
+      "query_id": "en02",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1121.57,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "datacamp.com",
+        "motherduck.com",
+        "reddit.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix01-ddgs-brave.json",
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1462.53,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 2,
+      "source_groups_top3_relevant": [
+        "csdn.net",
+        "searxng.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "csdn.net",
+        "searxng.org"
+      ],
+      "languages_top3": {
+        "en": 2,
+        "zh-Hans": 1
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/mix01-ddgs-duckduckgo.json",
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "challenge",
+      "latency_ms": 1640.65,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix01-ddgs-google.json",
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2155.73,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "litellm.ai",
+        "searxng.org"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "github.com",
+        "litellm.ai",
+        "searxng.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/mix01-searxng-brave.json",
+      "query_id": "mix01",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 214.44,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix01-searxng-duckduckgo.json",
+      "query_id": "mix01",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 570.84,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix01-searxng-google.json",
+      "query_id": "mix01",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1013.94,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 1,
+      "source_groups_top3_relevant": [
+        "searxng.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "github.com",
+        "searxng.org"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/mix02-ddgs-brave.json",
+      "query_id": "mix02",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1501.94,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "docker.com",
+        "github.com"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "docker.com",
+        "github.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/mix02-ddgs-duckduckgo.json",
+      "query_id": "mix02",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "challenge",
+      "latency_ms": 1627.93,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix02-ddgs-google.json",
+      "query_id": "mix02",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2229.69,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "docker.com"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "docker.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/mix02-searxng-brave.json",
+      "query_id": "mix02",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 238.26,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix02-searxng-duckduckgo.json",
+      "query_id": "mix02",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 1859.2,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/mix02-searxng-google.json",
+      "query_id": "mix02",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1040.8,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "docker.com"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "docker.com"
+      ],
+      "languages_top3": {
+        "en": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/zh01-ddgs-brave.json",
+      "query_id": "zh01",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1478.15,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "python.org"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "bookstack.cn",
+        "python.org",
+        "runebook.dev"
+      ],
+      "languages_top3": {
+        "zh-Hans": 2,
+        "en": 1
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/zh01-ddgs-duckduckgo.json",
+      "query_id": "zh01",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2374.04,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 1,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "python.org",
+        "runebook.dev"
+      ],
+      "languages_top3": {
+        "en": 1,
+        "zh-Hans": 2
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/zh01-ddgs-google.json",
+      "query_id": "zh01",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "empty_or_parse_failure",
+      "latency_ms": 2974.05,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/zh01-searxng-brave.json",
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2962.1,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "python.org"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "bookstack.cn",
+        "python.org"
+      ],
+      "languages_top3": {
+        "zh-Hans": 3
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/zh01-searxng-duckduckgo.json",
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 1891.01,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/zh01-searxng-google.json",
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2523.23,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "python.org"
+      ],
+      "hostname_count_top3": 1,
+      "site_groups_top3": [
+        "python.org"
+      ],
+      "languages_top3": {
+        "en": 1,
+        "zh-Hans": 2
+      },
+      "known_url_hit_top10": true,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/zh02-ddgs-brave.json",
+      "query_id": "zh02",
+      "route": "ddgs",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1543.21,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "hostname_count_top3": 2,
+      "site_groups_top3": [
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "languages_top3": {
+        "zh-Hant": 3
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    },
+    {
+      "observation": "runs/smoke-2/zh02-ddgs-duckduckgo.json",
+      "query_id": "zh02",
+      "route": "ddgs",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "challenge",
+      "latency_ms": 1611.68,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/zh02-ddgs-google.json",
+      "query_id": "zh02",
+      "route": "ddgs",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 2041.56,
+      "url_count": 9,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "facebook.com",
+        "taiwanoutdoors.com",
+        "threads.com"
+      ],
+      "languages_top3": {
+        "zh-Hant": 1,
+        "mixed": 1,
+        "en": 1
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/zh02-searxng-brave.json",
+      "query_id": "zh02",
+      "route": "searxng",
+      "backend": "brave",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 546.72,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/zh02-searxng-duckduckgo.json",
+      "query_id": "zh02",
+      "route": "searxng",
+      "backend": "duckduckgo",
+      "window": "smoke-2",
+      "status": "upstream_failure",
+      "latency_ms": 1811.08,
+      "url_count": 0,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 0,
+      "relevant_top3": 0,
+      "source_groups_top3_relevant": [],
+      "hostname_count_top3": 0,
+      "site_groups_top3": [],
+      "languages_top3": {},
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": false
+    },
+    {
+      "observation": "runs/smoke-2/zh02-searxng-google.json",
+      "query_id": "zh02",
+      "route": "searxng",
+      "backend": "google",
+      "window": "smoke-2",
+      "status": "success",
+      "latency_ms": 1125.66,
+      "url_count": 10,
+      "exact_url_duplicates": 0,
+      "reviewed_top3": 3,
+      "relevant_top3": 3,
+      "source_groups_top3_relevant": [
+        "tripadvisor.com",
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "hostname_count_top3": 3,
+      "site_groups_top3": [
+        "tripadvisor.com",
+        "wikipedia.org",
+        "ysnp.gov.tw"
+      ],
+      "languages_top3": {
+        "zh-Hant": 2,
+        "zh-Hans": 1
+      },
+      "known_url_hit_top10": false,
+      "known_site_hit_top10": true
+    }
+  ]
+}

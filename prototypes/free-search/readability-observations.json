@@ -1,0 +1,147 @@
+{
+  "note": "Separate HTTP/body extraction check, not full Web Read implementation or whole-site readability",
+  "observations": [
+    {
+      "query_id": "zh01",
+      "url": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "started_at": "2026-09-09T01:44:33.084983+00:00",
+      "injected": false,
+      "selection": "One URL among observed top-3 results for this query; not a random sample",
+      "status_code": 200,
+      "final_url": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "bytes": 180961,
+      "sha256": "55615dac899cb99177a4e54d8b96658762d8f7e97c8a302928992bc09c770bb1",
+      "marker_hints": [],
+      "local_body": "raw-private/readability/zh01.html",
+      "extracted_chars": 24300,
+      "matched_terms": [
+        "TaskGroup",
+        "ExceptionGroup"
+      ],
+      "expected_terms": [
+        "TaskGroup",
+        "ExceptionGroup"
+      ],
+      "excerpt": "协程与任务¶ 本节将简述用于协程与任务的高层级 API。 协程¶ 源码： Lib/asyncio/coroutines.py 通过 async/await 语法来声明 协程 是编写 asyncio 应用的推荐方式。例如，以下代码段会打印 \"hello\"，等待 1 秒，再打印 \"world\": >>> import asyncio >>> async def main(): ... print('h",
+      "status": "fetched",
+      "latency_ms": 2127.33
+    },
+    {
+      "query_id": "zh02",
+      "url": "https://www.ysnp.gov.tw/StaticPage/Terrain",
+      "started_at": "2026-09-09T01:44:36.213897+00:00",
+      "injected": false,
+      "selection": "One URL among observed top-3 results for this query; not a random sample",
+      "status": "fetch_error",
+      "error_type": "URLError",
+      "error": "<urlopen error [Errno 11002] getaddrinfo failed>",
+      "latency_ms": 5004.35
+    },
+    {
+      "query_id": "en01",
+      "url": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+      "started_at": "2026-09-09T01:44:42.219651+00:00",
+      "injected": false,
+      "selection": "One URL among observed top-3 results for this query; not a random sample",
+      "status_code": 200,
+      "final_url": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+      "bytes": 21203,
+      "sha256": "c5d32c42e5455b565e4cf16fa80d3c438c97e06ca2a52d76408a288faa08c211",
+      "marker_hints": [],
+      "local_body": "raw-private/readability/en01.html",
+      "extracted_chars": 6250,
+      "matched_terms": [
+        "multicolumn",
+        "B-tree"
+      ],
+      "expected_terms": [
+        "multicolumn",
+        "B-tree"
+      ],
+      "excerpt": "PostgreSQL: Documentation: 18: 11.3. Multicolumn Indexes August 13, 2026: PostgreSQL 18.6, 17.11, 16.15, 15.19, 14.24 and 19 Beta 3 Released! Documentation → PostgreSQL 18 Supported Versions: Current ",
+      "status": "fetched",
+      "latency_ms": 4473.3
+    },
+    {
+      "query_id": "en02",
+      "url": "https://motherduck.com/learn/duckdb-vs-sqlite-databases/",
+      "started_at": "2026-09-09T01:44:47.693699+00:00",
+      "injected": false,
+      "selection": "One URL among observed top-3 results for this query; not a random sample",
+      "status_code": 200,
+      "final_url": "https://motherduck.com/learn/duckdb-vs-sqlite-databases/",
+      "bytes": 234118,
+      "sha256": "536bf5be72974ec7ac3dd58720eecdbe3234ff00744a8e81b7d3240526628a52",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/readability/en02.html",
+      "extracted_chars": 9675,
+      "matched_terms": [
+        "DuckDB",
+        "SQLite",
+        "analytical"
+      ],
+      "expected_terms": [
+        "DuckDB",
+        "SQLite",
+        "analytical"
+      ],
+      "excerpt": "BACK TO LEARNDuckDB vs SQLite: Which Embedded Database Should You Use?6 min read · Last updated July 2026SQLite is the world’s most widely deployed database with many copies running on nearly every la",
+      "status": "fetched",
+      "latency_ms": 3150.41
+    },
+    {
+      "query_id": "mix01",
+      "url": "https://docs.searxng.org/dev/search_api.html",
+      "started_at": "2026-09-09T01:44:51.846007+00:00",
+      "injected": false,
+      "selection": "One URL among observed top-3 results for this query; not a random sample",
+      "status_code": 200,
+      "final_url": "https://docs.searxng.org/dev/search_api.html",
+      "bytes": 46462,
+      "sha256": "e2b5c2f0a9af7e63f58dd108aefb7f97ae68af0a015db28f36b98de713658127",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/readability/mix01.html",
+      "extracted_chars": 2245,
+      "matched_terms": [
+        "formats",
+        "json"
+      ],
+      "expected_terms": [
+        "formats",
+        "json"
+      ],
+      "excerpt": "Search API¶ SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while",
+      "status": "fetched",
+      "latency_ms": 1962.11
+    },
+    {
+      "query_id": "mix02",
+      "url": "https://docs.docker.com/desktop/features/wsl/",
+      "started_at": "2026-09-09T01:44:54.809033+00:00",
+      "injected": false,
+      "selection": "One URL among observed top-3 results for this query; not a random sample",
+      "status_code": 200,
+      "final_url": "https://docs.docker.com/desktop/features/wsl/",
+      "bytes": 523710,
+      "sha256": "04b47de8bca0b63bb6a8f2b3d04292e13b0aa7a74817cbeed36741e79e5b74e9",
+      "marker_hints": [],
+      "local_body": "raw-private/readability/mix02.html",
+      "extracted_chars": 5392,
+      "matched_terms": [
+        "WSL",
+        "backend"
+      ],
+      "expected_terms": [
+        "WSL",
+        "backend"
+      ],
+      "excerpt": "Back Manuals Get started Guides ReferenceDocker Desktop WSL 2 backend on Windows Ask Gordon Copy Markdown View MarkdownTable of contentsWindows Subsystem for Linux (WSL) 2 is a full Linux kernel built",
+      "status": "fetched",
+      "latency_ms": 2733.88
+    }
+  ]
+}

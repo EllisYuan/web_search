@@ -1,0 +1,56 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:43:31.752339+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL multicolumn indexes official documentation",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:43:31.951756+00:00",
+      "status_code": 200,
+      "bytes": 220,
+      "sha256": "fce012a32cd8fd96e0c37aeca0801650528f73e017a56f2a62a0d4c50a7923b3",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/smoke-2/en01-searxng-brave/response.json",
+      "latency_ms": 27.8
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "PostgreSQL multicolumn indexes official documentation",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 227.53,
+  "finished_at": "2026-09-09T01:43:31.979546+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,134 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:39:20.955259+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:39:20.955259+00:00",
+      "status_code": 200,
+      "bytes": 22940,
+      "sha256": "1a82928399e17aef424383eff800f0d82747e58af04d7e170ea23a8efcb810d9",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-1-ddgs/en02-ddgs-google/http-0.html",
+      "latency_ms": 2166.59
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "DuckDB vs SQLite: A Complete Database Comparison",
+      "href": "https://www.datacamp.com/blog/duckdb-vs-sqlite-complete-database-comparison",
+      "body": "Nov 7, 2025 · SQLite excels at transactional workloads, while DuckDB is optimized for analytical queries. At A Glance: DuckDB vs SQLite · What Is DuckDB?"
+    },
+    {
+      "title": "DuckDB vs SQLite: Which Embedded Database Should You ...",
+      "href": "https://motherduck.com/learn/duckdb-vs-sqlite-databases/",
+      "body": "Jul 8, 2026 · DuckDB consistently outperforms SQLite for analytical queries on larger datasets due to its columnar storage and vectorized execution. SQLite's ..."
+    },
+    {
+      "title": "pros and cons of DuckDb compared to SQLite? - Reddit",
+      "href": "https://www.reddit.com/r/sqlite/comments/13np8ik/pros_and_cons_of_duckdb_compared_to_sqlite/",
+      "body": "May 21, 2023 · DuckDB is optimized for queries that apply aggregate calculations across large numbers of rows, whereas SQLite is optimized for fast scanning ... Why We Moved from SQLite to DuckDB: 5x Faster Queries What are the actual use cases for DuckDB, when you can just ... More results from www.reddit.com"
+    },
+    {
+      "title": "DuckDB vs SQLite: 938x Faster Scans, $250/mo Cloud [2026]",
+      "href": "https://tech-insider.org/duckdb-vs-sqlite-2026/",
+      "body": "Aug 15, 2026 · SQLite wins point lookups and indexed transactional queries by two orders of magnitude, while DuckDB wins full-table analytical scans by nearly ..."
+    },
+    {
+      "title": "Why DuckDB",
+      "href": "https://duckdb.org/why_duckdb.html",
+      "body": "DuckDB's test suite currently contains millions of queries, and includes queries adapted from the test suites of SQLite, PostgreSQL, and MonetDB."
+    },
+    {
+      "title": "In-depth: DuckDB vs SQLite - PostHog",
+      "href": "https://posthog.com/blog/duckdb-vs-sqlite",
+      "body": "Jun 2, 2026 · SQLite's query optimization is more predictable, while DuckDB's pursues greedier algorithms that work most of the time, but might degrade ..."
+    },
+    {
+      "title": "How does DuckDB compare to SQLite (e.g. which workloads ...",
+      "href": "https://news.ycombinator.com/item",
+      "body": "May 12, 2022 · DuckDB is much faster than SQLite when doing analytical queries (OLAP) like when calculating summaries or trends over time, or joining large ..."
+    },
+    {
+      "title": "DuckDB vs SQLite vs PostgreSQL: Which Database Should ...",
+      "href": "https://builder.ai2sql.io/blog/duckdb-vs-sqlite-vs-postgresql",
+      "body": "DuckDB consistently outperforms PostgreSQL and SQLite on full-table scans and aggregations. SQLite takes 20+ seconds."
+    },
+    {
+      "title": "Pandas vs DuckDB for data analysis - Facebook",
+      "href": "https://www.facebook.com/groups/dataengineeringcebu/posts/431909690013559/",
+      "body": "Oct 28, 2024 · Here's a snapshot of how Pandas and DuckDB compare: Pandas is ideal for in-memory data manipulation and exploratory data analysis, suited for ..."
+    },
+    {
+      "title": "Why Developers Are Talking About DuckDB - OpenReplay Blog",
+      "href": "https://blog.openreplay.com/developers-talking-duckdb/",
+      "body": "Oct 11, 2025 · DuckDB is an embedded OLAP database optimized for analytical workloads with zero configuration requirements · It can query data directly from CSV ..."
+    }
+  ],
+  "results": [
+    {
+      "title": "DuckDB vs SQLite: A Complete Database Comparison",
+      "href": "https://www.datacamp.com/blog/duckdb-vs-sqlite-complete-database-comparison",
+      "body": "Nov 7, 2025 · SQLite excels at transactional workloads, while DuckDB is optimized for analytical queries. At A Glance: DuckDB vs SQLite · What Is DuckDB?"
+    },
+    {
+      "title": "DuckDB vs SQLite: Which Embedded Database Should You ...",
+      "href": "https://motherduck.com/learn/duckdb-vs-sqlite-databases/",
+      "body": "Jul 8, 2026 · DuckDB consistently outperforms SQLite for analytical queries on larger datasets due to its columnar storage and vectorized execution. SQLite's ..."
+    },
+    {
+      "title": "pros and cons of DuckDb compared to SQLite? - Reddit",
+      "href": "https://www.reddit.com/r/sqlite/comments/13np8ik/pros_and_cons_of_duckdb_compared_to_sqlite/",
+      "body": "May 21, 2023 · DuckDB is optimized for queries that apply aggregate calculations across large numbers of rows, whereas SQLite is optimized for fast scanning ... Why We Moved from SQLite to DuckDB: 5x Faster Queries What are the actual use cases for DuckDB, when you can just ... More results from www.reddit.com"
+    },
+    {
+      "title": "DuckDB vs SQLite: 938x Faster Scans, $250/mo Cloud [2026]",
+      "href": "https://tech-insider.org/duckdb-vs-sqlite-2026/",
+      "body": "Aug 15, 2026 · SQLite wins point lookups and indexed transactional queries by two orders of magnitude, while DuckDB wins full-table analytical scans by nearly ..."
+    },
+    {
+      "title": "Why DuckDB",
+      "href": "https://duckdb.org/why_duckdb.html",
+      "body": "DuckDB's test suite currently contains millions of queries, and includes queries adapted from the test suites of SQLite, PostgreSQL, and MonetDB."
+    },
+    {
+      "title": "In-depth: DuckDB vs SQLite - PostHog",
+      "href": "https://posthog.com/blog/duckdb-vs-sqlite",
+      "body": "Jun 2, 2026 · SQLite's query optimization is more predictable, while DuckDB's pursues greedier algorithms that work most of the time, but might degrade ..."
+    },
+    {
+      "title": "How does DuckDB compare to SQLite (e.g. which workloads ...",
+      "href": "https://news.ycombinator.com/item",
+      "body": "May 12, 2022 · DuckDB is much faster than SQLite when doing analytical queries (OLAP) like when calculating summaries or trends over time, or joining large ..."
+    },
+    {
+      "title": "DuckDB vs SQLite vs PostgreSQL: Which Database Should ...",
+      "href": "https://builder.ai2sql.io/blog/duckdb-vs-sqlite-vs-postgresql",
+      "body": "DuckDB consistently outperforms PostgreSQL and SQLite on full-table scans and aggregations. SQLite takes 20+ seconds."
+    },
+    {
+      "title": "Pandas vs DuckDB for data analysis - Facebook",
+      "href": "https://www.facebook.com/groups/dataengineeringcebu/posts/431909690013559/",
+      "body": "Oct 28, 2024 · Here's a snapshot of how Pandas and DuckDB compare: Pandas is ideal for in-memory data manipulation and exploratory data analysis, suited for ..."
+    },
+    {
+      "title": "Why Developers Are Talking About DuckDB - OpenReplay Blog",
+      "href": "https://blog.openreplay.com/developers-talking-duckdb/",
+      "body": "Oct 11, 2025 · DuckDB is an embedded OLAP database optimized for analytical workloads with zero configuration requirements · It can query data directly from CSV ..."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2169.92,
+  "finished_at": "2026-09-09T01:39:23.125016+00:00",
+  "url_count": 10,
+  "hostname_count": 10,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,186 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:39:16.958628+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T01:39:16.958628+00:00",
+      "status_code": 200,
+      "bytes": 334655,
+      "sha256": "997d2ef2c6953cf5e856b8432c42e186ad3583d6d517b0f008ce33fbc241dd4c",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-1-ddgs/en02-ddgs-brave/http-0.html",
+      "latency_ms": 1985.9
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "DuckDB vs SQLite: A Complete Database Comparison | DataCamp",
+      "href": "https://www.datacamp.com/blog/duckdb-vs-sqlite-complete-database-comparison",
+      "body": "November 7, 2025 - Columnar format means queries that ... vectorized execution for speed. Example: A SELECT * FROM sales WHERE customer_id=123 query runs faster on SQLite, while SELECT AVG(amount) FROM sales GROUP BY region runs much faster on DuckDB...."
+    },
+    {
+      "title": "DuckDB vs SQLite: Which Embedded Database Should You Use? | MotherDuck",
+      "href": "https://motherduck.com/learn/duckdb-vs-sqlite-databases/",
+      "body": "July 8, 2026 - DuckDB outperforms SQLite significantly for analytical queries involving aggregations, joins, and large datasets. SQLite's performance is optimized for point queries and transactional workloads, while DuckDB shines in complex analytics."
+    },
+    {
+      "title": "SQLite vs DuckDB: A Comprehensive Comparison for Modern Data Management | by Mrinal Kanti Sardar | Medium",
+      "href": "https://medium.com/@mrinal.k.sardar/sqlite-vs-duckdb-a-comprehensive-comparison-for-modern-data-management-b5e156d07703",
+      "body": "July 9, 2025 - For analytical workloads, DuckDB significantly outperforms SQLite: -- Example: Analyzing sales data SELECT product_category, AVG(price) as avg_price, SUM(quantity) as total_quantity, COUNT(*) as transaction_count FROM sales_data WHERE date_sold ..."
+    },
+    {
+      "title": "DuckDB vs SQLite: Choosing the Right Embedded Database | Better Stack Community",
+      "href": "https://betterstack.com/community/guides/scaling-python/duckdb-vs-sqlite/",
+      "body": "April 14, 2025 - The difference is dramatic. For analytical queries on millions of records, DuckDB can be 10-100 times faster than SQLite."
+    },
+    {
+      "title": "DuckDB vs. SQLite: A Comprehensive Comparison for Developers",
+      "href": "https://www.analyticsvidhya.com/blog/2026/01/duckdb-vs-sqlite/",
+      "body": "January 20, 2026 - This implies that DuckDB can consume additional RAM, but it is much faster on an analytical task. It has been demonstrated that in DuckDB, aggregation queries are 10-100 times faster than in SQLite."
+    },
+    {
+      "title": "In-depth: DuckDB vs SQLite - PostHog",
+      "href": "https://posthog.com/blog/duckdb-vs-sqlite",
+      "body": "June 2, 2026 - SQLite forgoes concurrency with ... Meanwhile, DuckDB has a similar analytical punch of many OLAP databases, including vectorized execution, columnar storage, a modern query optimizer, and parallel query execution...."
+    },
+    {
+      "title": "DuckDB vs. SQLite: The 2025 Data Analysis Showdown | by Bhagya Rana | Medium",
+      "href": "https://medium.com/@bhagyarana80/duckdb-vs-sqlite-the-2025-data-analysis-showdown-0f01711db50b",
+      "body": "August 10, 2025 - Key distinction: SQLite is row-oriented ... for aggregations and analytics). When it comes to analytical queries, DuckDB often leaves SQLite in the dust...."
+    },
+    {
+      "title": "DuckDB vs SQLite vs PostgreSQL: Which Database Should You Choose? (2026) | AI2SQL",
+      "href": "https://builder.ai2sql.io/blog/duckdb-vs-sqlite-vs-postgresql",
+      "body": "March 24, 2026 - DuckDB is typically the fastest for analytical queries on datasets that fit on a single machine. Its columnar storage engine and vectorized execution can outperform PostgreSQL by 10-100x on aggregation-heavy queries over large tables."
+    },
+    {
+      "title": "DuckDB vs SQLite: Million-Row Query Speed Comparison — How Much Faster?",
+      "href": "https://duckdblab.org/en/post/duckdb-vs-sqlite-benchmark/",
+      "body": "Real-world benchmark comparing DuckDB vs SQLite on a 1-million-row e-commerce dataset. 10 typical analytical queries tested head-to-head with full SQL code and … Published: May 20, 2026"
+    },
+    {
+      "title": "Sqlite vs Duckdb - Comparison & Analysis | DecideStack",
+      "href": "https://www.decidestack.com/compare/sqlite-vs-duckdb",
+      "body": "April 7, 2026 - For most developers, the choice is clear: if your app needs to save user settings or local state, use SQLite. If your app needs to analyze millions of rows of data or interface with data science tools, use DuckDB."
+    },
+    {
+      "title": "DuckDB vs SQLite: Embedded Databases for Analytics and Applications Compared — AI Study Room",
+      "href": "https://aidev.fit/en/compare/duckdb-vs-sqlite.html",
+      "body": "June 20, 2026 - Weak spot: Analytical queries — ... rows even when you only need 2 columns. DuckDB — Best for: Analytical workloads — data science, BI queries, log analysis, CSV/Parquet processing...."
+    },
+    {
+      "title": "DuckDB vs SQLite: Complete Performance Comparison for Data Processing | Markaicode",
+      "href": "https://markaicode.com/vs/duckdb-vs-sqlite/",
+      "body": "March 14, 2026 - DuckDB processes analytical queries 8x faster than SQLite due to columnar storage and vectorized execution."
+    },
+    {
+      "title": "DuckDB vs SQLite: What is the Best Database for Analytics? – Kanaries",
+      "href": "https://docs.kanaries.net/topics/DuckDB/duckdb-vs-sqlite",
+      "body": "October 7, 2023 - DuckDB is an in-memory analytical ... 2018 by the CWI Database Architectures Group. DuckDB is often compared to SQLite due to its embeddable nature, but it's specifically designed for Online Analytical Processing (OLAP) workloads...."
+    },
+    {
+      "title": "SQLite vs DuckDB: Complete Comparison Guide for Developers 2025 - Psych Times Publication",
+      "href": "https://psychtimespublication.com/sqlite-vs-duckdb/",
+      "body": "November 7, 2025 - When you INSERT new records using VALUES, SQLite adds them as complete rows. This approach excels at operations that add new records or update single records, as it can quickly locate and modify entire rows. DuckDB employs column-based storage, storing data by columns rather than rows. This design enables exceptional compression and minimal storage for big datasets. When performing analytical queries with SELECT, WHERE, GROUP BY, ORDER BY, and aggregate functions like COUNT, AVG, and SUM, DuckDB can perform fast scans of only the needed columns."
+    },
+    {
+      "title": "We Benchmarked DuckDB, SQLite, and Pandas on 1M Rows: Here’s What Happened - KDnuggets",
+      "href": "https://www.kdnuggets.com/we-benchmarked-duckdb-sqlite-and-pandas-on-1m-rows-heres-what-happened",
+      "body": "This chart shows that SQLite swings between being the best and the worst in memory usage, Pandas is extreme with two best and two worst cases, while DuckDB stays consistently in the middle across all queries."
+    },
+    {
+      "title": "DuckDB vs SQLite: Practical Comparison for AI, ML & ...",
+      "href": "https://ivyproschool.com/aihelpcenter/sql-db/duckdb-vs-sqlite",
+      "body": "Use SQLite when your main requirement is simple local data storage. SQLite should be your default choice when you need a small, dependable transactional database. ... Use DuckDB when your main requirement is fast local analytics."
+    },
+    {
+      "title": "SQLite vs DuckDB Head to Head on Performance and Usability | SQLFlash",
+      "href": "https://sqlflash.ai/article/20251119_sqlite_vs_duckdb/",
+      "body": "November 19, 2025 - SQLite DuckDB comparison: DuckDB excels in analytics and large data, while SQLite is best for simple transactions and embedded apps."
+    },
+    {
+      "title": "Benchmarking DuckDB vs SQLite for Simple Queries | Lukas Barth",
+      "href": "https://www.lukas-barth.net/blog/sqlite-duckdb-benchmark/",
+      "body": "November 14, 2023 - The plot is probably not very useful, but otherwise this article would have had zero graphics. :( We see that in this group, SQLite outperforms DuckDB consistently by one or two orders of magnitude."
+    },
+    {
+      "title": "DuckDB vs SQLite: Enterprise OLAP and OLTP Architecture",
+      "href": "https://www.hakunamatatatech.com/our-resources/blog/sqlite",
+      "body": "July 1, 2026 - Pipeline stages that need to track ... are low-volume, structured write operations. SQLite handles them without the overhead of a more capable analytical engine. DuckDB continues to lead for local, high-performance SQL queries...."
+    },
+    {
+      "title": "7 DuckDB vs SQLite Benchmarks That Will Surprise You | by Thinking Loop | Medium",
+      "href": "https://medium.com/@ThinkingLoop/7-duckdb-vs-sqlite-benchmarks-that-will-surprise-you-d08a88d7e58e",
+      "body": "August 18, 2025 - Real-world tests show why DuckDB is emerging as the SQLite of analytics while SQLite remains the king of lightweight transactions."
+    }
+  ],
+  "results": [
+    {
+      "title": "DuckDB vs SQLite: A Complete Database Comparison | DataCamp",
+      "href": "https://www.datacamp.com/blog/duckdb-vs-sqlite-complete-database-comparison",
+      "body": "November 7, 2025 - Columnar format means queries that ... vectorized execution for speed. Example: A SELECT * FROM sales WHERE customer_id=123 query runs faster on SQLite, while SELECT AVG(amount) FROM sales GROUP BY region runs much faster on DuckDB...."
+    },
+    {
+      "title": "DuckDB vs SQLite: Which Embedded Database Should You Use? | MotherDuck",
+      "href": "https://motherduck.com/learn/duckdb-vs-sqlite-databases/",
+      "body": "July 8, 2026 - DuckDB outperforms SQLite significantly for analytical queries involving aggregations, joins, and large datasets. SQLite's performance is optimized for point queries and transactional workloads, while DuckDB shines in complex analytics."
+    },
+    {
+      "title": "SQLite vs DuckDB: A Comprehensive Comparison for Modern Data Management | by Mrinal Kanti Sardar | Medium",
+      "href": "https://medium.com/@mrinal.k.sardar/sqlite-vs-duckdb-a-comprehensive-comparison-for-modern-data-management-b5e156d07703",
+      "body": "July 9, 2025 - For analytical workloads, DuckDB significantly outperforms SQLite: -- Example: Analyzing sales data SELECT product_category, AVG(price) as avg_price, SUM(quantity) as total_quantity, COUNT(*) as transaction_count FROM sales_data WHERE date_sold ..."
+    },
+    {
+      "title": "DuckDB vs SQLite: Choosing the Right Embedded Database | Better Stack Community",
+      "href": "https://betterstack.com/community/guides/scaling-python/duckdb-vs-sqlite/",
+      "body": "April 14, 2025 - The difference is dramatic. For analytical queries on millions of records, DuckDB can be 10-100 times faster than SQLite."
+    },
+    {
+      "title": "DuckDB vs. SQLite: A Comprehensive Comparison for Developers",
+      "href": "https://www.analyticsvidhya.com/blog/2026/01/duckdb-vs-sqlite/",
+      "body": "January 20, 2026 - This implies that DuckDB can consume additional RAM, but it is much faster on an analytical task. It has been demonstrated that in DuckDB, aggregation queries are 10-100 times faster than in SQLite."
+    },
+    {
+      "title": "In-depth: DuckDB vs SQLite - PostHog",
+      "href": "https://posthog.com/blog/duckdb-vs-sqlite",
+      "body": "June 2, 2026 - SQLite forgoes concurrency with ... Meanwhile, DuckDB has a similar analytical punch of many OLAP databases, including vectorized execution, columnar storage, a modern query optimizer, and parallel query execution...."
+    },
+    {
+      "title": "DuckDB vs. SQLite: The 2025 Data Analysis Showdown | by Bhagya Rana | Medium",
+      "href": "https://medium.com/@bhagyarana80/duckdb-vs-sqlite-the-2025-data-analysis-showdown-0f01711db50b",
+      "body": "August 10, 2025 - Key distinction: SQLite is row-oriented ... for aggregations and analytics). When it comes to analytical queries, DuckDB often leaves SQLite in the dust...."
+    },
+    {
+      "title": "DuckDB vs SQLite vs PostgreSQL: Which Database Should You Choose? (2026) | AI2SQL",
+      "href": "https://builder.ai2sql.io/blog/duckdb-vs-sqlite-vs-postgresql",
+      "body": "March 24, 2026 - DuckDB is typically the fastest for analytical queries on datasets that fit on a single machine. Its columnar storage engine and vectorized execution can outperform PostgreSQL by 10-100x on aggregation-heavy queries over large tables."
+    },
+    {
+      "title": "DuckDB vs SQLite: Million-Row Query Speed Comparison — How Much Faster?",
+      "href": "https://duckdblab.org/en/post/duckdb-vs-sqlite-benchmark/",
+      "body": "Real-world benchmark comparing DuckDB vs SQLite on a 1-million-row e-commerce dataset. 10 typical analytical queries tested head-to-head with full SQL code and … Published: May 20, 2026"
+    },
+    {
+      "title": "Sqlite vs Duckdb - Comparison & Analysis | DecideStack",
+      "href": "https://www.decidestack.com/compare/sqlite-vs-duckdb",
+      "body": "April 7, 2026 - For most developers, the choice is clear: if your app needs to save user settings or local state, use SQLite. If your app needs to analyze millions of rows of data or interface with data science tools, use DuckDB."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 1994.91,
+  "finished_at": "2026-09-09T01:39:18.952757+00:00",
+  "url_count": 10,
+  "hostname_count": 9,
+  "exact_url_duplicates": 0
+}

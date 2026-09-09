@@ -1,0 +1,134 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:43:37.780437+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:43:37.781513+00:00",
+      "status_code": 200,
+      "bytes": 22948,
+      "sha256": "6284d1e971b5cbe72f5df748cd55a4632a2a6e20444d7f3bc310e9fae0ade557",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-2/en01-ddgs-google/http-0.html",
+      "latency_ms": 2206.35
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "PostgreSQL Multicolumn Indexes - Neon",
+      "href": "https://neon.com/postgresql/indexes/multicolumn-indexes",
+      "body": "Summary: in this tutorial, you will learn how to create PostgreSQL multicolumn indexes, which are indexes defined on two or more columns of a table."
+    },
+    {
+      "title": "Creating Multicolumn Indexes in SQL - Atlassian",
+      "href": "https://www.atlassian.com/data/sql/multicolumn-indexes",
+      "body": "Multicolumn indexes (also known as composite indexes) are similar to standard indexes. They both store a sorted “table” of pointers to the main table."
+    },
+    {
+      "title": "Multi-Column Indexes - MIT",
+      "href": "https://web.mit.edu/cygwin/cygwin_v1.3.2/usr/doc/postgresql-7.1.2/html/indexes-multicolumn.html",
+      "body": "7.3. Multi-Column Indexes. An index can be defined on more than one column. For example, if you have a table of this form: CREATE TABLE test2 ( major int, minor ..."
+    },
+    {
+      "title": "Multi-column indexes - Postgres FM",
+      "href": "https://postgres.fm/episodes/multi-column-indexes",
+      "body": "Aug 22, 2025 · Nik and Michael discuss multi-column indexes in Postgres — what they are, how to think about them, and some guidance around using them ..."
+    },
+    {
+      "title": "PostgreSQL Multi-column Indexes in Depth - Medium",
+      "href": "https://medium.com/@awadesh22kumar/postgresql-multi-column-indexes-in-depth-22136a56283f",
+      "body": "Sep 9, 2023 · From Postgres official doc - A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns, but ..."
+    },
+    {
+      "title": "Documentation: 18: 11.8. Partial Indexes - PostgreSQL",
+      "href": "https://www.postgresql.org/docs/current/indexes-partial.html",
+      "body": "A partial index is an index built over a subset of a table; the subset is defined by a conditional expression (called the predicate of the partial index)."
+    },
+    {
+      "title": "How to make queries faster with multicolumn indexes - EDB",
+      "href": "https://www.enterprisedb.com/postgres-tutorials/how-make-queries-faster-multicolumn-indexes",
+      "body": "Jan 19, 2023 · This article introduces multicolumn indexes and explains how they can by used to make large queries run faster."
+    },
+    {
+      "title": "Does Postgres query planner favour single-column indexes ...",
+      "href": "https://www.reddit.com/r/PostgreSQL/comments/apgjo3/does_postgres_query_planner_favour_singlecolumn/",
+      "body": "Feb 11, 2019 · The documentation encourages use of single column indexes. Unless you find that they do not give you the performance you need, stick with them."
+    },
+    {
+      "title": "Multi-column indexes - pgMustard",
+      "href": "https://www.pgmustard.com/blog/2019/05/20/multi-column-indexes",
+      "body": "May 20, 2019 · This post covers standard Postgres B-tree indexes. The Postgres docs go so far as to say: “Multicolumn indexes should be used sparingly. In ..."
+    },
+    {
+      "title": "Documentation: 18: 11.4. Indexes and ORDER BY - PostgreSQL",
+      "href": "https://www.postgresql.org/docs/current/indexes-ordering.html",
+      "body": "You can adjust the ordering of a B-tree index by including the options ASC , DESC , NULLS FIRST , and/or NULLS LAST when creating the index; for example: CREATE ..."
+    }
+  ],
+  "results": [
+    {
+      "title": "PostgreSQL Multicolumn Indexes - Neon",
+      "href": "https://neon.com/postgresql/indexes/multicolumn-indexes",
+      "body": "Summary: in this tutorial, you will learn how to create PostgreSQL multicolumn indexes, which are indexes defined on two or more columns of a table."
+    },
+    {
+      "title": "Creating Multicolumn Indexes in SQL - Atlassian",
+      "href": "https://www.atlassian.com/data/sql/multicolumn-indexes",
+      "body": "Multicolumn indexes (also known as composite indexes) are similar to standard indexes. They both store a sorted “table” of pointers to the main table."
+    },
+    {
+      "title": "Multi-Column Indexes - MIT",
+      "href": "https://web.mit.edu/cygwin/cygwin_v1.3.2/usr/doc/postgresql-7.1.2/html/indexes-multicolumn.html",
+      "body": "7.3. Multi-Column Indexes. An index can be defined on more than one column. For example, if you have a table of this form: CREATE TABLE test2 ( major int, minor ..."
+    },
+    {
+      "title": "Multi-column indexes - Postgres FM",
+      "href": "https://postgres.fm/episodes/multi-column-indexes",
+      "body": "Aug 22, 2025 · Nik and Michael discuss multi-column indexes in Postgres — what they are, how to think about them, and some guidance around using them ..."
+    },
+    {
+      "title": "PostgreSQL Multi-column Indexes in Depth - Medium",
+      "href": "https://medium.com/@awadesh22kumar/postgresql-multi-column-indexes-in-depth-22136a56283f",
+      "body": "Sep 9, 2023 · From Postgres official doc - A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns, but ..."
+    },
+    {
+      "title": "How to make queries faster with multicolumn indexes - EDB",
+      "href": "https://www.enterprisedb.com/postgres-tutorials/how-make-queries-faster-multicolumn-indexes",
+      "body": "Jan 19, 2023 · This article introduces multicolumn indexes and explains how they can by used to make large queries run faster."
+    },
+    {
+      "title": "Does Postgres query planner favour single-column indexes ...",
+      "href": "https://www.reddit.com/r/PostgreSQL/comments/apgjo3/does_postgres_query_planner_favour_singlecolumn/",
+      "body": "Feb 11, 2019 · The documentation encourages use of single column indexes. Unless you find that they do not give you the performance you need, stick with them."
+    },
+    {
+      "title": "Multi-column indexes - pgMustard",
+      "href": "https://www.pgmustard.com/blog/2019/05/20/multi-column-indexes",
+      "body": "May 20, 2019 · This post covers standard Postgres B-tree indexes. The Postgres docs go so far as to say: “Multicolumn indexes should be used sparingly. In ..."
+    },
+    {
+      "title": "Documentation: 18: 11.8. Partial Indexes - PostgreSQL",
+      "href": "https://www.postgresql.org/docs/current/indexes-partial.html",
+      "body": "A partial index is an index built over a subset of a table; the subset is defined by a conditional expression (called the predicate of the partial index)."
+    },
+    {
+      "title": "Documentation: 18: 11.4. Indexes and ORDER BY - PostgreSQL",
+      "href": "https://www.postgresql.org/docs/current/indexes-ordering.html",
+      "body": "You can adjust the ordering of a B-tree index by including the options ASC , DESC , NULLS FIRST , and/or NULLS LAST when creating the index; for example: CREATE ..."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2209.53,
+  "finished_at": "2026-09-09T01:43:39.989624+00:00",
+  "url_count": 10,
+  "hostname_count": 9,
+  "exact_url_duplicates": 0
+}

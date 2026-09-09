@@ -1,0 +1,56 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:43:58.937547+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SQLite DuckDB analytical queries comparison",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:43:59.130183+00:00",
+      "status_code": 200,
+      "bytes": 194,
+      "sha256": "b145ff8fd59d3289e034cd9e903fbfc168d89f786db901fd22b718d71565344f",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-2/en02-searxng-duckduckgo/response.json",
+      "latency_ms": 1618.68
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SQLite DuckDB analytical queries comparison",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 1811.9,
+  "finished_at": "2026-09-09T01:44:00.749392+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

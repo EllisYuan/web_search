@@ -1,0 +1,56 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:44:02.752261+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SearXNG JSON API 配置 formats",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:44:02.948513+00:00",
+      "status_code": 200,
+      "bytes": 188,
+      "sha256": "7ee1914b28592ab915b7af8be57daad23a7ab7af33dfbecb83e8cfc817326cce",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-2/mix01-searxng-duckduckgo/response.json",
+      "latency_ms": 374.31
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SearXNG JSON API 配置 formats",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 570.84,
+  "finished_at": "2026-09-09T01:44:03.322775+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

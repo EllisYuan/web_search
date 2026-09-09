@@ -1,0 +1,777 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-09T01:43:28.687339+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL multicolumn indexes official documentation",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:43:28.879532+00:00",
+      "status_code": 200,
+      "bytes": 8191,
+      "sha256": "848db1dd16e8083fa4336419a67facb536b33598009b6ea7bcb26e98c60e7605",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-2/en01-searxng-google/response.json",
+      "latency_ms": 870.27
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Documentation: 18: 11.3. Multicolumn Indexes - PostgreSQL",
+      "content": "A multicolumn BRIN index can be used with query conditions that involve any subset of the index's columns. Like GIN and unlike B-tree or GiST, index search ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.postgresql.org",
+        "/docs/current/indexes-multicolumn.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Documentation: 18: Chapter 11. Indexes - PostgreSQL",
+      "content": "Indexes are a common way to enhance database performance. An index allows the database server to find and retrieve specific rows much faster than it could ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://www.postgresql.org/docs/current/indexes.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.postgresql.org",
+        "/docs/current/indexes.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "PostgreSQL Multicolumn Indexes - Neon",
+      "content": "Summary: in this tutorial, you will learn how to create PostgreSQL multicolumn indexes, which are indexes defined on two or more columns of a table.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://neon.com/postgresql/indexes/multicolumn-indexes",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "neon.com",
+        "/postgresql/indexes/multicolumn-indexes",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Documentation: 18: CREATE INDEX - PostgreSQL",
+      "content": "Multiple fields can be specified if the index method supports multicolumn indexes. An index field can be an expression computed from the values of one or more ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://www.postgresql.org/docs/current/sql-createindex.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.postgresql.org",
+        "/docs/current/sql-createindex.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Documentation: 7.1: Multi-Column Indices - PostgreSQL",
+      "content": "Multi-column indexes can only be used if the clauses involving the indexed columns are joined with AND. For instance, SELECT name FROM test2 WHERE major = ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://www.postgresql.org/docs/7.1/indices-multicolumn.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.postgresql.org",
+        "/docs/7.1/indices-multicolumn.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Creating Multicolumn Indexes in SQL - Atlassian",
+      "content": "Multicolumn indexes (also known as composite indexes) are similar to standard indexes. They both store a sorted “table” of pointers to the main table.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://www.atlassian.com/data/sql/multicolumn-indexes",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.atlassian.com",
+        "/data/sql/multicolumn-indexes",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "PostgreSQL Multi-column Indexes in Depth - Medium",
+      "content": "Sep 9, 2023 · A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns, but the index is most efficient ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://medium.com/@awadesh22kumar/postgresql-multi-column-indexes-in-depth-22136a56283f",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "medium.com",
+        "/@awadesh22kumar/postgresql-multi-column-indexes-in-depth-22136a56283f",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "PostgreSQL Multi-Column Indexes Column Orders",
+      "content": "Jan 16, 2025 · A practical guide to optimizing PostgreSQL query performance through strategic multi-column index design, demonstrating how column order impacts ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://kenwagatsuma.com/blog/postgresql-multi-column-indexes-column-orders",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "kenwagatsuma.com",
+        "/blog/postgresql-multi-column-indexes-column-orders",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Multi-column indexes - pgMustard",
+      "content": "May 20, 2019 · This post covers standard Postgres B-tree indexes. To make it easier to read, I've just referred to “indexes” throughout, but it's worth ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://www.pgmustard.com/blog/2019/05/20/multi-column-indexes",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.pgmustard.com",
+        "/blog/2019/05/20/multi-column-indexes",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Postgresql: multicolumn indexes vs single column index",
+      "content": "Apr 11, 2018 · Although single_column table can use indexes on multi column WHERE, multi_column table is faster. Although multi_column table can use indexes on ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://stackoverflow.com/questions/49776856/postgresql-multicolumn-indexes-vs-single-column-index",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "stackoverflow.com",
+        "/questions/49776856/postgresql-multicolumn-indexes-vs-single-column-index",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "PostgreSQL multicolumn indexes official documentation",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Documentation: 18: 11.3. Multicolumn Indexes - PostgreSQL",
+        "content": "A multicolumn BRIN index can be used with query conditions that involve any subset of the index's columns. Like GIN and unlike B-tree or GiST, index search ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.postgresql.org",
+          "/docs/current/indexes-multicolumn.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Documentation: 18: Chapter 11. Indexes - PostgreSQL",
+        "content": "Indexes are a common way to enhance database performance. An index allows the database server to find and retrieve specific rows much faster than it could ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://www.postgresql.org/docs/current/indexes.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.postgresql.org",
+          "/docs/current/indexes.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "PostgreSQL Multicolumn Indexes - Neon",
+        "content": "Summary: in this tutorial, you will learn how to create PostgreSQL multicolumn indexes, which are indexes defined on two or more columns of a table.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://neon.com/postgresql/indexes/multicolumn-indexes",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "neon.com",
+          "/postgresql/indexes/multicolumn-indexes",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Documentation: 18: CREATE INDEX - PostgreSQL",
+        "content": "Multiple fields can be specified if the index method supports multicolumn indexes. An index field can be an expression computed from the values of one or more ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://www.postgresql.org/docs/current/sql-createindex.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.postgresql.org",
+          "/docs/current/sql-createindex.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Documentation: 7.1: Multi-Column Indices - PostgreSQL",
+        "content": "Multi-column indexes can only be used if the clauses involving the indexed columns are joined with AND. For instance, SELECT name FROM test2 WHERE major = ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://www.postgresql.org/docs/7.1/indices-multicolumn.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.postgresql.org",
+          "/docs/7.1/indices-multicolumn.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Creating Multicolumn Indexes in SQL - Atlassian",
+        "content": "Multicolumn indexes (also known as composite indexes) are similar to standard indexes. They both store a sorted “table” of pointers to the main table.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://www.atlassian.com/data/sql/multicolumn-indexes",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.atlassian.com",
+          "/data/sql/multicolumn-indexes",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "PostgreSQL Multi-column Indexes in Depth - Medium",
+        "content": "Sep 9, 2023 · A multicolumn B-tree index can be used with query conditions that involve any subset of the index's columns, but the index is most efficient ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://medium.com/@awadesh22kumar/postgresql-multi-column-indexes-in-depth-22136a56283f",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "medium.com",
+          "/@awadesh22kumar/postgresql-multi-column-indexes-in-depth-22136a56283f",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "PostgreSQL Multi-Column Indexes Column Orders",
+        "content": "Jan 16, 2025 · A practical guide to optimizing PostgreSQL query performance through strategic multi-column index design, demonstrating how column order impacts ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://kenwagatsuma.com/blog/postgresql-multi-column-indexes-column-orders",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "kenwagatsuma.com",
+          "/blog/postgresql-multi-column-indexes-column-orders",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Multi-column indexes - pgMustard",
+        "content": "May 20, 2019 · This post covers standard Postgres B-tree indexes. To make it easier to read, I've just referred to “indexes” throughout, but it's worth ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://www.pgmustard.com/blog/2019/05/20/multi-column-indexes",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.pgmustard.com",
+          "/blog/2019/05/20/multi-column-indexes",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Postgresql: multicolumn indexes vs single column index",
+        "content": "Apr 11, 2018 · Although single_column table can use indexes on multi column WHERE, multi_column table is faster. Although multi_column table can use indexes on ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://stackoverflow.com/questions/49776856/postgresql-multicolumn-indexes-vs-single-column-index",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "stackoverflow.com",
+          "/questions/49776856/postgresql-multicolumn-indexes-vs-single-column-index",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "create index postgres",
+      "postgres multi column index vs multiple indexes",
+      "postgresql index types",
+      "multi column index postgres",
+      "postgres list indexes",
+      "postgresql indexing best practices",
+      "postgresql indexes",
+      "postgresql composite index column order"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "latency_ms": 1063.01,
+  "finished_at": "2026-09-09T01:43:29.750385+00:00",
+  "url_count": 10,
+  "hostname_count": 7,
+  "exact_url_duplicates": 0
+}

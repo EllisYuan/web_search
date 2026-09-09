@@ -1,0 +1,846 @@
+{
+  "query_id": "zh02",
+  "query": "臺灣 玉山 主峰 海拔 國家公園",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:39:39.614390+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "臺灣 玉山 主峰 海拔 國家公園",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:39:39.828855+00:00",
+      "status_code": 200,
+      "bytes": 28491,
+      "sha256": "06cc72a67c1e77bc09f3854ff57a828ff24284b4de2563406beb6834421edfc3",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-1-searxng/zh02-searxng-brave/response.json",
+      "latency_ms": 817.01
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6?Tab=2&ID=980ec5de-bc0d-41a5-b479-add518f66181",
+      "title": "玉山主峰 - 玉山群峰步道系統 - 內政部國家公園署玉山國家公園管理處",
+      "content": "海拔約為3,952公尺，為台灣第一高峰，展望良好，自峰頂眺望，四方群峰盡在眼底，溪谷、草坡、森林、翠嵐，一覽無遺。全峰為毳碎裂崩解的頁岩構成，裸岩重疊，具有雄偉岩峰景觀。 · 內政部國家公園署玉山國家公園...",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+        "",
+        "Tab=2&ID=980ec5de-bc0d-41a5-b479-add518f66181",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/StaticPage/Mountain",
+      "title": "玉山百岳 - 內政部國家公園署玉山國家公園管理處",
+      "content": "內政部國家公園署玉山國家公園管理處 ©2020 All Rights Reserved · 地址：553208南投縣水里鄉中山路1段515號（ 交通位置圖 ）",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/StaticPage/Mountain",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        13
+      ],
+      "score": 0.07692307692307693,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+      "title": "路線介紹 - 玉山群峰步道系統 - 內政部國家公園署玉山國家公園管理處",
+      "content": "本步道自塔塔加登山口起全程約61.2公里，海拔均在3,000公尺以上，登山者需具備豐富之登山知識、技術及體力、耐力；尤其是玉山主峰高聳雲霄、玉山東峰岩峰陡峭及鹿山路程遙遠，更極富挑戰及冒險性。 · 玉山山塊號稱臺灣之屋脊，有如龍背在臥，山容壯麗，氣勢雄渾。本路線自玉山西稜末端的塔塔加鞍部向東蜿蜒而上，沿途可見到林相隨海拔高度而有不同的變化，依序可見到雲杉、鐵杉、冷杉、玉山圓柏、玉山杜鵑等植物，更可見到許多高山草花",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        15
+      ],
+      "score": 0.06666666666666667,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/",
+      "title": "內政部國家公園署玉山國家公園管理處",
+      "content": "跳到主要內容 · 網站導覽 雙語詞彙 首長信箱 常見問答 RSS訂閱 兒童網 facebook · 展開搜尋 · 全站搜尋 · 熱門關鍵字： · 排雲山莊 · 遊客中心 · 環教預約 · 登山資訊 · 關閉搜尋",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        18
+      ],
+      "score": 0.05555555555555555,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://zh.wikipedia.org/zh-tw/%E7%8E%89%E5%B1%B1",
+      "title": "玉山 - 維基百科，自由的百科全書",
+      "content": "玉山（鄒語：Patungkuonʉ）是臺灣最高的山，最高峰玉山主峰海拔3,952公尺（12,966英尺），設有一等三角點。其處於玉山山脈的核心，交界於南投縣信義鄉東埔村、嘉義縣阿里山鄉中山村與高雄市桃源區梅山里。 · 1985年，為保護玉山及其周邊地區珍貴的自然景觀生態及歷史文化資產，中華民國政府成立玉山國家公園...",
+      "publishedDate": "2026-07-20T00:00:00",
+      "thumbnail": "https://imgs.search.brave.com/2tvtZDi-Df9DsdEoIeYek4m7XU7qMzyUlM3FTaObWVo/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy82/LzY4L1l1c2hhbl9t/YWluX2Vhc3RfcGVh/ayUyQkh1YW5nX0No/dW5nX1l1JUU5JUJC/JTgzJUU0JUI4JUFE/JUU0JUJEJTkxJTJC/OTAzMC5wbmc_dXRt/X3NvdXJjZT16aC53/aWtpcGVkaWEub3Jn/JnV0bV9jYW1wYWln/bj1pbmRleCZ1dG1f/Y29udGVudD1vcmln/aW5hbA",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "zh.wikipedia.org",
+        "/zh-tw/%E7%8E%89%E5%B1%B1",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        5,
+        19
+      ],
+      "score": 0.5052631578947369,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2026-07-20 00:00:00"
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/FAQ/C007000?ID=c7939bca-5d9f-4fde-8c82-9931afbc9289&PageIndex=6&PageType=1",
+      "title": "玉山的高度為何？ - 常見問答 - 內政部國家公園署玉山國家公園管理處",
+      "content": "2003年內政部土地測量局以水準測量、重力測量、GPS衛星定位測量等技術完成玉山正高測量，測出臺灣最高峰玉山主峰高度為3951.798±0.072公尺。其中±0.072公尺表示測量成果的精度，也就是在95%信心區間內，測量成果誤差不超過0.144公尺。相關資料可參考見內政部土地測量局網站。",
+      "publishedDate": null,
+      "thumbnail": "https://imgs.search.brave.com/OrFjS05S0j3kd-7ppVAL5F3-uYM-Xl5XJe4dPAj1vXY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/eXNucC5nb3YudHcv/aW1hZ2VzL2ZhY2Vi/b29rLWltYWdlLmpw/Zw",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/FAQ/C007000",
+        "",
+        "ID=c7939bca-5d9f-4fde-8c82-9931afbc9289&PageIndex=6&PageType=1",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/StaticPage/AboutUs",
+      "title": "關於我們 - 內政部國家公園署玉山國家公園管理處",
+      "content": "玉山山塊因歐亞、菲律賓...者奇峰兀立，雄偉壯麗，氣勢磅礡；為臺灣高山少數仍保存原始風貌的地區，其間包括名聞遐邇的東北亞第一高峰，海拔3,952公尺的玉山主峰，植被隨海拔之變化而異，由亞熱帶、溫...",
+      "publishedDate": null,
+      "thumbnail": "https://imgs.search.brave.com/fA4aXZELBc3ccoPYga52UeWd-n9arxZWFGzZbPHLju0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/eXNucC5nb3YudHcv/RmlsZURvd25sb2Fk/L0NvbnRlbnRNYW5h/Z2VtZW50LzIwMjQw/ODI4MDkzMjM4Mzcw/NjQxMjkyLkpQRw",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/StaticPage/AboutUs",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.travelking.com.tw/tourguide/scenery228.html",
+      "title": "玉山國家公園 - 水里鄉 - 南投縣 - 台灣旅遊資訊 - 旅遊導覽 | TravelKing旅遊王",
+      "content": "玉山國家公園於西元198...地形以高山及河谷為主，橫跨玉山山脈和中央山脈等山系，包含海拔3952公尺擁有「東北亞第一高峰」美稱的玉山主峰、玉山東峰、玉山北峰、玉...",
+      "publishedDate": null,
+      "thumbnail": "https://imgs.search.brave.com/sUwEoh8MFpsNtsQtMllUZKxvrxl1LahK8EBE2HBl1kI/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9waG90/by50cmF2ZWxraW5n/LmNvbS50dy9zY2Vu/ZXJ5LzZGRDJDMUQ2/LTc2MjQtNEM4RC04/QTc2LUM4NjQ0RUY5/MUU5OF9kLmpwZw",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.travelking.com.tw",
+        "/tourguide/scenery228.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.ysnp.gov.tw/StaticPage/Terrain",
+      "title": "地形 - 內政部國家公園署玉山國家公園管理處",
+      "content": "玉山國家公園以山為名，因山而峻秀，範圍內 3,000 公尺以上列名臺灣「百岳」之山峰共有 30 座。其中玉山主峰、秀姑巒山、達芬尖山為臺灣「五嶽三尖」之 2 嶽 1 尖；馬博拉斯山、玉山東峰、新康山、玉山南峰、關山為臺灣「十峻」之 5 峻。這些山高低有別，形容互異，卻又各擅勝場，全是登山者之最愛。 玉山山塊因歐亞、菲律賓板塊相擠撞而高隆，主稜脈略呈十字形，南北長而東西短，十字之交點即為玉山主峰，海拔3,952公尺。日人治臺，以其高過日本富士聖山因而聲名大噪，登山者絡繹於途，至今仍不減。從西南向眺，玉山尖峭崢嶸；由東北向觀，則雍容華貴；帝王之相，名實相符，不失第一風範。",
+      "publishedDate": null,
+      "thumbnail": "https://imgs.search.brave.com/EO1tj4-wcWP35pW-qwdgLvZv5XR5e9I-jwDBSWcYxX0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/eXNucC5nb3YudHcv/RmlsZURvd25sb2Fk/L0NvbnRlbnRNYW5h/Z2VtZW50LzIwMjAw/OTE3MTg1NjExNjE2/NjM3NzE0LmpwZw",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.ysnp.gov.tw",
+        "/StaticPage/Terrain",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://hiking.biji.co/index.php?q=trail&act=detail&id=299",
+      "title": "玉山主峰步道 - 健行筆記",
+      "content": "玉山主峰位於台灣的中心位置，海拔3952公尺，為台灣群山之首，百岳排名第一，也是東北亞的最高峰。主峰四周有東、南、西、北峰環繞，外圍還有前峰、小南山、南玉山、東小南山、鹿山與北北峰遙相呼應，宛如眾星拱月般，襯托出主峰的王者之尊，壯偉雄奇的山容、絕佳的展望和絢麗的日出景觀，吸引了無數的中外登山客前來攀登，近年來更成為台灣人一生必須完成的三件事之一。 登山路線主要有二條：東側的「八通關線」由東埔入山，因落差較",
+      "publishedDate": null,
+      "thumbnail": "https://imgs.search.brave.com/toGTDhmJ2JrObItgPk918Xh_ja7v67E2KJ-czv1ty5g/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG50/d3J1bm5pbmcuYmlq/aS5jby82MDBfYjBl/OTkwMmM0YTdiNmE3/MTY0ZmYzMmYwYTgw/ZTljZTI3ZThhY2U2/MjdmYjIwYWU3ZGZk/NzAyMTg5MTQ1MmEw/Ny5qcGc",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "hiking.biji.co",
+        "/index.php",
+        "",
+        "q=trail&act=detail&id=299",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "iframe_src": null
+    }
+  ],
+  "raw_response": {
+    "query": "臺灣 玉山 主峰 海拔 國家公園",
+    "results": [
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6?Tab=2&ID=980ec5de-bc0d-41a5-b479-add518f66181",
+        "title": "玉山主峰 - 玉山群峰步道系統 - 內政部國家公園署玉山國家公園管理處",
+        "content": "海拔約為3,952公尺，為台灣第一高峰，展望良好，自峰頂眺望，四方群峰盡在眼底，溪谷、草坡、森林、翠嵐，一覽無遺。全峰為毳碎裂崩解的頁岩構成，裸岩重疊，具有雄偉岩峰景觀。 · 內政部國家公園署玉山國家公園...",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+          "",
+          "Tab=2&ID=980ec5de-bc0d-41a5-b479-add518f66181",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/StaticPage/Mountain",
+        "title": "玉山百岳 - 內政部國家公園署玉山國家公園管理處",
+        "content": "內政部國家公園署玉山國家公園管理處 ©2020 All Rights Reserved · 地址：553208南投縣水里鄉中山路1段515號（ 交通位置圖 ）",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/StaticPage/Mountain",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          13
+        ],
+        "score": 0.07692307692307693,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+        "title": "路線介紹 - 玉山群峰步道系統 - 內政部國家公園署玉山國家公園管理處",
+        "content": "本步道自塔塔加登山口起全程約61.2公里，海拔均在3,000公尺以上，登山者需具備豐富之登山知識、技術及體力、耐力；尤其是玉山主峰高聳雲霄、玉山東峰岩峰陡峭及鹿山路程遙遠，更極富挑戰及冒險性。 · 玉山山塊號稱臺灣之屋脊，有如龍背在臥，山容壯麗，氣勢雄渾。本路線自玉山西稜末端的塔塔加鞍部向東蜿蜒而上，沿途可見到林相隨海拔高度而有不同的變化，依序可見到雲杉、鐵杉、冷杉、玉山圓柏、玉山杜鵑等植物，更可見到許多高山草花",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          15
+        ],
+        "score": 0.06666666666666667,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/",
+        "title": "內政部國家公園署玉山國家公園管理處",
+        "content": "跳到主要內容 · 網站導覽 雙語詞彙 首長信箱 常見問答 RSS訂閱 兒童網 facebook · 展開搜尋 · 全站搜尋 · 熱門關鍵字： · 排雲山莊 · 遊客中心 · 環教預約 · 登山資訊 · 關閉搜尋",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          18
+        ],
+        "score": 0.05555555555555555,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://zh.wikipedia.org/zh-tw/%E7%8E%89%E5%B1%B1",
+        "title": "玉山 - 維基百科，自由的百科全書",
+        "content": "玉山（鄒語：Patungkuonʉ）是臺灣最高的山，最高峰玉山主峰海拔3,952公尺（12,966英尺），設有一等三角點。其處於玉山山脈的核心，交界於南投縣信義鄉東埔村、嘉義縣阿里山鄉中山村與高雄市桃源區梅山里。 · 1985年，為保護玉山及其周邊地區珍貴的自然景觀生態及歷史文化資產，中華民國政府成立玉山國家公園...",
+        "publishedDate": "2026-07-20T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/2tvtZDi-Df9DsdEoIeYek4m7XU7qMzyUlM3FTaObWVo/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy82/LzY4L1l1c2hhbl9t/YWluX2Vhc3RfcGVh/ayUyQkh1YW5nX0No/dW5nX1l1JUU5JUJC/JTgzJUU0JUI4JUFE/JUU0JUJEJTkxJTJC/OTAzMC5wbmc_dXRt/X3NvdXJjZT16aC53/aWtpcGVkaWEub3Jn/JnV0bV9jYW1wYWln/bj1pbmRleCZ1dG1f/Y29udGVudD1vcmln/aW5hbA",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "zh.wikipedia.org",
+          "/zh-tw/%E7%8E%89%E5%B1%B1",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          5,
+          19
+        ],
+        "score": 0.5052631578947369,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2026-07-20 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/FAQ/C007000?ID=c7939bca-5d9f-4fde-8c82-9931afbc9289&PageIndex=6&PageType=1",
+        "title": "玉山的高度為何？ - 常見問答 - 內政部國家公園署玉山國家公園管理處",
+        "content": "2003年內政部土地測量局以水準測量、重力測量、GPS衛星定位測量等技術完成玉山正高測量，測出臺灣最高峰玉山主峰高度為3951.798±0.072公尺。其中±0.072公尺表示測量成果的精度，也就是在95%信心區間內，測量成果誤差不超過0.144公尺。相關資料可參考見內政部土地測量局網站。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/OrFjS05S0j3kd-7ppVAL5F3-uYM-Xl5XJe4dPAj1vXY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/eXNucC5nb3YudHcv/aW1hZ2VzL2ZhY2Vi/b29rLWltYWdlLmpw/Zw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/FAQ/C007000",
+          "",
+          "ID=c7939bca-5d9f-4fde-8c82-9931afbc9289&PageIndex=6&PageType=1",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/StaticPage/AboutUs",
+        "title": "關於我們 - 內政部國家公園署玉山國家公園管理處",
+        "content": "玉山山塊因歐亞、菲律賓...者奇峰兀立，雄偉壯麗，氣勢磅礡；為臺灣高山少數仍保存原始風貌的地區，其間包括名聞遐邇的東北亞第一高峰，海拔3,952公尺的玉山主峰，植被隨海拔之變化而異，由亞熱帶、溫...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/fA4aXZELBc3ccoPYga52UeWd-n9arxZWFGzZbPHLju0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/eXNucC5nb3YudHcv/RmlsZURvd25sb2Fk/L0NvbnRlbnRNYW5h/Z2VtZW50LzIwMjQw/ODI4MDkzMjM4Mzcw/NjQxMjkyLkpQRw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/StaticPage/AboutUs",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.travelking.com.tw/tourguide/scenery228.html",
+        "title": "玉山國家公園 - 水里鄉 - 南投縣 - 台灣旅遊資訊 - 旅遊導覽 | TravelKing旅遊王",
+        "content": "玉山國家公園於西元198...地形以高山及河谷為主，橫跨玉山山脈和中央山脈等山系，包含海拔3952公尺擁有「東北亞第一高峰」美稱的玉山主峰、玉山東峰、玉山北峰、玉...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/sUwEoh8MFpsNtsQtMllUZKxvrxl1LahK8EBE2HBl1kI/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9waG90/by50cmF2ZWxraW5n/LmNvbS50dy9zY2Vu/ZXJ5LzZGRDJDMUQ2/LTc2MjQtNEM4RC04/QTc2LUM4NjQ0RUY5/MUU5OF9kLmpwZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.travelking.com.tw",
+          "/tourguide/scenery228.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.ysnp.gov.tw/StaticPage/Terrain",
+        "title": "地形 - 內政部國家公園署玉山國家公園管理處",
+        "content": "玉山國家公園以山為名，因山而峻秀，範圍內 3,000 公尺以上列名臺灣「百岳」之山峰共有 30 座。其中玉山主峰、秀姑巒山、達芬尖山為臺灣「五嶽三尖」之 2 嶽 1 尖；馬博拉斯山、玉山東峰、新康山、玉山南峰、關山為臺灣「十峻」之 5 峻。這些山高低有別，形容互異，卻又各擅勝場，全是登山者之最愛。 玉山山塊因歐亞、菲律賓板塊相擠撞而高隆，主稜脈略呈十字形，南北長而東西短，十字之交點即為玉山主峰，海拔3,952公尺。日人治臺，以其高過日本富士聖山因而聲名大噪，登山者絡繹於途，至今仍不減。從西南向眺，玉山尖峭崢嶸；由東北向觀，則雍容華貴；帝王之相，名實相符，不失第一風範。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/EO1tj4-wcWP35pW-qwdgLvZv5XR5e9I-jwDBSWcYxX0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/eXNucC5nb3YudHcv/RmlsZURvd25sb2Fk/L0NvbnRlbnRNYW5h/Z2VtZW50LzIwMjAw/OTE3MTg1NjExNjE2/NjM3NzE0LmpwZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.ysnp.gov.tw",
+          "/StaticPage/Terrain",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://hiking.biji.co/index.php?q=trail&act=detail&id=299",
+        "title": "玉山主峰步道 - 健行筆記",
+        "content": "玉山主峰位於台灣的中心位置，海拔3952公尺，為台灣群山之首，百岳排名第一，也是東北亞的最高峰。主峰四周有東、南、西、北峰環繞，外圍還有前峰、小南山、南玉山、東小南山、鹿山與北北峰遙相呼應，宛如眾星拱月般，襯托出主峰的王者之尊，壯偉雄奇的山容、絕佳的展望和絢麗的日出景觀，吸引了無數的中外登山客前來攀登，近年來更成為台灣人一生必須完成的三件事之一。 登山路線主要有二條：東側的「八通關線」由東埔入山，因落差較",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/toGTDhmJ2JrObItgPk918Xh_ja7v67E2KJ-czv1ty5g/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG50/d3J1bm5pbmcuYmlq/aS5jby82MDBfYjBl/OTkwMmM0YTdiNmE3/MTY0ZmYzMmYwYTgw/ZTljZTI3ZThhY2U2/MjdmYjIwYWU3ZGZk/NzAyMTg5MTQ1MmEw/Ny5qcGc",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "hiking.biji.co",
+          "/index.php",
+          "",
+          "q=trail&act=detail&id=299",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.taiwan.net.tw/m1.aspx?sNo=0042808",
+        "title": "玉山山脈 > 交通部觀光署",
+        "content": "位於南臺灣的中央山脈西側，臺灣南投縣水里鄉濁水溪南岸，向南延伸至高雄市六龜區的十八羅漢山附近，總長度約為180公里。百岳高度排名前十名中第一高峰玉山主峰、第三高峰玉山東峰、第四高峰玉山北峰、第五峰高玉山南峰及第九高峰東小南山等皆屬玉山山脈，玉山主峰(3,952公尺)為玉山山脈最高峰亦為臺灣第一高峰，另其他百岳名峰還南玉山、八通關山、西巒大山等共計12座，高度在3,000公尺以上高山則有16座。玉山山脈的山勢以北端的玉山山地最高，再往西南逐漸低降至屏東平原。 · 玉山圓柏與銀河 · 玉山主峰標高3,952公尺 · 登高望遠玉山行（圖片：玉山國家公園管理處提供） ·",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/z6M3FcKoR2gpL8xCwTn8UxCGSr20DvUK8NV8QpuDN0o/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/dGFpd2FuLm5ldC50/dy9pbWFnZXMvb2dp/bWcuanBn",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.taiwan.net.tw",
+          "/m1.aspx",
+          "",
+          "sNo=0042808",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://zh.wikipedia.org/zh-tw/%E7%8E%89%E5%B1%B1%E5%9C%8B%E5%AE%B6%E5%85%AC%E5%9C%92",
+        "title": "玉山國家公園 - 維基百科，自由的百科全書",
+        "content": "全區由海拔300餘公尺的樂樂溪河谷到3,952公尺的臺灣最高峰玉山，地形高而陡峻，3,000公尺以上地區約占全區面積12.74%，2,000公尺至3,000公尺之地區約占54.57%，有39.73%的山坡坡度達46度以上。區域範圍橫跨台灣兩大山脈：玉山...",
+        "publishedDate": "2025-12-13T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/ywZGGr4Iql0WrcGaOh34_M_cJLQmJ_cxfzN_POcz4Es/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy84/LzgxL0RTQzA0MTk4/JUU5JTlCJTg0JUU1/JTgxJTg5JUU3JTlB/JTg0JUU3JThFJTg5/JUU1JUIxJUIxJUU0/JUI4JUJCJUU1JUIz/JUIwLmpwZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "zh.wikipedia.org",
+          "/zh-tw/%E7%8E%89%E5%B1%B1%E5%9C%8B%E5%AE%B6%E5%85%AC%E5%9C%92",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2025-12-13 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://hiking.biji.co/index.php?q=review&act=info&review_id=27883",
+        "title": "玉山主峰 - 健行筆記",
+        "content": "玉山主峰海拔3952公尺,是台灣第一高峰也是東北亞第一高峰,登山步道全長10.9公里,總爬升約1350公尺.由於玉山國家公園有上山人數管制,因此每天排隊抽籤的山友眾多，排雲山莊中籤率甚...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/0xAHPRXz_nC6En23qoIiDYFy9p4JUxkIzQJ5yMZtekk/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG50/d3J1bm5pbmcuYmlq/aS5jby82MDBfZWU1/OGFlZjkwYjhiMmNk/YTYzNjhlZGE4Mzhj/NTFjNTkuanBn",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "hiking.biji.co",
+          "/index.php",
+          "",
+          "q=review&act=info&review_id=27883",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://hiking.biji.co/index.php?q=trail&act=detail&id=1757",
+        "title": "玉山主峰單日往返 - 健行筆記",
+        "content": "玉山主峰位於台灣的中心位置，海拔3952公尺，為台灣群山之首，百岳排名第一，也是東北亞的最高峰。主峰四周有東、南、西、北峰環繞，外圍還有前峰、小南山、南玉山、東小南山、鹿山與北北峰遙相呼應，宛如眾星拱月般，襯托出主峰的王者之尊，壯偉雄奇的山容、絕佳的展望和絢麗的日出景觀，吸引了無數的中外登山客前來攀登，近年來更成為台灣人一生必須完成的三件事之一。 因為排雲山莊熱門難抽，單攻玉山主峰成為許多人的選擇，行程時間安排含約休息14-16小時，玉管處規定須於10:00前通過排雲山莊，是一場需具備一定體能的挑戰。 注意：玉山國家公園管理處規定，申請玉山主峰單攻若10:00前沒有通過排雲山莊，強烈建議原路折返下山。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/s22Sn9o1n0CpzZELE-xvtR8l3pa3ej2XD-ZqqRxYyMM/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG50/d3J1bm5pbmcuYmlq/aS5jby82MDBfYThi/ZWI3OTMzZTQ5YTJj/MjgwY2VjOGI4N2Jh/MTBmMmEuanBn",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "hiking.biji.co",
+          "/index.php",
+          "",
+          "q=trail&act=detail&id=1757",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          11
+        ],
+        "score": 0.09090909090909091,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.settour.com.tw/travel_guide/%E5%8F%B0%E7%81%A3/%E7%8E%89%E5%B1%B1%E5%9C%8B%E5%AE%B6%E5%85%AC%E5%9C%92/attractions_POI0000369244.html",
+        "title": "台灣 | 玉山國家公園 介紹、推薦必玩、周遭景點、住宿總整理｜東南旅遊",
+        "content": "玉山國家公園於西元198...地形以高山及河谷為主，橫跨玉山山脈和中央山脈等山系，包含海拔3952公尺擁有「東北亞第一高峰」美稱的玉山主峰、玉山東峰、玉山北峰、玉...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/c31wEZTiTv_iMwsZV360sjFosEa1wXbz07nRY6M59xU/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/c2V0dG91ci5jb20u/dHcvc3NfaW1nL3Bv/aS8yMDIxMDQxNC8x/MGNkZGE5OS1iZmQ4/LTQ4NzYtYjJiYS1h/OWI5MWVkZmU2Nzgu/anBn",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.settour.com.tw",
+          "/travel_guide/%E5%8F%B0%E7%81%A3/%E7%8E%89%E5%B1%B1%E5%9C%8B%E5%AE%B6%E5%85%AC%E5%9C%92/attractions_POI0000369244.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          12
+        ],
+        "score": 0.08333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.myswiss.life/blogs/pernaton-joint-health/837",
+        "title": "【2025】登百岳之首 玉山主峰》台灣人必須完成的人生 3 件事之一！ | My Swiss Life",
+        "content": "「玉山」是台灣現行最高的山岳，玉山主峰海拔高度為 3,952 公尺。在台灣百岳之中，玉山 ( 百岳編號 1 ) 也被視為百岳之首。 · 並與雪山、秀姑巒山、南湖大山及北大武山稱之為「五...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/PdJRmYXG3j0J-PWPzvUZU3LMBuO5TA_a4PHgPqR-YI4/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG4u/Y3liYXNzZXRzLmNv/bS9tZWRpYS9XMXNp/WmlJc0lqTTBNRGM1/TDJKc2IyZHpMelU0/T1RRMEwxVndiRzlo/WkZCc2RXZHBiaTB5/TFRjMk9IZzFNelJm/TWpVNE56aGtaV1V3/WkdRMk1HRXlNelJs/WWpVdWFuQmxaeUpk/TEZzaWNDSXNJblJv/ZFcxaUlpd2lOVEF3/ZURVd01DSmRYUS5q/cGVnP3NoYT1lOWNm/MTlkNGM2M2I4OTUz",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.myswiss.life",
+          "/blogs/pernaton-joint-health/837",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          14
+        ],
+        "score": 0.07142857142857142,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.campzoneoutdoor.com/blog/posts/jade-mountain3952taiwan",
+        "title": "台灣最高 - 單登玉山主峰 (3,952米) 路線及登山攻略",
+        "content": "路線簡介： ↗️上：塔塔加登山口｜↘️落：塔塔加登山口 「玉山主峰海拔高達 3,952公尺，不僅是台灣百岳之首，它甚至還高於日本的富士山（3,776公尺），是名副其實的『東北亞第一高峰』！當您歷經千辛萬苦，雙腳真正站在 3,952 公尺的石碑旁邊，望著腳下連綿不絕的群山，那種『一覽眾山小』的征服感與感動，絕對會讓您覺得之前走到雙腳發軟都是 100% 值得的！」",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/MdU-QtDdISpoMJcA9O70XckIhET1Khocuhy2d6vaJrc/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pbWcu/c2hvcGxpbmVhcHAu/Y29tL21lZGlhL2lt/YWdlX2NsaXBzLzZh/N2FjYmJlNjA1ZmJk/ZGZhOWE1ZWJmZC9v/cmlnaW5hbC5wbmc_/MTc4NjQzMjQ0Mj0m/YW1wO293bmVyX2lk/PTYxYWMzYmUzNmI5/MmM0MDAyNTgxZjEz/Zg",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.campzoneoutdoor.com",
+          "/blog/posts/jade-mountain3952taiwan",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          16
+        ],
+        "score": 0.0625,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://baike.baidu.com/item/%E7%8E%89%E5%B1%B1%E4%B8%BB%E5%B3%B0/10171663",
+        "title": "玉山主峰_百度百科",
+        "content": "玉山主峰，位于中国台湾省南投县信义乡、高雄县桃源乡及嘉义县阿里山乡交界处，海拔3952米，是台湾岛第一高峰及西太平洋海岛群最高峰。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/4wkoH4l_RCPnC0nq9IWyAemvgf-yuCxI8U5_RlRLgKY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9ia2lt/Zy5jZG4uYmNlYm9z/LmNvbS9waWMvYmJh/MWNkMTE3MjhiNDcx/MGFiN2E2MGFmY2Vj/ZWMzZmRmYzAzMjM3/Zj94LWJjZS1wcm9j/ZXNzPWltYWdlL3Jl/c2l6ZSxtX2xmaXQs/d181MzYsbGltaXRf/MS9xdWFsaXR5LFFf/NzA",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "baike.baidu.com",
+          "/item/%E7%8E%89%E5%B1%B1%E4%B8%BB%E5%B3%B0/10171663",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          17
+        ],
+        "score": 0.058823529411764705,
+        "category": "general",
+        "iframe_src": null
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "玉山國家公園景點",
+      "玉山國家公園一日遊",
+      "玉山國家公園動物",
+      "玉山國家公園特有種",
+      "玉山國家公園面積",
+      "玉山國家公園地圖",
+      "玉山在哪個縣市",
+      "玉山國家公園在哪裡"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "brave"
+  ],
+  "status": "success",
+  "latency_ms": 1032.29,
+  "finished_at": "2026-09-09T01:39:40.646542+00:00",
+  "url_count": 10,
+  "hostname_count": 4,
+  "exact_url_duplicates": 0
+}

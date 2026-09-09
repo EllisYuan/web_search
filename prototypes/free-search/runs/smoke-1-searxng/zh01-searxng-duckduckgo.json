@@ -1,0 +1,56 @@
+{
+  "query_id": "zh01",
+  "query": "Python asyncio TaskGroup 异常处理 官方文档",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:39:25.838255+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python asyncio TaskGroup 异常处理 官方文档",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:39:26.045435+00:00",
+      "status_code": 200,
+      "bytes": 225,
+      "sha256": "5f20ac27801f5fd231c4454e7e525001f85dc3ca265ac7713ba7868f5d01bdd1",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-1-searxng/zh01-searxng-duckduckgo/response.json",
+      "latency_ms": 1993.16
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Python asyncio TaskGroup 异常处理 官方文档",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 2200.82,
+  "finished_at": "2026-09-09T01:39:28.039137+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

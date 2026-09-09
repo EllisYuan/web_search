@@ -1,0 +1,897 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:40:05.107540+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SearXNG JSON API 配置 formats",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:40:05.365777+00:00",
+      "status_code": 200,
+      "bytes": 19987,
+      "sha256": "8cfd5ed82046e21837c1ad9f8c2f2200a6907f0c9f86ac909b73de6929e9847d",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-1-searxng/mix01-searxng-brave/response.json",
+      "latency_ms": 689.67
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "url": "https://docs.searxng.org/dev/search_api.html",
+      "title": "Search API - SearXNG Documentation (2026.9.7+3e454637f)",
+      "content": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly.",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "docs.searxng.org",
+        "/dev/search_api.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.reddit.com/r/Searx/comments/1g3egc4/public_searxng_instance_that_supports_json/",
+      "title": "r/Searx on Reddit: Public Searxng instance that supports json?",
+      "content": "",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.reddit.com",
+        "/r/Searx/comments/1g3egc4/public_searxng_instance_that_supports_json/",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        3,
+        13
+      ],
+      "score": 0.8205128205128205,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://docs.searxng.org/dev/engines/json_engine.html",
+      "title": "JSON Engine - SearXNG Documentation (2026.9.7+3e454637f)",
+      "content": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · send_page_num_on_first_page",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "docs.searxng.org",
+        "/dev/engines/json_engine.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://github.com/searxng/searxng/discussions/3542",
+      "title": "not returning json results, only html · searxng/searxng · Discussion #3542",
+      "content": "",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "github.com",
+        "/searxng/searxng/discussions/3542",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://python.langchain.com.cn/docs/ecosystem/integrations/searx",
+      "title": "SearxNG 搜索 API | 🦜️🔗 Langchain",
+      "content": "虽然可以与 公共 searx 实例 一起使用该包装器，但这些实例经常不允许 API 访问（有关输出格式的注意事项，请参见下面的说明）并且对请求的频率有限制。 建议选择自托管的实例。 ... 当您安装 SearxNG 时，默认情况下只有 HTML 格式是活动的输出格式。 您需要激活 json 格式以使用 API。可以通过将以下行添加到 settings.yml 文件中完成：",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "python.langchain.com.cn",
+        "/docs/ecosystem/integrations/searx",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://lagnchain.readthedocs.io/en/latest/ecosystem/searx.html",
+      "title": "SearxNG Search API — 🦜🔗 LangChain 0.0.149",
+      "content": "While it is possible to utilize ... page for installation instructions. When you install SearxNG, the only active output format by default is the HTML format. You need to activate the json format to use the API....",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "lagnchain.readthedocs.io",
+        "/en/latest/ecosystem/searx.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        11
+      ],
+      "score": 0.09090909090909091,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://railway.com/deploy/searxng-open-source-search-api-for-ai-agents--searxng-search-api",
+      "title": "Deploy & Host SearXNG | Open Source Search API for AI Agents | Railway",
+      "content": "You should receive a JSON object with a results array. If you see a 403 Forbidden, the settings.yml is not being applied — check that no volume is mounted at /etc/searxng. For AI integrations, use the base URL directly in tools like n8n, Flowise, LiteLLM, or LangChain with format=json appended to the search endpoint.",
+      "publishedDate": "2026-04-03T00:00:00",
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "railway.com",
+        "/deploy/searxng-open-source-search-api-for-ai-agents--searxng-search-api",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        16
+      ],
+      "score": 0.0625,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2026-04-03 00:00:00"
+    },
+    {
+      "template": "default.html",
+      "url": "https://docs.searxng.org/admin/settings/index.html",
+      "title": "Settings - SearXNG Documentation (2026.8.12+cdfdaa5a8)",
+      "content": "Administration API · Architecture · List of plugins · Buildhosts · Developer documentation · Development Quickstart · Git Commits & Change Management · How to contribute · Extended Types · Engine Implementations · Engine Library · SearXNG’s engines loader · Engine Overview · Demo Online Engine · XPath Engine · MediaWiki Engine · JSON ...",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "docs.searxng.org",
+        "/admin/settings/index.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        17
+      ],
+      "score": 0.058823529411764705,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://return42.github.io/searxng/dev/engines/json_engine.html",
+      "title": "JSON Engine — SearXNG Documentation (2025.5.30+37d851fb2)",
+      "content": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · content_html_to_text",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "return42.github.io",
+        "/searxng/dev/engines/json_engine.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        20
+      ],
+      "score": 0.05,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.cloudzun.com/posts/2026-02-09-searxng-full-deployment-guide/",
+      "title": "Building a Self-Hosted SearxNG Search Engine with JSON API Wrapper | CloudZun",
+      "content": "┌─────────────────────────────────┐ │ 用户 / 应用层 │ │ (client application) │ └────────────┬──────────────────────┘ │ HTTP JSON/RSS ▼ ┌─────────────────────────────────┐ │ Wrapper (Python HTTP Server) │ │ 127.0.0.1:8765 │ │ - 认证 (API key) │ │ - HTML→JSON 解析 │ │ - RSS 生成 │ │ - systemd 管理 │ └───────────",
+      "publishedDate": "2026-02-09T00:00:00",
+      "thumbnail": "https://imgs.search.brave.com/WzdOHWWyZCPT6dWCITXh8eOab9MybaU8XI-uRNwZQH0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/Y2xvdWR6dW4uY29t/L2Nsb3VkenVuLW9n/LmpwZw",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.cloudzun.com",
+        "/posts/2026-02-09-searxng-full-deployment-guide/",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2026-02-09 00:00:00"
+    }
+  ],
+  "raw_response": {
+    "query": "SearXNG JSON API 配置 formats",
+    "results": [
+      {
+        "template": "default.html",
+        "url": "https://docs.searxng.org/dev/search_api.html",
+        "title": "Search API - SearXNG Documentation (2026.9.7+3e454637f)",
+        "content": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly.",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "docs.searxng.org",
+          "/dev/search_api.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.reddit.com/r/Searx/comments/1g3egc4/public_searxng_instance_that_supports_json/",
+        "title": "r/Searx on Reddit: Public Searxng instance that supports json?",
+        "content": "",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.reddit.com",
+          "/r/Searx/comments/1g3egc4/public_searxng_instance_that_supports_json/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          3,
+          13
+        ],
+        "score": 0.8205128205128205,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://docs.searxng.org/dev/engines/json_engine.html",
+        "title": "JSON Engine - SearXNG Documentation (2026.9.7+3e454637f)",
+        "content": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · send_page_num_on_first_page",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "docs.searxng.org",
+          "/dev/engines/json_engine.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://github.com/searxng/searxng/discussions/3542",
+        "title": "not returning json results, only html · searxng/searxng · Discussion #3542",
+        "content": "",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/searxng/searxng/discussions/3542",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://python.langchain.com.cn/docs/ecosystem/integrations/searx",
+        "title": "SearxNG 搜索 API | 🦜️🔗 Langchain",
+        "content": "虽然可以与 公共 searx 实例 一起使用该包装器，但这些实例经常不允许 API 访问（有关输出格式的注意事项，请参见下面的说明）并且对请求的频率有限制。 建议选择自托管的实例。 ... 当您安装 SearxNG 时，默认情况下只有 HTML 格式是活动的输出格式。 您需要激活 json 格式以使用 API。可以通过将以下行添加到 settings.yml 文件中完成：",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "python.langchain.com.cn",
+          "/docs/ecosystem/integrations/searx",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://lagnchain.readthedocs.io/en/latest/ecosystem/searx.html",
+        "title": "SearxNG Search API — 🦜🔗 LangChain 0.0.149",
+        "content": "While it is possible to utilize ... page for installation instructions. When you install SearxNG, the only active output format by default is the HTML format. You need to activate the json format to use the API....",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "lagnchain.readthedocs.io",
+          "/en/latest/ecosystem/searx.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          11
+        ],
+        "score": 0.09090909090909091,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://railway.com/deploy/searxng-open-source-search-api-for-ai-agents--searxng-search-api",
+        "title": "Deploy & Host SearXNG | Open Source Search API for AI Agents | Railway",
+        "content": "You should receive a JSON object with a results array. If you see a 403 Forbidden, the settings.yml is not being applied — check that no volume is mounted at /etc/searxng. For AI integrations, use the base URL directly in tools like n8n, Flowise, LiteLLM, or LangChain with format=json appended to the search endpoint.",
+        "publishedDate": "2026-04-03T00:00:00",
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "railway.com",
+          "/deploy/searxng-open-source-search-api-for-ai-agents--searxng-search-api",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          16
+        ],
+        "score": 0.0625,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2026-04-03 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://docs.searxng.org/admin/settings/index.html",
+        "title": "Settings - SearXNG Documentation (2026.8.12+cdfdaa5a8)",
+        "content": "Administration API · Architecture · List of plugins · Buildhosts · Developer documentation · Development Quickstart · Git Commits & Change Management · How to contribute · Extended Types · Engine Implementations · Engine Library · SearXNG’s engines loader · Engine Overview · Demo Online Engine · XPath Engine · MediaWiki Engine · JSON ...",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "docs.searxng.org",
+          "/admin/settings/index.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          17
+        ],
+        "score": 0.058823529411764705,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://return42.github.io/searxng/dev/engines/json_engine.html",
+        "title": "JSON Engine — SearXNG Documentation (2025.5.30+37d851fb2)",
+        "content": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · content_html_to_text",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "return42.github.io",
+          "/searxng/dev/engines/json_engine.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          20
+        ],
+        "score": 0.05,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.cloudzun.com/posts/2026-02-09-searxng-full-deployment-guide/",
+        "title": "Building a Self-Hosted SearxNG Search Engine with JSON API Wrapper | CloudZun",
+        "content": "┌─────────────────────────────────┐ │ 用户 / 应用层 │ │ (client application) │ └────────────┬──────────────────────┘ │ HTTP JSON/RSS ▼ ┌─────────────────────────────────┐ │ Wrapper (Python HTTP Server) │ │ 127.0.0.1:8765 │ │ - 认证 (API key) │ │ - HTML→JSON 解析 │ │ - RSS 生成 │ │ - systemd 管理 │ └───────────",
+        "publishedDate": "2026-02-09T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/WzdOHWWyZCPT6dWCITXh8eOab9MybaU8XI-uRNwZQH0/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/Y2xvdWR6dW4uY29t/L2Nsb3VkenVuLW9n/LmpwZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.cloudzun.com",
+          "/posts/2026-02-09-searxng-full-deployment-guide/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2026-02-09 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://docs.litellm.ai/docs/search/searxng",
+        "title": "SearXNG Search | liteLLM",
+        "content": "Important: When you install SearXNG, the only active output format by default is the HTML format. You need to activate the JSON format to use the API.",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/Oqid6cfgpxRSa8Ec3cmTG30rDasoH11f5GCw95Ubbqk/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9kb2Nz/LmxpdGVsbG0uYWkv/aW1nL2RvY3VzYXVy/dXMtc29jaWFsLWNh/cmQucG5n",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "docs.litellm.ai",
+          "/docs/search/searxng",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://docs.openclaw.ai/tools/searxng-search",
+        "title": "SearXNG search · OpenClaw",
+        "content": "For SearXNG JSON API to work, make sure your SearXNG instance has the json format enabled in its settings.yml under search.formats.",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/-2XHCmNgqfbeV_7bRjUC4FnntXJ972itAxwRQvDiD_8/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9kb2Nz/Lm9wZW5jbGF3LmFp/L29nL3Rvb2xzL3Nl/YXJ4bmctc2VhcmNo/LnBuZz92PTk0ZDk2/NTNjNTRlYg",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "docs.openclaw.ai",
+          "/tools/searxng-search",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://dev.to/zand/discover-the-magic-of-searxng-service-and-empower-your-search-engine-api-87l",
+        "title": "Discover the Magic of SearXNG Service and Empower Your Search Engine API - DEV Community",
+        "content": "import { SearxngService, type SearxngServiceConfig } from 'searxng'; const config: SearxngServiceConfig = { baseURL: 'https://your-searxng-instance.com', defaultSearchParams: { format: 'json', lang: 'auto', }, defaultRequestHeaders: { 'Content-Type': 'application/json', }, }; const searxngService = new SearxngService(config);",
+        "publishedDate": "2024-07-22T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/TY5-Aj8X5AvwhoB5chS-32Mr8miDHFqxaxOTDPAM-Cw/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9tZWRp/YTIuZGV2LnRvL2R5/bmFtaWMvaW1hZ2Uv/d2lkdGg9MTA4MCxo/ZWlnaHQ9MTA4MCxm/aXQ9Y292ZXIsZ3Jh/dml0eT1hdXRvLGZv/cm1hdD1hdXRvL2h0/dHBzJTNBJTJGJTJG/ZGV2LXRvLXVwbG9h/ZHMuczMuYW1hem9u/YXdzLmNvbSUyRnVw/bG9hZHMlMkZhcnRp/Y2xlcyUyRnIyNW84/ODI0bnMzdXI5cmYy/MnZhLnBuZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "dev.to",
+          "/zand/discover-the-magic-of-searxng-service-and-empower-your-search-engine-api-87l",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2024-07-22 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://github.com/searxng/searxng/discussions/4470",
+        "title": "Can not get json format using API from a docker container · searxng/searxng · Discussion #4470",
+        "content": "I typed in the test url http://127.0.0.1:3001/search?q=this+is+a+test+query&format=json into my browser on my host machine and I got the json formating result in the brower. However, when I tested it using another container (open-webui container) in the same network by curl http://host.docker.internal:3001/search?q=this+is+a+test+query&format=json, I could only get html format response.",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/C1KriuzhOx73W5f9WAYR8aZzLUTvxVQuZaxpkqpjHUU/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9vcGVu/Z3JhcGguZ2l0aHVi/YXNzZXRzLmNvbS8y/ODNlNzc3OTc1YWFl/YjQ2ZDdkOTRmNzI5/MTlkMjE5NTQzN2Iz/NWIwMDE3YWZkYzY0/NjdlOGNlODFjYmFj/MjY4L3NlYXJ4bmcv/c2VhcnhuZy9kaXNj/dXNzaW9ucy80NDcw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/searxng/searxng/discussions/4470",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://github.com/searxng/searxng/blob/master/docs/dev/search_api.rst",
+        "title": "searxng/docs/dev/search_api.rst at master · searxng/searxng",
+        "content": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly.",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/mbDg4hbFN2SxInAnCpGn3AYV2tXRNUzwTatMBf2j3aI/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9vcGVu/Z3JhcGguZ2l0aHVi/YXNzZXRzLmNvbS9h/MjhiNDRkYWQyZDI2/YzlkNWJlMGI5Nzg4/MTkxY2VmZjYxOThl/N2QwMjY2OTFhYjJk/MjRkZGE0MmUwNzJi/NDJiL3NlYXJ4bmcv/c2VhcnhuZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/searxng/searxng/blob/master/docs/dev/search_api.rst",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          12
+        ],
+        "score": 0.08333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://github.com/community-scripts/ProxmoxVE/discussions/14394",
+        "title": "SearXNG: Enable JSON format in settings.yml by default to support API integrations · community-scripts/ProxmoxVE · Discussion #14394",
+        "content": "Current behavior The default settings.yml does not include json in the search.formats list, so any tool querying SearXNG via its JSON API will fail silently.",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/kUy-OHCHmyK_qk0tC3i3D0HFU_M5s4iY85Lu2tHub4Y/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9vcGVu/Z3JhcGguZ2l0aHVi/YXNzZXRzLmNvbS8w/MDQ2MzM3MzY4ZDAw/MDk5YTk3N2QyOWMz/Y2E1NDViYTg5MmY2/MTJiYzhiYWM1YmQ5/NDU4Y2ExYTQxMjcw/MWY2L2NvbW11bml0/eS1zY3JpcHRzL1By/b3htb3hWRS9kaXNj/dXNzaW9ucy8xNDM5/NA",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/community-scripts/ProxmoxVE/discussions/14394",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          14
+        ],
+        "score": 0.07142857142857142,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolsearxng",
+        "title": "SearXNG Tool | Nodes | n8n Docs",
+        "content": "To enable JSON output, add json to the search.formats section of your SearXNG instance's settings.yml file:",
+        "publishedDate": "2026-06-24T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/tSYN8bseOZokcAafPEbdJgQfeYndVYfmvKh6X3G6dDA/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9kb2Nz/Lm44bi5pby9-Z2l0/Ym9vay9pbWFnZT91/cmw9aHR0cHMlM0El/MkYlMkYyMDgzNDIw/MjM4LWZpbGVzLmdp/dGJvb2suaW8lMkYl/N0UlMkZmaWxlcyUy/RnYwJTJGYiUyRmdp/dGJvb2steC1wcm9k/LmFwcHNwb3QuY29t/JTJGbyUyRm9yZ2Fu/aXphdGlvbnMlMjUy/RmdrZUFhQkV2YndI/QjJObWVwVkhHJTI1/MkZzaXRlcyUyNTJG/c2l0ZV9RcDdRTSUy/NTJGc29jaWFscHJl/dmlldyUyNTJGQkpZ/dUpMUzgyOWU3d3Zn/UGRmNW0lMjUyRkdp/dEJvb2slMjUyMDEy/ODB4NjMwLnBuZyUz/RmFsdCUzRG1lZGlh/JTI2dG9rZW4lM0Q1/MzVhMTk5OC0zNDY3/LTQzOTAtYWVmOS0y/ZjY4ZmRiZTY4OGYm/YW1wO3dpZHRoPTEy/MDAmYW1wO2hlaWdo/dD02MzAmYW1wO3Np/Z249NjZjMTZhZDNh/ZWY3N2IyYjIyODYx/NGZlNzZjNmMzYTMm/YW1wO3N2PTM",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "docs.n8n.io",
+          "/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolsearxng",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          15
+        ],
+        "score": 0.06666666666666667,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2026-06-24 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://github.com/CherryHQ/cherry-studio/discussions/3701",
+        "title": "searxng的api地址按什么方式填写，怎么配置都验证失败 · CherryHQ/cherry-studio · Discussion #3701",
+        "content": "配置了自己的searxng服务，浏览器可以正常访问，也添加了json的支持。cherry studio的网络搜索配置中api地址该如何填写？自己试了在api地址填写searxng的内网访问地址http://searxng内网地址/或者http://searxng内网地址/search?q={query}&format=json两种形式...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/K0Sx4oTI-5UbXth9DhnnN6QMdEFk4ayDV932KaI8QOE/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9vcGVu/Z3JhcGguZ2l0aHVi/YXNzZXRzLmNvbS80/Y2UwNmY2YTFjOWM1/MDhjMTUyNGEwMWNk/ZmJiM2VkOGYwYzE5/NDQ4MDlmNGQyNTBi/OTllOTQxODk0NTk1/NDg1L0NoZXJyeUhR/L2NoZXJyeS1zdHVk/aW8vZGlzY3Vzc2lv/bnMvMzcwMQ",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/CherryHQ/cherry-studio/discussions/3701",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          18
+        ],
+        "score": 0.05555555555555555,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://github.com/searxng/searxng/blob/master/searx/settings.yml",
+        "title": "searxng/searx/settings.yml at master · searxng/searxng",
+        "content": "# https://docs.searxng.org/dev/engines/offline/search-indexer-engines.html#module-searx.engines.meilisearch ... search_url: https://api.openaire.eu/search/datasets?format=json&page={pageno}&size=10&title={query}",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/1TwtCHpJmnuB5t6p-4q_iqOxm5FERsgzp6vGHmG6I-c/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9vcGVu/Z3JhcGguZ2l0aHVi/YXNzZXRzLmNvbS82/NjAxNWI2ZWVlN2Yw/M2Q2OGE2NzcwYWYz/NzMwNzljYWQ1NjJl/Mjg1MjFlODQyZjMx/M2U2OWQ1ZWU1OWQ1/ODc2L3NlYXJ4bmcv/c2VhcnhuZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/searxng/searxng/blob/master/searx/settings.yml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          19
+        ],
+        "score": 0.05263157894736842,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://kl5212840-lang.github.io/robintools/articles/searxng-doc-review-workflow",
+        "title": "SearXNG 本地部署与 MCP 接入：搭建私有搜索引擎做技术文档交叉验证 | AI Tools Guide | AI Tools Guide",
+        "content": "# 4. 重启容器使配置生效 · docker restart searxng复制 · 需要改三个地方： · yaml复制全部 · # 1. 开启 JSON API（MCP 接入必需） · search:复制 · formats:复制 · - html复制 · - json复制 · # 2. 启用百度（默认 disabled: true） ·",
+        "publishedDate": "2026-06-10T00:00:00",
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "kl5212840-lang.github.io",
+          "/robintools/articles/searxng-doc-review-workflow",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          21
+        ],
+        "score": 0.047619047619047616,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2026-06-10 00:00:00"
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "brave"
+  ],
+  "status": "success",
+  "latency_ms": 947.9,
+  "finished_at": "2026-09-09T01:40:06.054813+00:00",
+  "url_count": 10,
+  "hostname_count": 8,
+  "exact_url_duplicates": 0
+}

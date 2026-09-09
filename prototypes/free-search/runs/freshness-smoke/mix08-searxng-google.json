@@ -1,0 +1,779 @@
+{
+  "query_id": "mix08",
+  "query": "Firefox release notes 2026 9月",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-09T01:45:44.786413+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Firefox release notes 2026 9月",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:45:44.978068+00:00",
+      "status_code": 200,
+      "bytes": 8139,
+      "sha256": "fb014a1e6364b92b97593d7ecb7af8f71bd18a26151f07547da7245e34cffeb1",
+      "marker_hints": [],
+      "local_body": "raw-private/freshness-smoke/mix08-searxng-google/response.json",
+      "latency_ms": 917.67
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Firefox Release Notes",
+      "content": "Firefox release notes are specific to each version of the application. Select your version from the list below to see the release notes for it.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://www.firefox.com/en-US/releases/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.firefox.com",
+        "/en-US/releases/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Firefox 154.0, See All New Features, Updates and Fixes",
+      "content": "Aug 18, 2026 · 2026 Version 154.0, New Firefox's Local Network Access protections now extend to WebSocket connections. now suggest groups of related tabs … a ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://www.firefox.com/firefox/154.0/releasenotes/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.firefox.com",
+        "/firefox/154.0/releasenotes/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Mozilla Firefox Release Notes",
+      "content": "The latest version of Firefox has the following changes: Added Type Inference, significantly improving JavaScript performance Improved theme integration for ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://www.mozilla.org/ja/firefox/9.0.1/releasenotes/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.mozilla.org",
+        "/ja/firefox/9.0.1/releasenotes/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Firefox Updates by Mozilla - September 2026 - Releasebot",
+      "content": "4 days ago · Firefox releases 152.0.6 with New Smart Window enhancements, including built-in assistant actions for selected text and a shortcut row on New ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://releasebot.io/updates/mozilla/firefox",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "releasebot.io",
+        "/updates/mozilla/firefox",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Firefox 155.0, See All New Features, Updates and Fixes",
+      "content": "8 days ago · Firefox Release September 1, 2026 Version 155.0, first offered to Release channel users. New Smart Window is now available for all users in the ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://www.firefox.com/firefox/155.0/releasenotes/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.firefox.com",
+        "/firefox/155.0/releasenotes/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Firefox will start pushing new releases every two weeks, twice ...",
+      "content": "Jul 10, 2026 · The current target is to release Firefox 155 on September 1, 2026, instead of September 15. These include fixes for security issues or new bugs",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://www.reddit.com/r/firefox/comments/1usr4yp/firefox_will_start_pushing_new_releases_every_two/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.reddit.com",
+        "/r/firefox/comments/1usr4yp/firefox_will_start_pushing_new_releases_every_two/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Firefox Release Calendar",
+      "content": "Upcoming releases. 2026. Quarter, Version, Matching ESR, Release Owner, Nightly starts, Beta starts, Release day. Q3, 156, 140.16 + 153.3 + 115.41.0, Donal ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://whattrainisitnow.com/calendar/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "whattrainisitnow.com",
+        "/calendar/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Mozilla Firefoxのバージョンの変遷 - Wikipedia",
+      "content": "この記事では、主にデスクトップ版のMozilla Firefoxのバージョン変遷を掲載していく。 Android 版については、 Firefox for Mobile を参照。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://ja.wikipedia.org/wiki/Mozilla_Firefox%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E5%A4%89%E9%81%B7",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "ja.wikipedia.org",
+        "/wiki/Mozilla_Firefox%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E5%A4%89%E9%81%B7",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Firefox 148.0, See All New Features, Updates and Fixes",
+      "content": "Feb 24, 2026 · Added an AI Controls section to Settings for managing AI-enhanced features. · Firefox now has improved support for screen readers accessing ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://www.firefox.com/firefox/148.0/releasenotes/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.firefox.com",
+        "/firefox/148.0/releasenotes/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "GitHub - mozilla/release-notes",
+      "content": "Release notes and system requirements for Mozilla products in JSON format. Usage. To update the data in this repo you can run a simple script which will pull ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://github.com/mozilla/release-notes",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "github.com",
+        "/mozilla/release-notes",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "Firefox release notes 2026 9月",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Firefox Release Notes",
+        "content": "Firefox release notes are specific to each version of the application. Select your version from the list below to see the release notes for it.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://www.firefox.com/en-US/releases/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.firefox.com",
+          "/en-US/releases/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Firefox 154.0, See All New Features, Updates and Fixes",
+        "content": "Aug 18, 2026 · 2026 Version 154.0, New Firefox's Local Network Access protections now extend to WebSocket connections. now suggest groups of related tabs … a ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://www.firefox.com/firefox/154.0/releasenotes/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.firefox.com",
+          "/firefox/154.0/releasenotes/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Mozilla Firefox Release Notes",
+        "content": "The latest version of Firefox has the following changes: Added Type Inference, significantly improving JavaScript performance Improved theme integration for ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://www.mozilla.org/ja/firefox/9.0.1/releasenotes/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.mozilla.org",
+          "/ja/firefox/9.0.1/releasenotes/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Firefox Updates by Mozilla - September 2026 - Releasebot",
+        "content": "4 days ago · Firefox releases 152.0.6 with New Smart Window enhancements, including built-in assistant actions for selected text and a shortcut row on New ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://releasebot.io/updates/mozilla/firefox",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "releasebot.io",
+          "/updates/mozilla/firefox",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Firefox 155.0, See All New Features, Updates and Fixes",
+        "content": "8 days ago · Firefox Release September 1, 2026 Version 155.0, first offered to Release channel users. New Smart Window is now available for all users in the ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://www.firefox.com/firefox/155.0/releasenotes/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.firefox.com",
+          "/firefox/155.0/releasenotes/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Firefox will start pushing new releases every two weeks, twice ...",
+        "content": "Jul 10, 2026 · The current target is to release Firefox 155 on September 1, 2026, instead of September 15. These include fixes for security issues or new bugs",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://www.reddit.com/r/firefox/comments/1usr4yp/firefox_will_start_pushing_new_releases_every_two/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.reddit.com",
+          "/r/firefox/comments/1usr4yp/firefox_will_start_pushing_new_releases_every_two/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Firefox Release Calendar",
+        "content": "Upcoming releases. 2026. Quarter, Version, Matching ESR, Release Owner, Nightly starts, Beta starts, Release day. Q3, 156, 140.16 + 153.3 + 115.41.0, Donal ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://whattrainisitnow.com/calendar/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "whattrainisitnow.com",
+          "/calendar/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Mozilla Firefoxのバージョンの変遷 - Wikipedia",
+        "content": "この記事では、主にデスクトップ版のMozilla Firefoxのバージョン変遷を掲載していく。 Android 版については、 Firefox for Mobile を参照。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://ja.wikipedia.org/wiki/Mozilla_Firefox%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E5%A4%89%E9%81%B7",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "ja.wikipedia.org",
+          "/wiki/Mozilla_Firefox%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E5%A4%89%E9%81%B7",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Firefox 148.0, See All New Features, Updates and Fixes",
+        "content": "Feb 24, 2026 · Added an AI Controls section to Settings for managing AI-enhanced features. · Firefox now has improved support for screen readers accessing ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://www.firefox.com/firefox/148.0/releasenotes/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.firefox.com",
+          "/firefox/148.0/releasenotes/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "GitHub - mozilla/release-notes",
+        "content": "Release notes and system requirements for Mozilla products in JSON format. Usage. To update the data in this repo you can run a simple script which will pull ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://github.com/mozilla/release-notes",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/mozilla/release-notes",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "ftp mozilla download",
+      "firefox 145.0 1",
+      "firefox 145.0 2",
+      "firefox 154 release date",
+      "firefox 150 release",
+      "netflix firefox not supported",
+      "firefox 143.0 1",
+      "firefox 144.0 2",
+      "firefox download",
+      "firefox esr 140.5 0"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "latency_ms": 1109.59,
+  "finished_at": "2026-09-09T01:45:45.895650+00:00",
+  "url_count": 10,
+  "hostname_count": 7,
+  "exact_url_duplicates": 0
+}

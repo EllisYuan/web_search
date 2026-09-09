@@ -1,0 +1,56 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:44:21.819334+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Docker Desktop Windows WSL 2 backend 官方",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:44:22.020734+00:00",
+      "status_code": 200,
+      "bytes": 216,
+      "sha256": "18358bc42bfab6cd16c8b22d2998e4584a9240c02270700d3b290ec1d14c1476",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/smoke-2/mix02-searxng-brave/response.json",
+      "latency_ms": 36.3
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Docker Desktop Windows WSL 2 backend 官方",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 238.26,
+  "finished_at": "2026-09-09T01:44:22.057333+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

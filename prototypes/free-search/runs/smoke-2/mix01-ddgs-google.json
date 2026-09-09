@@ -1,0 +1,134 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:44:05.324346+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:44:05.324853+00:00",
+      "status_code": 200,
+      "bytes": 22620,
+      "sha256": "dd1d13eaa93a20da605b5f66b1d45c16a3b20c0e0749765a3b4ca8955199bb48",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-2/mix01-ddgs-google/http-0.html",
+      "latency_ms": 2153.11
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "SearXNG Search - LiteLLM",
+      "href": "https://docs.litellm.ai/docs/search/searxng",
+      "body": "When you install SearXNG, the only active output format by default is the HTML format. You need to activate the JSON format to use the API."
+    },
+    {
+      "title": "Step by step installation - SearXNG Documentation (2026.9.8+ ...",
+      "href": "https://docs.searxng.org/admin/installation-searxng.html",
+      "body": "In this section we show the setup of a SearXNG instance … formats: [html, csv, json, rss] formats:"
+    },
+    {
+      "title": "searxng/searx/settings.yml at master - GitHub",
+      "href": "https://github.com/searxng/searxng/blob/master/searx/settings.yml",
+      "body": "SearXNG is a free internet metasearch engine # formats: [html, csv, json, rss] formats: JSON - name: ayo engine: xpath"
+    },
+    {
+      "title": "Searxng Search — Free keyless meta-search aggregating 70+ ...",
+      "href": "https://hermes-agent.nousresearch.com/docs/user-guide/skills/optional/research/research-searxng-search",
+      "body": "call the SearXNG JSON API. Output format: json , csv , rss format=json engines. Use format=json : The default format may not be machine-readable. Always ..."
+    },
+    {
+      "title": "Settings - SearXNG Documentation (2026.9.8+3fdc6d753)",
+      "href": "https://docs.searxng.org/admin/settings/index.html",
+      "body": "Administration API · Architecture · List of plugins · Buildhosts · Developer ... JSON Engine · 500px · Adobe Stock · Alpine Linux Packages · Anna's Archive · Arch ..."
+    },
+    {
+      "title": "Run n8n and SearXNG Locally with Docker - didof.dev",
+      "href": "https://didof.dev/blog/setup-n8n-and-searxng-locally/",
+      "body": "Apr 20, 2025 · This will enable the SearXNG service to return responses in JSON format, which is essential for our AI Agent to process the data effectively."
+    },
+    {
+      "title": "SearXNG authorize issue although format: -json is allowed",
+      "href": "https://github.com/langgenius/dify/issues/12377",
+      "body": "Jan 5, 2025 · The issue was resolved by ensuring the correct format for the Authorization header, which should be 'Bearer '."
+    },
+    {
+      "title": "SearXNG MCP 服务器 - LobeHub",
+      "href": "https://lobehub.com/zh/mcp/ihor-sokoliuk-mcp-searxng",
+      "body": "私有网页搜索MCP 服务器，集成了SearXNG API，支持AI 助手进行网页搜索。需要将环境变量SEARXNG_URL 设置为指向您的SearXNG 实例或可互换的副本。"
+    },
+    {
+      "title": "Searxng | abk234 | OpenClaw.army",
+      "href": "https://openclaw.army/zh/skills/abk234/searxng/",
+      "body": "Fast JSON mode for programmatic use. API. Uses your local SearXNG JSON API endpoint (no authentication required by default). Related Skills. Email. v1.1.0."
+    },
+    {
+      "title": "Wuxing Search MCP by MaesHughes - Glama",
+      "href": "https://glama.ai/mcp/servers/MaesHughes/wuxing-search-mcp",
+      "body": "A privacy-focused search server built on SearXNG that provides unlimited, multi-source web searching across 100+ engines. It enables AI tools to perform ..."
+    }
+  ],
+  "results": [
+    {
+      "title": "SearXNG Search - LiteLLM",
+      "href": "https://docs.litellm.ai/docs/search/searxng",
+      "body": "When you install SearXNG, the only active output format by default is the HTML format. You need to activate the JSON format to use the API."
+    },
+    {
+      "title": "Step by step installation - SearXNG Documentation (2026.9.8+ ...",
+      "href": "https://docs.searxng.org/admin/installation-searxng.html",
+      "body": "In this section we show the setup of a SearXNG instance … formats: [html, csv, json, rss] formats:"
+    },
+    {
+      "title": "searxng/searx/settings.yml at master - GitHub",
+      "href": "https://github.com/searxng/searxng/blob/master/searx/settings.yml",
+      "body": "SearXNG is a free internet metasearch engine # formats: [html, csv, json, rss] formats: JSON - name: ayo engine: xpath"
+    },
+    {
+      "title": "Searxng Search — Free keyless meta-search aggregating 70+ ...",
+      "href": "https://hermes-agent.nousresearch.com/docs/user-guide/skills/optional/research/research-searxng-search",
+      "body": "call the SearXNG JSON API. Output format: json , csv , rss format=json engines. Use format=json : The default format may not be machine-readable. Always ..."
+    },
+    {
+      "title": "Settings - SearXNG Documentation (2026.9.8+3fdc6d753)",
+      "href": "https://docs.searxng.org/admin/settings/index.html",
+      "body": "Administration API · Architecture · List of plugins · Buildhosts · Developer ... JSON Engine · 500px · Adobe Stock · Alpine Linux Packages · Anna's Archive · Arch ..."
+    },
+    {
+      "title": "Run n8n and SearXNG Locally with Docker - didof.dev",
+      "href": "https://didof.dev/blog/setup-n8n-and-searxng-locally/",
+      "body": "Apr 20, 2025 · This will enable the SearXNG service to return responses in JSON format, which is essential for our AI Agent to process the data effectively."
+    },
+    {
+      "title": "SearXNG MCP 服务器 - LobeHub",
+      "href": "https://lobehub.com/zh/mcp/ihor-sokoliuk-mcp-searxng",
+      "body": "私有网页搜索MCP 服务器，集成了SearXNG API，支持AI 助手进行网页搜索。需要将环境变量SEARXNG_URL 设置为指向您的SearXNG 实例或可互换的副本。"
+    },
+    {
+      "title": "Searxng | abk234 | OpenClaw.army",
+      "href": "https://openclaw.army/zh/skills/abk234/searxng/",
+      "body": "Fast JSON mode for programmatic use. API. Uses your local SearXNG JSON API endpoint (no authentication required by default). Related Skills. Email. v1.1.0."
+    },
+    {
+      "title": "SearXNG authorize issue although format: -json is allowed",
+      "href": "https://github.com/langgenius/dify/issues/12377",
+      "body": "Jan 5, 2025 · The issue was resolved by ensuring the correct format for the Authorization header, which should be 'Bearer '."
+    },
+    {
+      "title": "Wuxing Search MCP by MaesHughes - Glama",
+      "href": "https://glama.ai/mcp/servers/MaesHughes/wuxing-search-mcp",
+      "body": "A privacy-focused search server built on SearXNG that provides unlimited, multi-source web searching across 100+ engines. It enables AI tools to perform ..."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2155.73,
+  "finished_at": "2026-09-09T01:44:07.479177+00:00",
+  "url_count": 10,
+  "hostname_count": 8,
+  "exact_url_duplicates": 0
+}

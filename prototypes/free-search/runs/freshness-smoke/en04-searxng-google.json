@@ -1,0 +1,777 @@
+{
+  "query_id": "en04",
+  "query": "Python 3.14 release September 2026",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-09T01:45:34.006637+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python 3.14 release September 2026",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:45:34.201210+00:00",
+      "status_code": 200,
+      "bytes": 8052,
+      "sha256": "b5f4fadb0844d01a5b2316e4650a36640c0bc964f3ef0e6a732645be1b6e847e",
+      "marker_hints": [],
+      "local_body": "raw-private/freshness-smoke/en04-searxng-google/response.json",
+      "latency_ms": 899.67
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Python Source Releases",
+      "content": "The official home of the Python Programming Language. Python 3.13.14 - June 10, 2026 Download Gzipped source tarball Download - Sept. 1, 2026 Download Gzipped ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://www.python.org/downloads/source/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.python.org",
+        "/downloads/source/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python documentation by version",
+      "content": "Python 3.13.15, released on 5 August 2026 · Python 3.13.14, released on 10 June 2026 · Python 3.13.13, released on 7 April 2026 · Python 3.13.12, released on 3 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://www.python.org/doc/versions/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.python.org",
+        "/doc/versions/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Tuesday, 1st September 2026 - Simon Willison's Weblog",
+      "content": "8 days ago · Tuesday, 1st September 2026. Python 3.15.0 candidate 2 is here! (via) Hugo van Kemenade (release manager for Python 3.14 and 3.15) announces ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://simonwillison.net/2026/Sep/1/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "simonwillison.net",
+        "/2026/Sep/1/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "PEP 745 – Python 3.14 Release Schedule",
+      "content": "Apr 24, 2024 · Python 3.14 will receive bugfix updates approximately every two months for approximately 24 months. Around the time of the release of 3.16.0 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://peps.python.org/pep-0745/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "peps.python.org",
+        "/pep-0745/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14 in 2026: What's New, What's Faster, and When ...",
+      "content": "Mar 5, 2026 · Python 3.14 isn't a “syntactic sugar” release. It's Python getting more serious about structured string processing, concurrency primitives, ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://medium.com/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "medium.com",
+        "/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14: What Data Scientists & Developers Need to Know",
+      "content": "Dec 11, 2025 · Alpha releases: Starting in early 2025 · Beta releases: Mid-2025 · Release candidate: September 2025 · Final release: October 2025.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://www.anaconda.com/blog/python-3-14-what-data-scientists-developers-need-know",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.anaconda.com",
+        "/blog/python-3-14-what-data-scientists-developers-need-know",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python End-of-Life Dates: Every Version's Support Timeline",
+      "content": "Mar 17, 2026 · Python 3.10 is currently in its security-only phase and reaches end of life on October 31, 2026, approximately 8 months from now. This is the ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://www.herodevs.com/blog-posts/python-end-of-life-dates-every-versions-support-timeline",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.herodevs.com",
+        "/blog-posts/python-end-of-life-dates-every-versions-support-timeline",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14 Released and Other Python News for November ...",
+      "content": "Nov 10, 2025 · Python 3.15 is scheduled for final release in October 2026. The alpha period, which will run through April 2026, is when new features land.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://realpython.com/python-news-november-2025/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "realpython.com",
+        "/python-news-november-2025/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "100 Days of Python 3.14 on conda-forge",
+      "content": "Jan 15, 2026 · With 1,932 binary packages available at the 100-day mark, Python 3.14 has surpassed all previous Python releases in early availability. The ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://conda-forge.org/blog/2026/01/15/100-days-python314/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "conda-forge.org",
+        "/blog/2026/01/15/100-days-python314/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14.6 and 3.13.14 are now available!",
+      "content": "Jun 10, 2026 · Python 3.13.14 is the fourteenth maintenance release of 3.13, containing around 240 bugfixes, build improvements and documentation changes since ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://blog.python.org/2026/06/python-3146-31314/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "blog.python.org",
+        "/2026/06/python-3146-31314/",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "Python 3.14 release September 2026",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Python Source Releases",
+        "content": "The official home of the Python Programming Language. Python 3.13.14 - June 10, 2026 Download Gzipped source tarball Download - Sept. 1, 2026 Download Gzipped ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://www.python.org/downloads/source/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.python.org",
+          "/downloads/source/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python documentation by version",
+        "content": "Python 3.13.15, released on 5 August 2026 · Python 3.13.14, released on 10 June 2026 · Python 3.13.13, released on 7 April 2026 · Python 3.13.12, released on 3 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://www.python.org/doc/versions/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.python.org",
+          "/doc/versions/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Tuesday, 1st September 2026 - Simon Willison's Weblog",
+        "content": "8 days ago · Tuesday, 1st September 2026. Python 3.15.0 candidate 2 is here! (via) Hugo van Kemenade (release manager for Python 3.14 and 3.15) announces ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://simonwillison.net/2026/Sep/1/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "simonwillison.net",
+          "/2026/Sep/1/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "PEP 745 – Python 3.14 Release Schedule",
+        "content": "Apr 24, 2024 · Python 3.14 will receive bugfix updates approximately every two months for approximately 24 months. Around the time of the release of 3.16.0 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://peps.python.org/pep-0745/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "peps.python.org",
+          "/pep-0745/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14 in 2026: What's New, What's Faster, and When ...",
+        "content": "Mar 5, 2026 · Python 3.14 isn't a “syntactic sugar” release. It's Python getting more serious about structured string processing, concurrency primitives, ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://medium.com/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "medium.com",
+          "/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14: What Data Scientists & Developers Need to Know",
+        "content": "Dec 11, 2025 · Alpha releases: Starting in early 2025 · Beta releases: Mid-2025 · Release candidate: September 2025 · Final release: October 2025.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://www.anaconda.com/blog/python-3-14-what-data-scientists-developers-need-know",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.anaconda.com",
+          "/blog/python-3-14-what-data-scientists-developers-need-know",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python End-of-Life Dates: Every Version's Support Timeline",
+        "content": "Mar 17, 2026 · Python 3.10 is currently in its security-only phase and reaches end of life on October 31, 2026, approximately 8 months from now. This is the ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://www.herodevs.com/blog-posts/python-end-of-life-dates-every-versions-support-timeline",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.herodevs.com",
+          "/blog-posts/python-end-of-life-dates-every-versions-support-timeline",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14 Released and Other Python News for November ...",
+        "content": "Nov 10, 2025 · Python 3.15 is scheduled for final release in October 2026. The alpha period, which will run through April 2026, is when new features land.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://realpython.com/python-news-november-2025/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "realpython.com",
+          "/python-news-november-2025/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "100 Days of Python 3.14 on conda-forge",
+        "content": "Jan 15, 2026 · With 1,932 binary packages available at the 100-day mark, Python 3.14 has surpassed all previous Python releases in early availability. The ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://conda-forge.org/blog/2026/01/15/100-days-python314/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "conda-forge.org",
+          "/blog/2026/01/15/100-days-python314/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14.6 and 3.13.14 are now available!",
+        "content": "Jun 10, 2026 · Python 3.13.14 is the fourteenth maintenance release of 3.13, containing around 240 bugfixes, build improvements and documentation changes since ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://blog.python.org/2026/06/python-3146-31314/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "blog.python.org",
+          "/2026/06/python-3146-31314/",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "python version 2026",
+      "python 3.14 versions",
+      "python 3.14 release schedule",
+      "python 3.12 release date",
+      "python 3.9 release date",
+      "python 3.14 release date",
+      "python 3.10 release date",
+      "python 3.14 3 release date"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "latency_ms": 1094.61,
+  "finished_at": "2026-09-09T01:45:35.100932+00:00",
+  "url_count": 10,
+  "hostname_count": 9,
+  "exact_url_duplicates": 0
+}

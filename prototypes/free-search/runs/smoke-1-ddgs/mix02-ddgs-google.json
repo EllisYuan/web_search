@@ -1,0 +1,34 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:39:36.943598+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:39:36.944538+00:00",
+      "status_code": 200,
+      "bytes": 5634,
+      "sha256": "f9ce688678f1ffd3173116c27e5b14e05ca246d6f95f89d767ebde8b585bfc2c",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-1-ddgs/mix02-ddgs-google/http-0.html",
+      "latency_ms": 2079.03
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "empty_or_parse_failure",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "latency_ms": 2080.71,
+  "finished_at": "2026-09-09T01:39:39.024060+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

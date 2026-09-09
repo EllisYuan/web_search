@@ -1,0 +1,176 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:39:44.684060+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T01:39:44.684566+00:00",
+      "status_code": 200,
+      "bytes": 318622,
+      "sha256": "03723e56d1e410291f04583c72ea62b0fcd18e218fcdc45788b4ea1c45b87bd5",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-1-ddgs/mix02-ddgs-brave/http-0.html",
+      "latency_ms": 2062.62
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows | Docker Docs",
+      "href": "https://docs.docker.com/desktop/features/wsl/",
+      "body": "5 days ago - Windows Subsystem for Linux (WSL) 2 is a full Linux kernel built by Microsoft that lets Linux distributions run without managing virtual machines. With Docker Desktop running on WSL 2, users can leverage Linux workspaces and avoid maintaining ..."
+    },
+    {
+      "title": "Install Docker Desktop for Windows with WSL2 backend · GitHub",
+      "href": "https://gist.github.com/miliarch/59953116f1e919b1e5ad4ed23fae7d29",
+      "body": "For information on key differences with WSL 2 please visit https://aka.ms/wsl2 Conversion complete. Navigate to https://www.docker.com/products/docker-desktop"
+    },
+    {
+      "title": "Install Docker Desktop on Windows | Docker Docs",
+      "href": "https://docs.docker.com/desktop/setup/install/windows-install/",
+      "body": "2 days ago - Docker Desktop for Windows supports three backends: WSL 2, Hyper-V, and Docker VMM (Beta). WSL 2 is the default and works for most users without administrator privileges. Hyper-V is only available with all-users installation."
+    },
+    {
+      "title": "Introducing the Docker Desktop WSL 2 Backend | Docker",
+      "href": "https://www.docker.com/blog/new-docker-desktop-wsl2-backend/",
+      "body": "August 11, 2022 - As an example, WSL 2 is supported on Windows 10 Home. We want to take advantage of that to reach new users in the future (nothing to announce yet, but it is definitely in our backlog). This new backend paves the way for exciting new features to come, and we are eager to hear your feedback. We will be releasing the new WSL 2 architecture as part of the next Docker Desktop Edge release."
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "href": "https://docs.docker.com/desktop/features/wsl.md",
+      "body": "Windows Subsystem for Linux (WSL) 2 is a full Linux kernel built by Microsoft that lets Linux distributions run without managing virtual machines. With Docker Desktop running on WSL 2, users can leverage Linux workspaces and avoid maintaining both Linux and Windows build scripts."
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "href": "https://docker.github.net.cn/desktop/wsl/",
+      "body": "February 15, 2024 - Windows Subsystem for Linux (WSL) ...拟机的情况下运行。通过在 WSL 2 上运行 Docker Desktop，用户可以利用 Linux 工作区并避免同时维护 Linux 和 Windows 构建脚本。此外，WSL 2 还改进了文..."
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend | Docker Documentation",
+      "href": "https://docker-docs.uclv.cu/docker-for-windows/wsl/",
+      "body": "June 5, 2020 - Enable WSL 2 feature on Windows. For detailed instructions, refer to the Microsoft documentation. Download and install the Linux kernel update package. Download Docker Desktop Stable 2.3.0.2 or a later release. Ensure you have completed the steps described in the Prerequisites section before installing the Docker Desktop Stable 2.3.0.2 release. Follow the usual installation instructions to install Docker Desktop."
+    },
+    {
+      "title": "Docker Desktop WSL 2 バックエンド | Docker ドキュメント",
+      "href": "https://matsuand.github.io/docs.docker.jp.onthefly/desktop/windows/wsl/",
+      "body": "April 29, 2022 - Windows Subsystem for Linux (WSL) 2 は、Microsoft がビルドした完全な Linux カーネルを導入する、画期的な構造変化をもたらします。 これにより Linux コンテナーはエミュレーションとしてではなく、ネイティブな実行が可能になります。 WSL 2 上において Docker Desktop を実行すれば、Linux ワークスペースの活用が可能となり、Linux と Windows の双方に対するビルドスクリプトを準備する必要はなくなります。 また WSL 2 では、ファイルシステム共有や起動時間に関する改善がなされていて、Docker Desktop ユーザーにとって、優れた機能を利用できるものになりました。"
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows · Issue #14548 · docker/for-win",
+      "href": "https://github.com/docker/for-win/issues/14548",
+      "body": "January 21, 2025 - For details about using Docker Desktop with WSL 2, visit: https://docs.docker.com/go/wsl2/"
+    },
+    {
+      "title": "Install Docker Desktop on Windows 10 & 11 (WSL2 Guide) | MCSA Guru",
+      "href": "https://mcsaguru.com/install-docker-desktop-windows",
+      "body": "July 5, 2026 - The WSL2 backend runs Docker inside the Windows Subsystem for Linux 2 VM, which is lightweight and shares resources dynamically with Windows. The Hyper-V backend runs Docker in a dedicated Hyper-V VM with a fixed memory allocation."
+    },
+    {
+      "title": "WSL | Docker Docs",
+      "href": "https://docker.ubitools.com/desktop/features/wsl/",
+      "body": "December 17, 2025 - To avoid any potential conflicts with using WSL 2 on Docker Desktop, you must uninstall any previous versions of Docker Engine and CLI installed directly through Linux distributions before installing Docker Desktop. Download and install the latest version of Docker Desktop for Windows."
+    },
+    {
+      "title": "Install Docker Desktop on Windows — WSL 2 & ARM64 Guide (2026)",
+      "href": "https://usedocker.com/install/windows",
+      "body": "June 17, 2026 - Open Docker Desktop → Settings → Resources. Under the WSL 2 backend, the engine inherits memory dynamically from Windows, but you can pin a hard ceiling by editing %USERPROFILE%\\.wslconfig and adding a [wsl2] section with memory=8GB and ..."
+    },
+    {
+      "title": "Complete Docker Desktop Installation Guide for Windows | Demon Warrior Tech Docs",
+      "href": "https://docs.demonwarriortech.com/Documented+Tutorials/Docker/Docker_Desktop_Install_on_Windows/",
+      "body": "January 28, 2026 - Docker Desktop is an integrated ... State ... WSL2 (Windows Subsystem for Linux 2) provides the Linux kernel required for Docker Desktop's optimal performance on Windows...."
+    },
+    {
+      "title": "【Docker Desktop】Windowsにインストール（WSL2）",
+      "href": "https://chigusa-web.com/blog-en/",
+      "body": "June 25, 2026 - One engineer. Many products · Build it. Write about it. Ship it"
+    },
+    {
+      "title": "Install Docker Desktop on Windows - DEV Community",
+      "href": "https://dev.to/meghasharmaaaa/install-docker-desktop-on-windows-31ni",
+      "body": "October 28, 2024 - Turn on BIOS-level hardware virtualization support in the BIOS settings. For more information, see Virtualization. Download the installer using the download button at the top of the page, or from the docker.com/products/docker-desktop."
+    },
+    {
+      "title": "Installing Docker Desktop for Windows and WSL 2",
+      "href": "https://andrewlock.net/installing-docker-desktop-for-windows/",
+      "body": "March 9, 2021 - In this post, I describe how to install WSL 2 to serve as the backend for Docker Desktop for Windows."
+    },
+    {
+      "title": "Is there any way to use WSL2 back-end with Windows Containers? · Issue #571 · microsoft/Windows-Containers",
+      "href": "https://github.com/microsoft/Windows-Containers/issues/571",
+      "body": "March 6, 2025 - Key points to remember: Install Docker Desktop: Download and install the latest version of Docker Desktop for Windows. Enable WSL 2: During installation, ensure WSL 2 is enabled on your system."
+    },
+    {
+      "title": "Develop with Docker Desktop using WSL 2 on Windows | Docker Docs",
+      "href": "https://docs.docker.com/desktop/features/wsl/use-wsl/",
+      "body": "May 28, 2026 - Before you begin, make sure you have enabled WSL 2 integration in Docker Desktop under Settings > Resources > WSL Integration."
+    }
+  ],
+  "results": [
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows | Docker Docs",
+      "href": "https://docs.docker.com/desktop/features/wsl/",
+      "body": "5 days ago - Windows Subsystem for Linux (WSL) 2 is a full Linux kernel built by Microsoft that lets Linux distributions run without managing virtual machines. With Docker Desktop running on WSL 2, users can leverage Linux workspaces and avoid maintaining ..."
+    },
+    {
+      "title": "Install Docker Desktop for Windows with WSL2 backend · GitHub",
+      "href": "https://gist.github.com/miliarch/59953116f1e919b1e5ad4ed23fae7d29",
+      "body": "For information on key differences with WSL 2 please visit https://aka.ms/wsl2 Conversion complete. Navigate to https://www.docker.com/products/docker-desktop"
+    },
+    {
+      "title": "Install Docker Desktop on Windows | Docker Docs",
+      "href": "https://docs.docker.com/desktop/setup/install/windows-install/",
+      "body": "2 days ago - Docker Desktop for Windows supports three backends: WSL 2, Hyper-V, and Docker VMM (Beta). WSL 2 is the default and works for most users without administrator privileges. Hyper-V is only available with all-users installation."
+    },
+    {
+      "title": "Introducing the Docker Desktop WSL 2 Backend | Docker",
+      "href": "https://www.docker.com/blog/new-docker-desktop-wsl2-backend/",
+      "body": "August 11, 2022 - As an example, WSL 2 is supported on Windows 10 Home. We want to take advantage of that to reach new users in the future (nothing to announce yet, but it is definitely in our backlog). This new backend paves the way for exciting new features to come, and we are eager to hear your feedback. We will be releasing the new WSL 2 architecture as part of the next Docker Desktop Edge release."
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "href": "https://docs.docker.com/desktop/features/wsl.md",
+      "body": "Windows Subsystem for Linux (WSL) 2 is a full Linux kernel built by Microsoft that lets Linux distributions run without managing virtual machines. With Docker Desktop running on WSL 2, users can leverage Linux workspaces and avoid maintaining both Linux and Windows build scripts."
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "href": "https://docker.github.net.cn/desktop/wsl/",
+      "body": "February 15, 2024 - Windows Subsystem for Linux (WSL) ...拟机的情况下运行。通过在 WSL 2 上运行 Docker Desktop，用户可以利用 Linux 工作区并避免同时维护 Linux 和 Windows 构建脚本。此外，WSL 2 还改进了文..."
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend | Docker Documentation",
+      "href": "https://docker-docs.uclv.cu/docker-for-windows/wsl/",
+      "body": "June 5, 2020 - Enable WSL 2 feature on Windows. For detailed instructions, refer to the Microsoft documentation. Download and install the Linux kernel update package. Download Docker Desktop Stable 2.3.0.2 or a later release. Ensure you have completed the steps described in the Prerequisites section before installing the Docker Desktop Stable 2.3.0.2 release. Follow the usual installation instructions to install Docker Desktop."
+    },
+    {
+      "title": "Docker Desktop WSL 2 バックエンド | Docker ドキュメント",
+      "href": "https://matsuand.github.io/docs.docker.jp.onthefly/desktop/windows/wsl/",
+      "body": "April 29, 2022 - Windows Subsystem for Linux (WSL) 2 は、Microsoft がビルドした完全な Linux カーネルを導入する、画期的な構造変化をもたらします。 これにより Linux コンテナーはエミュレーションとしてではなく、ネイティブな実行が可能になります。 WSL 2 上において Docker Desktop を実行すれば、Linux ワークスペースの活用が可能となり、Linux と Windows の双方に対するビルドスクリプトを準備する必要はなくなります。 また WSL 2 では、ファイルシステム共有や起動時間に関する改善がなされていて、Docker Desktop ユーザーにとって、優れた機能を利用できるものになりました。"
+    },
+    {
+      "title": "Docker Desktop WSL 2 backend on Windows · Issue #14548 · docker/for-win",
+      "href": "https://github.com/docker/for-win/issues/14548",
+      "body": "January 21, 2025 - For details about using Docker Desktop with WSL 2, visit: https://docs.docker.com/go/wsl2/"
+    },
+    {
+      "title": "Install Docker Desktop on Windows 10 & 11 (WSL2 Guide) | MCSA Guru",
+      "href": "https://mcsaguru.com/install-docker-desktop-windows",
+      "body": "July 5, 2026 - The WSL2 backend runs Docker inside the Windows Subsystem for Linux 2 VM, which is lightweight and shares resources dynamically with Windows. The Hyper-V backend runs Docker in a dedicated Hyper-V VM with a fixed memory allocation."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 2072.15,
+  "finished_at": "2026-09-09T01:39:46.754854+00:00",
+  "url_count": 10,
+  "hostname_count": 8,
+  "exact_url_duplicates": 0
+}

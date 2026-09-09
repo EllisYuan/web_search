@@ -1,0 +1,56 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-09T01:39:51.126063+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL multicolumn indexes official documentation",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:39:51.317478+00:00",
+      "status_code": 200,
+      "bytes": 204,
+      "sha256": "2891a7593f8f62ad7fa2e87320ae2423c51b462ffd0ac92b3cd0df7d82231897",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/smoke-1-searxng/en01-searxng-duckduckgo/response.json",
+      "latency_ms": 415.22
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "PostgreSQL multicolumn indexes official documentation",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "upstream_failure",
+  "latency_ms": 606.95,
+  "finished_at": "2026-09-09T01:39:51.733057+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,34 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-09T01:39:01.278564+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-09T01:39:01.278564+00:00",
+      "status_code": 200,
+      "bytes": 5594,
+      "sha256": "cdddc1b7516ecded2e3b032e9312de5f303448672f5ad3e4df731d1e7fedc7c4",
+      "marker_hints": [],
+      "local_body": "raw-private/smoke-1-ddgs/en01-ddgs-google/http-0.html",
+      "latency_ms": 2267.48
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "empty_or_parse_failure",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "latency_ms": 2269.38,
+  "finished_at": "2026-09-09T01:39:03.547175+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

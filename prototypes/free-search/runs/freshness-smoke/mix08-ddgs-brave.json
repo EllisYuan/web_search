@@ -1,0 +1,186 @@
+{
+  "query_id": "mix08",
+  "query": "Firefox release notes 2026 9月",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T01:45:40.825891+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T01:45:40.827508+00:00",
+      "status_code": 200,
+      "bytes": 192231,
+      "sha256": "cb443c30252a2399bbc9b94ccad61345fd7760d1e4bdbb88b93bfbf1e9572626",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/freshness-smoke/mix08-ddgs-brave/http-0.html",
+      "latency_ms": 1951.23
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "Firefox Release Notes — Firefox.com",
+      "href": "https://www.firefox.com/en-US/releases/",
+      "body": "Release notes for each version of Firefox."
+    },
+    {
+      "title": "Firefox Release Schedule 2025 | Browser Calendar",
+      "href": "https://browsercalendar.com/browsers/firefox",
+      "body": "2 days ago - Firefox 155 is the current stable version, released september 1, 2026 — firefox 156 stable expected september 11, 2026. Mozilla Firefox maintains a rapid 4-week release cycle with new major versions shipping regularly."
+    },
+    {
+      "title": "Firefox Switches to Two-Week Release Cycle Starting September 2026 - gHacks Tech News",
+      "href": "https://www.ghacks.net/2026/07/14/firefox-switches-to-two-week-release-cycle-starting-september-2026/",
+      "body": "July 14, 2026 - Mozilla will move Firefox to a two-week release cycle starting September 2026, matching the cadence used by Chrome and Edge."
+    },
+    {
+      "title": "Firefox Release Notes for Enterprise | Firefox administrator reference",
+      "href": "https://firefox-admin-docs.mozilla.org/release-notes/",
+      "body": "Released 1 September 2026. These changes apply to Firefox 155 and Firefox ESR 153.2.0 unless explicitly stated."
+    },
+    {
+      "title": "Firefox Release Calendar",
+      "href": "https://whattrainisitnow.com/calendar/",
+      "body": "Follow Firefox trains and major milestones easily!"
+    },
+    {
+      "title": "Support:Releases - MozillaWiki",
+      "href": "https://wiki.mozilla.org/Support:Releases",
+      "body": "1.2 2026 releases · 1.3 Archives · 1.4 See also · As a contributor, please use the following resources to find out more information about Firefox releases. These links include official release notes, support articles, and community updates that can help you stay informed about what's new, what's changed, and what issues may have been fixed or introduced."
+    },
+    {
+      "title": "Firefox release notes - What's new and known issues | Mozilla Support",
+      "href": "https://support.mozilla.org/en-US/kb/firefox-release-notes-whats-new-and-known-issues",
+      "body": "March 30, 2026 - Links to Firefox release notes for Desktop, Android and iOS."
+    },
+    {
+      "title": "Firefox release notes for developers - Mozilla | MDN",
+      "href": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases?retiredLocale=he",
+      "body": "Below you'll find links to the developer release notes for every Firefox release. These lovingly-crafted notes provide details on what features and APIs were added and improved and what bugs were eliminated in each version of Firefox. All written to give developers like you the information ..."
+    },
+    {
+      "title": "Firefox to Test a Two-Week Release Cycle Starting in September",
+      "href": "https://www.linuxtoday.com/blog/firefox-to-test-a-two-week-release-cycle-starting-in-september/",
+      "body": "2 weeks ago - Mozilla will test a two-week Firefox release cycle starting in September 2026, beginning with Firefox 155 on September 1 for desktop and Android."
+    },
+    {
+      "title": "Firefox Updates by Mozilla - August 2026 - Releasebot",
+      "href": "https://releasebot.io/updates/mozilla/firefox",
+      "body": "1 week ago - Reference link to 152.0.5 release notes. Original source ... Firefox fixes the Manage payment methods list in Settings when a saved card has no expiration date. Version 152.0.5, first offered to Release channel users on July 7, 2026"
+    },
+    {
+      "title": "See what's next for Firefox — Firefox.com",
+      "href": "https://www.firefox.com/en-US/whatsnext/",
+      "body": "July 10, 2026 - Release Notes · Firefox Roadmap · Looking for recent updates? See what’s new. Android iOS Desktop Clear all · Last updated: July 10, 2026 · Making it easier to get things done. A modernized design system that makes Firefox easier and more enjoyable to use ·"
+    },
+    {
+      "title": "Firefox 155 release notes for developers (Stable) - Mozilla | MDN",
+      "href": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/155",
+      "body": "3 days ago - This article provides information about the changes in Firefox 155 that affect developers. Firefox 155 was released on September 1, 2026."
+    },
+    {
+      "title": "Firefox version history - Wikipedia",
+      "href": "https://en.wikipedia.org/wiki/Firefox_version_history",
+      "body": "3 days ago - Mozilla uses A/B testing and a ... to all users. In 2020, Firefox moved to a four-week release cycle, to catch up with Chrome in support for new web features. Chrome switched to a four-week cycle a year later. Starting September 2026 Firefox move from 4 week release ..."
+    },
+    {
+      "title": "Firefox 155.0.1, See All New Features, Updates and Fixes",
+      "href": "https://www.firefox.com/en-US/firefox/155.0.1/releasenotes/",
+      "body": "5 days ago - Release Notes tell you what's new in Firefox. As always, we welcome your feedback. You can also file a bug in Bugzilla or see the system requirements of this release · Download Firefox — English (US)"
+    },
+    {
+      "title": "Firefox | endoflife.date",
+      "href": "https://endoflife.date/firefox",
+      "body": "4 days ago - Firefox only supports the last 3 macOS releases, matching the Apple support cycle. Firefox ESR 115 support is extended for Windows 7–8.1 and macOS 10.12–10.14 up to March 2026, and this extension will be reconsidered in February 2026."
+    },
+    {
+      "title": "Firefox has shortened its release cycle from four weeks to two weeks, allowing it to deliver ready features to users more frequently. - GIGAZINE",
+      "href": "https://gigazine.net/gsc_news/en/20260727-firefox-release-cadence/",
+      "body": "July 28, 2026 - According to a notice from Mozilla developer Silvestre Ledreux , the release cycle for the desktop and Android versions of Firefox will be shortened from the current four weeks to two weeks starting in September 2026."
+    },
+    {
+      "title": "Firefox 155.0, See All New Features, Updates and Fixes",
+      "href": "https://www.firefox.com/en-US/firefox/155.0/releasenotes/",
+      "body": "1 week ago - Standard dynamic range (SDR) video in some formats can appear washed out on macOS. The issue is under investigation and a fix will ship in a future release."
+    },
+    {
+      "title": "Firefox ESR schedule",
+      "href": "https://whattrainisitnow.com/release/?version=esr",
+      "body": "Follow Firefox trains and major milestones easily!"
+    },
+    {
+      "title": "Firefox 154.0, See All New Features, Updates and Fixes",
+      "href": "https://www.firefox.com/en-US/firefox/154.0/releasenotes/",
+      "body": "3 weeks ago - Please download Firefox ESR (Extended Support Release) to use Firefox."
+    },
+    {
+      "title": "Firefox 153.0.4, See All New Features, Updates and Fixes",
+      "href": "https://www.firefox.com/en-US/firefox/153.0.4/releasenotes/",
+      "body": "1 month ago - Version 153.0.4, first offered to Release channel users on August 11, 2026 · Fixed Firefox becoming unresponsive when clearing browsing history, which could also result in site data being lost. (Bug 2059647) Reference link to 153.0.3 release notes. Download Firefox — English (US) Windows 64-bit ·"
+    }
+  ],
+  "results": [
+    {
+      "title": "Firefox version history - Wikipedia",
+      "href": "https://en.wikipedia.org/wiki/Firefox_version_history",
+      "body": "3 days ago - Mozilla uses A/B testing and a ... to all users. In 2020, Firefox moved to a four-week release cycle, to catch up with Chrome in support for new web features. Chrome switched to a four-week cycle a year later. Starting September 2026 Firefox move from 4 week release ..."
+    },
+    {
+      "title": "Firefox Release Notes — Firefox.com",
+      "href": "https://www.firefox.com/en-US/releases/",
+      "body": "Release notes for each version of Firefox."
+    },
+    {
+      "title": "Firefox Release Schedule 2025 | Browser Calendar",
+      "href": "https://browsercalendar.com/browsers/firefox",
+      "body": "2 days ago - Firefox 155 is the current stable version, released september 1, 2026 — firefox 156 stable expected september 11, 2026. Mozilla Firefox maintains a rapid 4-week release cycle with new major versions shipping regularly."
+    },
+    {
+      "title": "Firefox Switches to Two-Week Release Cycle Starting September 2026 - gHacks Tech News",
+      "href": "https://www.ghacks.net/2026/07/14/firefox-switches-to-two-week-release-cycle-starting-september-2026/",
+      "body": "July 14, 2026 - Mozilla will move Firefox to a two-week release cycle starting September 2026, matching the cadence used by Chrome and Edge."
+    },
+    {
+      "title": "Firefox Release Notes for Enterprise | Firefox administrator reference",
+      "href": "https://firefox-admin-docs.mozilla.org/release-notes/",
+      "body": "Released 1 September 2026. These changes apply to Firefox 155 and Firefox ESR 153.2.0 unless explicitly stated."
+    },
+    {
+      "title": "Firefox Release Calendar",
+      "href": "https://whattrainisitnow.com/calendar/",
+      "body": "Follow Firefox trains and major milestones easily!"
+    },
+    {
+      "title": "Support:Releases - MozillaWiki",
+      "href": "https://wiki.mozilla.org/Support:Releases",
+      "body": "1.2 2026 releases · 1.3 Archives · 1.4 See also · As a contributor, please use the following resources to find out more information about Firefox releases. These links include official release notes, support articles, and community updates that can help you stay informed about what's new, what's changed, and what issues may have been fixed or introduced."
+    },
+    {
+      "title": "Firefox release notes - What's new and known issues | Mozilla Support",
+      "href": "https://support.mozilla.org/en-US/kb/firefox-release-notes-whats-new-and-known-issues",
+      "body": "March 30, 2026 - Links to Firefox release notes for Desktop, Android and iOS."
+    },
+    {
+      "title": "Firefox release notes for developers - Mozilla | MDN",
+      "href": "https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases?retiredLocale=he",
+      "body": "Below you'll find links to the developer release notes for every Firefox release. These lovingly-crafted notes provide details on what features and APIs were added and improved and what bugs were eliminated in each version of Firefox. All written to give developers like you the information ..."
+    },
+    {
+      "title": "Firefox to Test a Two-Week Release Cycle Starting in September",
+      "href": "https://www.linuxtoday.com/blog/firefox-to-test-a-two-week-release-cycle-starting-in-september/",
+      "body": "2 weeks ago - Mozilla will test a two-week Firefox release cycle starting in September 2026, beginning with Firefox 155 on September 1 for desktop and Android."
+    }
+  ],
+  "status": "success",
+  "latency_ms": 1958.58,
+  "finished_at": "2026-09-09T01:45:42.784222+00:00",
+  "url_count": 10,
+  "hostname_count": 10,
+  "exact_url_duplicates": 0
+}

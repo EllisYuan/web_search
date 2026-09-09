@@ -1,0 +1,779 @@
+{
+  "query_id": "zh07",
+  "query": "Python 3.14 最新 安全 发布 2026",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-09T01:45:30.763319+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python 3.14 最新 安全 发布 2026",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T01:45:31.069884+00:00",
+      "status_code": 200,
+      "bytes": 10304,
+      "sha256": "873a689239556dc08c6bda62ad480776c2f2fc3f727675c93ca3f257b48e227c",
+      "marker_hints": [],
+      "local_body": "raw-private/freshness-smoke/zh07-searxng-google/response.json",
+      "latency_ms": 932.57
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Python 3.14 in 2026: What's New, What's Faster, and When ...",
+      "content": "Mar 5, 2026 · Python 3.14 isn't a “syntactic sugar” release. It's Python getting more serious about structured string processing, concurrency primitives, ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://medium.com/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "medium.com",
+        "/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "What's new in Python 3.14 — Python 3.14.7 documentation",
+      "content": "This article explains the new features in Python 3.14, compared to 3.13. Python 3.14 was released on 7 October 2025. For full details, see the changelog. See ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://docs.python.org/3/whatsnew/3.14.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.python.org",
+        "/3/whatsnew/3.14.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14 Released and Other Python News for November ...",
+      "content": "Nov 10, 2025 · Python 3.15 is scheduled for final release in October 2026. The alpha period, which will run through April 2026, is when new features land.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://realpython.com/python-news-november-2025/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "realpython.com",
+        "/python-news-november-2025/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14 发布 - Reddit",
+      "content": "Oct 7, 2025 · Python的自由线程构建现在已经得到支持，不再是实验性版本。这是第二阶段 的开始，自由线程Python正式得到支持，但仍然是可选的。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://www.reddit.com/r/Python/comments/1o0gfp1/python_314_released/?tl=zh-hans",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.reddit.com",
+        "/r/Python/comments/1o0gfp1/python_314_released/",
+        "",
+        "tl=zh-hans",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14 – What you need to know - Cloudsmith",
+      "content": "Sep 23, 2025 · Python 3.14 is right around the corner, and there are 11 clear new Python Enhancement Proposals (PEPs) added to the Python project!",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://cloudsmith.com/blog/python-3-14-what-you-need-to-know",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "cloudsmith.com",
+        "/blog/python-3-14-what-you-need-to-know",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14正式发布！这5大新特性太炸裂了",
+      "content": "Oct 8, 2025 · Python 3.14通过延迟类型注解、模板字符串、多解释器等特性，在性能、安全性和开发体验方面都实现了显著提升。这些改进使得Python在现代应用开发中更具 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://zhuanlan.zhihu.com/p/1959368289215050570",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "zhuanlan.zhihu.com",
+        "/p/1959368289215050570",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14正式发布！它究竟有多快？ - CSDN博客",
+      "content": "Oct 10, 2025 · 三天前，Python 软件基金会（PSF）正式发布了Python 3.14.0。这是一次里程碑式的更新，带来了多个开发者期待已久的新特性，包括自由线程（支持、子解释 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://blog.csdn.net/csdnnews/article/details/152971038",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "blog.csdn.net",
+        "/csdnnews/article/details/152971038",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14_百度百科",
+      "content": "Python 3.14是Python编程语言的一个主要稳定版本，其最终正式版（3.14.0）于2025年10月7日发布。该版本在3.13的基础上引入了多项重要新特性与改进，主要包括：通过PEP ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://baike.baidu.com/item/Python%203.14/67551899",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "baike.baidu.com",
+        "/item/Python%203.14/67551899",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python 3.14 新特性盘点，更新了些什么？ - 博客园",
+      "content": "May 10, 2025 · Python 3.14.0 稳定版将于2025 年10 月正式发布，目前已进入beta 测试阶段。这意味着在往后的几个月里，3.14 的新功能已冻结，不再合入新功能（除了 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://www.cnblogs.com/pythonista/p/18870129",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.cnblogs.com",
+        "/pythonista/p/18870129",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "【Python | Release Guide · 3.14】 Python 3.14 新特性介紹 ...",
+      "content": "Oct 31, 2025 · ... 最新影片中介紹了Python 3.14 的多項更新。 ... 【 PyCon TW 2026 議程亮點#1｜Python 核心與底層效能探秘⚡ 】 你 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://www.facebook.com/pycontw/posts/python-release-guide-314python-314-%E6%96%B0%E7%89%B9%E6%80%A7%E4%BB%8B%E7%B4%B9python-314-%E6%98%AF%E4%B8%80%E5%80%8B%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%8D%87%E7%B4%9A%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%9A%90%E9%AE%AE%E7%9A%84%E7%89%88%E6%9C%AC%E5%9B%A0%E7%82%BA%E8%A3%A1%E9%9D%A2%E6%9C%89%E5%BE%88%E5%A4%9A%E6%9C%89%E8%B6%A3%E7%9A%84%E6%96%B0/1250038263817791/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.facebook.com",
+        "/pycontw/posts/python-release-guide-314python-314-%E6%96%B0%E7%89%B9%E6%80%A7%E4%BB%8B%E7%B4%B9python-314-%E6%98%AF%E4%B8%80%E5%80%8B%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%8D%87%E7%B4%9A%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%9A%90%E9%AE%AE%E7%9A%84%E7%89%88%E6%9C%AC%E5%9B%A0%E7%82%BA%E8%A3%A1%E9%9D%A2%E6%9C%89%E5%BE%88%E5%A4%9A%E6%9C%89%E8%B6%A3%E7%9A%84%E6%96%B0/1250038263817791/",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "Python 3.14 最新 安全 发布 2026",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Python 3.14 in 2026: What's New, What's Faster, and When ...",
+        "content": "Mar 5, 2026 · Python 3.14 isn't a “syntactic sugar” release. It's Python getting more serious about structured string processing, concurrency primitives, ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://medium.com/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "medium.com",
+          "/@gautsoni/python-3-14-in-2026-whats-new-what-s-faster-and-when-you-ll-actually-feel-it-with-code-4b2b5a62c9fd",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "What's new in Python 3.14 — Python 3.14.7 documentation",
+        "content": "This article explains the new features in Python 3.14, compared to 3.13. Python 3.14 was released on 7 October 2025. For full details, see the changelog. See ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://docs.python.org/3/whatsnew/3.14.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.python.org",
+          "/3/whatsnew/3.14.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14 Released and Other Python News for November ...",
+        "content": "Nov 10, 2025 · Python 3.15 is scheduled for final release in October 2026. The alpha period, which will run through April 2026, is when new features land.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://realpython.com/python-news-november-2025/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "realpython.com",
+          "/python-news-november-2025/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14 发布 - Reddit",
+        "content": "Oct 7, 2025 · Python的自由线程构建现在已经得到支持，不再是实验性版本。这是第二阶段 的开始，自由线程Python正式得到支持，但仍然是可选的。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://www.reddit.com/r/Python/comments/1o0gfp1/python_314_released/?tl=zh-hans",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.reddit.com",
+          "/r/Python/comments/1o0gfp1/python_314_released/",
+          "",
+          "tl=zh-hans",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14 – What you need to know - Cloudsmith",
+        "content": "Sep 23, 2025 · Python 3.14 is right around the corner, and there are 11 clear new Python Enhancement Proposals (PEPs) added to the Python project!",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://cloudsmith.com/blog/python-3-14-what-you-need-to-know",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "cloudsmith.com",
+          "/blog/python-3-14-what-you-need-to-know",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14正式发布！这5大新特性太炸裂了",
+        "content": "Oct 8, 2025 · Python 3.14通过延迟类型注解、模板字符串、多解释器等特性，在性能、安全性和开发体验方面都实现了显著提升。这些改进使得Python在现代应用开发中更具 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://zhuanlan.zhihu.com/p/1959368289215050570",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "zhuanlan.zhihu.com",
+          "/p/1959368289215050570",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14正式发布！它究竟有多快？ - CSDN博客",
+        "content": "Oct 10, 2025 · 三天前，Python 软件基金会（PSF）正式发布了Python 3.14.0。这是一次里程碑式的更新，带来了多个开发者期待已久的新特性，包括自由线程（支持、子解释 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://blog.csdn.net/csdnnews/article/details/152971038",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "blog.csdn.net",
+          "/csdnnews/article/details/152971038",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14_百度百科",
+        "content": "Python 3.14是Python编程语言的一个主要稳定版本，其最终正式版（3.14.0）于2025年10月7日发布。该版本在3.13的基础上引入了多项重要新特性与改进，主要包括：通过PEP ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://baike.baidu.com/item/Python%203.14/67551899",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "baike.baidu.com",
+          "/item/Python%203.14/67551899",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python 3.14 新特性盘点，更新了些什么？ - 博客园",
+        "content": "May 10, 2025 · Python 3.14.0 稳定版将于2025 年10 月正式发布，目前已进入beta 测试阶段。这意味着在往后的几个月里，3.14 的新功能已冻结，不再合入新功能（除了 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://www.cnblogs.com/pythonista/p/18870129",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.cnblogs.com",
+          "/pythonista/p/18870129",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "【Python | Release Guide · 3.14】 Python 3.14 新特性介紹 ...",
+        "content": "Oct 31, 2025 · ... 最新影片中介紹了Python 3.14 的多項更新。 ... 【 PyCon TW 2026 議程亮點#1｜Python 核心與底層效能探秘⚡ 】 你 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://www.facebook.com/pycontw/posts/python-release-guide-314python-314-%E6%96%B0%E7%89%B9%E6%80%A7%E4%BB%8B%E7%B4%B9python-314-%E6%98%AF%E4%B8%80%E5%80%8B%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%8D%87%E7%B4%9A%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%9A%90%E9%AE%AE%E7%9A%84%E7%89%88%E6%9C%AC%E5%9B%A0%E7%82%BA%E8%A3%A1%E9%9D%A2%E6%9C%89%E5%BE%88%E5%A4%9A%E6%9C%89%E8%B6%A3%E7%9A%84%E6%96%B0/1250038263817791/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.facebook.com",
+          "/pycontw/posts/python-release-guide-314python-314-%E6%96%B0%E7%89%B9%E6%80%A7%E4%BB%8B%E7%B4%B9python-314-%E6%98%AF%E4%B8%80%E5%80%8B%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%8D%87%E7%B4%9A%E9%9D%9E%E5%B8%B8%E5%80%BC%E5%BE%97%E5%9A%90%E9%AE%AE%E7%9A%84%E7%89%88%E6%9C%AC%E5%9B%A0%E7%82%BA%E8%A3%A1%E9%9D%A2%E6%9C%89%E5%BE%88%E5%A4%9A%E6%9C%89%E8%B6%A3%E7%9A%84%E6%96%B0/1250038263817791/",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "python 3.15",
+      "python 3.14 下载",
+      "python 3.14 多 线程",
+      "python 3.14 特性",
+      "python 最新 版本",
+      "python 3.13",
+      "python 3.14 性能",
+      "python 3.14 更新",
+      "python 最新 稳定 版本",
+      "python 3.14 自由 线程"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "latency_ms": 1239.09,
+  "finished_at": "2026-09-09T01:45:32.002081+00:00",
+  "url_count": 10,
+  "hostname_count": 10,
+  "exact_url_duplicates": 0
+}

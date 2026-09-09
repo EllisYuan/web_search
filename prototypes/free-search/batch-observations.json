@@ -1,0 +1,226 @@
+{
+  "created_at": "2026-09-09T01:40:34.746113+00:00",
+  "mode": "offline_replay_and_fault_injection",
+  "injected": true,
+  "fixture": "runs/smoke-1-ddgs/zh01-ddgs-brave.json",
+  "note": "No real timeout/empty/403 claim; sequential grouping only, no production scheduler or wall-clock deadline tested",
+  "experimental_budget": {
+    "max_batch": 4,
+    "max_retries": 1,
+    "retry_only": [
+      "timeout"
+    ]
+  },
+  "cases": {
+    "success_and_empty": [
+      {
+        "query_id": "success",
+        "status": "success",
+        "results": [
+          {
+            "title": "协程与任务 — Python 3.14.7 文档",
+            "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+            "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+          },
+          {
+            "title": "Task Group Trouble: Exception Handling in Python Asyncio (3.11+)",
+            "href": "https://runebook.dev/en/docs/python/library/asyncio-task/task-groups",
+            "body": "Will sleep for {delay} seconds.\") await asyncio.sleep(delay) if name == \"Task B\": # Introduce an intentional error for demonstration raise ValueError(f\"{name} encountered an error!\") print(f\"Task {name} finished.\") return f\"Result from {name}\" async def main_task_group(): print(\"Starting TaskGroup example...\") try: async with asyncio.TaskGroup() as tg: task_a = tg.create_task(worker(\"Task A\", 3)) task_b = tg.create_task(worker(\"Task B\", 1)) task_c = tg.create_task(worker(\"Task C\", 2)) # This part only runs if ALL tasks completed without uncaught exceptions print(f\"Task A result: {task_a.result()}\") print(f\"Task C result: {task_c.result()}\") # Note: Task B's result() would raise an exception if accessed here without try/except inside the task."
+          },
+          {
+            "title": "asyncio —- 异步 I/O - 协程与任务 - 《Python 3.11.0 官方文档(全)》 - 书栈网 · BookStack",
+            "href": "https://www.bookstack.cn/read/python-3.11.0-zh/d3c19444b7e78747.md",
+            "body": "November 12, 2022 - 如果 aws 序列中的任一 Task 或 Future 对象 被取消，它将被当作引发了 CancelledError 一样处理 — 在此情况下 gather() 调用 不会 被取消。这是为了防止一个已提交的 Task/Future 被取消导致其他 Tasks/Future 也被取消。 ... A more modern way to create and run tasks concurrently and wait for their completion is asyncio.TaskGroup. ... 如果 return_exceptions 为 False，则在 gather() 被标记为已完成后取消它将不会取消任何已提交的可等待对象。 例如，在将一个异常传播给调用者之后，gather 可被标记为已完成，因此，在从 gather 捕获一个（由可等待对象所引发的）异常之后调用 gather.cancel() 将不会取消任何其他可等待对象。"
+          }
+        ],
+        "reason": null,
+        "retry_count": 0,
+        "retry_exhausted": false,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "success",
+            "reason": null,
+            "injected": true
+          }
+        ]
+      },
+      {
+        "query_id": "empty",
+        "status": "empty",
+        "results": [],
+        "reason": "Injected confirmed empty; not observed upstream empty",
+        "retry_count": 0,
+        "retry_exhausted": false,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "empty",
+            "reason": "Injected confirmed empty; not observed upstream empty",
+            "injected": true
+          }
+        ]
+      }
+    ],
+    "single_timeout_preserves_success": [
+      {
+        "query_id": "success",
+        "status": "success",
+        "results": [
+          {
+            "title": "协程与任务 — Python 3.14.7 文档",
+            "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+            "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+          },
+          {
+            "title": "Task Group Trouble: Exception Handling in Python Asyncio (3.11+)",
+            "href": "https://runebook.dev/en/docs/python/library/asyncio-task/task-groups",
+            "body": "Will sleep for {delay} seconds.\") await asyncio.sleep(delay) if name == \"Task B\": # Introduce an intentional error for demonstration raise ValueError(f\"{name} encountered an error!\") print(f\"Task {name} finished.\") return f\"Result from {name}\" async def main_task_group(): print(\"Starting TaskGroup example...\") try: async with asyncio.TaskGroup() as tg: task_a = tg.create_task(worker(\"Task A\", 3)) task_b = tg.create_task(worker(\"Task B\", 1)) task_c = tg.create_task(worker(\"Task C\", 2)) # This part only runs if ALL tasks completed without uncaught exceptions print(f\"Task A result: {task_a.result()}\") print(f\"Task C result: {task_c.result()}\") # Note: Task B's result() would raise an exception if accessed here without try/except inside the task."
+          },
+          {
+            "title": "asyncio —- 异步 I/O - 协程与任务 - 《Python 3.11.0 官方文档(全)》 - 书栈网 · BookStack",
+            "href": "https://www.bookstack.cn/read/python-3.11.0-zh/d3c19444b7e78747.md",
+            "body": "November 12, 2022 - 如果 aws 序列中的任一 Task 或 Future 对象 被取消，它将被当作引发了 CancelledError 一样处理 — 在此情况下 gather() 调用 不会 被取消。这是为了防止一个已提交的 Task/Future 被取消导致其他 Tasks/Future 也被取消。 ... A more modern way to create and run tasks concurrently and wait for their completion is asyncio.TaskGroup. ... 如果 return_exceptions 为 False，则在 gather() 被标记为已完成后取消它将不会取消任何已提交的可等待对象。 例如，在将一个异常传播给调用者之后，gather 可被标记为已完成，因此，在从 gather 捕获一个（由可等待对象所引发的）异常之后调用 gather.cancel() 将不会取消任何其他可等待对象。"
+          }
+        ],
+        "reason": null,
+        "retry_count": 0,
+        "retry_exhausted": false,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "success",
+            "reason": null,
+            "injected": true
+          }
+        ]
+      },
+      {
+        "query_id": "timeout",
+        "status": "timeout",
+        "results": [],
+        "reason": "Injected request deadline exceeded",
+        "retry_count": 1,
+        "retry_exhausted": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          },
+          {
+            "attempt": 2,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          }
+        ]
+      }
+    ],
+    "all_failed": [
+      {
+        "query_id": "timeout",
+        "status": "timeout",
+        "results": [],
+        "reason": "Injected request deadline exceeded",
+        "retry_count": 1,
+        "retry_exhausted": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          },
+          {
+            "attempt": 2,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          }
+        ]
+      },
+      {
+        "query_id": "forbidden",
+        "status": "http_forbidden",
+        "results": [],
+        "reason": "Injected HTTP 403; no retry",
+        "retry_count": 0,
+        "retry_exhausted": false,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "http_forbidden",
+            "reason": "Injected HTTP 403; no retry",
+            "injected": true
+          }
+        ]
+      }
+    ],
+    "retry_recovers": [
+      {
+        "query_id": "recovers",
+        "status": "success",
+        "results": [
+          {
+            "title": "协程与任务 — Python 3.14.7 文档",
+            "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+            "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+          },
+          {
+            "title": "Task Group Trouble: Exception Handling in Python Asyncio (3.11+)",
+            "href": "https://runebook.dev/en/docs/python/library/asyncio-task/task-groups",
+            "body": "Will sleep for {delay} seconds.\") await asyncio.sleep(delay) if name == \"Task B\": # Introduce an intentional error for demonstration raise ValueError(f\"{name} encountered an error!\") print(f\"Task {name} finished.\") return f\"Result from {name}\" async def main_task_group(): print(\"Starting TaskGroup example...\") try: async with asyncio.TaskGroup() as tg: task_a = tg.create_task(worker(\"Task A\", 3)) task_b = tg.create_task(worker(\"Task B\", 1)) task_c = tg.create_task(worker(\"Task C\", 2)) # This part only runs if ALL tasks completed without uncaught exceptions print(f\"Task A result: {task_a.result()}\") print(f\"Task C result: {task_c.result()}\") # Note: Task B's result() would raise an exception if accessed here without try/except inside the task."
+          },
+          {
+            "title": "asyncio —- 异步 I/O - 协程与任务 - 《Python 3.11.0 官方文档(全)》 - 书栈网 · BookStack",
+            "href": "https://www.bookstack.cn/read/python-3.11.0-zh/d3c19444b7e78747.md",
+            "body": "November 12, 2022 - 如果 aws 序列中的任一 Task 或 Future 对象 被取消，它将被当作引发了 CancelledError 一样处理 — 在此情况下 gather() 调用 不会 被取消。这是为了防止一个已提交的 Task/Future 被取消导致其他 Tasks/Future 也被取消。 ... A more modern way to create and run tasks concurrently and wait for their completion is asyncio.TaskGroup. ... 如果 return_exceptions 为 False，则在 gather() 被标记为已完成后取消它将不会取消任何已提交的可等待对象。 例如，在将一个异常传播给调用者之后，gather 可被标记为已完成，因此，在从 gather 捕获一个（由可等待对象所引发的）异常之后调用 gather.cancel() 将不会取消任何其他可等待对象。"
+          }
+        ],
+        "reason": null,
+        "retry_count": 1,
+        "retry_exhausted": false,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          },
+          {
+            "attempt": 2,
+            "status": "success",
+            "reason": null,
+            "injected": true
+          }
+        ]
+      }
+    ],
+    "retry_exhausted": [
+      {
+        "query_id": "exhausted",
+        "status": "timeout",
+        "results": [],
+        "reason": "Injected request deadline exceeded",
+        "retry_count": 1,
+        "retry_exhausted": true,
+        "attempts": [
+          {
+            "attempt": 1,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          },
+          {
+            "attempt": 2,
+            "status": "timeout",
+            "reason": "Injected request deadline exceeded",
+            "injected": true
+          }
+        ]
+      }
+    ]
+  }
+}

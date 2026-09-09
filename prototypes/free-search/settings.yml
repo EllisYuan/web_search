@@ -1,0 +1,25 @@
+# THROWAWAY: loopback-only, free public engines, no paid APIs.
+use_default_settings:
+  engines:
+    keep_only:
+      - duckduckgo
+      - brave
+      - google
+search:
+  formats:
+    - html
+    - json
+server:
+  secret_key: "public-loopback-prototype-only-do-not-deploy"
+  limiter: false
+  image_proxy: false
+outgoing:
+  request_timeout: 12.0
+  max_request_timeout: 15.0
+engines:
+  - name: duckduckgo
+    disabled: false
+  - name: brave
+    disabled: false
+  - name: google
+    disabled: false

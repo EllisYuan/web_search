@@ -1,0 +1,32 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-09T06:25:10.908839+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL multicolumn indexes official documentation",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T06:25:11.106338+00:00",
+      "latency_ms": 22.5
+    }
+  ],
+  "results": [],
+  "status": "transport_error",
+  "error_type": "RemoteDisconnected",
+  "error": "Remote end closed connection without response",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 220.69,
+  "finished_at": "2026-09-09T06:25:11.129005+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

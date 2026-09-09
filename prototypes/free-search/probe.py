@@ -60,7 +60,10 @@ def ddgs_search(query, backend, args, key):
         item = {'method': pos[0], 'endpoint': pos[1], 'started_at': now()}
         try:
             response = original_request(*pos, **kw)
+            headers = getattr(getattr(response, '_resp', None), 'headers', {})
             item.update({'status_code': response.status_code,
+                         'retry_after': headers.get('retry-after') if hasattr(headers, 'get') else None,
+                         'response_headers_observed': sorted(str(k).lower() for k in headers.keys()) if hasattr(headers, 'keys') else [],
                          **evidence(response.content, ROOT / 'raw-private' / key / f'http-{len(http)}.html')})
             return response
         except Exception as exc:
@@ -99,6 +102,8 @@ def ddgs_search(query, backend, args, key):
             result['status'] = 'timeout'
         elif codes and all(c == 200 for c in codes):
             result['status'] = 'empty_or_parse_failure'
+    result['upstream_request_count'] = len(http)
+    result['retry_after_values'] = [x.get('retry_after') for x in http if x.get('retry_after') is not None]
     return result
 
 
@@ -117,7 +122,9 @@ def searxng_search(query, backend, args, key):
     try:
         with opener.open(url, timeout=args.timeout + 5) as response:
             body = response.read()
-            item.update(status_code=response.status, **evidence(body, ROOT / 'raw-private' / key / 'response.json'))
+            item.update(status_code=response.status, retry_after=response.headers.get('Retry-After'),
+                        response_headers_observed=sorted(k.lower() for k in response.headers),
+                        **evidence(body, ROOT / 'raw-private' / key / 'response.json'))
         payload = json.loads(body)
         result['raw_response'] = payload
         result['results'] = payload.get('results', [])[:10]
@@ -133,6 +140,8 @@ def searxng_search(query, backend, args, key):
         result.update(status='timeout' if 'timed out' in str(exc).lower() else 'transport_error',
                       error_type=type(exc).__name__, error=str(exc))
     item['latency_ms'] = round((time.perf_counter() - tick) * 1000, 2)
+    result['upstream_request_count'] = 1
+    result['retry_after_values'] = [item.get('retry_after')] if item.get('retry_after') is not None else []
     return result
 
 

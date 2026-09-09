@@ -1,0 +1,42 @@
+{
+  "created_at": "2026-09-09T06:35:29.921127+00:00",
+  "injected": false,
+  "retry_policy": "none",
+  "jobs": [
+    {
+      "batch_index": 0,
+      "query_id": "en01",
+      "route": "ddgs",
+      "backend": "brave",
+      "status": "success",
+      "url_count": 10,
+      "upstream_request_count": 1,
+      "retry_count": 0,
+      "batch_latency_ms": 2009.23
+    },
+    {
+      "batch_index": 1,
+      "query_id": "zh01",
+      "route": "searxng",
+      "backend": "google",
+      "status": "transport_error",
+      "url_count": 0,
+      "upstream_request_count": 1,
+      "retry_count": 0,
+      "batch_latency_ms": 373.39
+    },
+    {
+      "batch_index": 2,
+      "query_id": "mix01",
+      "route": "ddgs",
+      "backend": "missing-backend",
+      "status": "unsupported_backend",
+      "url_count": 0,
+      "upstream_request_count": 0,
+      "retry_count": 0,
+      "batch_latency_ms": 0.08
+    }
+  ],
+  "partial_failure_preserved": true,
+  "note": "Third item intentionally uses an unsupported backend. This is a real batch orchestration run, but not a production concurrency/deadline benchmark."
+}

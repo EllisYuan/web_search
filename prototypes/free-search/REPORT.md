@@ -29,6 +29,22 @@
 
 精确 URL 重复数在每次最终 top-10 中均为 0，但 adapter 自身已经做 normalization/dedup，且同站版本页与镜像仍然重复。全部结果、原始 latency 数组及各 query 的分母在 [smoke-summary.json](smoke-summary.json)；可用 `summarize.py` 重算。
 
+## 后续低频复测与真实 batch
+
+在原始两窗口之后，运行了 `lowfreq-20260909`：3 个固定 query、SearXNG Google 与 DDGS Brave，串行间隔 10 秒。DDGS Brave 三项均返回 10 条 URL；response headers 已保存，`Retry-After` 在这些 200 响应中为 null，不能据此推断 429 时一定会提供该 header。SearXNG Google 第一项后连续出现 `RemoteDisconnected`，HTTP response 没有 status code；container 虽报告 `Up`，本机 `/healthz` 也连接后被意外关闭。该状态归为 instance/transport failure，不能算作上游 JSON `unresponsive_engines`。
+
+随后运行 `real-batch-20260909-v2`（pinned venv，8 秒间隔）：
+
+| index | route | backend | status | URL | upstream request | retry |
+|---:|---|---|---|---:|---:|---:|
+| 0 | DDGS | Brave | success | 10 | 1 | 0 |
+| 1 | SearXNG | Google | transport_error (`RemoteDisconnected`) | 0 | 1 | 0 |
+| 2 | DDGS | missing-backend | unsupported_backend | 0 | 0 | 0 |
+
+`batch-index.json` 的 `partial_failure_preserved=true`：第一项成功结果已独立写盘，后续失败没有覆盖它；第三项也证明显式 invalid backend 不会 fallback 到 `auto`。这是真实 sequential batch 的部分失败观测，不是生产并发、整体 deadline 或 retry policy 的 benchmark。第一次误用系统 Python 的 batch 也保留为 `real-batch-20260909`，其中两个 DDGS 项因 `ModuleNotFoundError` 失败；之后用 pinned venv 重跑，不能把前一次当上游故障。
+
+container 状态命令一度显示 `Up 5 hours`，但服务端不响应；重启命令未产生可确认的健康恢复。这个“container process 存活 ≠ HTTP 服务可用”的事实需要进入后续 adapter health check 设计。
+
 ## 质量与独立 Source
 
 site 分组按本轮观察到的域名/所属网站显式归并，不用“最后两段 hostname”猜测公共后缀。Source 再合并已识别镜像及同一 project 的 docs/GitHub；疑似衍生且未核实独立创作的 Runebook 页面不进入保守独立 Source 数。完整规则和例外写在每条 [标注](quality-annotations.json)。不是所有网站的所有权或内容来源审计。
@@ -56,7 +72,7 @@ site 分组按本轮观察到的域名/所属网站显式归并，不用“最�
 
 1. **DuckDuckGo CAPTCHA**：看 [DDGS 样例](runs/smoke-1-ddgs/en01-ddgs-duckduckgo.json)，HTTP 202，有 `anomaly.js` / `challenge-form`；初期成功不保证下一 query 成功。SearXNG [样例](runs/smoke-1-searxng/zh01-searxng-duckduckgo.json) 虽是本地 HTTP 200，JSON 的 `unresponsive_engines` 明确 CAPTCHA，container log 进一步给出 `SearxEngineCaptchaException`。没有解 CAPTCHA、换付费 proxy 或绕过访问控制。
 2. **SearXNG Brave 限流及状态延续**：第二窗口 [zh02](runs/smoke-2/zh02-searxng-brave.json) 报 `Too many requests`；[en01](runs/smoke-2/en01-searxng-brave.json) 等后续调用标为 suspended。日志显示 `SearxEngineTooManyRequestsException`、`suspended_time=180`。后面四项是实例拒绝继续访问该 engine，**不应算四个新的上游 429**。SearXNG JSON 未保留原始上游 HTTP status，因此本报告不凭本地 HTTP 200 或 exception 猜造它。
-3. **DDGS Brave 真实 429**：时效补测 [en04](runs/freshness-smoke/en04-ddgs-brave.json) 的 HTTP 观测直接记录 429；下一不同 query 又成功。没有重试失败 query。本轮未采集 `Retry-After`，不能断言其缺失。
+3. **DDGS Brave 真实 429**：时效补测 [en04](runs/freshness-smoke/en04-ddgs-brave.json) 的 HTTP 观测直接记录 429；下一不同 query 又成功。没有重试失败 query。补测已记录 response header 名称和 `Retry-After` 值；成功的 200 响应没有该值，不能据此推断 429 时一定会提供它。
 4. **Google HTTP 200 无结果页面**：[en01](runs/smoke-1-ddgs/en01-ddgs-google.json) 返回 5,594 bytes，DDGS 抛 `No results found.`。检查本机保存 HTML，可见搜索表单、导航和页脚，缺少结果项；其他失败样例保守记为 `empty_or_parse_failure`。**未证实真实搜索空集，也未证实所有样例都是 selector bug**。第二窗口同 query 成功。该 DDGS engine 使用 `/wml/search` 并由默认 `us-en` 生成 `lr=lang_en`、`cr=countryUS`；参数限制、上游页面变化和 fingerprint 均可能参与，因果还未隔离。
 5. **Web Read 独立失败**：已发现的玉山官网 [独立读取观测](readability-observations.json) 出现 `URLError: [Errno 11002] getaddrinfo failed`。当时其他五站正文均 HTTP 200，提取文本包含预期术语。这里只能确认本机该次 DNS 失败，不能推断官网离线，也不能把它计为 Search 失败。
 6. **本地执行环境限制**：首次 sandbox 中 gh 网络受限、WSL 报 `E_ACCESSDENIED`；正常用户环境中可访问 GitHub/Docker/WSL。这些准备阶段错误没有计入 Search 统计。
@@ -77,6 +93,6 @@ site 分组按本轮观察到的域名/所属网站显式归并，不用“最�
 
 继续本 ticket 时，优先做跨天、低频的固定 query 复测，隔离 Windows/Docker 出口与 adapter 参数差异，记录上游 request count、Retry-After、suspension 和 HTTP 元数据。已观察到限制，不宜直接放大为 24 query 的压力测试。
 
-之后再补齐 24 query 的 top-10 逐项审阅，尤其是时效性、默认语言与显式过滤；将实际 batch 请求中的部分失败接入，而不只演示 fixture。免费上游恢复策略及 suspension 是否暴露给 caller 已成为明确的待验证问题，可留在当前 ticket 继续验证。
+之后再补齐 24 query 的 top-10 逐项审阅，尤其是时效性、默认语言与显式过滤；将真实 batch 的 timeout/retry 和健康检查接入。免费上游恢复策略及 suspension 是否暴露给 caller 已成为明确的待验证问题，可留在当前 ticket 继续验证。
 
 目前没有用户确认的候选、性能阈值或 resolution，因此不关闭 ticket，也不把本报告写入 map 的 Decisions so far。资产保存在独立 prototype branch，供用户直接审阅。

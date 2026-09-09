@@ -55,6 +55,8 @@ docker stop web-search-prototype-searxng
 | [searxng-container.log](searxng-container.log) | 本次 container 日志；CAPTCHA、TooManyRequests、180 秒 suspension |
 | [quality-annotations.json](quality-annotations.json) | 52 个 query–URL 的 agent 手工 SERP 标注；含语言、site/source 分组和判断理由；未经用户接受 |
 | [smoke-summary.json](smoke-summary.json) | 72 次两窗口 smoke 的 latency 原始数组、返回率、top-3 质量与逐 query 观测 |
+| [runs/lowfreq-20260909](runs/lowfreq-20260909) | 低频复测：3 query × SearXNG Google / DDGS Brave，补采 response headers、Retry-After 和 upstream request count |
+| [runs/real-batch-20260909-v2](runs/real-batch-20260909-v2) | 真实 sequential batch：DDGS Brave 成功、SearXNG transport error、invalid backend；每项独立落盘 |
 | [freshness-review.md](freshness-review.md) | 6 次独立时效补测及 top-3 审阅，未混入两窗口统计 |
 | [readability-observations.json](readability-observations.json) | 6 个指定已发现 URL 的独立正文检查，含 DNS 失败 |
 | [batch-observations.json](batch-observations.json) | 离线 replay / fault injection，明确标记 injected；不进入真实成功率 |

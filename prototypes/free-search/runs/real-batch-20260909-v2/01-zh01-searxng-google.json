@@ -1,0 +1,29 @@
+{
+  "batch_index": 1,
+  "query_id": "zh01",
+  "query": "Python asyncio TaskGroup 异常处理 官方文档",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-09T06:35:21.915783+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python asyncio TaskGroup 异常处理 官方文档",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-09T06:35:21.886995+00:00",
+      "latency_ms": 29.12
+    }
+  ],
+  "results": [],
+  "status": "transport_error",
+  "error_type": "RemoteDisconnected",
+  "error": "Remote end closed connection without response",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "batch_latency_ms": 373.39
+}

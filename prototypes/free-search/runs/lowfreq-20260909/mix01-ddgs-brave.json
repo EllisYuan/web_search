@@ -1,0 +1,210 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T06:25:31.336271+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T06:25:31.361313+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "etag",
+        "link",
+        "referrer-policy",
+        "server-timing",
+        "set-cookie",
+        "strict-transport-security",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache",
+        "x-content-type-options",
+        "x-download-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 263337,
+      "sha256": "6ba8fe6d090cbc84eb0f6b28d3c1b57309e03a9589d9079f4352cf3fcd246f3c",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/lowfreq-20260909/mix01-ddgs-brave/http-0.html",
+      "latency_ms": 2044.72
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "Search API - SearXNG Documentation (2026.9.7+3e454637f)",
+      "href": "https://docs.searxng.org/dev/search_api.html",
+      "body": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly."
+    },
+    {
+      "title": "JSON Engine - SearXNG Documentation (2026.9.7+3e454637f)",
+      "href": "https://docs.searxng.org/dev/engines/json_engine.html",
+      "body": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · send_page_num_on_first_page"
+    },
+    {
+      "title": "Building a Self-Hosted SearxNG Search Engine with JSON API Wrapper | CloudZun",
+      "href": "https://www.cloudzun.com/posts/2026-02-09-searxng-full-deployment-guide/",
+      "body": "February 9, 2026 - ┌─────────────────────────────────┐ │ 用户 / 应用层 │ │ (client application) │ └────────────┬──────────────────────┘ │ HTTP JSON/RSS ▼ ┌─────────────────────────────────┐ │ Wrapper (Python HTTP Server) │ │ 127.0.0.1:8765 │ │ - 认证 (API key) │ │ - HTML→JSON 解析 │ │ - RSS 生成 │ │ - systemd 管理 │ └───────────"
+    },
+    {
+      "title": "not returning json results, only html · searxng/searxng · Discussion #3542",
+      "href": "https://github.com/searxng/searxng/discussions/3542",
+      "body": ""
+    },
+    {
+      "title": "SearXNG Search | liteLLM",
+      "href": "https://docs.litellm.ai/docs/search/searxng",
+      "body": "Important: When you install SearXNG, the only active output format by default is the HTML format. You need to activate the JSON format to use the API."
+    },
+    {
+      "title": "SearXNG search · OpenClaw",
+      "href": "https://docs.openclaw.ai/tools/searxng-search",
+      "body": "For SearXNG JSON API to work, make sure your SearXNG instance has the json format enabled in its settings.yml under search.formats."
+    },
+    {
+      "title": "Discover the Magic of SearXNG Service and Empower Your Search Engine API - DEV Community",
+      "href": "https://dev.to/zand/discover-the-magic-of-searxng-service-and-empower-your-search-engine-api-87l",
+      "body": "July 22, 2024 - import { SearxngService, type SearxngServiceConfig } from 'searxng'; const config: SearxngServiceConfig = { baseURL: 'https://your-searxng-instance.com', defaultSearchParams: { format: 'json', lang: 'auto', }, defaultRequestHeaders: { 'Content-Type': 'application/json', }, }; const searxngService = new SearxngService(config);"
+    },
+    {
+      "title": "SearxNG 搜索 API | 🦜️🔗 Langchain",
+      "href": "https://python.langchain.com.cn/docs/ecosystem/integrations/searx",
+      "body": "虽然可以与 公共 searx 实例 一起使用该包装器，但这些实例经常不允许 API 访问（有关输出格式的注意事项，请参见下面的说明）并且对请求的频率有限制。 建议选择自托管的实例。 ... 当您安装 SearxNG 时，默认情况下只有 HTML 格式是活动的输出格式。 您需要激活 json 格式以使用 API。可以通过将以下行添加到 settings.yml 文件中完成："
+    },
+    {
+      "title": "Can not get json format using API from a docker container · searxng/searxng · Discussion #4470",
+      "href": "https://github.com/searxng/searxng/discussions/4470",
+      "body": "I typed in the test url http://127.0.0.1:3001/search?q=this+is+a+test+query&format=json into my browser on my host machine and I got the json formating result in the brower. However, when I tested it using another container (open-webui container) in the same network by curl http://host.docker.internal:3001/search?q=this+is+a+test+query&format=json, I could only get html format response."
+    },
+    {
+      "title": "SearXNG: Enable JSON format in settings.yml by default to support API integrations · community-scripts/ProxmoxVE · Discussion #14394",
+      "href": "https://github.com/community-scripts/ProxmoxVE/discussions/14394",
+      "body": "Current behavior The default settings.yml does not include json in the search.formats list, so any tool querying SearXNG via its JSON API will fail silently."
+    },
+    {
+      "title": "searxng/docs/dev/search_api.rst at master · searxng/searxng",
+      "href": "https://github.com/searxng/searxng/blob/master/docs/dev/search_api.rst",
+      "body": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly."
+    },
+    {
+      "title": "SearxNG Search API — 🦜🔗 LangChain 0.0.149",
+      "href": "https://lagnchain.readthedocs.io/en/latest/ecosystem/searx.html",
+      "body": "While it is possible to utilize ... page for installation instructions. When you install SearxNG, the only active output format by default is the HTML format. You need to activate the json format to use the API...."
+    },
+    {
+      "title": "r/Searx on Reddit: Public Searxng instance that supports json?",
+      "href": "https://www.reddit.com/r/Searx/comments/1g3egc4/public_searxng_instance_that_supports_json/",
+      "body": ""
+    },
+    {
+      "title": "Settings - SearXNG Documentation (2026.8.12+cdfdaa5a8)",
+      "href": "https://docs.searxng.org/admin/settings/index.html",
+      "body": "Administration API · Architecture · List of plugins · Buildhosts · Developer documentation · Development Quickstart · Git Commits & Change Management · How to contribute · Extended Types · Engine Implementations · Engine Library · SearXNG’s engines loader · Engine Overview · Demo Online Engine · XPath Engine · MediaWiki Engine · JSON ..."
+    },
+    {
+      "title": "SearXNG Tool | Nodes | n8n Docs",
+      "href": "https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolsearxng",
+      "body": "June 24, 2026 - To enable JSON output, add json to the search.formats section of your SearXNG instance's settings.yml file:"
+    },
+    {
+      "title": "searxng的api地址按什么方式填写，怎么配置都验证失败 · CherryHQ/cherry-studio · Discussion #3701",
+      "href": "https://github.com/CherryHQ/cherry-studio/discussions/3701",
+      "body": "配置了自己的searxng服务，浏览器可以正常访问，也添加了json的支持。cherry studio的网络搜索配置中api地址该如何填写？自己试了在api地址填写searxng的内网访问地址http://searxng内网地址/或者http://searxng内网地址/search?q={query}&format=json两种形式..."
+    },
+    {
+      "title": "searxng/searx/settings.yml at master · searxng/searxng",
+      "href": "https://github.com/searxng/searxng/blob/master/searx/settings.yml",
+      "body": "# https://docs.searxng.org/dev/engines/offline/search-indexer-engines.html#module-searx.engines.meilisearch ... search_url: https://api.openaire.eu/search/datasets?format=json&page={pageno}&size=10&title={query}"
+    },
+    {
+      "title": "JSON Engine — SearXNG Documentation (2025.5.30+37d851fb2)",
+      "href": "https://return42.github.io/searxng/dev/engines/json_engine.html",
+      "body": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · content_html_to_text"
+    },
+    {
+      "title": "SearXNG 本地部署与 MCP 接入：搭建私有搜索引擎做技术文档交叉验证 | AI Tools Guide | AI Tools Guide",
+      "href": "https://kl5212840-lang.github.io/robintools/articles/searxng-doc-review-workflow",
+      "body": "June 10, 2026 - # 4. 重启容器使配置生效 · docker restart searxng复制 · 需要改三个地方： · yaml复制全部 · # 1. 开启 JSON API（MCP 接入必需） · search:复制 · formats:复制 · - html复制 · - json复制 · # 2. 启用百度（默认 disabled: true） ·"
+    },
+    {
+      "title": "Get results in JSON format? · searxng/searxng · Discussion #1789",
+      "href": "https://github.com/searxng/searxng/discussions/1789",
+      "body": ""
+    }
+  ],
+  "results": [
+    {
+      "title": "Search API - SearXNG Documentation (2026.9.7+3e454637f)",
+      "href": "https://docs.searxng.org/dev/search_api.html",
+      "body": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly."
+    },
+    {
+      "title": "JSON Engine - SearXNG Documentation (2026.9.7+3e454637f)",
+      "href": "https://docs.searxng.org/dev/engines/json_engine.html",
+      "body": "The JSON engine is a generic engine with which it is possible to configure engines in the settings · send_page_num_on_first_page"
+    },
+    {
+      "title": "Building a Self-Hosted SearxNG Search Engine with JSON API Wrapper | CloudZun",
+      "href": "https://www.cloudzun.com/posts/2026-02-09-searxng-full-deployment-guide/",
+      "body": "February 9, 2026 - ┌─────────────────────────────────┐ │ 用户 / 应用层 │ │ (client application) │ └────────────┬──────────────────────┘ │ HTTP JSON/RSS ▼ ┌─────────────────────────────────┐ │ Wrapper (Python HTTP Server) │ │ 127.0.0.1:8765 │ │ - 认证 (API key) │ │ - HTML→JSON 解析 │ │ - RSS 生成 │ │ - systemd 管理 │ └───────────"
+    },
+    {
+      "title": "SearXNG Search | liteLLM",
+      "href": "https://docs.litellm.ai/docs/search/searxng",
+      "body": "Important: When you install SearXNG, the only active output format by default is the HTML format. You need to activate the JSON format to use the API."
+    },
+    {
+      "title": "SearXNG search · OpenClaw",
+      "href": "https://docs.openclaw.ai/tools/searxng-search",
+      "body": "For SearXNG JSON API to work, make sure your SearXNG instance has the json format enabled in its settings.yml under search.formats."
+    },
+    {
+      "title": "Discover the Magic of SearXNG Service and Empower Your Search Engine API - DEV Community",
+      "href": "https://dev.to/zand/discover-the-magic-of-searxng-service-and-empower-your-search-engine-api-87l",
+      "body": "July 22, 2024 - import { SearxngService, type SearxngServiceConfig } from 'searxng'; const config: SearxngServiceConfig = { baseURL: 'https://your-searxng-instance.com', defaultSearchParams: { format: 'json', lang: 'auto', }, defaultRequestHeaders: { 'Content-Type': 'application/json', }, }; const searxngService = new SearxngService(config);"
+    },
+    {
+      "title": "SearxNG 搜索 API | 🦜️🔗 Langchain",
+      "href": "https://python.langchain.com.cn/docs/ecosystem/integrations/searx",
+      "body": "虽然可以与 公共 searx 实例 一起使用该包装器，但这些实例经常不允许 API 访问（有关输出格式的注意事项，请参见下面的说明）并且对请求的频率有限制。 建议选择自托管的实例。 ... 当您安装 SearxNG 时，默认情况下只有 HTML 格式是活动的输出格式。 您需要激活 json 格式以使用 API。可以通过将以下行添加到 settings.yml 文件中完成："
+    },
+    {
+      "title": "Can not get json format using API from a docker container · searxng/searxng · Discussion #4470",
+      "href": "https://github.com/searxng/searxng/discussions/4470",
+      "body": "I typed in the test url http://127.0.0.1:3001/search?q=this+is+a+test+query&format=json into my browser on my host machine and I got the json formating result in the brower. However, when I tested it using another container (open-webui container) in the same network by curl http://host.docker.internal:3001/search?q=this+is+a+test+query&format=json, I could only get html format response."
+    },
+    {
+      "title": "SearXNG: Enable JSON format in settings.yml by default to support API integrations · community-scripts/ProxmoxVE · Discussion #14394",
+      "href": "https://github.com/community-scripts/ProxmoxVE/discussions/14394",
+      "body": "Current behavior The default settings.yml does not include json in the search.formats list, so any tool querying SearXNG via its JSON API will fail silently."
+    },
+    {
+      "title": "searxng/docs/dev/search_api.rst at master · searxng/searxng",
+      "href": "https://github.com/searxng/searxng/blob/master/docs/dev/search_api.rst",
+      "body": "SearXNG supports querying via a simple HTTP API. Two endpoints, / and /search, are supported for both GET and POST methods. The GET method expects parameters as URL query parameters, while the POST method expects parameters as form data (application/x-www-form-urlencoded). If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly."
+    }
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2078.69,
+  "finished_at": "2026-09-09T06:25:33.415112+00:00",
+  "url_count": 10,
+  "hostname_count": 7,
+  "exact_url_duplicates": 0
+}

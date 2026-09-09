@@ -1,0 +1,210 @@
+{
+  "query_id": "zh01",
+  "query": "Python asyncio TaskGroup 异常处理 官方文档",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-09T06:24:43.536009+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-09T06:24:43.702195+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "etag",
+        "link",
+        "referrer-policy",
+        "server-timing",
+        "set-cookie",
+        "strict-transport-security",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache",
+        "x-content-type-options",
+        "x-download-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 263701,
+      "sha256": "e3eba53ce46bf92c1bcb31fb072517898ebf5dba76781ac641bef3c6d3e096d3",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/lowfreq-20260909/zh01-ddgs-brave/http-0.html",
+      "latency_ms": 2199.26
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "协程与任务 — Python 3.14.7 文档",
+      "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+    },
+    {
+      "title": "Task Group Trouble: Exception Handling in Python Asyncio (3.11+)",
+      "href": "https://runebook.dev/en/docs/python/library/asyncio-task/task-groups",
+      "body": "Will sleep for {delay} seconds.\") await asyncio.sleep(delay) if name == \"Task B\": # Introduce an intentional error for demonstration raise ValueError(f\"{name} encountered an error!\") print(f\"Task {name} finished.\") return f\"Result from {name}\" async def main_task_group(): print(\"Starting TaskGroup example...\") try: async with asyncio.TaskGroup() as tg: task_a = tg.create_task(worker(\"Task A\", 3)) task_b = tg.create_task(worker(\"Task B\", 1)) task_c = tg.create_task(worker(\"Task C\", 2)) # This part only runs if ALL tasks completed without uncaught exceptions print(f\"Task A result: {task_a.result()}\") print(f\"Task C result: {task_c.result()}\") # Note: Task B's result() would raise an exception if accessed here without try/except inside the task."
+    },
+    {
+      "title": "asyncio —- 异步 I/O - 协程与任务 - 《Python 3.11.0 官方文档(全)》 - 书栈网 · BookStack",
+      "href": "https://www.bookstack.cn/read/python-3.11.0-zh/d3c19444b7e78747.md",
+      "body": "November 12, 2022 - 如果 aws 序列中的任一 Task 或 Future 对象 被取消，它将被当作引发了 CancelledError 一样处理 — 在此情况下 gather() 调用 不会 被取消。这是为了防止一个已提交的 Task/Future 被取消导致其他 Tasks/Future 也被取消。 ... A more modern way to create and run tasks concurrently and wait for their completion is asyncio.TaskGroup. ... 如果 return_exceptions 为 False，则在 gather() 被标记为已完成后取消它将不会取消任何已提交的可等待对象。 例如，在将一个异常传播给调用者之后，gather 可被标记为已完成，因此，在从 gather 捕获一个（由可等待对象所引发的）异常之后调用 gather.cancel() 将不会取消任何其他可等待对象。"
+    },
+    {
+      "title": "协程与任务 — Python 3.12.13 文档",
+      "href": "https://docs.python.org/zh-cn/3.12/library/asyncio-task.html",
+      "body": "虽然标准库没有对终结任务组的原生支持，但可通过向任务组添加一个引发异常的任务并无视被引发的异常来达成终结效果： · import asyncio from asyncio import TaskGroup class TerminateTaskGroup(Exception): \"\"\"Exception raised to terminate a task group.\"\"\" async def force_terminate_task_group(): \"\"\"Used to force termination of a task group.\"\"\" raise TerminateTaskGroup() async def job(task_id, sleep_time): print(f'Task {task_id}: start') await asyncio.sleep(sleep_time) print(f'Task {task_id}: done') async def main(): try: async with TaskGroup() as group: # 创建一些任务 group.create_task(job(1, 0.5)) group.create_task(job(2, 1.5)) # 休眠 1 秒 await asyncio.sleep(1) # 添加一个引发异常的任务以强制终结分组 group.create_task(force_terminate_task_group()) except* TerminateTaskGroup: pass asyncio.run(main())"
+    },
+    {
+      "title": "协程与任务 — Python 3.13.14 文档",
+      "href": "https://docs.python.org/zh-cn/3.13/library/asyncio-task.html",
+      "body": "在 3.13 版本发生变更: 改进了同时处理内部和外部取消操作以及正确保留取消计数的功能。 · 虽然标准库没有对终结任务组的原生支持，但可通过向任务组添加一个引发异常的任务并无视被引发的异常来达成终结效果： · import asyncio from asyncio import TaskGroup class TerminateTaskGroup(Exception): \"\"\"Exception raised to terminate a task group.\"\"\" async def force_terminate_task_group(): \"\"\"Used to force termination of a task group.\"\"\" raise TerminateTaskGroup() async def job(task_id, sleep_time): print(f'Task {task_id}:"
+    },
+    {
+      "title": "协程与任务 — Python 3.14.3 文档",
+      "href": "https://docs.python.org/zh-cn/3.14/library/asyncio-task.html",
+      "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+    },
+    {
+      "title": "Python Taskgroups with asyncIO - GeeksforGeeks",
+      "href": "https://www.geeksforgeeks.org/python/python-taskgroups-with-asyncio/",
+      "body": "July 23, 2025 - import asyncio async def square_number(n): for i in range(1,n+1): print(\"Square of \",i, \"is \", i**2) await asyncio.sleep(0.001) async def square_root(n): print(\"Square root of \",n,\" rounded to nearest integer is \", round(n**.5)) async def divide(num1,num2): if num2 == 0: raise Exception(\"Trying to Divide by Zero\") else: print(num1/num2) async def main(): tasks = asyncio.gather(square_number(5), square_root(16), divide(15,0), square_root(\"Geek\")) await tasks asyncio.run(main()) Output: Here in the output, we can see that whenever it has encountered an exception it has stopped executing, but there was another exception after that, it didn't even reach there. But the above code in the task group it had given all the possible Exceptions in a Structured way. In the below code, we are comparing the output of taskgroup with exception and asyncio.gather() which we have explained above."
+    },
+    {
+      "title": "asyncio 系列四、asyncio 的异常_asyncio.exceptions.cancellederror-CSDN博客",
+      "href": "https://blog.csdn.net/duxin_csdn/article/details/90517884",
+      "body": "May 24, 2019 - python asyncio 异常处理_python3 asyncio官方文档中文版"
+    },
+    {
+      "title": "协程和任务 — Python 3.14.0 文档 - Python 文档",
+      "href": "https://docs.pythonlang.cn/3/library/asyncio-task.html",
+      "body": "一旦所有任务完成，如果任何任务因 asyncio.CancelledError 之外的异常失败，这些异常将被组合到 ExceptionGroup 或 BaseExceptionGroup 中（根据需要；参见其文档），然后引发。 · 两个基本异常被特殊处理：如果任何任务因 KeyboardInterrupt 或 SystemExit 而失败，任务组仍然会取消其余任务并等待它们，但随后会重新引发最初的 KeyboardInterrupt 或 SystemExit，而不是 ExceptionGroup 或 BaseExceptionGroup。"
+    },
+    {
+      "title": "python - Common async TaskGroup Pitfalls and Solutions",
+      "href": "https://runebook.dev/en/docs/python/library/asyncio-task/asyncio.TaskGroup.create_task",
+      "body": "If any task raises an exception, the TaskGroup cancels all other running tasks and then re-raises the exception (or multiple exceptions wrapped in an ExceptionGroup). This is the key to structured concurrency—it makes sure you don't leave ..."
+    },
+    {
+      "title": "Task Group — aiotools 2.2.4 documentation",
+      "href": "https://aiotools.readthedocs.io/en/latest/aiotools.taskgroup.html",
+      "body": "Deprecated since version 2.0: Please use TaskScope instead, which provides more transparent operation without wrapping tasks using extra futures and an implementation more consistent with the stdlib asyncio.TaskGroup. ... Represents a collection of errors raised inside a task group. Callers may iterate over the errors using the __errors__ attribute. In Python 3.11 or later, this is a mere wrapper of underlying BaseExceptionGroup."
+    },
+    {
+      "title": "python - How to prevent python3.11 TaskGroup from canceling all the tasks - Stack Overflow",
+      "href": "https://stackoverflow.com/questions/75250788/how-to-prevent-python3-11-taskgroup-from-canceling-all-the-tasks",
+      "body": ""
+    },
+    {
+      "title": "协程与任务 — Python 3.11.15 文档",
+      "href": "https://docs.python.org/zh-cn/3.11/library/asyncio-task.html",
+      "body": "March 7, 2026 - 一旦所有任务被完成，如果有任何任务因 asyncio.CancelledError 以外的异常而失败，这些异常会被组合在 ExceptionGroup 或 BaseExceptionGroup 中（选择其中较适合的一个；参见其文档）并将随后引发。"
+    },
+    {
+      "title": "asyncio异步IO--协程（Coroutine）与任务(Task)详解 | BiuBiu",
+      "href": "https://ashooter.github.io/2018-11-19/深入理解Python的asyncio协程/",
+      "body": "November 26, 2018 - 申请取消任务。 将在下一个事件循环周期中将CancelledError异常抛给封装在Task中的协程。 收到CancelledError异常后，协程有机会处理异常，甚至以try ...except CancelledError ...finally来拒绝请求。因此，与Future.cancel()不同，Task.cancel()不能保证Task一定被取消掉。当然，拒绝取消请求这种操作并不常见，而且很不提倡。"
+    },
+    {
+      "title": "asyncio —- 异步 I/O - 协程与任务 - 《Python v3.12.0 中文文档(全)》 - 书栈网 · BookStack",
+      "href": "https://www.bookstack.cn/read/python-3.12.0-zh/d3c19444b7e78747.md",
+      "body": "如果 aws 序列中的任一 Task 或 Future 对象 被取消，它将被当作引发了 CancelledError 一样处理 — 在此情况下 gather() 调用 不会 被取消。这是为了防止一个已提交的 Task/Future 被取消导致其他 Tasks/Future 也被取消。 ... 一个创建然后并发地运行任务等待它们完成的新选择是 asyncio.TaskGroup。 TaskGroup 提供了针对调度嵌套子任务的比 gather 更强的安全保证：如果一个任务（或子任务，即由一个任务调度的任务）引发了异常，TaskGroup 将取消剩余的已排期任务）。"
+    },
+    {
+      "title": "协程与任务 — Python 3.13.1 文档",
+      "href": "https://www.sdx.cool/index/python_docs/library/asyncio-task.html",
+      "body": "在 3.13 版本发生变更: 改进了同时处理内部和外部取消操作以及正确保留取消计数的功能。 · 虽然标准库没有对终结任务组的原生支持，但可通过向任务组添加一个引发异常的任务并无视被引发的异常来达成终结效果： · import asyncio from asyncio import TaskGroup class TerminateTaskGroup(Exception): \"\"\"Exception raised to terminate a task group.\"\"\" async def force_terminate_task_group(): \"\"\"Used to force termination of a task group.\"\"\" raise TerminateTaskGroup() async def job(task_id, sleep_time): print(f'Task {task_id}:"
+    },
+    {
+      "title": "TaskGroup管理协程 - FastApi 最佳实践-中文版",
+      "href": "https://hellowac.github.io/fastapi-best-practices-zh-cn/asyncio/task_group/",
+      "body": "main() 协程将通过 asyncio.TaskGroup 发出所有任务，然后在所有任务“完成”后依次报告每个任务的完成和取消状态。 · 回想一下，“完成”任务是指正常完成、取消或因异常而失败的任务。 · # 异步入口点 async def main(): # 处理异常 try: # 创建任务组 async with asyncio.TaskGroup() as group: # 运行第一个任务 t1 = group.create_task(task1()) # 运行第二个任务 t2 = group.create_task(task2()) # 运行第三个任务 t3 = group.create_task(task3()) except: pass # 检查每个任务的状态 print(f'Task1: done={t1.done()}, cancelled={t1.cancelled()}') print(f'Task2: done={t2.done()}, cancelled={t2.cancelled()}') print(f'Task3: done={t3.done()}, cancelled={t3.cancelled()}')"
+    },
+    {
+      "title": "Python｜玩转 Asyncio 任务处理（2）-阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/1548917",
+      "body": "June 26, 2024 - 在 Python 3.11 中，Asyncio 引入了一个新特性——asyncio.TaskGroup，它以上下文管理器的形式简化了对一组任务的管理。这个特性的一个关键优势在于，如果任务组中的某个任务遇到错误，其他所有任务都会自动取消，这有助于在异步编程中实现更加健壮的错误处理机制。"
+    },
+    {
+      "title": "TaskGroup suppresses grouped exceptions due to parent task cancellation · Issue #95704 · python/cpython",
+      "href": "https://github.com/python/cpython/issues/95704",
+      "body": "August 5, 2022 - import asyncio import contextlib async def child(sock): try: with contextlib.closing(sock): await asyncio.sleep(2) except Exception as e: print(f\"child task got error: {type(e)=} {e=}\") raise class Sock: async def aclose(self): await asyncio.sleep(1) async def main(): try: sock = Sock() async with asyncio.timeout(1): async with asyncio.TaskGroup() as tg: # Make two concurrent calls to child() tg.create_task(child(Sock())) tg.create_task(child(Sock())) async with contextlib.aclosing(sock): await asyncio.sleep(2) except* AttributeError: print(\"handled attribute error\") asyncio.run(main())"
+    },
+    {
+      "title": "Async I/O 错误排查：深入理解 Python asyncio 的异常机制",
+      "href": "https://runebook.dev/zh/docs/python/library/asyncio-exceptions",
+      "body": "推荐方法 使用 await 捕获异常 这是最常见也最推荐的做法，它允许你在任务的外部使用标准的 try...except 块来捕获任务内部的异常。 · import asyncio import random async def risky_operation(i): \"\"\"一个可能会抛出异常的异步函数。\"\"\" await asyncio.sleep(0.1) if random.random() < 0.5: # 抛出一个特定的异常 raise ValueError(f\"Task {i}: 随错误!\") return f\"Task {i}: 成功完成.\" async def main_await(): # 创建任务 task1 = asyncio.create_task(risky_operation(1)) print(\"等待任务...\") try: # 使用 await 来等待任务完成并捕获其内部的异常 result = await task1 print(f\"结果: {result}\") except ValueError as e: # 在 await 处捕获到 Task 内部抛出的异常 print(f\" 捕获到任务异常: {e}\") # asyncio.run(main_await())"
+    }
+  ],
+  "results": [
+    {
+      "title": "协程与任务 — Python 3.14.7 文档",
+      "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+    },
+    {
+      "title": "Task Group Trouble: Exception Handling in Python Asyncio (3.11+)",
+      "href": "https://runebook.dev/en/docs/python/library/asyncio-task/task-groups",
+      "body": "Will sleep for {delay} seconds.\") await asyncio.sleep(delay) if name == \"Task B\": # Introduce an intentional error for demonstration raise ValueError(f\"{name} encountered an error!\") print(f\"Task {name} finished.\") return f\"Result from {name}\" async def main_task_group(): print(\"Starting TaskGroup example...\") try: async with asyncio.TaskGroup() as tg: task_a = tg.create_task(worker(\"Task A\", 3)) task_b = tg.create_task(worker(\"Task B\", 1)) task_c = tg.create_task(worker(\"Task C\", 2)) # This part only runs if ALL tasks completed without uncaught exceptions print(f\"Task A result: {task_a.result()}\") print(f\"Task C result: {task_c.result()}\") # Note: Task B's result() would raise an exception if accessed here without try/except inside the task."
+    },
+    {
+      "title": "asyncio —- 异步 I/O - 协程与任务 - 《Python 3.11.0 官方文档(全)》 - 书栈网 · BookStack",
+      "href": "https://www.bookstack.cn/read/python-3.11.0-zh/d3c19444b7e78747.md",
+      "body": "November 12, 2022 - 如果 aws 序列中的任一 Task 或 Future 对象 被取消，它将被当作引发了 CancelledError 一样处理 — 在此情况下 gather() 调用 不会 被取消。这是为了防止一个已提交的 Task/Future 被取消导致其他 Tasks/Future 也被取消。 ... A more modern way to create and run tasks concurrently and wait for their completion is asyncio.TaskGroup. ... 如果 return_exceptions 为 False，则在 gather() 被标记为已完成后取消它将不会取消任何已提交的可等待对象。 例如，在将一个异常传播给调用者之后，gather 可被标记为已完成，因此，在从 gather 捕获一个（由可等待对象所引发的）异常之后调用 gather.cancel() 将不会取消任何其他可等待对象。"
+    },
+    {
+      "title": "协程与任务 — Python 3.12.13 文档",
+      "href": "https://docs.python.org/zh-cn/3.12/library/asyncio-task.html",
+      "body": "虽然标准库没有对终结任务组的原生支持，但可通过向任务组添加一个引发异常的任务并无视被引发的异常来达成终结效果： · import asyncio from asyncio import TaskGroup class TerminateTaskGroup(Exception): \"\"\"Exception raised to terminate a task group.\"\"\" async def force_terminate_task_group(): \"\"\"Used to force termination of a task group.\"\"\" raise TerminateTaskGroup() async def job(task_id, sleep_time): print(f'Task {task_id}: start') await asyncio.sleep(sleep_time) print(f'Task {task_id}: done') async def main(): try: async with TaskGroup() as group: # 创建一些任务 group.create_task(job(1, 0.5)) group.create_task(job(2, 1.5)) # 休眠 1 秒 await asyncio.sleep(1) # 添加一个引发异常的任务以强制终结分组 group.create_task(force_terminate_task_group()) except* TerminateTaskGroup: pass asyncio.run(main())"
+    },
+    {
+      "title": "协程与任务 — Python 3.13.14 文档",
+      "href": "https://docs.python.org/zh-cn/3.13/library/asyncio-task.html",
+      "body": "在 3.13 版本发生变更: 改进了同时处理内部和外部取消操作以及正确保留取消计数的功能。 · 虽然标准库没有对终结任务组的原生支持，但可通过向任务组添加一个引发异常的任务并无视被引发的异常来达成终结效果： · import asyncio from asyncio import TaskGroup class TerminateTaskGroup(Exception): \"\"\"Exception raised to terminate a task group.\"\"\" async def force_terminate_task_group(): \"\"\"Used to force termination of a task group.\"\"\" raise TerminateTaskGroup() async def job(task_id, sleep_time): print(f'Task {task_id}:"
+    },
+    {
+      "title": "协程与任务 — Python 3.14.3 文档",
+      "href": "https://docs.python.org/zh-cn/3.14/library/asyncio-task.html",
+      "body": "对于任务组应当注意不要将用于“唤醒”其 __aexit__() 的内部取消请求与其他地方对其运行的任务提出的取消请求相混淆。 具体来说，当一个任务组在语法上嵌套于另一个任务组中，而两个任务组的某个子任务同时发生异常时，内层的任务组将处理其异常，然后外层的任务组将收到另一个取消请求并处理它自己的异常。 · 对于任务组在外部被取消同时必须引发 ExceptionGroup 的情况，它将调用父任务的 cancel() 方法。这样可以确保 asyncio.CancelledError 会在下一次 await 时被引发，因此取消操作不会丢失。"
+    },
+    {
+      "title": "Python Taskgroups with asyncIO - GeeksforGeeks",
+      "href": "https://www.geeksforgeeks.org/python/python-taskgroups-with-asyncio/",
+      "body": "July 23, 2025 - import asyncio async def square_number(n): for i in range(1,n+1): print(\"Square of \",i, \"is \", i**2) await asyncio.sleep(0.001) async def square_root(n): print(\"Square root of \",n,\" rounded to nearest integer is \", round(n**.5)) async def divide(num1,num2): if num2 == 0: raise Exception(\"Trying to Divide by Zero\") else: print(num1/num2) async def main(): tasks = asyncio.gather(square_number(5), square_root(16), divide(15,0), square_root(\"Geek\")) await tasks asyncio.run(main()) Output: Here in the output, we can see that whenever it has encountered an exception it has stopped executing, but there was another exception after that, it didn't even reach there. But the above code in the task group it had given all the possible Exceptions in a Structured way. In the below code, we are comparing the output of taskgroup with exception and asyncio.gather() which we have explained above."
+    },
+    {
+      "title": "asyncio 系列四、asyncio 的异常_asyncio.exceptions.cancellederror-CSDN博客",
+      "href": "https://blog.csdn.net/duxin_csdn/article/details/90517884",
+      "body": "May 24, 2019 - python asyncio 异常处理_python3 asyncio官方文档中文版"
+    },
+    {
+      "title": "协程和任务 — Python 3.14.0 文档 - Python 文档",
+      "href": "https://docs.pythonlang.cn/3/library/asyncio-task.html",
+      "body": "一旦所有任务完成，如果任何任务因 asyncio.CancelledError 之外的异常失败，这些异常将被组合到 ExceptionGroup 或 BaseExceptionGroup 中（根据需要；参见其文档），然后引发。 · 两个基本异常被特殊处理：如果任何任务因 KeyboardInterrupt 或 SystemExit 而失败，任务组仍然会取消其余任务并等待它们，但随后会重新引发最初的 KeyboardInterrupt 或 SystemExit，而不是 ExceptionGroup 或 BaseExceptionGroup。"
+    },
+    {
+      "title": "python - Common async TaskGroup Pitfalls and Solutions",
+      "href": "https://runebook.dev/en/docs/python/library/asyncio-task/asyncio.TaskGroup.create_task",
+      "body": "If any task raises an exception, the TaskGroup cancels all other running tasks and then re-raises the exception (or multiple exceptions wrapped in an ExceptionGroup). This is the key to structured concurrency—it makes sure you don't leave ..."
+    }
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2378.12,
+  "finished_at": "2026-09-09T06:24:45.914016+00:00",
+  "url_count": 10,
+  "hostname_count": 6,
+  "exact_url_duplicates": 0
+}

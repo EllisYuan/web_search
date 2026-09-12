@@ -1,0 +1,75 @@
+{
+  "batch_index": 1,
+  "query_id": "zh01",
+  "query": "Python asyncio TaskGroup 异常处理 官方文档",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T11:20:53.252710+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T11:20:53.217694+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 5.45
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python asyncio TaskGroup 异常处理 官方文档",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T11:20:53.244178+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 232,
+      "sha256": "e2fedf23f15bc196436a2c09a0f94886de5761b62815885dcd524c3d2b510c10",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/real-batch-20260912-healthcheck/1-zh01-searxng-google/response.json",
+      "latency_ms": 8.11
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Python asyncio TaskGroup 异常处理 官方文档",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "batch_latency_ms": 55.73
+}

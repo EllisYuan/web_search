@@ -1,0 +1,801 @@
+{
+  "query_id": "zh01",
+  "query": "Python asyncio TaskGroup 异常处理 官方文档",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T11:20:07.219016+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T11:20:07.239079+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 15.14
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python asyncio TaskGroup 异常处理 官方文档",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T11:20:07.274368+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 10188,
+      "sha256": "a1cae6e6afc0b1597dae3e4b5b46e1842145e75abed0cc12b59c6f22c887f163",
+      "marker_hints": [],
+      "local_body": "raw-private/healthcheck-20260912/zh01-searxng-google/response.json",
+      "latency_ms": 2096.75
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Coroutines and tasks — Python 3.14.7 documentation",
+      "content": "To avoid this, use asyncio.TaskGroup which keeps a strong reference to each task, awaits them and propagates their exceptions: Copy async with asyncio.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://docs.python.org/3/library/asyncio-task.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.python.org",
+        "/3/library/asyncio-task.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "协程与任务— Python 3.14.7 文档",
+      "content": "TaskGroup 针对嵌套子任务的调度提供比gather 更强的安全保证:如果一个任务(或子任务,即由某个任务调度的任务)引发了异常,TaskGroup 将取消剩余的已排期任务",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.python.org",
+        "/zh-cn/3/library/asyncio-task.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "协程与任务— Python 3.12.14 文档",
+      "content": "TaskGroup 提供了针对调度嵌套子任务的比gather 更强的安全保证：如果一个任务（或子任务，即由一个任务调度的任务）引发了异常，TaskGroup 将取消剩余的已排期任务）。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://docs.python.org/zh-cn/3.12/library/asyncio-task.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.python.org",
+        "/zh-cn/3.12/library/asyncio-task.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "异步异常处理与调试技巧—— 如何捕获协程异常、取消任务 ...",
+      "content": "Dec 13, 2025 · 本篇将带你深入理解Python 异步系统中的异常传播机制、任务控制与调试技巧， 帮助你构建一个真正健壮、可控、可维护的异步系统。 1. 异步世界的异常传播 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://zhuanlan.zhihu.com/p/1983263703873896977",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "zhuanlan.zhihu.com",
+        "/p/1983263703873896977",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "【Python】await与asyncio3_asyncio.taskgroup-CSDN博客",
+      "content": "Jun 26, 2025 · 传播异常： 如果任何一个子任务在执行过程中抛出异常， TaskGroup 会捕获这个异常。当 async with 块退出时，这个异常会被重新抛出（如果多个任务抛出异常 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://blog.csdn.net/yangjia96/article/details/148934966",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "blog.csdn.net",
+        "/yangjia96/article/details/148934966",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "协程与任务— Python 3.11.15 文档",
+      "content": "Mar 7, 2026 · 要实际运行一个协程，asyncio 提供了以下几种机制: asyncio.run() 函数用来运行最高层级的入口点\"main()\" 函数(参见上面的示例。) 对协程执行await。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://docs.python.org/zh-cn/3.11/library/asyncio-task.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.python.org",
+        "/zh-cn/3.11/library/asyncio-task.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "把asyncio 写到能停下来：TaskGroup、取消、超时与背压",
+      "content": "Aug 5, 2026 · 如果确实需要捕获取消异常, TaskGroup 可能无法得到正确状态。Python 文档也特别提醒, CancelledError 会使它们行为异常。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://dajinzhu.cn/2026/08/05/python-asyncio-control/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "dajinzhu.cn",
+        "/2026/08/05/python-asyncio-control/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python异步编程中TaskGroup异常处理全解析_文心快码",
+      "content": "Jun 18, 2026 · 本文深入解析了Python异步编程中TaskGroup的异常处理机制。针对未捕获任务异常、任务组级异常处理和事件循环上下文问题，提供了具体的解决方案和代码 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://comate.baidu.com/zh/page/4jij0un4tmz",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "comate.baidu.com",
+        "/zh/page/4jij0un4tmz",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Python Taskgroups with asyncIO - GeeksforGeeks",
+      "content": "Jul 23, 2025 · In this article, we will see the use of Task Groups with asyncIO in Python. What is a Task group? Task groups are introduced in Python 3.11 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://www.geeksforgeeks.org/python/python-taskgroups-with-asyncio/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.geeksforgeeks.org",
+        "/python/python-taskgroups-with-asyncio/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "用asyncio 开发— Python 3.14.7 文档",
+      "content": "用asyncio 开发¶. 异步编程与传统的“顺序”编程不同。 本页列出常见的错误和陷阱，并解释如何避免它们。 调试模式¶. 默认情况下，asyncio 以生产模式运行。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://docs.python.org/zh-cn/3/library/asyncio-dev.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.python.org",
+        "/zh-cn/3/library/asyncio-dev.html",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "Python asyncio TaskGroup 异常处理 官方文档",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Coroutines and tasks — Python 3.14.7 documentation",
+        "content": "To avoid this, use asyncio.TaskGroup which keeps a strong reference to each task, awaits them and propagates their exceptions: Copy async with asyncio.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://docs.python.org/3/library/asyncio-task.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.python.org",
+          "/3/library/asyncio-task.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "协程与任务— Python 3.14.7 文档",
+        "content": "TaskGroup 针对嵌套子任务的调度提供比gather 更强的安全保证:如果一个任务(或子任务,即由某个任务调度的任务)引发了异常,TaskGroup 将取消剩余的已排期任务",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.python.org",
+          "/zh-cn/3/library/asyncio-task.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "协程与任务— Python 3.12.14 文档",
+        "content": "TaskGroup 提供了针对调度嵌套子任务的比gather 更强的安全保证：如果一个任务（或子任务，即由一个任务调度的任务）引发了异常，TaskGroup 将取消剩余的已排期任务）。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://docs.python.org/zh-cn/3.12/library/asyncio-task.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.python.org",
+          "/zh-cn/3.12/library/asyncio-task.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "异步异常处理与调试技巧—— 如何捕获协程异常、取消任务 ...",
+        "content": "Dec 13, 2025 · 本篇将带你深入理解Python 异步系统中的异常传播机制、任务控制与调试技巧， 帮助你构建一个真正健壮、可控、可维护的异步系统。 1. 异步世界的异常传播 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://zhuanlan.zhihu.com/p/1983263703873896977",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "zhuanlan.zhihu.com",
+          "/p/1983263703873896977",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "【Python】await与asyncio3_asyncio.taskgroup-CSDN博客",
+        "content": "Jun 26, 2025 · 传播异常： 如果任何一个子任务在执行过程中抛出异常， TaskGroup 会捕获这个异常。当 async with 块退出时，这个异常会被重新抛出（如果多个任务抛出异常 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://blog.csdn.net/yangjia96/article/details/148934966",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "blog.csdn.net",
+          "/yangjia96/article/details/148934966",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "协程与任务— Python 3.11.15 文档",
+        "content": "Mar 7, 2026 · 要实际运行一个协程，asyncio 提供了以下几种机制: asyncio.run() 函数用来运行最高层级的入口点\"main()\" 函数(参见上面的示例。) 对协程执行await。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://docs.python.org/zh-cn/3.11/library/asyncio-task.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.python.org",
+          "/zh-cn/3.11/library/asyncio-task.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "把asyncio 写到能停下来：TaskGroup、取消、超时与背压",
+        "content": "Aug 5, 2026 · 如果确实需要捕获取消异常, TaskGroup 可能无法得到正确状态。Python 文档也特别提醒, CancelledError 会使它们行为异常。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://dajinzhu.cn/2026/08/05/python-asyncio-control/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "dajinzhu.cn",
+          "/2026/08/05/python-asyncio-control/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python异步编程中TaskGroup异常处理全解析_文心快码",
+        "content": "Jun 18, 2026 · 本文深入解析了Python异步编程中TaskGroup的异常处理机制。针对未捕获任务异常、任务组级异常处理和事件循环上下文问题，提供了具体的解决方案和代码 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://comate.baidu.com/zh/page/4jij0un4tmz",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "comate.baidu.com",
+          "/zh/page/4jij0un4tmz",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Python Taskgroups with asyncIO - GeeksforGeeks",
+        "content": "Jul 23, 2025 · In this article, we will see the use of Task Groups with asyncIO in Python. What is a Task group? Task groups are introduced in Python 3.11 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://www.geeksforgeeks.org/python/python-taskgroups-with-asyncio/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.geeksforgeeks.org",
+          "/python/python-taskgroups-with-asyncio/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "用asyncio 开发— Python 3.14.7 文档",
+        "content": "用asyncio 开发¶. 异步编程与传统的“顺序”编程不同。 本页列出常见的错误和陷阱，并解释如何避免它们。 调试模式¶. 默认情况下，asyncio 以生产模式运行。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://docs.python.org/zh-cn/3/library/asyncio-dev.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.python.org",
+          "/zh-cn/3/library/asyncio-dev.html",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "asyncio to_thread 使用",
+      "python await 用法",
+      "asyncio gather 用法",
+      "python asyncio 详解",
+      "asyncio create_task 用法",
+      "python asyncio 并发 编程",
+      "python asyncio create_subprocess_exec",
+      "python 协 程",
+      "python 协 程 池",
+      "python async await 用法"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2153.38,
+  "finished_at": "2026-09-12T11:20:09.372313+00:00",
+  "url_count": 10,
+  "hostname_count": 6,
+  "exact_url_duplicates": 0
+}

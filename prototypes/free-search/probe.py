@@ -107,7 +107,44 @@ def ddgs_search(query, backend, args, key):
     return result
 
 
+SEARXNG_HEALTH_TIMEOUT = 2
+
+
+def _searxng_health_probe(args):
+    base = args.searxng.rstrip('/')
+    url = base + '/healthz'
+    # Localhost must not travel through any inherited proxy.
+    opener = build_opener(ProxyHandler({}))
+    tick = time.perf_counter()
+    item = {'endpoint': url, 'started_at': now()}
+    try:
+        with opener.open(url, timeout=SEARXNG_HEALTH_TIMEOUT) as response:
+            item.update(status_code=response.status, ok=response.status == 200)
+    except HTTPError as exc:
+        item.update(status_code=exc.code, ok=False, error=str(exc))
+    except Exception as exc:
+        item.update(ok=False, error_type=type(exc).__name__, error=str(exc))
+    item['latency_ms'] = round((time.perf_counter() - tick) * 1000, 2)
+    return item
+
+
+def _classify_unresponsive(unresponsive_engines):
+    # unresponsive_engines is SearXNG's own JSON field: [[engine_name, free-text reason], ...].
+    reasons = ' '.join(str(reason).lower() for _, reason in unresponsive_engines)
+    if 'captcha' in reasons:
+        return 'challenge'
+    if 'too many request' in reasons:
+        return 'rate_limited'
+    return 'upstream_engine_unresponsive'
+
+
 def searxng_search(query, backend, args, key):
+    health_check = _searxng_health_probe(args)
+    if not health_check['ok']:
+        # Container/process alive is not proof the HTTP service is reachable (ADR-0004);
+        # the actual search request would hit the same unreachable instance, so skip it.
+        return {'status': 'instance_unhealthy', 'health_check': health_check, 'http': [], 'results': [],
+                'upstream_request_count': 0, 'retry_after_values': []}
     params = {'q': query, 'engines': backend, 'format': 'json'}
     if args.searxng_language:
         params['language'] = args.searxng_language
@@ -118,7 +155,7 @@ def searxng_search(query, backend, args, key):
     opener = build_opener(ProxyHandler({}))
     tick = time.perf_counter()
     item = {'endpoint': args.searxng + '/search', 'params': params, 'started_at': now()}
-    result = {'http': [item], 'results': []}
+    result = {'health_check': health_check, 'http': [item], 'results': []}
     try:
         with opener.open(url, timeout=args.timeout + 5) as response:
             body = response.read()
@@ -130,8 +167,12 @@ def searxng_search(query, backend, args, key):
         result['results'] = payload.get('results', [])[:10]
         result['unresponsive_engines'] = payload.get('unresponsive_engines', [])
         result['actual_engines'] = sorted({e for r in result['results'] for e in r.get('engines', [])})
-        result['status'] = ('partial_success' if result['unresponsive_engines'] else 'success') if result['results'] else (
-            'upstream_failure' if result['unresponsive_engines'] else 'empty_unverified')
+        if result['results']:
+            result['status'] = 'partial_success' if result['unresponsive_engines'] else 'success'
+        elif result['unresponsive_engines']:
+            result['status'] = _classify_unresponsive(result['unresponsive_engines'])
+        else:
+            result['status'] = 'empty_unverified'
     except HTTPError as exc:
         body = exc.read()
         item.update(status_code=exc.code, **evidence(body, ROOT / 'raw-private' / key / 'error.html'))

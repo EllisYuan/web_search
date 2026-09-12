@@ -45,6 +45,28 @@
 
 container 状态命令一度显示 `Up 5 hours`，但服务端不响应；重启命令未产生可确认的健康恢复。这个“container process 存活 ≠ HTTP 服务可用”的事实需要进入后续 adapter health check 设计。
 
+## Adapter health check（2026-09-12）
+
+延续上一节“container process 存活 ≠ HTTP 服务可用”的问题，本轮在 `probe.py` 的 `searxng_search()` 里加了两处改动；DDGS 路线不变，它没有本机常驻 instance 概念，不适用同类检查。
+
+1. **请求内 health probe**：每次真正发 `/search` 前先对同一 SearXNG 实例发一次 `/healthz`（2 秒超时，与 `run.ps1` 启动时的探测一致）。探测失败记为新终态 `instance_unhealthy`，**不再发起后续 search 请求**（本地 instance 都连不上，再打一次必是同一条坏连接），该条 `upstream_request_count` 记为 0。停掉容器后实测：`/healthz` 不是快速拒绝，而是整整等到 2 秒超时才报 `URLError: <urlopen error timed out>`（[样例](runs/instance-down-20260912/en01-searxng-google.json)）——比此前 `lowfreq-20260909` 观察到的 `RemoteDisconnected` 更慢、更隐蔽，进一步说明不能把“端口没报错”当作健康。
+2. **`unresponsive_engines` 原因归类**：把 JSON 里 `unresponsive_engines` 的自由文本原因（不区分大小写子串匹配）映射到 DDGS 路线已有的共享状态：含 `captcha` → `challenge`，含 `too many request` → `rate_limited`，其余归一个新的兜底 `upstream_engine_unresponsive`；原始 `unresponsive_engines` 列表继续完整保留在输出里，没有改动 DDGS 侧逻辑。这只是字符串归类，不代表已理解全部可能的原因文本。
+
+对健康实例做了一次小规模真实复测（`healthcheck-20260912`，2 query × 3 backend）：
+
+| query | backend | status | 观察 |
+|---|---|---|---|
+| zh01 | duckduckgo | challenge | `unresponsive_engines=[['duckduckgo','CAPTCHA']]`，[样例](runs/healthcheck-20260912/zh01-searxng-duckduckgo.json) |
+| zh01 | brave | success | 10 URL |
+| zh01 | google | success | 10 URL |
+| en01 | brave | success | 10 URL |
+| en01 | google | challenge | `unresponsive_engines=[['google','CAPTCHA']]`，[样例](runs/healthcheck-20260912/en01-searxng-google.json) |
+| en01 | duckduckgo | challenge | `unresponsive_engines=[['duckduckgo','CAPTCHA']]` |
+
+`SearXNG / Google` 在 2026-09-09 两窗口里是 6/6 无失败，这次同一 query 却直接 CAPTCHA——再次证明没有一条路线能据既有样本宣称长期稳定，不是这次改动引入的回归。随后重跑 `real_batch.py`（`real-batch-20260912-healthcheck`）复现了同一批 job：`zh01/searxng/google` 这次原因文本是 `"Suspended: CAPTCHA"`（不是单纯 `"CAPTCHA"`），仍被正确归类为 `challenge`，且延迟只有 55ms——说明这是几秒前刚触发的 CAPTCHA 引发了实例内 engine suspension 的快速拒绝，不是一次新的独立上游探测（呼应上一节对 Brave suspension 的同样告诫）。`health_check` 字段本身在健康路径里稳定在个位数至十几毫秒（[样例](runs/real-batch-20260912-healthcheck/01-zh01-searxng-google.json)），没有明显拖慢整体请求。
+
+`retry_count` 本轮仍是诚实的静态 0：caller 显式发起可审计 attempt 的机制还没有建，`batch-observations.json` 里已经预留的 `attempts` 形状留给后续单独一轮再确认 CLI 和 `batch-index.json` 的呈现方式。
+
 ## 质量与独立 Source
 
 site 分组按本轮观察到的域名/所属网站显式归并，不用“最后两段 hostname”猜测公共后缀。Source 再合并已识别镜像及同一 project 的 docs/GitHub；疑似衍生且未核实独立创作的 Runebook 页面不进入保守独立 Source 数。完整规则和例外写在每条 [标注](quality-annotations.json)。不是所有网站的所有权或内容来源审计。
@@ -93,6 +115,6 @@ site 分组按本轮观察到的域名/所属网站显式归并，不用“最�
 
 继续本 ticket 时，优先做跨天、低频的固定 query 复测，隔离 Windows/Docker 出口与 adapter 参数差异，记录上游 request count、Retry-After、suspension 和 HTTP 元数据。已观察到限制，不宜直接放大为 24 query 的压力测试。
 
-之后再补齐 24 query 的 top-10 逐项审阅，尤其是时效性、默认语言与显式过滤；将真实 batch 的 timeout/retry 和健康检查接入。免费上游恢复策略及 suspension 是否暴露给 caller 已成为明确的待验证问题，可留在当前 ticket 继续验证。
+之后再补齐 24 query 的 top-10 逐项审阅，尤其是时效性、默认语言与显式过滤；real_batch 的 caller 可审计 retry/attempt 机制仍未接入（2026-09-12 已先接入 adapter health check 与失败原因归类，见上节）。免费上游恢复策略及 suspension 是否暴露给 caller 已成为明确的待验证问题，可留在当前 ticket 继续验证。
 
 目前没有用户确认的候选、性能阈值或 resolution，因此不关闭 ticket，也不把本报告写入 map 的 Decisions so far。资产保存在独立 prototype branch，供用户直接审阅。

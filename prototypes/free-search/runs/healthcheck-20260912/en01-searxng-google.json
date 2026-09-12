@@ -1,0 +1,78 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T11:20:16.461245+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T11:20:16.479059+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 6.37
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL multicolumn indexes official documentation",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T11:20:16.504120+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 200,
+      "sha256": "62bbe121d13aa73c1866870b9f21189092023028392c5296d97ce17635d98db1",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/healthcheck-20260912/en01-searxng-google/response.json",
+      "latency_ms": 888.07
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "PostgreSQL multicolumn indexes official documentation",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 931.35,
+  "finished_at": "2026-09-12T11:20:17.392550+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

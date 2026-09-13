@@ -1,0 +1,82 @@
+<title>证据导航</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600&display=swap">
+<style>
+:root{color-scheme:light;--bg:#f4f7fa;--surface:#ffffff;--text:#173244;--muted:#536b79;--accent:#087f86;--line:#d4dfe6;--wash:#e8f2f3;--code:#edf2f6;--focus:#126d98;--display:"Noto Serif SC",Georgia,"Songti SC",serif;--body:"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;--mono:"Cascadia Code",Consolas,monospace}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#12232e;--surface:#192e3b;--text:#e2edf3;--muted:#aac0cd;--accent:#7ad7d5;--line:#385261;--wash:#203e48;--code:#142934;--focus:#8bd6f5}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#12232e;--surface:#192e3b;--text:#e2edf3;--muted:#aac0cd;--accent:#7ad7d5;--line:#385261;--wash:#203e48;--code:#142934;--focus:#8bd6f5}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.85}a{color:var(--accent);text-underline-offset:.23em;overflow-wrap:anywhere}button{font:inherit}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:4px}h1,h2,h3,h4{line-height:1.5;text-wrap:balance}p,ul,ol{margin:0}code{font-family:var(--mono);font-size:.89em;background:var(--code);padding:.12em .32em;overflow-wrap:anywhere}pre{background:var(--code);padding:1.1rem;overflow-x:auto;max-width:100%;line-height:1.65;font-size:.88rem}pre code{padding:0;background:transparent;overflow-wrap:normal}hr{border:0;border-top:1px solid var(--line);margin:2rem 0}.skip{position:absolute;left:1rem;top:-6rem;background:var(--surface);padding:.8rem}.skip:focus{top:1rem}.shell{max-width:100rem;margin-inline:auto;display:grid;grid-template-columns:15rem minmax(0,1fr);min-height:100vh}.sidebar{padding:2.5rem 1.5rem;position:sticky;top:0;align-self:start;display:flex;flex-direction:column;gap:2rem;height:100vh;overflow-y:auto;border-right:1px solid var(--line)}.identity{display:grid;gap:.35rem}.identity strong{font-family:var(--display);font-size:1.5rem;font-weight:600}.identity small,.meta,.muted{color:var(--muted)}.identity small{font-size:.76rem;letter-spacing:.07em}.tabs{display:flex;flex-direction:column;gap:.35rem}.tabs button{border:1px solid transparent;background:transparent;color:var(--muted);text-align:left;padding:.7rem .85rem;cursor:pointer;font-size:.91rem}.tabs button[aria-selected="true"]{background:var(--wash);border-color:var(--line);color:var(--text);font-weight:600}.tabs button:hover{color:var(--accent)}.navgroup{font-size:.71rem;letter-spacing:.1em;color:var(--muted);padding:.8rem .85rem .2rem}.side-note{font-size:.77rem;display:grid;gap:.7rem;margin-top:auto}.main{min-width:0;padding:2.7rem clamp(1.3rem,4vw,5rem) 5rem}.panel{max-width:68rem;margin-inline:auto;min-width:0}.masthead{display:grid;gap:1rem;padding-bottom:2rem;border-bottom:1px solid var(--line)}.kicker{font-size:.76rem;letter-spacing:.12em;color:var(--accent);font-weight:600}.masthead h1{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:600;margin:0}.lede{font-size:1.06rem;max-width:49rem;color:var(--muted)}.status-note{background:var(--wash);border:1px solid var(--line);padding:1rem 1.2rem;font-size:.88rem;display:grid;gap:.4rem}.overview{display:grid;gap:2.3rem;padding-top:2rem}.overview h2{font-family:var(--display);font-weight:600;font-size:1.5rem;margin:0}.overview h3{font-size:1rem;margin:0}.topic{display:grid;gap:1rem}.topic p{max-width:52rem}.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem}.reading{border:1px solid var(--line);background:var(--surface);padding:1.3rem;display:grid;gap:.8rem}.reading .links{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.88rem}.table-scroll{max-width:100%;overflow-x:auto;border:1px solid var(--line)}table{border-collapse:collapse;width:100%;font-size:.87rem}th,td{padding:.85rem 1rem;vertical-align:top;text-align:left;border-bottom:1px solid var(--line);min-width:8rem}th{background:var(--wash);font-weight:600}tr:last-child td{border-bottom:0}.steps{display:grid;gap:.9rem;padding-left:1.6rem}.steps li{padding-left:.2rem}.sources{display:grid;gap:.55rem;font-size:.87rem;padding-left:1.3rem}.section-meta{display:flex;gap:.7rem 1.2rem;align-items:baseline;flex-wrap:wrap;font-size:.76rem;color:var(--muted);padding-bottom:1.25rem;border-bottom:1px solid var(--line);margin-bottom:1.8rem}.tag{background:var(--wash);color:var(--accent);padding:.2rem .55rem;font-family:var(--mono)}.prose{font-size:.96rem;overflow-wrap:anywhere}.prose>h1{font-family:var(--display);font-size:2rem;font-weight:600;margin:0 0:1.5rem}.prose>h2{font-family:var(--display);font-size:1.45rem;font-weight:600;margin:2.4rem 0 1rem;padding-top:1.4rem;border-top:1px solid var(--line)}.prose h3{font-size:1.13rem;margin:1.8rem 0 .8rem}.prose h4{font-size:1rem;margin:1.2rem 0 .6rem}.prose p{margin:.9rem 0}.prose ul,.prose ol{padding-left:1.6rem;margin:.8rem 0}.prose li+li{margin-top:.35rem}.prose blockquote{margin:1rem 0;padding:.1rem 1.1rem;background:var(--wash);border:1px solid var(--line);font-size:.9rem}.prose .table-scroll{margin:1.2rem 0}.repo-reference{color:var(--muted);text-decoration:underline dotted;cursor:help}.footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1.4rem}.back{display:inline-block;margin-top:2.5rem;font-size:.87rem}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.sidebar{height:auto;position:static;padding:1.1rem 1.2rem;border-right:0;border-bottom:1px solid var(--line);gap:1rem}.identity{display:flex;align-items:baseline;gap:1rem}.identity strong{font-size:1.25rem}.tabs{flex-direction:row;flex-wrap:wrap;gap:.25rem}.tabs button{padding:.5rem .65rem;font-size:.8rem}.navgroup,.side-note{display:none}.main{padding:1.7rem 1.2rem 3rem}.pair{grid-template-columns:1fr}.prose>h1{font-size:1.6rem}th,td{padding:.7rem .8rem}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+@media print{.sidebar,.skip,.back{display:none}.shell{display:block}.main{padding:0}.panel[hidden]{display:block!important;break-before:page}.table-scroll{overflow:visible}pre{white-space:pre-wrap}.panel{max-width:none}}
+</style>
+<a class="skip" href="#main">跳至研究正文</a>
+<div class="shell">
+<aside class="sidebar" aria-label="研究导航">
+<div class="identity"><strong>证据导航</strong><small>RESEARCH / 2026.09.10</small></div>
+<nav class="tabs" role="tablist" aria-label="研究与设计方案" aria-orientation="vertical">
+<button id="tab-overview" role="tab" aria-selected="true" aria-controls="overview" data-panel="overview">研究概览</button>
+<div class="navgroup" role="presentation">SOURCE 覆盖</div>
+<button id="tab-source-report" role="tab" aria-selected="false" aria-controls="source-report" tabindex="-1" data-panel="source-report">信息源研究</button>
+<button id="tab-source-design" role="tab" aria-selected="false" aria-controls="source-design" tabindex="-1" data-panel="source-design">Search 方案</button>
+<div class="navgroup" role="presentation">PROGRESSIVE DISCLOSURE</div>
+<button id="tab-disclosure-report" role="tab" aria-selected="false" aria-controls="disclosure-report" tabindex="-1" data-panel="disclosure-report">渐进式披露研究</button>
+<button id="tab-disclosure-design" role="tab" aria-selected="false" aria-controls="disclosure-design" tabindex="-1" data-panel="disclosure-design">Web Read 方案</button>
+</nav>
+<div class="side-note"><p>两份独立研究，四份完整正文。方案标记为 <code>proposed</code>，不是已实施契约。</p><p>只核验文献与已有项目证据；本轮没有新增 runtime benchmark。</p></div>
+</aside>
+<main id="main" class="main">
+<section id="overview" class="panel" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+<header class="masthead"><span class="kicker">研究型 AGENT · 检索与读取</span><h1>找到证据，也保住解释它的语境。</h1><p class="lede">Search 围绕证据缺口扩大 Source 覆盖；Web Read 让 agent 在完整资料中定位、补读和引用。Markdown 是阅读形式，不是全部证据的替代品。</p></header>
+<div class="overview">
+<div class="status-note"><strong>结论与建议分开</strong><p>一手方法论、论文、标准和官方源码支持设计方向；具体 schema、组件、运行配额及效果仍需验证。继续保留 agent-owned Deep Research，不新增 <code>deep_search</code> tool。</p></div>
+<div class="pair">
+<section class="reading"><h2>Source 策略</h2><p>不以 URL 总量衡量“广度”。先明确待回答的问题、需要的证据角色、独立性与反证，再决定继续搜索什么。</p><div class="links"><a href="#source-report">阅读研究</a><a href="#source-design">阅读 proposed 方案</a></div></section>
+<section class="reading"><h2>渐进式披露</h2><p>不止把正文分页。需要稳定的内容表示、可定位的结构，以及不丢表头、单位、脚注和限定条件的目标读取。</p><div class="links"><a href="#disclosure-report">阅读研究</a><a href="#disclosure-design">阅读 proposed 方案</a></div></section>
+</div>
+<section class="topic"><h2>先问报告要证明什么</h2><div class="table-scroll"><table><thead><tr><th>报告类型</th><th>主要证据组合</th><th>需要避免的误判</th></tr></thead><tbody>
+<tr><td>技术事实与故障调查</td><td>规范、源码、release record，加直接行为观测与反例。</td><td>文档写“支持”就等于目标环境验证通过。</td></tr>
+<tr><td>选型与对比</td><td>各候选官方依据、同条件实验、独立复现与失败样本。</td><td>把不同硬件、不同 corpus 的数字合成赢家。</td></tr>
+<tr><td>时事与政策</td><td>原始记录、适用地区与生效版本、独立核实、争议材料。</td><td>多个转载域名就是多个独立来源。</td></tr>
+<tr><td>学术证据综述</td><td>检索边界、原始研究与适当综合、纳入排除理由、偏差和反证。</td><td>论文数量等于证据充分；Google-only 足以保证穷尽检索。</td></tr>
+</tbody></table></div><p>这是适用框架的建议，不是跨领域统一评分表。Cochrane、PRISMA-S 和 GRADE 的医疗研究语境不能未经验证就变成所有报告的硬规则。</p></section>
+<section class="topic"><h2>Search 的具体方向</h2><ol class="steps"><li>由 caller agent 拆解关键问题与子问题，记录版本、时间、地区和所需证据角色。</li><li>通过显式的 SearXNG / Google route 执行有界 Search Batch；按 query 保留结果、可观测状态和失败。</li><li>根据 SERP 选择值得读的候选，独立调用 <code>web_read</code>，不把 snippet 当作正文证据。</li><li>针对未覆盖的问题、同源重复、时效差异和反证缺口追加 query。</li><li>由 caller 决定停止，并明确残余缺口；“没找到”不等于“没有”。</li></ol><p>一个 Google engine 并不因经由 SearXNG 就自动变成多引擎覆盖。<code>score</code>、域名数与分页数量都不能证明可信度或全网 Recall。</p></section>
+<section class="topic"><h2>Web Read 的核心：可复核的目标读取</h2><p>建议保留原始 capture、版本化 extraction representation、带 locator 的结构化正文，以及受预算约束的 Markdown view。agent 可以先读 metadata、目录和有限正文，再定位 section、关键词或 page，最后补齐解释目标证据所需的上下文。</p><div class="table-scroll"><table><thead><tr><th>遇到的内容</th><th>不能只返回</th><th>应一起保留或明确缺失</th></tr></thead><tbody>
+<tr><td>表格里的一个数值</td><td>裸数字</td><td>表头、单位、行标签、caption、notes 与位置。</td></tr>
+<tr><td>扫描 PDF 的一段 OCR</td><td>看似确定的纯文本</td><td>page/image locator、识别来源、未处理区域和不确定性。</td></tr>
+<tr><td>长文中的结论</td><td>孤立句子</td><td>heading、已识别的脚注和相关段落；未知的语义关联不得假称完备。</td></tr>
+<tr><td>继续读取</td><td>重新抓取 URL 后接上旧 offset</td><td>固定内容版本、明确的 continuation 范围及失效状态。</td></tr>
+</tbody></table></div><p>抽取尚未完成、只处理部分 page、本次输出达到上限，是不同情况。尤其对于长扫描件，继续处理下一页与读取已生成内容需要不同的状态语义。</p></section>
+<section class="topic"><h2>支持范围不再为实现方便缩水</h2><p>静态 HTML、JavaScript 页面、text／mixed／scanned PDF、网页文字图片和独立图片 URL 的 OCR 均保留在首版范围内，继续满足免费开源、Windows、CPU-only 的约束。</p><p>已有 <a href="https://github.com/EllisYuan/web_search/issues/7#issuecomment-5599723724" target="_blank" rel="noopener noreferrer">Web Read prototype resolution</a> 支持功能路径可继续。后续优先沿用其可运行 baseline 做有针对性的比较，不凭另一库的功能列表推翻已有证据。支持格式也不意味着可以保证任意复杂页面无损；失败必须显式披露，但不能以永久返回 <code>unsupported</code> 代替必需格式的实现。</p></section>
+<section class="topic"><h2>如何验证它真的更好</h2><p>冻结同一批 Source 与 extraction 结果，用同一 agent/model 和可比预算，对比 bounded full Markdown、固定分段、结构化分段，以及定位后扩展的 evidence window。披露策略的比较不能偷换更好的 OCR 或额外来源。</p><p>首先检查关键证据覆盖、quote fidelity、限定条件是否保留和错误恢复，再比较 token、工具调用次数、首次有用证据时间与资源成本。少输出但漏掉脚注，不算改进。</p><p class="muted">尚无直接证据证明本项目的具体交互方案已经最优。研究提出的是可检验的设计，不是已完成的效果证明。</p></section>
+<section class="topic"><h2>核心一手依据</h2><ul class="sources">
+<li><a href="https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-04" target="_blank" rel="noopener noreferrer">Cochrane Handbook · Searching and selecting studies</a>：检索范围与来源组合；有领域适用限制。</li>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7839230/" target="_blank" rel="noopener noreferrer">PRISMA-S</a>：可复核的检索报告，不是可信度评分。</li>
+<li><a href="https://docs.searxng.org/dev/search_api.html" target="_blank" rel="noopener noreferrer">SearXNG Search API</a>：参数、instance 与 engine 的能力边界。</li>
+<li><a href="https://www.w3.org/TR/annotation-model/" target="_blank" rel="noopener noreferrer">W3C Web Annotation</a>：quote、position 与 source state 的定位基础。</li>
+<li><a href="https://arxiv.org/html/2307.03172" target="_blank" rel="noopener noreferrer">Lost in the Middle</a> 与 <a href="https://arxiv.org/html/2405.15793v3" target="_blank" rel="noopener noreferrer">SWE-agent</a>：上下文位置与工具反馈设计的间接实证，不是本项目 A/B。</li>
+<li><a href="https://spec.commonmark.org/0.31.2/" target="_blank" rel="noopener noreferrer">CommonMark</a> 与 <a href="https://github.github.com/gfm/" target="_blank" rel="noopener noreferrer">GFM</a>：Markdown 表达能力及复杂结构限制。</li>
+</ul><p class="muted">四份正文各自保留完整 source ledger、实际读取范围与未核验项。仓库中的专题 memo 和 verification 是补充审计材料。</p></section>
+<footer class="footer">2026-09-10 · 两条独立研究 · 方案状态 proposed · 本轮未实施 production MCP、未新增数据库、未进行 runtime benchmark。</footer>
+</div>
+</section>
+<!-- RESEARCH_PANELS -->
+</main>
+</div>
+<script>
+(function(){
+const tabs=Array.from(document.querySelectorAll('[role="tab"]'));
+const panels=Array.from(document.querySelectorAll('[role="tabpanel"]'));
+function choose(id,update){
+ const target=document.getElementById(id);if(!target)return;
+ const panel=target.matches('[role="tabpanel"]')?target:target.closest('[role="tabpanel"]');if(!panel)return;
+ panels.forEach(p=>{p.hidden=p!==panel;});
+ tabs.forEach(t=>{const selected=t.dataset.panel===panel.id;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;});
+ if(update)history.replaceState(null,'','#'+id);
+ if(target!==panel)target.scrollIntoView({block:'start'});else if(update)window.scrollTo({top:0,behavior:'instant'});
+}
+document.addEventListener('click',function(e){const tab=e.target.closest('[data-panel]');if(tab){choose(tab.dataset.panel,true);return;}const a=e.target.closest('a[href^="#"]');if(!a)return;let id;try{id=decodeURIComponent(a.getAttribute('href').slice(1));}catch(_){return;}if(document.getElementById(id)?.closest('[role="tabpanel"]')){e.preventDefault();choose(id,true);}});
+tabs.forEach((t,i)=>t.addEventListener('keydown',function(e){let n=i;if(e.key==='ArrowDown'||e.key==='ArrowRight')n=(i+1)%tabs.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')n=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;else return;e.preventDefault();tabs[n].focus();choose(tabs[n].dataset.panel,true);}));
+function fromHash(){let id;try{id=decodeURIComponent(location.hash.slice(1));}catch(_){id='overview';}choose(id||'overview',false);}
+window.addEventListener('hashchange',fromHash);fromHash();
+})();
+</script>

@@ -1,34 +1,11 @@
 import asyncio
 import json
 import logging
-from collections.abc import AsyncIterator, Callable, Coroutine
-from contextlib import asynccontextmanager
 from typing import Any
 
 import httpx
 import pytest
-from mcp import ClientSession
-from mcp.shared.memory import create_connected_server_and_client_session
-
-from web_search.server import create_server
-
-DUMMY_KEY = "dummy-secret-for-contract-tests"
-
-
-@asynccontextmanager
-async def connected(
-    handler: (
-        Callable[[httpx.Request], httpx.Response]
-        | Callable[[httpx.Request], Coroutine[None, None, httpx.Response]]
-    ),
-    *,
-    timeout_seconds: float | None = None,
-) -> AsyncIterator[ClientSession]:
-    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
-        options = {} if timeout_seconds is None else {"timeout_seconds": timeout_seconds}
-        server = create_server(api_key=DUMMY_KEY, http=http, **options)
-        async with create_connected_server_and_client_session(server) as session:
-            yield session
+from harness import DUMMY_KEY, connected
 
 
 async def test_discovery_and_single_query_search() -> None:
@@ -57,8 +34,23 @@ async def test_discovery_and_single_query_search() -> None:
         assert tool.description and "Tavily" in tool.description
         schema: dict[str, Any] = tool.inputSchema
         assert schema["required"] == ["queries"]
-        assert set(schema["properties"]) == {"queries"}
-        assert schema["properties"]["queries"]["maxItems"] == 1
+        # No route/backend, no key, no answer/raw-content/image/usage switches.
+        assert set(schema["properties"]) == {
+            "queries",
+            "search_depth",
+            "max_results",
+            "topic",
+            "time_range",
+            "start_date",
+            "end_date",
+            "include_domains",
+            "exclude_domains",
+            "country",
+            "language",
+            "exact_match",
+        }
+        assert schema["properties"]["queries"]["minItems"] == 1
+        assert schema["properties"]["queries"]["maxItems"] == 20
         assert requests == []
 
         result = await session.call_tool("web_search", {"queries": [{"query": "  MCP 中文  "}]})
@@ -238,7 +230,7 @@ async def test_distinguishes_empty_success_from_malformed_response(
     [
         (401, "invalid_or_missing_key"),
         (500, "upstream_error"),
-        (400, "upstream_error"),
+        (400, "invalid_request"),
         (429, "upstream_error"),
         (432, "upstream_error"),
         (433, "upstream_error"),
@@ -362,9 +354,6 @@ async def test_deadline_cancels_attempt_and_next_call_can_succeed() -> None:
         {"queries": [{"query": 123}]},
         {"queries": [{"query": True}]},
         {"queries": [{"query": None}]},
-        {"queries": [{"query": "one"}, {"query": "two"}]},
-        {"queries": [{"query": "test", "max_results": 3}]},
-        {"queries": [{"query": "test"}], "search_depth": "basic"},
         {"queries": [{"query": "test"}], "api_key": DUMMY_KEY},
         {"queries": [{"query": "test", "api_key": DUMMY_KEY}]},
         {"queries": [{"query": {"accidental_secret": DUMMY_KEY}}]},

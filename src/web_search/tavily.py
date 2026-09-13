@@ -46,16 +46,35 @@ async def search(
     http: httpx.AsyncClient,
     *,
     api_key: str,
-    query: str,
+    body: dict[str, Any],
     timeout_seconds: float,
 ) -> dict[str, Any]:
+    """Never raise for an upstream problem: one query's failure stays that query's error."""
+    query = body["query"]
+    try:
+        return await _attempt(http, api_key=api_key, body=body, timeout_seconds=timeout_seconds)
+    except asyncio.CancelledError:
+        raise
+    except Exception:
+        # Exception text can quote the request, so it is logged nowhere and returned nowhere.
+        return failure(query, "upstream_error", "The Tavily Search attempt failed unexpectedly.")
+
+
+async def _attempt(
+    http: httpx.AsyncClient,
+    *,
+    api_key: str,
+    body: dict[str, Any],
+    timeout_seconds: float,
+) -> dict[str, Any]:
+    query = body["query"]
     try:
         # HTTPX timeouts cover phases; this deadline also bounds the entire attempt.
         async with asyncio.timeout(timeout_seconds):
             response = await http.post(
                 "https://api.tavily.com/search",
                 headers={"Authorization": f"Bearer {api_key}"},
-                json={"query": query},
+                json=body,
                 timeout=timeout_seconds,
                 follow_redirects=False,
             )
@@ -63,6 +82,13 @@ async def search(
         return failure(query, "timeout_error", "The Tavily Search attempt exceeded its deadline.")
     except httpx.RequestError:
         return failure(query, "network_error", "Could not complete the connection to Tavily.")
+    if response.status_code == 400:
+        return failure(
+            query,
+            "invalid_request",
+            "Tavily rejected this Search request as invalid. Check the parameter values and "
+            "their combination, for example country with a non-general topic.",
+        )
     if response.status_code == 401:
         return failure(
             query,

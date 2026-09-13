@@ -9,7 +9,7 @@ from mcp.client.stdio import stdio_client
 from mcp.types import TextContent
 
 
-async def test_real_stdio_discovery_success_and_401() -> None:
+async def test_real_stdio_discovery_and_mixed_batch() -> None:
     key = "dummy-key-for-stdio"
     params = StdioServerParameters(
         command=sys.executable,
@@ -27,6 +27,17 @@ async def test_real_stdio_discovery_success_and_401() -> None:
                     "web_search",
                     {"queries": [{"query": "fixture-401"}]},
                 )
+                mixed = await session.call_tool(
+                    "web_search",
+                    {
+                        "search_depth": "basic",
+                        "queries": [
+                            {"query": "batch ok"},
+                            {"query": "fixture-401"},
+                            {"query": "batch advanced", "search_depth": "advanced"},
+                        ],
+                    },
+                )
         errors.seek(0)
         stderr = errors.read()
 
@@ -39,8 +50,8 @@ async def test_real_stdio_discovery_success_and_401() -> None:
                 "candidates": [
                     {
                         "title": "受控 Search fixture",
-                        "url": "https://example.org/source",
-                        "content": "Offline SERP metadata",
+                        "url": "https://example.org/source?depth=unset",
+                        "content": "Offline SERP metadata for 中文 MCP",
                         "score": 0.8,
                         "rank": 1,
                         "published_date": "2026-09-13",
@@ -51,7 +62,16 @@ async def test_real_stdio_discovery_success_and_401() -> None:
     }
     assert denied.structuredContent is not None
     assert denied.structuredContent["results"][0]["error"]["category"] == "invalid_or_missing_key"
-    for result in (ok, denied):
+
+    assert mixed.structuredContent is not None
+    assert mixed.structuredContent["partial"] is True
+    items = mixed.structuredContent["results"]
+    assert [item["query"] for item in items] == ["batch ok", "fixture-401", "batch advanced"]
+    assert [item["status"] for item in items] == ["ok", "error", "ok"]
+    assert items[0]["candidates"][0]["url"].endswith("depth=basic")
+    assert items[2]["candidates"][0]["url"].endswith("depth=advanced")
+
+    for result in (ok, denied, mixed):
         assert not result.isError
         assert isinstance(result.content[0], TextContent)
         assert json.loads(result.content[0].text) == result.structuredContent

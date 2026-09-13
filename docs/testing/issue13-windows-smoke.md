@@ -1,6 +1,6 @@
 # #13 Windows MCP smoke
 
-2026-09-13 在 Windows CPU-only 环境完成单 query 切片验证。需求来源为 [#13](https://github.com/EllisYuan/web_search/issues/13)，完整 client 输出见 [issue13-smoke.json](issue13-smoke.json)。
+2026-09-13 在 Windows CPU-only 环境完成单 query 切片验证。本文记录 #13 当时的观测；`tests/inspector_smoke.py` 与 `tests/fixture_stdio_server.py` 之后在 [#14](https://github.com/EllisYuan/web_search/issues/14) 扩展为 Search Batch 场景，重跑脚本会得到 [#14 的记录](issue14-windows-smoke.md)，不再复现下表。需求来源为 [#13](https://github.com/EllisYuan/web_search/issues/13)，完整 client 输出见 [issue13-smoke.json](issue13-smoke.json)。
 
 目标 MCP client 是 MCP Inspector CLI 2.6.0，runtime 为 Node.js 24.11.1；server 使用 Python 3.12.4 和 MCP Python SDK 1.30.0，transport 为真实 subprocess `stdio`。这是独立 Node MCP client 与 Python server 的实际连接验证。
 

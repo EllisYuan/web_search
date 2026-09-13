@@ -43,12 +43,42 @@ def main() -> None:
             ),
             encoding="utf-8",
         )
-        scenarios = [
+        scenarios: list[tuple[str, str, str, dict[str, Any] | None]] = [
             ("discovery", "production", "tools/list", None),
-            ("success", "fixture", "tools/call", "中文 MCP smoke"),
-            ("unauthorized", "fixture", "tools/call", "fixture-401"),
+            (
+                "batch_with_per_query_overrides",
+                "fixture",
+                "tools/call",
+                {
+                    "search_depth": "basic",
+                    "max_results": 5,
+                    "queries": [
+                        {"query": "中文 MCP smoke"},
+                        {"query": "batch override", "search_depth": "advanced"},
+                        {"query": "中文 MCP smoke"},
+                    ],
+                },
+            ),
+            (
+                "partial_batch",
+                "fixture",
+                "tools/call",
+                {
+                    "queries": [
+                        {"query": "中文 MCP smoke"},
+                        {"query": "fixture-401"},
+                        {"query": "fixture-400"},
+                    ]
+                },
+            ),
+            (
+                "all_failed_batch",
+                "fixture",
+                "tools/call",
+                {"queries": [{"query": "fixture-401"}, {"query": "fixture-400"}]},
+            ),
         ]
-        for scenario, server, method, query in scenarios:
+        for scenario, server, method, arguments in scenarios:
             command = [
                 "node",
                 str(launcher),
@@ -62,12 +92,12 @@ def main() -> None:
                 "--format",
                 "json",
             ]
-            if query is not None:
+            if arguments is not None:
                 command += [
                     "--tool-name",
                     "web_search",
                     "--tool-args-json",
-                    json.dumps({"queries": [{"query": query}]}, ensure_ascii=False),
+                    json.dumps(arguments, ensure_ascii=False),
                 ]
             completed = subprocess.run(
                 command,
@@ -82,24 +112,39 @@ def main() -> None:
             if completed.returncode != 0:
                 raise RuntimeError(f"Inspector {scenario} failed: {completed.stderr}")
             payload = json.loads(completed.stdout)["result"]
-            if query is None:
+            if arguments is None:
                 assert [tool["name"] for tool in payload["tools"]] == ["web_search"]
-                assert payload["tools"][0]["inputSchema"]["properties"]["queries"]["maxItems"] == 1
+                schema = payload["tools"][0]["inputSchema"]["properties"]
+                assert schema["queries"]["minItems"] == 1
+                assert schema["queries"]["maxItems"] == 20
+                assert schema["max_results"]["maximum"] == 20
+                assert "route" not in schema and "api_key" not in schema
             else:
                 assert not payload["isError"]
                 result = payload["structuredContent"]
                 assert json.loads(payload["content"][0]["text"]) == result
-                assert result["partial"] is False
-                assert len(result["results"]) == 1
-                item = result["results"][0]
-                assert item["query"] == query
-                if scenario == "success":
-                    assert item["status"] == "ok"
-                    assert item["candidates"][0]["rank"] == 1
-                    assert item["candidates"][0]["url"] == "https://example.org/source"
+                items = result["results"]
+                submitted = [item["query"] for item in arguments["queries"]]
+                assert [item["query"] for item in items] == submitted
+                assert result["partial"] is (scenario == "partial_batch")
+                statuses = [item["status"] for item in items]
+                if scenario == "batch_with_per_query_overrides":
+                    assert statuses == ["ok", "ok", "ok"]
+                    assert items[0]["candidates"][0]["rank"] == 1
+                    assert items[0]["candidates"][0]["url"].endswith("depth=basic")
+                    assert items[1]["candidates"][0]["url"].endswith("depth=advanced")
+                    # Duplicate query keeps its own item rather than being merged away.
+                    assert items[2]["candidates"] == items[0]["candidates"]
+                elif scenario == "partial_batch":
+                    assert statuses == ["ok", "error", "error"]
+                    assert items[1]["error"]["category"] == "invalid_or_missing_key"
+                    assert items[2]["error"]["category"] == "invalid_request"
                 else:
-                    assert item["status"] == "error"
-                    assert item["error"]["category"] == "invalid_or_missing_key"
+                    assert statuses == ["error", "error"]
+                    assert [item["error"]["category"] for item in items] == [
+                        "invalid_or_missing_key",
+                        "invalid_request",
+                    ]
             observations.append({"scenario": scenario, "exit_code": 0, "response": payload})
 
     report = {
@@ -115,7 +160,10 @@ def main() -> None:
     args.output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"PASS: discovery, success, 401; evidence: {args.output}")
+    print(
+        f"PASS: {', '.join(str(item['scenario']) for item in observations)}; "
+        f"evidence: {args.output}"
+    )
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 # Tavily web_search MCP
 
-为本机 agent 提供 Search-only MCP tool。当前实现 [#13](https://github.com/EllisYuan/web_search/issues/13) 与 [#14](https://github.com/EllisYuan/web_search/issues/14)：`web_search` 接受含 1–20 项的 `queries`，支持 batch 级与逐 query 的 Search 参数，返回候选 Source URL 与 Tavily SERP metadata，并保留部分成功。
+为本机 agent 提供 Search-only MCP tool。已实现 [#12 Search spec](https://github.com/EllisYuan/web_search/issues/12) 的三个实施切片（#13、#14、[#15](https://github.com/EllisYuan/web_search/issues/15)）：`web_search` 接受含 1–20 项的 `queries`，支持 batch 级与逐 query 的 Search 参数，返回候选 Source URL 与 Tavily SERP metadata，并在限流、额度限制、网络失败或慢请求下保留逐项结果。
 
-限流与额度错误的专门分类、`retry_after_seconds` 属于后续 ticket。`web_read` 与 Deep Research 综合不在本切片内。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+提供可解释的错误分类与有效 `Retry-After` 等待提示，不自动 retry。`web_read` 与 Deep Research 综合不在本次实现内。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -78,7 +78,7 @@ discovery 只提供 `web_search`。一次调用提交一个 Search Batch：
 
 ### 执行与结果
 
-每个 query 对应至多一次 `https://api.tavily.com/search` POST。key 放在 Authorization header，JSON body 只含解析后的参数。执行有有限并发（当前 `MAX_CONCURRENT_ATTEMPTS = 5`，是保护性实现值，不是验证过的吞吐目标）；不读取候选 URL，不跟随 HTTP redirect，不自动 retry 或切换 provider。
+每个 query 对应至多一次 `https://api.tavily.com/search` POST。key 放在 Authorization header，JSON body 只含解析后的参数。每个 Search Batch 内有限并发（当前 `MAX_CONCURRENT_ATTEMPTS = 5`，是保护性实现值，不是 process-wide 限流或验证过的吞吐目标）；不读取候选 URL，不跟随 HTTP redirect，不自动 retry 或切换 provider。
 
 ```json
 {
@@ -118,17 +118,47 @@ MCP `structuredContent` 与 text content 包含相同 JSON。`title`、`url`、`
 
 **`partial=false` 不等于整体成功**：全部失败时它同样是 `false`。caller 必须逐项读取 `status`，不能用 `partial` 或 MCP `isError=false` 判断 Search 是否成功。响应没有 `all_failed`、`successful`、`failed` 等统计字段。
 
-失败项包含原 `query`、`status="error"` 和 `error.category` / `error.message`：
+### 错误与等待提示
 
-| 当前触发条件 | `error.category` |
+失败项包含原 `query`、`status="error"` 和必填的 `error.category` / `error.message`；仅在上游提供有效等待提示时额外包含 number `retry_after_seconds`：
+
+| 触发条件 | `error.category` |
 | --- | --- |
-| HTTP 400 | `invalid_request`，检查参数值及其组合 |
-| HTTP 401 | `invalid_or_missing_key`，检查 MCP client 的 `TAVILY_API_KEY` |
+| HTTP 400 | `invalid_request` |
+| HTTP 401 | `invalid_or_missing_key` |
+| HTTP 429 | `rate_limited` |
+| HTTP 432 / 433 | `quota_exhausted` |
 | 连接、DNS、其他 transport failure | `network_error` |
-| 单次 attempt 超过 30s，或 HTTP transport timeout | `timeout_error` |
-| HTTP 500、其他非 200 状态、malformed response、该 query 的意外内部失败 | `upstream_error` |
+| 单次 attempt 超过默认 30s 期限，或 HTTP transport timeout | `timeout_error` |
+| HTTP 500、其他未分类的非 200 状态、malformed response、该 query 的意外内部失败 | `upstream_error` |
 
-当前 HTTP 429、432、433 也返回 `upstream_error`，`message` 保留 HTTP status；专门分类和 `Retry-After` 属于后续限流、额度 ticket。错误不会透传 upstream body 或 exception text。任何单个 query 的失败——包括意外的内部异常——都被收敛为该项的 `error`，不会取消其他 query，也不会用一个 MCP 异常替代整个 batch 的逐项结果。上游 candidate 若回显配置的 key，会作为 `upstream_error` 拒绝输出。30s 是每个 query 单次 HTTP attempt 的保护期限，不是整个 batch 的完成时间 SLA；timeout 只结束该 attempt 并释放其请求资源，其余 query 的结果照常返回。需要重试时由 caller 发起新调用。
+HTTP 400 的 `message` 提示检查参数值及组合；401 提示检查 MCP client 的 `TAVILY_API_KEY`。432 的 `message` 明确包含 `plan_limit_exceeded`，433 明确包含 `payg_limit_exceeded`，由 caller 或部署者判断账户限制，不新增必填 error 字段。公共 `category` 不使用斜线连接的 prototype 标识。
+
+例如，429 可以返回以下逐项错误：
+
+```json
+{
+  "query": "MCP specification",
+  "status": "error",
+  "error": {
+    "category": "rate_limited",
+    "message": "Tavily rate limited this Search request (HTTP 429).",
+    "retry_after_seconds": 120
+  }
+}
+```
+
+非 200 响应中的有效 `Retry-After` 会作为建议时间返回，包括限流、额度及 503 等错误。支持非负整数秒数和 HTTP-date；HTTP-date 相对收到响应时的本地 UTC 时钟换算，可产生小数秒，已经过去的日期返回 `0`。缺失、非法值或无法表示为有限 number 的值会**省略该字段**，不返回 `null`，不伪造默认等待时间。它只是上游建议，不保证等待后就能成功，也不触发 server 自动 sleep 或 retry；只有 caller 下一次显式 tool 调用才产生新 attempt。
+
+错误不会透传完整 upstream body 或 exception text。任何单个 query 的失败——包括意外的内部异常——都被收敛为该项的 `error`，不会取消其他 query，也不会用一个 MCP 异常替代整个 batch 的逐项结果。上游 candidate 若回显配置的 key，会作为 `upstream_error` 拒绝输出。
+
+### timeout 与已知限制
+
+- 默认 **30s 是每次 HTTP attempt 的总等待期限**，不只是等待下一个网络数据块的 read timeout。请求获得 batch 执行名额后开始计时；排队中的 query 有自己的期限，30s 不是整个 batch 的完成时间 SLA。
+- timeout 会取消本地未完成请求并释放连接与执行名额，其他 query 照常返回；不保证已经开始的上游工作被撤销或不产生费用。
+- `MAX_CONCURRENT_ATTEMPTS = 5` 只限制单个 batch；同时发起多个 tool 调用可能产生更多并发。它不是账户 rate limit、RPM 或费用预算。MCP 不执行额度跟踪、成本拦截、自动充值、账单请求或 provider fallback。
+- HTTP-date 等待提示依赖本机时钟准确性。无效或没有 `Retry-After` 不代表可以立即高频重试；caller 自行决定是否以及何时再调用。
+- 429/432/433 的 wrapper 行为有 deterministic fixtures 和 Windows client smoke 覆盖，**真实账户路径尚未验证**。Search 质量、Source 覆盖、长期 latency、吞吐量和 Web Read 未据此验收。
 
 ## 验证
 
@@ -141,8 +171,8 @@ MCP `structuredContent` 与 text content 包含相同 JSON。`title`、`url`、`
 .venv\Scripts\python -m pytest
 ```
 
-日常迭代运行单文件，例如 `python -m pytest tests/test_search_batch.py`。主要 tests 通过真实 MCP session 做 discovery/tool calls，仅在 Tavily HTTP transport 边界提供 fixtures，并对 fixture 实际收到的 body 断言参数继承与覆盖；另有启动 subprocess 和真实 `stdio` subprocess 测试。断言限于 caller 可观察的 schema/结果/错误与上游可观察的请求内容和 attempt 次数，不断言内部线程数或 helper 调用序列。dummy key、固定响应、可控 timeout 均与真实 Tavily 账户隔离。
+日常迭代运行单文件，例如 `python -m pytest tests/test_search_failures.py`。主要 tests 通过真实 MCP session 做 discovery/tool calls，仅在 Tavily HTTP transport 边界提供 fixtures，并对收到的 body 断言参数继承与覆盖。错误矩阵与固定时钟测试使用 MockTransport；连接释放、持续 trickle、timeout 排队与恢复测试使用真实 loopback HTTP service，并在同一 session / HTTP client 尚未关闭时观察断连及后续 Search。另有启动 subprocess 和真实 `stdio` subprocess 测试。新增恢复测试不依赖内部 worker 数；dummy key、固定响应、缩短的内部测试期限均与真实 Tavily 账户隔离。
 
-Windows 目标 client smoke 使用 MCP Inspector CLI，记录见 [#13 单 query smoke](docs/testing/issue13-windows-smoke.md) 与 [#14 batch smoke](docs/testing/issue14-windows-smoke.md)。两者均为 contract smoke：使用受控 Tavily HTTP responses，验证接口行为，不代表 live Tavily 搜索质量或真实账户状态。
+Windows 目标 client 为 MCP Inspector CLI 2.6.0（独立 Node client），transport 为真实 subprocess `stdio`。最新 [#15 Windows smoke 与父 spec 验收矩阵](docs/testing/issue15-windows-smoke.md) 覆盖最终 discovery、正常 batch、partial、全部失败、rate limit 和 timeout 展示，完整输出见 [issue15-smoke.json](docs/testing/issue15-smoke.json)。历史 [#13 单 query smoke](docs/testing/issue13-windows-smoke.md)、[#14 batch smoke](docs/testing/issue14-windows-smoke.md) 保留原证据。三者都是 contract smoke，不是 live Tavily Search；[#11 的历史 live evidence](https://github.com/EllisYuan/web_search/issues/11#issuecomment-5652708001) 单独记录，不因本次实施关闭或改变结论。
 
 实现参考：[MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk/tree/v1.x)、[HTTPX timeout](https://www.python-httpx.org/advanced/timeouts/)、[HTTPX transport fixtures](https://www.python-httpx.org/advanced/transports/)。

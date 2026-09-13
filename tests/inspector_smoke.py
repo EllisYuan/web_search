@@ -35,7 +35,7 @@ def main() -> None:
                         },
                         "fixture": {
                             "command": sys.executable,
-                            "args": [str(root / "tests/fixture_stdio_server.py")],
+                            "args": [str(root / "tests/fixture_http_stdio_server.py")],
                             "env": {"TAVILY_API_KEY": dummy_key},
                         },
                     }
@@ -75,7 +75,52 @@ def main() -> None:
                 "all_failed_batch",
                 "fixture",
                 "tools/call",
-                {"queries": [{"query": "fixture-401"}, {"query": "fixture-400"}]},
+                {
+                    "queries": [
+                        {"query": q}
+                        for q in [
+                            "fixture-401",
+                            "fixture-400",
+                            "fixture-429",
+                            "fixture-432",
+                            "fixture-433",
+                        ]
+                    ]
+                },
+            ),
+            (
+                "rate_limited_batch",
+                "fixture",
+                "tools/call",
+                {"queries": [{"query": "fixture-429"}, {"query": "still succeeds"}]},
+            ),
+            (
+                "timeout_batch",
+                "fixture",
+                "tools/call",
+                {
+                    "queries": [
+                        {"query": "fixture-timeout"},
+                        {"query": "preserved"},
+                        {"query": "fixture-trickle"},
+                    ]
+                },
+            ),
+            (
+                "transport_and_upstream_errors",
+                "fixture",
+                "tools/call",
+                {
+                    "queries": [
+                        {"query": q}
+                        for q in [
+                            "fixture-reset",
+                            "fixture-500",
+                            "fixture-418",
+                            "fixture-malformed",
+                        ]
+                    ]
+                },
             ),
         ]
         for scenario, server, method, arguments in scenarios:
@@ -118,7 +163,25 @@ def main() -> None:
                 assert schema["queries"]["minItems"] == 1
                 assert schema["queries"]["maxItems"] == 20
                 assert schema["max_results"]["maximum"] == 20
-                assert "route" not in schema and "api_key" not in schema
+                parameters = {
+                    "search_depth",
+                    "max_results",
+                    "topic",
+                    "time_range",
+                    "start_date",
+                    "end_date",
+                    "include_domains",
+                    "exclude_domains",
+                    "country",
+                    "language",
+                    "exact_match",
+                }
+                assert set(schema) == {"queries", *parameters}
+                assert set(schema["queries"]["items"]["properties"]) == {"query", *parameters}
+                assert payload["tools"][0]["inputSchema"]["additionalProperties"] is False
+                assert schema["queries"]["items"]["additionalProperties"] is False
+                description = payload["tools"][0]["description"]
+                assert "retry_after_seconds" in description and "30-second deadline" in description
             else:
                 assert not payload["isError"]
                 result = payload["structuredContent"]
@@ -126,7 +189,10 @@ def main() -> None:
                 items = result["results"]
                 submitted = [item["query"] for item in arguments["queries"]]
                 assert [item["query"] for item in items] == submitted
-                assert result["partial"] is (scenario == "partial_batch")
+                assert set(result) == {"partial", "results"}
+                assert result["partial"] is (
+                    scenario in {"partial_batch", "rate_limited_batch", "timeout_batch"}
+                )
                 statuses = [item["status"] for item in items]
                 if scenario == "batch_with_per_query_overrides":
                     assert statuses == ["ok", "ok", "ok"]
@@ -139,13 +205,44 @@ def main() -> None:
                     assert statuses == ["ok", "error", "error"]
                     assert items[1]["error"]["category"] == "invalid_or_missing_key"
                     assert items[2]["error"]["category"] == "invalid_request"
-                else:
-                    assert statuses == ["error", "error"]
+                elif scenario == "all_failed_batch":
+                    assert statuses == ["error"] * 5
                     assert [item["error"]["category"] for item in items] == [
                         "invalid_or_missing_key",
                         "invalid_request",
+                        "rate_limited",
+                        "quota_exhausted",
+                        "quota_exhausted",
                     ]
-            observations.append({"scenario": scenario, "exit_code": 0, "response": payload})
+                    assert "plan_limit_exceeded" in items[3]["error"]["message"]
+                    assert "payg_limit_exceeded" in items[4]["error"]["message"]
+                    assert all(item["error"]["retry_after_seconds"] == 120 for item in items[2:])
+                elif scenario == "rate_limited_batch":
+                    assert statuses == ["error", "ok"]
+                    assert items[0]["error"]["category"] == "rate_limited"
+                    assert items[0]["error"]["retry_after_seconds"] == 120
+                elif scenario == "timeout_batch":
+                    assert statuses == ["error", "ok", "error"]
+                    for index in (0, 2):
+                        assert items[index]["error"]["category"] == "timeout_error"
+                        assert set(items[index]["error"]) == {"category", "message"}
+                else:
+                    assert statuses == ["error"] * 4
+                    assert [item["error"]["category"] for item in items] == [
+                        "network_error",
+                        "upstream_error",
+                        "upstream_error",
+                        "upstream_error",
+                    ]
+            observations.append(
+                {
+                    "scenario": scenario,
+                    "exit_code": 0,
+                    "arguments": arguments,
+                    "response": payload,
+                    "credential_check": "stdout and stderr contain no configured dummy key",
+                }
+            )
 
     report = {
         "observed_at": datetime.now(UTC).isoformat(),
@@ -153,7 +250,10 @@ def main() -> None:
         "python": platform.python_version(),
         "client": f"MCP Inspector CLI {metadata['version']}",
         "transport": "stdio",
-        "tavily_mode": "HTTPX MockTransport fixtures; no live Tavily calls",
+        "tavily_mode": "Controlled loopback HTTP service via HTTPX; no live Tavily calls",
+        "fixture_attempt_deadline_seconds": 0.3,
+        "production_attempt_deadline_seconds": 30.0,
+        "real_account_429_432_433_verified": False,
         "observations": observations,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

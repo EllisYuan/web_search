@@ -20,11 +20,14 @@ Handler = (
 
 @asynccontextmanager
 async def connected(
-    handler: Handler,
+    handler: Handler | httpx.AsyncBaseTransport,
     *,
     timeout_seconds: float | None = None,
 ) -> AsyncIterator[ClientSession]:
-    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+    transport = (
+        handler if isinstance(handler, httpx.AsyncBaseTransport) else httpx.MockTransport(handler)
+    )
+    async with httpx.AsyncClient(transport=transport, trust_env=False) as http:
         options: dict[str, Any] = {}
         if timeout_seconds is not None:
             options["timeout_seconds"] = timeout_seconds

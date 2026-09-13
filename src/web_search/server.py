@@ -118,8 +118,12 @@ def create_server(
                     "input position, duplicates included. The 20-query batch limit and the "
                     "max_results limit of 20 candidates per query are separate bounds. "
                     "partial=true means some queries succeeded and some failed; partial=false "
-                    "does not mean the batch succeeded, so read each result status. No Web "
-                    "Read, answer generation, images, automatic retry, or provider fallback."
+                    "does not mean the batch succeeded, so read each result status. "
+                    "Errors include rate_limited, quota_exhausted, network_error and "
+                    "timeout_error; read error.message for the reason. Optional "
+                    "error.retry_after_seconds is upstream wait advice, not an automatic sleep or "
+                    "retry. Each HTTP attempt has a default 30-second deadline, not a batch SLA. "
+                    "No Web Read, answer generation, images, automatic retry, or provider fallback."
                 ),
                 inputSchema=INPUT_SCHEMA,
             )
@@ -154,10 +158,10 @@ def create_server(
                 ],
             )
         bodies = [resolve_search_body(arguments, item) for item in arguments["queries"]]
-        limit = asyncio.Semaphore(MAX_CONCURRENT_ATTEMPTS)
+        attempt_slots = asyncio.Semaphore(MAX_CONCURRENT_ATTEMPTS)
 
         async def attempt(body: dict[str, Any]) -> dict[str, Any]:
-            async with limit:
+            async with attempt_slots:
                 return await search(
                     http,
                     api_key=api_key,
@@ -180,10 +184,15 @@ def read_api_key() -> str:
     return api_key
 
 
-async def serve(api_key: str, *, transport: httpx.AsyncBaseTransport | None = None) -> None:
-    """Own HTTP and stdio lifetimes; transport injection is only for offline fixtures."""
-    async with httpx.AsyncClient(transport=transport, timeout=30.0) as http:
-        server = create_server(api_key=api_key, http=http)
+async def serve(
+    api_key: str,
+    *,
+    transport: httpx.AsyncBaseTransport | None = None,
+    timeout_seconds: float = 30.0,
+) -> None:
+    """Own HTTP and stdio lifetimes; injection is only for offline fixtures."""
+    async with httpx.AsyncClient(transport=transport, timeout=timeout_seconds) as http:
+        server = create_server(api_key=api_key, http=http, timeout_seconds=timeout_seconds)
         async with stdio_server() as (read, write):
             await server.run(read, write, server.create_initialization_options())
 

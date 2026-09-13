@@ -231,9 +231,9 @@ async def test_distinguishes_empty_success_from_malformed_response(
         (401, "invalid_or_missing_key"),
         (500, "upstream_error"),
         (400, "invalid_request"),
-        (429, "upstream_error"),
-        (432, "upstream_error"),
-        (433, "upstream_error"),
+        (429, "rate_limited"),
+        (432, "quota_exhausted"),
+        (433, "quota_exhausted"),
         (403, "upstream_error"),
         (302, "upstream_error"),
     ],
@@ -269,6 +269,10 @@ async def test_http_failures_are_safe_per_query_errors_without_retry(
     assert item["status"] == "error"
     assert item["error"]["category"] == category
     assert isinstance(item["error"]["message"], str) and item["error"]["message"]
+    if status == 432:
+        assert "plan_limit_exceeded" in item["error"]["message"]
+    if status == 433:
+        assert "payg_limit_exceeded" in item["error"]["message"]
     assert DUMMY_KEY not in result.model_dump_json() + caplog.text
 
 

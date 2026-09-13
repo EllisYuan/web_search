@@ -1,0 +1,48 @@
+{
+  "query_id": "mix05",
+  "query": "Kubernetes 2026 September release 最新",
+  "route": "ddgs",
+  "backend": "mojeek",
+  "started_at": "2026-09-13T05:11:39.297102+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "mojeek",
+  "provider_label_from_ddgs": "mojeek",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.mojeek.com/search",
+      "started_at": "2026-09-13T05:11:39.297102+00:00",
+      "status_code": 403,
+      "retry_after": null,
+      "response_headers_observed": [
+        "access-control-allow-origin",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "x-content-type-options",
+        "x-xss-protection"
+      ],
+      "bytes": 361,
+      "sha256": "726b47f0ac857ff8bfda648430788cd53ffcad0e5cb3524e8af3cfe03c3c4ffe",
+      "marker_hints": [],
+      "local_body": "raw-private/alt-smoke-20260913/mix05-ddgs-mojeek/http-0.html",
+      "latency_ms": 2210.57
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "http_forbidden",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2211.79,
+  "finished_at": "2026-09-13T05:11:41.508654+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

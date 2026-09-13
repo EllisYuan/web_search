@@ -115,6 +115,30 @@ container 状态命令一度显示 `Up 5 hours`，但服务端不响应；重启
 - zh01–zh04 之外的任何 query，在 top-10 位置 4–10 的表现此前从未审阅过；即使是 zh01–zh04，今天新增的 top-10 覆盖也只来自 3 条 route，不是全部 6 条。
 - 以上不构成任何 route 的"获胜"结论，也不改变 ticket #6 的验证状态；本节不写入 map 的 Decisions so far。
 
+## 跨天低频换 upstream 复测（2026-09-13）
+
+上一节列出的"今天的近乎全锁定是否等于免费上游的真实上限，还是单纯当天累计请求量过大导致"，本轮做了一次针对性隔离：距 corpus24 两窗口约 13 小时（2026-09-13 UTC 05:05 开始），改测三个此前**从未测过**的 upstream，并把节奏放到最慢。
+
+配置：`ddgs:mojeek,ddgs:startpage,ddgs:brave` × 6 个代表性 query（zh01/zh05/en01/en05/mix01/mix05），单进程串行、`--pause 20`、retry=0、无 proxy，共 18 次调用。证据在 [runs/alt-smoke-20260913](runs/alt-smoke-20260913)。
+
+| upstream | 成功 / 18 中的 6 | 失败现象 |
+|---|---:|---|
+| DDGS / Brave | 4/6 | 2 次 HTTP 429（en05、mix01） |
+| DDGS / Mojeek | 0/6 | 6 次 HTTP 403 |
+| DDGS / Startpage | 0/6 | 6 次 HTTP 200 但无结果 |
+
+三条 route 的失败性质各不相同，都经原始响应体核实：
+
+- **Mojeek** 的 403 响应体只有 371 bytes，明写 `Sorry your network appears to be sending automated queries so we can't process your search at this time.`——是针对自动化查询的显式拒绝，不是限流后的临时退避。
+- **Startpage** 两次请求（GET 首页 + POST `/sp/search`）都是 HTTP 200，但响应体含 `anubis_challenge`，即 Anubis Proof-of-Work 挑战页，当前 adapter 未完成该挑战。`probe.py` 据"HTTP 全 200 且无结果"把它归为 `empty_or_parse_failure`，**这个分类在本例中偏保守**：从原始响应看更准确的终态是 `challenge`。分类逻辑本轮未改，作为已知偏差记录在此。
+- **Brave** 的 2 次失败是 HTTP 429，与此前观察一致。
+
+一处需要澄清的**误报**：Brave 的成功响应里 `marker_hints` 也含 `captcha`，但这几次都正常解析出 10 条结果（如 en01 命中 PostgreSQL 官方文档）。`evidence()` 的 marker 是页面正文子串命中，本就声明为 hints 而非证据；本轮真正的限流判据是 HTTP 429。
+
+**这一轮回答了什么**：跨天冷却 + 20 秒间隔 + 从未使用过的 upstream，三个条件同时满足，Brave 仍出现 429，另两个 engine 则在**第一次**调用就被拒——后两者与"当天累计负载"无关，是这些站点对自动化访问的固有策略。因此"换一个限制更少的免费 engine"不成立：Mojeek 明确拒绝自动化查询，Startpage 有独立的 PoW 反自动化机制。
+
+**这一轮没有回答什么**：18 次调用只测 availability，成功结果未做 top-10 相关性与独立 Source 审阅，不进入 [quality-annotations.json](quality-annotations.json)。出口 IP 未独立测量，仍不能排除本机出口在此前几轮中已被标记。DDGS 9.16.0 把 `bing` 标为 disabled，未测；Qwant 等需另配 SearXNG，本轮未覆盖。stdout 再次出现 `h2 connection driver error ... TLS close_notify` 传输噪声，未计入失败分类。
+
 ## 质量与独立 Source
 
 site 分组按本轮观察到的域名/所属网站显式归并，不用“最后两段 hostname”猜测公共后缀。Source 再合并已识别镜像及同一 project 的 docs/GitHub；疑似衍生且未核实独立创作的 Runebook 页面不进入保守独立 Source 数。完整规则和例外写在每条 [标注](quality-annotations.json)。不是所有网站的所有权或内容来源审计。

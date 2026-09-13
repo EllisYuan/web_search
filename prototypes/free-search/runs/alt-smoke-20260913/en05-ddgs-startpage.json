@@ -1,0 +1,77 @@
+{
+  "query_id": "en05",
+  "query": "SearXNG search API JSON formats settings",
+  "route": "ddgs",
+  "backend": "startpage",
+  "started_at": "2026-09-13T05:09:19.956396+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "startpage",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.startpage.com/",
+      "started_at": "2026-09-13T05:09:19.957051+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "cache-control",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "set-cookie",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 22106,
+      "sha256": "4d20f5f5632890cfdff75dc234d320884137c079d4730d2150074b8ebfe5b320",
+      "marker_hints": [],
+      "local_body": "raw-private/alt-smoke-20260913/en05-ddgs-startpage/http-0.html",
+      "latency_ms": 1792.81
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://www.startpage.com/sp/search",
+      "started_at": "2026-09-13T05:09:21.750243+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "content-security-policy",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 85184,
+      "sha256": "45c4b53f8199417191ff661f91122f08e5f795bb4eaabc674fa5a35b3906450b",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/alt-smoke-20260913/en05-ddgs-startpage/http-1.html",
+      "latency_ms": 775.92
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "empty_or_parse_failure",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 2,
+  "retry_after_values": [],
+  "latency_ms": 2572.49,
+  "finished_at": "2026-09-13T05:09:22.528212+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

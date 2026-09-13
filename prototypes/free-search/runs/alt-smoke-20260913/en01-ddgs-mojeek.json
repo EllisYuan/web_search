@@ -1,0 +1,48 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "ddgs",
+  "backend": "mojeek",
+  "started_at": "2026-09-13T05:08:12.195691+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "mojeek",
+  "provider_label_from_ddgs": "mojeek",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.mojeek.com/search",
+      "started_at": "2026-09-13T05:08:12.196204+00:00",
+      "status_code": 403,
+      "retry_after": null,
+      "response_headers_observed": [
+        "access-control-allow-origin",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "x-content-type-options",
+        "x-xss-protection"
+      ],
+      "bytes": 374,
+      "sha256": "b98f9267f8d0cfeddb96f928153a1f06fdfed4a3ceb82e41a2e0fa6a2ba52e3d",
+      "marker_hints": [],
+      "local_body": "raw-private/alt-smoke-20260913/en01-ddgs-mojeek/http-0.html",
+      "latency_ms": 2322.19
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "http_forbidden",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2323.09,
+  "finished_at": "2026-09-13T05:08:14.518074+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

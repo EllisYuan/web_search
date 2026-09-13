@@ -1,0 +1,48 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "ddgs",
+  "backend": "mojeek",
+  "started_at": "2026-09-13T05:10:49.136434+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "mojeek",
+  "provider_label_from_ddgs": "mojeek",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.mojeek.com/search",
+      "started_at": "2026-09-13T05:10:49.137442+00:00",
+      "status_code": 403,
+      "retry_after": null,
+      "response_headers_observed": [
+        "access-control-allow-origin",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "x-content-type-options",
+        "x-xss-protection"
+      ],
+      "bytes": 352,
+      "sha256": "de4446568753f9ca8206280a690334a75302b431b172db48f04f81ee65332652",
+      "marker_hints": [],
+      "local_body": "raw-private/alt-smoke-20260913/mix01-ddgs-mojeek/http-0.html",
+      "latency_ms": 4326.32
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "http_forbidden",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 4327.56,
+  "finished_at": "2026-09-13T05:10:53.463942+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

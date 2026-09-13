@@ -1,0 +1,210 @@
+{
+  "query_id": "zh05",
+  "query": "PostgreSQL 多列索引 最左前缀 官方",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-13T05:07:00.698014+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-13T05:07:00.701593+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "etag",
+        "link",
+        "referrer-policy",
+        "server-timing",
+        "set-cookie",
+        "strict-transport-security",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache",
+        "x-content-type-options",
+        "x-download-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 212155,
+      "sha256": "701b1020396c2c89f39722115dcd63b02783e9670ca4edf24492933293f10f26",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/alt-smoke-20260913/zh05-ddgs-brave/http-0.html",
+      "latency_ms": 4446.64
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "聊聊PostgreSQL中的几种索引类型-腾讯云开发者社区-腾讯云",
+      "href": "https://cloud.tencent.com/developer/article/1555353",
+      "body": "• 空间类型：方位（上、下、左、右），空间关系（相交、包含），空间距离排序(KNN) • 范围数据：=, &&, , >, -|-, & • 普通类型(通过btree_gist 插件支持)：与B-Tree类似，增加空间类型类似操作符 · • 数组类型(通过intarray 插件支持)：与GIN类似 ... 只有B-tree，GiST，GIN和BRIN索引类型支持多列索引。最多可以指定32列。使用最左匹配原则。"
+    },
+    {
+      "title": "PostgreSQL索引思考 - 狂神314 - 博客园",
+      "href": "https://www.cnblogs.com/kuang17/p/10813638.html",
+      "body": "May 5, 2019 - 1) 最左前缀匹配原则，非常重要的原则，数据库会一直向右匹配直到遇到范围查询(>、 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整；以index(a, b, c,d)为例，多列索引的利用情况是： where a=3 是 where a=3 and b=5 是 where a=3 and b=5 and c=4 是 where b=3 否 where c=4 否 where a=3 and c=4 a列能用到索引,b不能 where a=3 and b>10 and c=7 a能,b能,c不能 where a=3 a"
+    },
+    {
+      "title": "postgresql：复合索引的最左侧匹配原则_postgres的联合唯一索引 可以不满足最左原则?-CSDN博客",
+      "href": "https://blog.csdn.net/myNameIsMT/article/details/103517175",
+      "body": "December 13, 2019 - 效率高：索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select * from newtable where col1=1 and col2=2 and col3=3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W10%=100w条数据，然后再回表从100w条数据中找到符合col2=2 and col3= 3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w10% 10% *10%=1w，效率提升可想而知！ · 最左优先，以查询条件最左边为起点任何连续的索引都能匹配上。同时遇到范围查询(>、<、between、like)就会停止匹配。上面说到建立一个复合索引（col1,col2,col3）相当于建立了三个索引，但除此之外其他的条件组合方式不能使用这个复合索引。"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 18: 11.3. Multicolumn Indexes",
+      "href": "https://www.postgresql.org/docs/current/indexes-multicolumn.html",
+      "body": "1 month ago - 11.3. Multicolumn Indexes # An index can be defined on more than one column of a table. For example, if you …"
+    },
+    {
+      "title": "PostgreSQL 索引 | 菜鸟教程",
+      "href": "https://www.runoob.com/postgresql/postgresql-index.html",
+      "body": "使用 CREATE INDEX 语句创建索引，它允许命名索引，指定表及要索引的一列或多列，并指示索引是升序排列还是降序排列。"
+    },
+    {
+      "title": "POSTGRESQL (PG) 6种索引类型介绍以及使用实例_pg索引-CSDN博客",
+      "href": "https://blog.csdn.net/helenbi/article/details/127927748",
+      "body": "PG索引类型 索引类型 CREATE INDEX 在一个指定表或者物化视图的指定列上创建一个索引,索引主要用来提高数据库的效率(尽管不合理的使用将导致较慢的效率) btree 选择性越好(唯一值个数接近记录数)的列，越适合b-tree。 当被索引列存储相关性越接近1或-1时，数据存储越有序，范围查询扫描的HEAP PAGE越少。 支持多列索引，默认最多32列，编译可改。（通过调整pg..."
+    },
+    {
+      "title": "PostgreSQL 多列索引_w3cschool",
+      "href": "https://www.w3cschool.cn/postgresql13_1/postgresql13_1-fs2p3jc5.html",
+      "body": "多列索引应该较少地使用。在绝大多数情况下，单列索引就足够了且能节约时间和空间。具有超过三个列的索引不太有用，除非该表的使用是极端程式化的。第 11.5 节以及第 11.9 节中有对不同索引配置优点的讨论。"
+    },
+    {
+      "title": "复合主键、联合主键、联合索引 · Issue #78 · yankj12/blog",
+      "href": "https://github.com/yankj12/blog/issues/78",
+      "body": "September 23, 2020 - 1.简单说下什么是最左匹配原则 顾名思义：最左优先，以最左边的为起点任何连续的索引都能匹配上。同时遇到范围查询(>、<、between、like)就会停止匹配。 例如：b = 2 如果建立(a,b)顺序的索引，是匹配不到(a,b)索引的；但是..."
+    },
+    {
+      "title": "PostgreSQL索引介绍 - 梦中彩虹 - 博客园",
+      "href": "https://www.cnblogs.com/jiaoyiping/p/7191300.html",
+      "body": "July 16, 2017 - 多列B树索引可以用于涉及索引列的任何子集的查询条件，但是当前导（最左侧）列存在约束时，索引效率最高。确切的规则是，前导列上的等式约束以及不具有相等约束的第一列上的任何不等式约束将用于限制扫描的索引部分。在索引中检查这些列右侧的列的约束，因此它们保存对表的访问，但它们不会减少必须扫描的索引部分。例如，给定（a，b，c）上的索引和查询条件WHERE a = 5 AND b> = 42 AND c = 77的索引条目将被跳过，但仍需扫描。这个索引原则上可以用于对b和/或c有约束的查询，而对b没有约束，但是整个索引必须被扫描，所以在大多数情况下，计划员会喜欢使用索引进行顺序表扫描。"
+    },
+    {
+      "title": "[翻译]高效使用PostgreSQL索引 | PostgreSQL DBA",
+      "href": "https://dreamer-yzy.github.io/2015/01/17/-翻译-高效使用PostgreSQL索引/",
+      "body": "原文 在Postgres里有许多种索引类型，也有不同的方式来使用它们。在本文中,我们概述一下可用的索引类型，并解释不同的使用和维护最常见的索引类型的方式:B树。 索引是一种从表中检索的行数相对较小的有效方式。如果从一个表中检索的行数相对较小时索引是非常有用的（例如：按条件来检索行——WHERE子句选择）。对于免排序的，B树索引也是非常有用的。 索引类型 Postgres支持许多不同的索引类型："
+    },
+    {
+      "title": "PostgreSQL 9种索引的原理和应用场景 - 阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/111793",
+      "body": "June 28, 2017 - -----------------------------------------------------+---------- ' ':2,5,9 'china':3 'digoal':10 'hello':1 'm':8 | 16.4493 ' ':2,5,9 'hello':1 'm':8 'postgresql':10 'world':3 | 16.4493 ' ':2,4,7,11 'digoal':12 'm':10 | Infinity (3 rows) postgres=# explain select *,c1 to_tsquery('postgresql') from test15 order by c1 to_tsquery('postgresql'); QUERY PLAN -------------------------------------------------------------------------------- Index Scan using idx_test15 on test15 (cost=3600.25..3609.06 rows=3 width=36) Order By: (c1 to_tsquery('postgresql'::text)) (2 rows)"
+    },
+    {
+      "title": "postgresql 索引 - 墨天轮",
+      "href": "https://www.modb.pro/db/1691640242780590080",
+      "body": "索引的键域被指定为列名或者写在圆括号中的表达式。如果索引方法支持 多列索引，可以指定多个域 。 一个索引域可以是一个从表行的一列或者更多列值进行计算的表达式。 这种特性可以被用来获得对基于基本数据某种变换的数据的快速访问。 例如，一个在upper(col)上计算的索引可以允许子句 WHERE upper(col) = 'JIM’使用索引。 PostgreSQL提供了索引方法 B-树、哈希、GiST、SP-GiST、GIN 以及 BRIN。用户也可以定义自己的索引 方法，但是相对较复杂。"
+    },
+    {
+      "title": "官方文档解释MySQL最左匹配(最左前缀)原则",
+      "href": "https://juejin.cn/post/6844903966690508814",
+      "body": "October 14, 2019 - We cannot provide a description for this page right now"
+    },
+    {
+      "title": "PostgreSQL 数据库多列复合索引的字段顺序选择原理-阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/582852",
+      "body": "April 18, 2018 - PostgreSQL目前还不支持非连续性的索引扫描，所以当驱动列（第一列）使用了范围扫描后，即使复合索引有第二列，并且第二列是个等值查询，那么也要扫描第一列范围覆盖的所有索引。"
+    },
+    {
+      "title": "数据库支持的索引类型详解-云原生数据库 PolarDB-阿里云",
+      "href": "https://help.aliyun.com/zh/polardb/polardb-for-oracle/index-types",
+      "body": "April 3, 2024 - 本数据库提供了多种索引类型：B-tree、Hash、GiST、SP-GiST、GIN和BRIN。每一种索引类型使用了一种不同的算法来适应不同类型的查询。默认情况下，CREATE INDEX命令创建适合于大部分情况的B-tree索引。 · B-tree可以在可排序数据上..."
+    },
+    {
+      "title": "PostgreSQL 多查询条件，多个索引的选择算法与问题诊断方法-阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/582844",
+      "body": "April 18, 2018 - PostgreSQL , 多列条件 , 多索引 , 单列索引 , 复合索引 , 联合索引 , 优化器 , 评估 , 行评估 , 成本 · 当一个SQL中涉及多个条件，并且多个条件有多种索引可选时，数据库优化器是如何选择使用哪个索引的？"
+    },
+    {
+      "title": "《PostgreSQL 开发指南》第24 篇索引与优化",
+      "href": "https://zhuanlan.zhihu.com/p/457860359",
+      "body": "知乎，让每一次点击都充满意义 —— 欢迎来到知乎，发现问题背后的世界。"
+    },
+    {
+      "title": "《PostgreSQL》 索引与优化 - 天才卧龙 - 博客园",
+      "href": "https://www.cnblogs.com/chenwolong/p/18056357",
+      "body": "March 6, 2024 - 对于多列索引，应该将最常作为查询条件使用的字段放在左边，较少使用的字段放在右边。例如，基于（c1, c2, c3）创建的索引可以优化以下查询："
+    },
+    {
+      "title": "POSTGRESQL (PG) 性能优化之索引使用技巧（复合多列索引、局部索引、表达式索引、覆盖索引、唯一索引）_复合索引-CSDN博客",
+      "href": "https://blog.csdn.net/helenbi/article/details/128975663",
+      "body": "复合索引是数据库中优化多列查询性能的重要技术。通过在多个列上创建单一索引，可以显著提升涉及这些列的查询速度，同时减少索引数量和维护成本。本文通过示例展示了如何创建复合索引，并利用EXPLAIN验证其使用效果。文章详细解释了复合索引的工作原理、使用规则及其局限性，包括索引顺序的重要性和前缀匹配原则。此外，还提供了复合索引的最佳实践和高级应用案例，指导如何根据实际查询模式合理设计索引。复合索引虽然能提升查询效率，但也需要注意其可能增加的存储空间和写操作开销。"
+    },
+    {
+      "title": "PostgreSQL: Documentation: 18: 11.8. Partial Indexes",
+      "href": "https://www.postgresql.org/docs/current/indexes-partial.html",
+      "body": "1 month ago - 11.8. Partial Indexes # A partial index is an index built over a subset of a table; the subset is defined …"
+    }
+  ],
+  "results": [
+    {
+      "title": "聊聊PostgreSQL中的几种索引类型-腾讯云开发者社区-腾讯云",
+      "href": "https://cloud.tencent.com/developer/article/1555353",
+      "body": "• 空间类型：方位（上、下、左、右），空间关系（相交、包含），空间距离排序(KNN) • 范围数据：=, &&, , >, -|-, & • 普通类型(通过btree_gist 插件支持)：与B-Tree类似，增加空间类型类似操作符 · • 数组类型(通过intarray 插件支持)：与GIN类似 ... 只有B-tree，GiST，GIN和BRIN索引类型支持多列索引。最多可以指定32列。使用最左匹配原则。"
+    },
+    {
+      "title": "PostgreSQL索引思考 - 狂神314 - 博客园",
+      "href": "https://www.cnblogs.com/kuang17/p/10813638.html",
+      "body": "May 5, 2019 - 1) 最左前缀匹配原则，非常重要的原则，数据库会一直向右匹配直到遇到范围查询(>、 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整；以index(a, b, c,d)为例，多列索引的利用情况是： where a=3 是 where a=3 and b=5 是 where a=3 and b=5 and c=4 是 where b=3 否 where c=4 否 where a=3 and c=4 a列能用到索引,b不能 where a=3 and b>10 and c=7 a能,b能,c不能 where a=3 a"
+    },
+    {
+      "title": "POSTGRESQL (PG) 6种索引类型介绍以及使用实例_pg索引-CSDN博客",
+      "href": "https://blog.csdn.net/helenbi/article/details/127927748",
+      "body": "PG索引类型 索引类型 CREATE INDEX 在一个指定表或者物化视图的指定列上创建一个索引,索引主要用来提高数据库的效率(尽管不合理的使用将导致较慢的效率) btree 选择性越好(唯一值个数接近记录数)的列，越适合b-tree。 当被索引列存储相关性越接近1或-1时，数据存储越有序，范围查询扫描的HEAP PAGE越少。 支持多列索引，默认最多32列，编译可改。（通过调整pg..."
+    },
+    {
+      "title": "PostgreSQL 多列索引_w3cschool",
+      "href": "https://www.w3cschool.cn/postgresql13_1/postgresql13_1-fs2p3jc5.html",
+      "body": "多列索引应该较少地使用。在绝大多数情况下，单列索引就足够了且能节约时间和空间。具有超过三个列的索引不太有用，除非该表的使用是极端程式化的。第 11.5 节以及第 11.9 节中有对不同索引配置优点的讨论。"
+    },
+    {
+      "title": "PostgreSQL 9种索引的原理和应用场景 - 阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/111793",
+      "body": "June 28, 2017 - -----------------------------------------------------+---------- ' ':2,5,9 'china':3 'digoal':10 'hello':1 'm':8 | 16.4493 ' ':2,5,9 'hello':1 'm':8 'postgresql':10 'world':3 | 16.4493 ' ':2,4,7,11 'digoal':12 'm':10 | Infinity (3 rows) postgres=# explain select *,c1 to_tsquery('postgresql') from test15 order by c1 to_tsquery('postgresql'); QUERY PLAN -------------------------------------------------------------------------------- Index Scan using idx_test15 on test15 (cost=3600.25..3609.06 rows=3 width=36) Order By: (c1 to_tsquery('postgresql'::text)) (2 rows)"
+    },
+    {
+      "title": "postgresql 索引 - 墨天轮",
+      "href": "https://www.modb.pro/db/1691640242780590080",
+      "body": "索引的键域被指定为列名或者写在圆括号中的表达式。如果索引方法支持 多列索引，可以指定多个域 。 一个索引域可以是一个从表行的一列或者更多列值进行计算的表达式。 这种特性可以被用来获得对基于基本数据某种变换的数据的快速访问。 例如，一个在upper(col)上计算的索引可以允许子句 WHERE upper(col) = 'JIM’使用索引。 PostgreSQL提供了索引方法 B-树、哈希、GiST、SP-GiST、GIN 以及 BRIN。用户也可以定义自己的索引 方法，但是相对较复杂。"
+    },
+    {
+      "title": "PostgreSQL 数据库多列复合索引的字段顺序选择原理-阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/582852",
+      "body": "April 18, 2018 - PostgreSQL目前还不支持非连续性的索引扫描，所以当驱动列（第一列）使用了范围扫描后，即使复合索引有第二列，并且第二列是个等值查询，那么也要扫描第一列范围覆盖的所有索引。"
+    },
+    {
+      "title": "PostgreSQL 多查询条件，多个索引的选择算法与问题诊断方法-阿里云开发者社区",
+      "href": "https://developer.aliyun.com/article/582844",
+      "body": "April 18, 2018 - PostgreSQL , 多列条件 , 多索引 , 单列索引 , 复合索引 , 联合索引 , 优化器 , 评估 , 行评估 , 成本 · 当一个SQL中涉及多个条件，并且多个条件有多种索引可选时，数据库优化器是如何选择使用哪个索引的？"
+    },
+    {
+      "title": "《PostgreSQL》 索引与优化 - 天才卧龙 - 博客园",
+      "href": "https://www.cnblogs.com/chenwolong/p/18056357",
+      "body": "March 6, 2024 - 对于多列索引，应该将最常作为查询条件使用的字段放在左边，较少使用的字段放在右边。例如，基于（c1, c2, c3）创建的索引可以优化以下查询："
+    },
+    {
+      "title": "postgresql：复合索引的最左侧匹配原则_postgres的联合唯一索引 可以不满足最左原则?-CSDN博客",
+      "href": "https://blog.csdn.net/myNameIsMT/article/details/103517175",
+      "body": "December 13, 2019 - 效率高：索引列越多，通过索引筛选出的数据越少。有1000W条数据的表，有如下sql:select * from newtable where col1=1 and col2=2 and col3=3,假设假设每个条件可以筛选出10%的数据，如果只有单值索引，那么通过该索引能筛选出1000W10%=100w条数据，然后再回表从100w条数据中找到符合col2=2 and col3= 3的数据，然后再排序，再分页；如果是联合索引，通过索引筛选出1000w10% 10% *10%=1w，效率提升可想而知！ · 最左优先，以查询条件最左边为起点任何连续的索引都能匹配上。同时遇到范围查询(>、<、between、like)就会停止匹配。上面说到建立一个复合索引（col1,col2,col3）相当于建立了三个索引，但除此之外其他的条件组合方式不能使用这个复合索引。"
+    }
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 4462.66,
+  "finished_at": "2026-09-13T05:07:05.160512+00:00",
+  "url_count": 10,
+  "hostname_count": 6,
+  "exact_url_duplicates": 0
+}

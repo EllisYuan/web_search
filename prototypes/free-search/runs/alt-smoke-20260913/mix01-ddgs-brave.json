@@ -1,0 +1,51 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-13T05:10:26.967858+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-13T05:10:26.970313+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 74074,
+      "sha256": "c62745ad7f6d029e8261d070cd699332fbdc0b41fac9375b07aee16eca2f2e39",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/alt-smoke-20260913/mix01-ddgs-brave/http-0.html",
+      "latency_ms": 2163.04
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2166.57,
+  "finished_at": "2026-09-13T05:10:29.133939+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

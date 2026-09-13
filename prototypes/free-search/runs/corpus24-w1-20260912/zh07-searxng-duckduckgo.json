@@ -1,0 +1,78 @@
+{
+  "query_id": "zh07",
+  "query": "Python 3.14 最新 安全 发布 2026",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:43:35.312680+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:43:35.338766+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 7.84
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python 3.14 最新 安全 发布 2026",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:43:35.375903+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 206,
+      "sha256": "3905d0bf2833022c807de976ddde1a93de3339fdcabb688f9f3dddd55ccbaa9e",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/zh07-searxng-duckduckgo/response.json",
+      "latency_ms": 153.76
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Python 3.14 最新 安全 发布 2026",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 217.43,
+  "finished_at": "2026-09-12T15:43:35.530070+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

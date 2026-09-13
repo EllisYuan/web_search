@@ -1,0 +1,51 @@
+{
+  "query_id": "zh07",
+  "query": "Python 3.14 最新 安全 发布 2026",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:51:59.699113+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:51:59.699619+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 73906,
+      "sha256": "3744503fb46627e2e9dcf63e26caedaed04bfd1ab8cdf62e98ca4d07d090cf55",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh07-ddgs-brave/http-0.html",
+      "latency_ms": 2195.22
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2196.51,
+  "finished_at": "2026-09-12T15:52:01.895584+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

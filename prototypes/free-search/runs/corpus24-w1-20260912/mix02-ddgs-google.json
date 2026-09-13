@@ -1,0 +1,51 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:47:08.061523+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:47:08.062030+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3603,
+      "sha256": "00d99006c8f39a8b69c9c05f9514a7a7b5ddb0bd5112bfa6858800d558d4046a",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/mix02-ddgs-google/http-0.html",
+      "latency_ms": 2465.68
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2466.88,
+  "finished_at": "2026-09-12T15:47:10.527691+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

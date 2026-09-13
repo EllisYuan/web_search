@@ -1,0 +1,78 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:35:42.828932+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:35:42.874547+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 8.56
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SQLite DuckDB analytical queries comparison",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:35:42.920602+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 199,
+      "sha256": "2058463af448cb3ca9c8fab430e72ff56adca8c456ba05a6516650e2b99c2f70",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus-prep-check/en02-searxng-brave/response.json",
+      "latency_ms": 474.74
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SQLite DuckDB analytical queries comparison",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 566.77,
+  "finished_at": "2026-09-12T15:35:43.395631+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

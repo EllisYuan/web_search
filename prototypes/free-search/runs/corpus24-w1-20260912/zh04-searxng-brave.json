@@ -1,0 +1,919 @@
+{
+  "query_id": "zh04",
+  "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:42:27.137111+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:42:27.159211+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.75
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:42:27.189185+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 29898,
+      "sha256": "a0654a25b0b689a7a3ae60c0f65140cc05171b6368d7fc4f647ab1fc8645ef9e",
+      "marker_hints": [],
+      "local_body": "raw-private/corpus24-w1-20260912/zh04-searxng-brave/response.json",
+      "latency_ms": 1153.22
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "url": "https://www.hk-lawyer.org/content/eu-gdpr-and-hk-pdpo-what%E2%80%99s-difference",
+      "title": "歐盟《通用數據保障條例》與香港《個人資料（私隱） ...",
+      "content": "The EU General Data Protection Regulation (GDPR), adopted in 2016, came into force on 25 May 2018. The GDPR involves new provisions and enhanced rights. In the wake of technological developments and globalisation and the constitutionalisation of the fundamental right to data protection in the ...",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.hk-lawyer.org",
+        "/content/eu-gdpr-and-hk-pdpo-what%E2%80%99s-difference",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.cmab.gov.hk/tc/issues/protection.htm",
+      "title": "保障個人資料 - 政制及內地事務局",
+      "content": "《個人資料(私隱)條例》 · 《個人資料(私隱)條例》旨在保障有關個人資料方面的私隱。條例賦予國際認可的保障資料原則法定效力，並設立一個獨立的法定機構 — 個人資料私隱專員(下稱私隱專員)，以負責條例的執行工...",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.cmab.gov.hk",
+        "/tc/issues/protection.htm",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.secrss.com/articles/50524",
+      "title": "亚太地区数据保护法律中有关“个人数据处理的合法性基础”的比较分析 - 安全内参 | 决策者的网络安全知识库",
+      "content": "相比之下，其余6个司法管辖区（澳大利亚、中国香港、日本、马来西亚、新西兰和新加坡）的法律要么没有规定同意的定义或要求，要么只规定了有限的定义或要求。在这6个司法管辖区中，只有3个司法管辖区（澳大利亚、日本和新加坡）的数据保护监管机构发布的指南中对同意提出了更为具体的要求。 · 表1 亚太地区14个司法管辖区的数据保护法律、法规和指南中的同意要求概述 ... 在日本，关于《个人信息保护法》的问答（APPI问答）表明，在适当的情况下可以认可默示同意的形式，即，使用合理和适当的方法，使数据主体能够决定是否同意。虽然APPI问答没有提供上述情形的具体示例，但部门指南提供了一些认可默示同意的情况的例子。",
+      "publishedDate": "2022-12-29T00:00:00",
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.secrss.com",
+        "/articles/50524",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2022-12-29 00:00:00"
+    },
+    {
+      "template": "default.html",
+      "url": "https://stli.iii.org.tw/article-detail.aspx?no=64&tp=1&d=8580",
+      "title": "新加坡國會於2020年11月通過個人資料保護法之修正案",
+      "content": "新加坡通訊暨資訊部（Ministry of Communications and Information, MCI）於2020年11月2日發布新聞稿表示，新加坡國家議會（Parliament of Singapore）通過個人資料保護法（Personal Data Protection Act, PDPA）修正案。主要由新加坡個人資料保護委員會（Personal Data Protection Commission, PDPC）擔任執行與管理機關，而新加坡個人資料保護法僅適用於私人企業、非公務機關。 新加坡通訊暨資訊部特別強調，該個人資料保護法於2013年1月生效，而近年物聯網、人工智慧等新興科技瞬息萬變",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "stli.iii.org.tw",
+        "/article-detail.aspx",
+        "",
+        "no=64&tp=1&d=8580",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.pcpd.org.hk/tc_chi/data_privacy_law/mainland_law/mainland_law.html",
+      "title": "內地《個人信息保護法》",
+      "content": "Office of the Privacy Commissioner for Personal Data, 內地《個人信息保護法》 I. 簡介 《個人信息保護法》於2021年8月20日經全國人大常委會通過，已於2021年11月1日起施行。這是內地首部針對個人信息保護而訂立的法律。 《個人信息保護法》規範個人訊息的處理活動，保護個人信息的權益，並規定處理個人信息須遵循合法、正當、誠信、最少必要以及公開透明的原則，並且須具有明確、合理的目的。 個人有權向個人信息處理者（相當於香港《個人資料（私隱）條",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.pcpd.org.hk",
+        "/tc_chi/data_privacy_law/mainland_law/mainland_law.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=I0050021",
+      "title": "個資法 - 全國法規資料庫- 法務部",
+      "content": "損害賠償，除依本法規定外，公務機關適用國家賠償法之規定，非公務機關適用民法之規定。 ... 一、財團法人之登記財產總額達新臺幣一千萬元或社團法人之社員人數達一百人。 · 二、保護個人資料事項於其章程所定目的範圍內。",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "law.moj.gov.tw",
+        "/LawClass/LawAll.aspx",
+        "",
+        "PCode=I0050021",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://law.pdpc.gov.tw/LawContent.aspx?id=FL010631",
+      "title": "個人資料保護委員會籌備處主管法規共用系統-法規內容-個人資料保護法之特定目的及個人資料之類別",
+      "content": "主體提供之財貨或服務。 例如：貨物或服務之有關細節等。 Ｃ○九三 財務交易。 例如：收付金額、信用額度、保證人、支付方式、往來紀錄、 保證金或其他擔保等。 Ｃ○九四 賠償。 例如：受請求賠償之細節、數額等。 代 號 商業資訊： Ｃ一○一 資料主體之商業活動。 例如：商業種類、提供或使用之財貨或服務、商業契約等。 Ｃ一○二 約定或契約。 例如：關於交易、商業、法律或其他契約、代理等。 Ｃ一○三 與營業有關之執照。 例如：執照之",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "law.pdpc.gov.tw",
+        "/LawContent.aspx",
+        "",
+        "id=FL010631",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.al.gov.mo/file/colect/col_lei-08/cn/3a.htm",
+      "title": "個人資料保護法",
+      "content": "一、法案主要內容取材自葡萄牙的相關法規； · 二、歐盟及葡萄牙的政治及社會環境與澳門有很大的差異； · 三、葡萄牙的《個人資料保護法》主要是由“資料保護國家委員會”執行； · 四、歐盟設有“關於個人資料處理的個人保護工作小組”以協調各成 員國《個人資料保護法》的實施； · 五、法案未能配合澳門的政治及社會狀況； ... 經比較分析後，發現除有關執行機關的規定外，法案在內容上基本與 葡萄牙10月6日第 67/98號法律《個人資料保護法",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.al.gov.mo",
+        "/file/colect/col_lei-08/cn/3a.htm",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        11
+      ],
+      "score": 0.09090909090909091,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://bm.hkust.edu.hk/school-in-media/2025/03/contrasting-approaches-privacy-protection-europe-and-us-chinese-version",
+      "title": "Contrasting Approaches to Privacy Protection in Europe and US (Chinese Version Only) | HKUST Business School",
+      "content": "誠然，在已發展經濟體中，歐盟和美國對個人資料保障是兩種「逈異 」的立場，甚或可以說是兩個相對極端的取態。然而，香港的立法態度「取乎其中」，當中其深層次的意義，囿於篇幅，另文討論。",
+      "publishedDate": "2025-03-24T00:00:00",
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "bm.hkust.edu.hk",
+        "/school-in-media/2025/03/contrasting-approaches-privacy-protection-europe-and-us-chinese-version",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        13
+      ],
+      "score": 0.07692307692307693,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2025-03-24 00:00:00"
+    },
+    {
+      "template": "default.html",
+      "url": "https://law.asia/zh-hans/regional-data-privacy-laws/",
+      "title": "印度、菲律宾、台湾和泰国的数据隐私法的区域比较",
+      "content": "世界各国正在加紧对个人数据收集、处理和使用的监管。由于大部分政府都在试图平衡公民权利与国家安全和商业需求，因此隐私监管对于它们来说都是一个难题。 · 在过去三到四年里，有许多法域都实施了保护其公民个...",
+      "publishedDate": "2023-02-02T00:00:00",
+      "thumbnail": "https://imgs.search.brave.com/hRcmpTCCGxU-SyVnO5LdUU_fXDdt-sRqBE4NRTyGoYY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG4u/bGF3LmFzaWEvd3At/Y29udGVudC91cGxv/YWRzLzIwMjAvMDMv/RGF0YS1wcml2YWN5/LXByb3RlY3Rpb24t/MS5qcGc",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "law.asia",
+        "/zh-hans/regional-data-privacy-laws/",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2023-02-02 00:00:00"
+    }
+  ],
+  "raw_response": {
+    "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+    "results": [
+      {
+        "template": "default.html",
+        "url": "https://www.hk-lawyer.org/content/eu-gdpr-and-hk-pdpo-what%E2%80%99s-difference",
+        "title": "歐盟《通用數據保障條例》與香港《個人資料（私隱） ...",
+        "content": "The EU General Data Protection Regulation (GDPR), adopted in 2016, came into force on 25 May 2018. The GDPR involves new provisions and enhanced rights. In the wake of technological developments and globalisation and the constitutionalisation of the fundamental right to data protection in the ...",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.hk-lawyer.org",
+          "/content/eu-gdpr-and-hk-pdpo-what%E2%80%99s-difference",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.cmab.gov.hk/tc/issues/protection.htm",
+        "title": "保障個人資料 - 政制及內地事務局",
+        "content": "《個人資料(私隱)條例》 · 《個人資料(私隱)條例》旨在保障有關個人資料方面的私隱。條例賦予國際認可的保障資料原則法定效力，並設立一個獨立的法定機構 — 個人資料私隱專員(下稱私隱專員)，以負責條例的執行工...",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.cmab.gov.hk",
+          "/tc/issues/protection.htm",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.secrss.com/articles/50524",
+        "title": "亚太地区数据保护法律中有关“个人数据处理的合法性基础”的比较分析 - 安全内参 | 决策者的网络安全知识库",
+        "content": "相比之下，其余6个司法管辖区（澳大利亚、中国香港、日本、马来西亚、新西兰和新加坡）的法律要么没有规定同意的定义或要求，要么只规定了有限的定义或要求。在这6个司法管辖区中，只有3个司法管辖区（澳大利亚、日本和新加坡）的数据保护监管机构发布的指南中对同意提出了更为具体的要求。 · 表1 亚太地区14个司法管辖区的数据保护法律、法规和指南中的同意要求概述 ... 在日本，关于《个人信息保护法》的问答（APPI问答）表明，在适当的情况下可以认可默示同意的形式，即，使用合理和适当的方法，使数据主体能够决定是否同意。虽然APPI问答没有提供上述情形的具体示例，但部门指南提供了一些认可默示同意的情况的例子。",
+        "publishedDate": "2022-12-29T00:00:00",
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.secrss.com",
+          "/articles/50524",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2022-12-29 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://stli.iii.org.tw/article-detail.aspx?no=64&tp=1&d=8580",
+        "title": "新加坡國會於2020年11月通過個人資料保護法之修正案",
+        "content": "新加坡通訊暨資訊部（Ministry of Communications and Information, MCI）於2020年11月2日發布新聞稿表示，新加坡國家議會（Parliament of Singapore）通過個人資料保護法（Personal Data Protection Act, PDPA）修正案。主要由新加坡個人資料保護委員會（Personal Data Protection Commission, PDPC）擔任執行與管理機關，而新加坡個人資料保護法僅適用於私人企業、非公務機關。 新加坡通訊暨資訊部特別強調，該個人資料保護法於2013年1月生效，而近年物聯網、人工智慧等新興科技瞬息萬變",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "stli.iii.org.tw",
+          "/article-detail.aspx",
+          "",
+          "no=64&tp=1&d=8580",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.pcpd.org.hk/tc_chi/data_privacy_law/mainland_law/mainland_law.html",
+        "title": "內地《個人信息保護法》",
+        "content": "Office of the Privacy Commissioner for Personal Data, 內地《個人信息保護法》 I. 簡介 《個人信息保護法》於2021年8月20日經全國人大常委會通過，已於2021年11月1日起施行。這是內地首部針對個人信息保護而訂立的法律。 《個人信息保護法》規範個人訊息的處理活動，保護個人信息的權益，並規定處理個人信息須遵循合法、正當、誠信、最少必要以及公開透明的原則，並且須具有明確、合理的目的。 個人有權向個人信息處理者（相當於香港《個人資料（私隱）條",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.pcpd.org.hk",
+          "/tc_chi/data_privacy_law/mainland_law/mainland_law.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=I0050021",
+        "title": "個資法 - 全國法規資料庫- 法務部",
+        "content": "損害賠償，除依本法規定外，公務機關適用國家賠償法之規定，非公務機關適用民法之規定。 ... 一、財團法人之登記財產總額達新臺幣一千萬元或社團法人之社員人數達一百人。 · 二、保護個人資料事項於其章程所定目的範圍內。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "law.moj.gov.tw",
+          "/LawClass/LawAll.aspx",
+          "",
+          "PCode=I0050021",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://law.pdpc.gov.tw/LawContent.aspx?id=FL010631",
+        "title": "個人資料保護委員會籌備處主管法規共用系統-法規內容-個人資料保護法之特定目的及個人資料之類別",
+        "content": "主體提供之財貨或服務。 例如：貨物或服務之有關細節等。 Ｃ○九三 財務交易。 例如：收付金額、信用額度、保證人、支付方式、往來紀錄、 保證金或其他擔保等。 Ｃ○九四 賠償。 例如：受請求賠償之細節、數額等。 代 號 商業資訊： Ｃ一○一 資料主體之商業活動。 例如：商業種類、提供或使用之財貨或服務、商業契約等。 Ｃ一○二 約定或契約。 例如：關於交易、商業、法律或其他契約、代理等。 Ｃ一○三 與營業有關之執照。 例如：執照之",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "law.pdpc.gov.tw",
+          "/LawContent.aspx",
+          "",
+          "id=FL010631",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.al.gov.mo/file/colect/col_lei-08/cn/3a.htm",
+        "title": "個人資料保護法",
+        "content": "一、法案主要內容取材自葡萄牙的相關法規； · 二、歐盟及葡萄牙的政治及社會環境與澳門有很大的差異； · 三、葡萄牙的《個人資料保護法》主要是由“資料保護國家委員會”執行； · 四、歐盟設有“關於個人資料處理的個人保護工作小組”以協調各成 員國《個人資料保護法》的實施； · 五、法案未能配合澳門的政治及社會狀況； ... 經比較分析後，發現除有關執行機關的規定外，法案在內容上基本與 葡萄牙10月6日第 67/98號法律《個人資料保護法",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.al.gov.mo",
+          "/file/colect/col_lei-08/cn/3a.htm",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          11
+        ],
+        "score": 0.09090909090909091,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://bm.hkust.edu.hk/school-in-media/2025/03/contrasting-approaches-privacy-protection-europe-and-us-chinese-version",
+        "title": "Contrasting Approaches to Privacy Protection in Europe and US (Chinese Version Only) | HKUST Business School",
+        "content": "誠然，在已發展經濟體中，歐盟和美國對個人資料保障是兩種「逈異 」的立場，甚或可以說是兩個相對極端的取態。然而，香港的立法態度「取乎其中」，當中其深層次的意義，囿於篇幅，另文討論。",
+        "publishedDate": "2025-03-24T00:00:00",
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "bm.hkust.edu.hk",
+          "/school-in-media/2025/03/contrasting-approaches-privacy-protection-europe-and-us-chinese-version",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          13
+        ],
+        "score": 0.07692307692307693,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2025-03-24 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://law.asia/zh-hans/regional-data-privacy-laws/",
+        "title": "印度、菲律宾、台湾和泰国的数据隐私法的区域比较",
+        "content": "世界各国正在加紧对个人数据收集、处理和使用的监管。由于大部分政府都在试图平衡公民权利与国家安全和商业需求，因此隐私监管对于它们来说都是一个难题。 · 在过去三到四年里，有许多法域都实施了保护其公民个...",
+        "publishedDate": "2023-02-02T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/hRcmpTCCGxU-SyVnO5LdUU_fXDdt-sRqBE4NRTyGoYY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG4u/bGF3LmFzaWEvd3At/Y29udGVudC91cGxv/YWRzLzIwMjAvMDMv/RGF0YS1wcml2YWN5/LXByb3RlY3Rpb24t/MS5qcGc",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "law.asia",
+          "/zh-hans/regional-data-privacy-laws/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2023-02-02 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://crossing.cw.com.tw/article/15735",
+        "title": "台灣、香港與新加坡：從 3 座華人為主、中國為鄰的島嶼，看見島民政治的矛盾與複雜｜楊絜茹／異鄉人手札｜換日線",
+        "content": "新加坡相較於台灣，採用較全面性且嚴厲的方式管理人民。批評政府是會被處罰或坐牢的，連總理李顯龍的姪子也不例外──2020 年李繩武因為在臉書上批評新加坡的司法制度而被罰款。2021 年公佈的《防外國干預法》（Foreign Interference Law）也加強了這種「不多做思考」的準則，在條例裡，凡任何只要政府覺得受到外來文化影響的「不適」的言論和行為，都可有能犯法。簡單來說，以排外為框架所制定的法律，實際上也影響了學術研究、公民社會和媒體等層面。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/KGYnAiV05R3vpTdb6J8y6N-Mull-onQ34TfZa5ymuSs/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9jZG4t/Y3Jvc3NpbmcuY3cu/Y29tLnR3L2FydGlj/bGUvMjAyMjAxL2Fy/dGljbGUtNjFkZTNl/YWY3MmRlYi5qcGc",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "crossing.cw.com.tw",
+          "/article/15735",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.books.com.tw/products/0010828077",
+        "title": "博客來-新時代之個人資料保護法制：歐盟GDPR與臺灣個人資料保護法的比較說明",
+        "content": "本書特色 歐盟GDPR施行對...」要求規定，讓其施行影響擴及與歐盟各會員國有個資傳輸需求之全球各國與組織，臺灣亦然。本書兩位作者融合學術與實務經驗，就歐盟GDPR與臺灣個人資料保護法進行比較說明之撰...",
+        "publishedDate": "2019-06-30T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/PLj5YPZV_q9u13193noU-JPKeRyxPg-eIsuRrsjIvKQ/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9pbTIu/Ym9vay5jb20udHcv/aW1hZ2UvZ2V0SW1h/Z2U_aT1odHRwczov/L3d3dy5ib29rcy5j/b20udHcvaW1nLzAw/MS8wODIvODAvMDAx/MDgyODA3Ny5qcGcm/dj01ZDI1YmUzZGsm/dz0xMTQ2Jmg9NjAw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.books.com.tw",
+          "/products/0010828077",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2019-06-30 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.chunghwabook.com.hk/blog/detail/id/477",
+        "title": "中華書局 香港《個人資料（私隱）條例》保護對象辨析",
+        "content": "如果以上述兩種模式為模板對照香港可以發現，香港《個人資料條例》具有一定的模糊性，其兼具目前比較法上形成的個人信息保護的兩種模式的特徵。一方面，香港制定了專門的「個人資料法」，統一適用於公私領域；而另一方面，《個人資料條例》不僅在名稱中特別註明「私隱」（privacy），而且其緒言宣稱「本條例旨在在個人資料方面保障個人的私隱，並就附帶事宜及相關事宜訂定條文。」",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/uKv6yxVckiI9SIPm8xOvuI9rcZ8YPe5cenmZL460Dl8/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly93d3cu/Y2h1bmdod2Fib29r/LmNvbS5oay91cGxv/YWQvY2FjaGUvbm9p/bWFnZV8yMDB4MjAw/LnBuZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.chunghwabook.com.hk",
+          "/blog/detail/id/477",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          12
+        ],
+        "score": 0.08333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://zhuanlan.zhihu.com/p/684419180",
+        "title": "出海必备——东南亚数据合规监管要点（新加坡、越南篇） - 知乎",
+        "content": "上一篇文章《出海必备——东南亚数据合规监管要点（泰国、印尼篇）》中，我们探讨了泰国和印度尼西亚的数据合规要点。本文，我们的合规足迹将踏至新加坡及越南。新加坡因具备独特的地理位置、丰富的市场机会，曾被媒体誉为全球营商环境最佳的国家之一。早在2012年，新加坡就对个人信息进行专门立法保护，现已具有较为完备、成熟的数据合规监管体系，并设立了专门机构——个人信息保护委员会（下称PDPC）。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/tGjjEA741opgWFj8JBvS42GveMkF8so87Kz4dlceH7o/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly96aHVh/bmxhbi56aGlodS5j/b20vcC82ODQ0MTkx/ODA",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "zhuanlan.zhihu.com",
+          "/p/684419180",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          16
+        ],
+        "score": 0.0625,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.thenewslens.com/article/96378",
+        "title": "歐盟史上最嚴格個資法GDPR上路：你聽過最高可罰7億的「被遺忘權」嗎？ - TNL The News Lens 關鍵評論網",
+        "content": "若被駭，公司必須在72小時內發出警訊，若違反規定，罰款最高可處2千萬歐元（約新台幣7.2億），或是年度全球營業總額4%，兩者取其高者為罰款。（台灣現行《個人資料保護法》對違法企業，最高按次處以新台幣5萬元以上、50 萬元以下罰鍰。）",
+        "publishedDate": "2025-10-15T00:00:00",
+        "thumbnail": "https://imgs.search.brave.com/ruVVSdzyD6xclFneIT-sBVc4GyOtaZGV0X9xWgUg2Cw/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9idWNr/ZXQtaW1hZ2UuaW5r/bWFnaW5lY21zLmNv/bS92ZXJzaW9uL2Rl/c2t0b3AvMS9pbWFn/ZS8yMDI0LzA1L2M4/ZWE4MGNiLTNkNGQt/NDc1NS1iYzY5LTYy/ODNjNGZkMWFlNi5q/cGc",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.thenewslens.com",
+          "/article/96378",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          19
+        ],
+        "score": 0.05263157894736842,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2025-10-15 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://cpo.work/summary-personal-information-protection-laws-major-regions-world-until-september-2022",
+        "title": "【全球隐私立法】全球主要地区个人信息保护类法律汇总（至2022年9月） | 首席隐私官中心",
+        "content": "沙特阿拉伯已经颁布了一项数据隐私法，以保护沙特阿拉伯的个人数据。该法律由沙特阿拉伯部长会议批准，被命名为《个人数据保护法》（PDPL）。PDPL旨在保护个人数据的隐私，并规范各组织对个人数据的收集、持有、处理、披露或使用。该法律适用于沙特阿拉伯境内或境外处理沙特阿拉伯居民个人信息的实体。 ... 新加坡于2012年颁布了《个人数据保护法》（PDPA），该法分不同阶段生效；有关数据保护的条款于2014年7月2日开始执行。PDPA承认个人对其个人数据有更多的制权，并承认各组织需要为合法和合理的目的收集、使用或披露个人数据。PDPA涵盖了以电子和非电子形式存储的个人数据。匿名数据（数据不再能用于识别数据主体）不属于PDPA的范围。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "cpo.work",
+          "/summary-personal-information-protection-laws-major-regions-world-until-september-2022",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          14
+        ],
+        "score": 0.07142857142857142,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.dataguidance.com/notes/hong-kong-data-protection-overview",
+        "title": "Hong Kong - Data Protection Overview | Notes",
+        "content": "Essential Privacy and Regulatory Research at Your Fingertips. Find everything you need to stay up-to-date on evolving privacy & security regulations around the world",
+        "publishedDate": "2024-09-08T00:00:00",
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.dataguidance.com",
+          "/notes/hong-kong-data-protection-overview",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          15
+        ],
+        "score": 0.06666666666666667,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2024-09-08 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=I0050022",
+        "title": "個資法施行細則 - 全國法規資料庫- 法務部",
+        "content": "前項措施，得包括下列事項，並以與所欲達成之個人資料保護目的間，具有適當比例為原則： ... 本法第六條第一項但書第三款、第九條第二項第二款、第十九條第一項第三款所稱當事人自行公開之個人資料，指當事人自行對不特定人或特定多數人揭露其個人資料。 · 本法第六條第一項但書第三款、第九條第二項第二款、第十九條第一項第三款所稱已合法公開之個人資料，指依法律或法律具體明確授權之法規命令所公示、公告或以其他合法方式公開之個人資料。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "law.moj.gov.tw",
+          "/LawClass/LawAll.aspx",
+          "",
+          "PCode=I0050022",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          17
+        ],
+        "score": 0.058823529411764705,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.multilaw.com/Multilaw/Multilaw/Data_Protection_Laws_Guide/DataProtection_Guide_Taiwan.aspx",
+        "title": "Data Protection Guide Taiwan",
+        "content": "Global Data Protection Law Guide Taiwan · Personal Data Protection Act (\"PDPA\")",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.multilaw.com",
+          "/Multilaw/Multilaw/Data_Protection_Laws_Guide/DataProtection_Guide_Taiwan.aspx",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          18
+        ],
+        "score": 0.05555555555555555,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://cloud.google.com/security/compliance/pdpa-taiwan",
+        "title": "Taiwan Personal Data Protection Act | Google Cloud",
+        "content": "Google Cloud’s security and compliance posture help address the guidelines outlined in the Taiwan Personal Data Protection Act (PDPA)",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "cloud.google.com",
+          "/security/compliance/pdpa-taiwan",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          20
+        ],
+        "score": 0.05,
+        "category": "general",
+        "iframe_src": null
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "brave"
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1205.43,
+  "finished_at": "2026-09-12T15:42:28.342261+00:00",
+  "url_count": 10,
+  "hostname_count": 10,
+  "exact_url_duplicates": 0
+}

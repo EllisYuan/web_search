@@ -1,0 +1,50 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:55:42.443443+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:55:42.443983+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 73912,
+      "sha256": "abcfa6da1729c4b9ce8da0db306db925b4c727c8c1514712682ffda7c64a2205",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix02-ddgs-brave/http-0.html",
+      "latency_ms": 2012.9
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2013.87,
+  "finished_at": "2026-09-12T15:55:44.456518+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

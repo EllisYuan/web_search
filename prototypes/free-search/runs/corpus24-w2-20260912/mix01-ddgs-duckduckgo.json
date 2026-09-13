@@ -1,0 +1,55 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:55:23.944009+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-12T15:55:23.944513+00:00",
+      "status_code": 202,
+      "retry_after": null,
+      "response_headers_observed": [
+        "content-security-policy",
+        "content-type",
+        "date",
+        "expect-ct",
+        "permissions-policy",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 14245,
+      "sha256": "82e01c7461eccdabbeabf882fcdd72fedf33113acb179c3d58906060046df922",
+      "marker_hints": [
+        "anomaly.js",
+        "challenge-form"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix01-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 1602.26
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "challenge",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1603.17,
+  "finished_at": "2026-09-12T15:55:25.545817+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

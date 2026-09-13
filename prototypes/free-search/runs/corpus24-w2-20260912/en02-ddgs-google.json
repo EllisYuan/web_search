@@ -1,0 +1,51 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:52:51.943937+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:52:51.944446+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3567,
+      "sha256": "70c8464886876be12a7651543242582dd95b3cf35e64a5922e858aafcb2506e2",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en02-ddgs-google/http-0.html",
+      "latency_ms": 2728.27
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2729.67,
+  "finished_at": "2026-09-12T15:52:54.673290+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

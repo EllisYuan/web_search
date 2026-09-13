@@ -1,0 +1,78 @@
+{
+  "query_id": "en07",
+  "query": "PostgreSQL latest release September 2026",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:46:08.336010+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:46:08.355779+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 26.34
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL latest release September 2026",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:46:08.414366+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 198,
+      "sha256": "917d88ed53844c212c31107850f59bd35c1905380fc6beedb1b1b29a6e23920c",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/en07-searxng-google/response.json",
+      "latency_ms": 8.0
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "PostgreSQL latest release September 2026",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 86.76,
+  "finished_at": "2026-09-12T15:46:08.422740+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,78 @@
+{
+  "query_id": "zh04",
+  "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:42:30.345465+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:42:30.365196+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 14.45
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:42:30.412780+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 266,
+      "sha256": "3b3a681e5f2ff3983f4ab2d421d248c35020fc4b305b773b74b0ed7882489688",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/zh04-searxng-google/response.json",
+      "latency_ms": 7.95
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 75.88,
+  "finished_at": "2026-09-12T15:42:30.421308+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

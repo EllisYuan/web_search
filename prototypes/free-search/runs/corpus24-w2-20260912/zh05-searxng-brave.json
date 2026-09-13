@@ -1,0 +1,78 @@
+{
+  "query_id": "zh05",
+  "query": "PostgreSQL 多列索引 最左前缀 官方",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:51:24.073569+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:51:24.104617+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.45
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL 多列索引 最左前缀 官方",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:51:24.130728+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 240,
+      "sha256": "9e8dec235ea96137483e013427e72693bb3c15a1ac06dfaaf5fad56c090f032a",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh05-searxng-brave/response.json",
+      "latency_ms": 15.98
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "PostgreSQL 多列索引 最左前缀 官方",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 73.24,
+  "finished_at": "2026-09-12T15:51:24.146541+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

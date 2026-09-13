@@ -1,0 +1,856 @@
+{
+  "query_id": "zh03",
+  "query": "中国气象局 2026 年 9 月 台风",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:42:12.183353+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:42:12.206929+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.5
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "中国气象局 2026 年 9 月 台风",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:42:12.233748+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 24082,
+      "sha256": "90a4e9e406a92919cfdf08425741538b785806370455e48c54ec8fc8fa9bde7a",
+      "marker_hints": [],
+      "local_body": "raw-private/corpus24-w1-20260912/zh03-searxng-brave/response.json",
+      "latency_ms": 968.0
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "url": "http://news.china.com.cn/2026-09/02/content_118676884.shtml",
+      "title": "中国气象局：预计9月有2至3个台风登陆或明显影响我国_中国网",
+      "content": "中新网9月2日电（记者 邵萌）9月2日，中国气象局举行新闻发布会。国家气候中心副主任高荣介绍，预计9月，西北太平洋和南海海域有5～7个台风生成，接近常年同期（5.1个）到偏多；有2～3个台风登陆或明显影响我国，较常年同期（1.6个）偏多；强度总体偏强，主要影响华东和华南沿海地区，存在较强台风北上影响我国北方地区的风险。",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "http",
+        "news.china.com.cn",
+        "/2026-09/02/content_118676884.shtml",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.chinanews.com.cn/gn/2026/09-02/10688578.shtml",
+      "title": "中国气象局：预计9月有2至3个台风登陆或明显影响我国-中新网",
+      "content": "2026年09月02日 11:58 来源：中国新闻网 · 大字体 · 小字体 · 分享到： · 中新网9月2日电(记者 邵萌)9月2日，中国气象局举行新闻发布会。国家气候中心副主任高荣介绍，预计9月，西北太平洋和南海海域有5~7个台风生成，接近常年同期(5.1个)到偏多；有2~3个台风登陆或明显影响我国，较常年同期(1.6个)偏多；强度总体偏强，主要影响华东和华南沿海地区，存在较强台风北上影响我国北方地区的风险。 ·",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.chinanews.com.cn",
+        "/gn/2026/09-02/10688578.shtml",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "http://society.people.com.cn/n1/2026/0902/c1008-40791209.html",
+      "title": "9月将有2到3个台风登陆或明显影响我国--社会·法治--人民网",
+      "content": "026年09月02日15:43 | 来源：新华社222 · 订阅已订阅已收藏收藏小字号 · 点击播报本文，约 · 2日，中国气象局召开9月新闻发布会，发布6-8月（主汛期）全国天气气候特征、未来十天天气预报及9月气候趋势预测及服务提示，通报汛期气象服务情况，发布近期递进式气象服务典型案例等，并回答记者提问。国家气候中心副主任高荣表示，9月，将有2到3个台风登陆或明显影响我国，较常年同期（1.6个）偏多。 ·",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "http",
+        "society.people.com.cn",
+        "/n1/2026/0902/c1008-40791209.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.cma.gov.cn/wmhd/2011wzbft/2011wzxzb/xwfbh_2609/index.html",
+      "title": "2026年9月发布会 -中国气象网",
+      "content": "台风方面：预计未来10天南海和西北太平洋热带系统仍较活跃，还可能有2～3个台风生成，其中1个台风将可能影响东南沿海地区。此外，9月2日上午“沙德尔”中心位于南海东北部海面，中心附近最大风力8级（18米/秒），预计其将以每小时10公里左右的速度向东偏北方向移动，强度变化不大，3日起将逐渐转向为西偏南方向移动，继续影响华南、江南南部等地。 · 花粉浓度方面：国家卫生健康委、中国气象局联合发布未来一周花粉预报服务提示，9月2—7日，西北地区东北部、内蒙古大部、华北中北部及河南北部等地的花粉浓度处于高等级（4级），其中内蒙古中西部花粉浓度处于很高等级（5级）。",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.cma.gov.cn",
+        "/wmhd/2011wzbft/2011wzxzb/xwfbh_2609/index.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "http://weather.cma.cn/web/channel-376.html",
+      "title": "气象预警>> 台风预警 - 天气预报",
+      "content": "台风预警 · 来源：中央气象台 发布时间：2026年09月06日10时 · 中央气象台9月6日10时解除台风蓝色预警： ·",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "http",
+        "weather.cma.cn",
+        "/web/channel-376.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.nmc.cn/publish/typhoon/typhoon_new.html",
+      "title": "台风海洋_台风快讯与报文_台风快讯",
+      "content": "台风快讯 · 2026年总1654期 · 中国气象局中央气象台09月07日11时05分 · 2026/09/07 11:05 · 2026/09/07 08:21 · 2026/09/07 05:14 · 2026/09/07 02:23 · 2026/09/06 23:21 · 2026/09/06 20:23 · 2026/09/06 17:03 · 2026/09/06 14:22 · 2026/09/06 11:19 ·",
+      "publishedDate": "2026-08-08T00:00:00",
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.nmc.cn",
+        "/publish/typhoon/typhoon_new.html",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "iframe_src": null,
+      "pubdate": "2026-08-08 00:00:00"
+    },
+    {
+      "template": "default.html",
+      "url": "https://www.nmc.cn/",
+      "title": "关注阴晴冷暖，守望四时安康",
+      "content": "预警自然资源部与中国气象局9月12日18时联合发布黄色地质灾害气象风险预警 ... 2026年9月10日[新闻直播间]中央气象台_未来三天_西南地区海南等地有较强降雨 · 2026年9月10日[新闻直播间]中央气象台_冷空气影响_多地最低气温创下半年新低 · 首席解读台风“沙德尔”移动路径、登陆地点及风雨影响",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "www.nmc.cn",
+        "/",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://m.gmw.cn/2026-09/02/content_1304557862.htm",
+      "title": "9月将有2至3个台风登陆或影响我国",
+      "content": "9月2日，中国气象局召开2026年9月新闻发布会，国家气候中心副主任高荣介绍，预计9月西北太平洋和南海海域将有5至7个台风生成，接近常年同期（5.1个）到偏多；有2至3个台风将登陆或明显影响我国，较常年同期（1.6个）...",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "m.gmw.cn",
+        "/2026-09/02/content_1304557862.htm",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://weather.zhuhai.gov.cn/",
+      "title": "珠海市气象局",
+      "content": "9 月 10 日 06 : 10 · 27.6℃ · 北风 2 级 · 能见度 · 23 公里 · 相对湿度 · 72% 小时累计雨量 · 无降雨 · 预报员讲天气 · 日出日落时间 · 2026 年 9 月 9 日 · 已日落 · 日出 · 15:12 · 日正 · 21:24 · 日落 ·",
+      "publishedDate": null,
+      "thumbnail": "",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "weather.zhuhai.gov.cn",
+        "/",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        12
+      ],
+      "score": 0.08333333333333333,
+      "category": "general",
+      "iframe_src": null
+    },
+    {
+      "template": "default.html",
+      "url": "https://news.ifeng.com/c/8w5YIGfkBQE",
+      "title": "中国气象局：预计9月有2～3个台风登陆或明显影响我国，存在较强台风北上影响北方风险_凤凰网",
+      "content": "台风方面：预计未来10天南海和西北太平洋热带系统仍较活跃，还可能有2～3个台风生成，其中1个台风将可能影响东南沿海地区。",
+      "publishedDate": null,
+      "thumbnail": "https://imgs.search.brave.com/LYtyR90oLUrzyzbT1S3TgGblfEGPbV4-cyqmRitrPSY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly94MC5p/ZmVuZ2ltZy5jb20v/cmVzLzIwMjYvQkM1/QUI1MjcyNUNFNEJD/NkQyOEZBNUZGODVE/QkI0RDE2MzI5MDZD/Nl9zaXplMTE3X3cx/NjIwX2gxMDgwLmpw/Zw",
+      "engine": "brave",
+      "parsed_url": [
+        "https",
+        "news.ifeng.com",
+        "/c/8w5YIGfkBQE",
+        "",
+        "",
+        ""
+      ],
+      "img_src": "",
+      "priority": "",
+      "engines": [
+        "brave"
+      ],
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "iframe_src": null
+    }
+  ],
+  "raw_response": {
+    "query": "中国气象局 2026 年 9 月 台风",
+    "results": [
+      {
+        "template": "default.html",
+        "url": "http://news.china.com.cn/2026-09/02/content_118676884.shtml",
+        "title": "中国气象局：预计9月有2至3个台风登陆或明显影响我国_中国网",
+        "content": "中新网9月2日电（记者 邵萌）9月2日，中国气象局举行新闻发布会。国家气候中心副主任高荣介绍，预计9月，西北太平洋和南海海域有5～7个台风生成，接近常年同期（5.1个）到偏多；有2～3个台风登陆或明显影响我国，较常年同期（1.6个）偏多；强度总体偏强，主要影响华东和华南沿海地区，存在较强台风北上影响我国北方地区的风险。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "http",
+          "news.china.com.cn",
+          "/2026-09/02/content_118676884.shtml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.chinanews.com.cn/gn/2026/09-02/10688578.shtml",
+        "title": "中国气象局：预计9月有2至3个台风登陆或明显影响我国-中新网",
+        "content": "2026年09月02日 11:58 来源：中国新闻网 · 大字体 · 小字体 · 分享到： · 中新网9月2日电(记者 邵萌)9月2日，中国气象局举行新闻发布会。国家气候中心副主任高荣介绍，预计9月，西北太平洋和南海海域有5~7个台风生成，接近常年同期(5.1个)到偏多；有2~3个台风登陆或明显影响我国，较常年同期(1.6个)偏多；强度总体偏强，主要影响华东和华南沿海地区，存在较强台风北上影响我国北方地区的风险。 ·",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.chinanews.com.cn",
+          "/gn/2026/09-02/10688578.shtml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "http://society.people.com.cn/n1/2026/0902/c1008-40791209.html",
+        "title": "9月将有2到3个台风登陆或明显影响我国--社会·法治--人民网",
+        "content": "026年09月02日15:43 | 来源：新华社222 · 订阅已订阅已收藏收藏小字号 · 点击播报本文，约 · 2日，中国气象局召开9月新闻发布会，发布6-8月（主汛期）全国天气气候特征、未来十天天气预报及9月气候趋势预测及服务提示，通报汛期气象服务情况，发布近期递进式气象服务典型案例等，并回答记者提问。国家气候中心副主任高荣表示，9月，将有2到3个台风登陆或明显影响我国，较常年同期（1.6个）偏多。 ·",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "http",
+          "society.people.com.cn",
+          "/n1/2026/0902/c1008-40791209.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.cma.gov.cn/wmhd/2011wzbft/2011wzxzb/xwfbh_2609/index.html",
+        "title": "2026年9月发布会 -中国气象网",
+        "content": "台风方面：预计未来10天南海和西北太平洋热带系统仍较活跃，还可能有2～3个台风生成，其中1个台风将可能影响东南沿海地区。此外，9月2日上午“沙德尔”中心位于南海东北部海面，中心附近最大风力8级（18米/秒），预计其将以每小时10公里左右的速度向东偏北方向移动，强度变化不大，3日起将逐渐转向为西偏南方向移动，继续影响华南、江南南部等地。 · 花粉浓度方面：国家卫生健康委、中国气象局联合发布未来一周花粉预报服务提示，9月2—7日，西北地区东北部、内蒙古大部、华北中北部及河南北部等地的花粉浓度处于高等级（4级），其中内蒙古中西部花粉浓度处于很高等级（5级）。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.cma.gov.cn",
+          "/wmhd/2011wzbft/2011wzxzb/xwfbh_2609/index.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "http://weather.cma.cn/web/channel-376.html",
+        "title": "气象预警>> 台风预警 - 天气预报",
+        "content": "台风预警 · 来源：中央气象台 发布时间：2026年09月06日10时 · 中央气象台9月6日10时解除台风蓝色预警： ·",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "http",
+          "weather.cma.cn",
+          "/web/channel-376.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.nmc.cn/publish/typhoon/typhoon_new.html",
+        "title": "台风海洋_台风快讯与报文_台风快讯",
+        "content": "台风快讯 · 2026年总1654期 · 中国气象局中央气象台09月07日11时05分 · 2026/09/07 11:05 · 2026/09/07 08:21 · 2026/09/07 05:14 · 2026/09/07 02:23 · 2026/09/06 23:21 · 2026/09/06 20:23 · 2026/09/06 17:03 · 2026/09/06 14:22 · 2026/09/06 11:19 ·",
+        "publishedDate": "2026-08-08T00:00:00",
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.nmc.cn",
+          "/publish/typhoon/typhoon_new.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "iframe_src": null,
+        "pubdate": "2026-08-08 00:00:00"
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.nmc.cn/",
+        "title": "关注阴晴冷暖，守望四时安康",
+        "content": "预警自然资源部与中国气象局9月12日18时联合发布黄色地质灾害气象风险预警 ... 2026年9月10日[新闻直播间]中央气象台_未来三天_西南地区海南等地有较强降雨 · 2026年9月10日[新闻直播间]中央气象台_冷空气影响_多地最低气温创下半年新低 · 首席解读台风“沙德尔”移动路径、登陆地点及风雨影响",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.nmc.cn",
+          "/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://m.gmw.cn/2026-09/02/content_1304557862.htm",
+        "title": "9月将有2至3个台风登陆或影响我国",
+        "content": "9月2日，中国气象局召开2026年9月新闻发布会，国家气候中心副主任高荣介绍，预计9月西北太平洋和南海海域将有5至7个台风生成，接近常年同期（5.1个）到偏多；有2至3个台风将登陆或明显影响我国，较常年同期（1.6个）...",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "m.gmw.cn",
+          "/2026-09/02/content_1304557862.htm",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://weather.zhuhai.gov.cn/",
+        "title": "珠海市气象局",
+        "content": "9 月 10 日 06 : 10 · 27.6℃ · 北风 2 级 · 能见度 · 23 公里 · 相对湿度 · 72% 小时累计雨量 · 无降雨 · 预报员讲天气 · 日出日落时间 · 2026 年 9 月 9 日 · 已日落 · 日出 · 15:12 · 日正 · 21:24 · 日落 ·",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "weather.zhuhai.gov.cn",
+          "/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          12
+        ],
+        "score": 0.08333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://news.ifeng.com/c/8w5YIGfkBQE",
+        "title": "中国气象局：预计9月有2～3个台风登陆或明显影响我国，存在较强台风北上影响北方风险_凤凰网",
+        "content": "台风方面：预计未来10天南海和西北太平洋热带系统仍较活跃，还可能有2～3个台风生成，其中1个台风将可能影响东南沿海地区。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/LYtyR90oLUrzyzbT1S3TgGblfEGPbV4-cyqmRitrPSY/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly94MC5p/ZmVuZ2ltZy5jb20v/cmVzLzIwMjYvQkM1/QUI1MjcyNUNFNEJD/NkQyOEZBNUZGODVE/QkI0RDE2MzI5MDZD/Nl9zaXplMTE3X3cx/NjIwX2gxMDgwLmpw/Zw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "news.ifeng.com",
+          "/c/8w5YIGfkBQE",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://news.bjd.com.cn/2026/09/02/11942608.shtml",
+        "title": "中国气象局：预计9月将有2至3个台风登陆或明显影响我国_京报网",
+        "content": "台风方面：预计未来10天南海和西北太平洋热带系统仍较活跃，还可能有2至3个台风生成，其中1个台风将可能影响东南沿海地区。此外，9月2日上午“沙德尔”中心位于南海东北部海面，中心附近最大风力8级（18米/秒），预计其将以每小时10公里左右的速度向东偏北方向移动，强度变化不大，3日起将逐渐转向为西偏南方向移动，继续影响华南、江南南部等地。 · 花粉浓度方面：国家卫生健康委、中国气象局联合发布未来一周花粉预报服务提示，9月2至7日，西北地区东北部、内蒙古大部、华北中北部及河南北部等地的花粉浓度处于高等级（4级），其中内蒙古中西部花粉浓度处于很高等级（5级）。",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/Z_IOqozF9HndzjVa0mDHB6MX_rF1oTtOdVhvk2hgV0Y/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuYmpkLmNvbS5j/bi9kYW1zLXJlcy9l/ZGl0aW5nL2ltYWdl/LzIwMjYwOS8wMi82/YTk3Yjg4Y2Q1ZGU0/MzNiN2Q2OGNmOWEu/anBn",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "news.bjd.com.cn",
+          "/2026/09/02/11942608.shtml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://finance.sina.com.cn/roll/2026-09-02/doc-iniqmmyu4508805.shtml",
+        "title": "国家气象中心：预计2026年秋季有2～4个登陆或影响我国_新浪财经_新浪网",
+        "content": "黄卓指出，预计2026年秋季，西北太平洋和南海海域有8～10个台风生成，较常年同期(10.7个)偏少；有2～4个登陆或影响我国，接近常年同期(2.2个)或略偏多。台风强度总体接近常年同期到...",
+        "publishedDate": null,
+        "thumbnail": "https://imgs.search.brave.com/FMBUKdq_9jejawTIrh4hjsvtJZSIgO3R-aTMt_-pKMQ/rs:fit:200:200:1:0/g:ce/aHR0cHM6Ly9uLnNp/bmFpbWcuY24vbmV3/cy9zb3VyY2UvY2hp/bmFuZXdzX2RlZmF1/bHRfcGljLmpwZw",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "finance.sina.com.cn",
+          "/roll/2026-09-02/doc-iniqmmyu4508805.shtml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          11
+        ],
+        "score": 0.09090909090909091,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "http://society.people.com.cn/n1/2026/0902/c1008-40791121.html",
+        "title": "9月预计有2至3个台风登陆或明显影响我国--社会·法治--人民网",
+        "content": "026年09月02日11:09 | 来源：新华社222 · 订阅已订阅已收藏收藏小字号 · 点击播报本文，约 · 国家气候中心副主任高荣2日表示，9月预计将有2至3个台风登陆或明显影响我国。其中未来10天可能有1个新生成的台风影响东南沿海地区。此外，在南海的台风“沙德尔”3日起将逐渐转向为西偏南方向移动，继续影响华南、江南南部等地。（记者刘诗平） ·",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "http",
+          "society.people.com.cn",
+          "/n1/2026/0902/c1008-40791121.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          13
+        ],
+        "score": 0.07692307692307693,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://m.gmw.cn/2026-09/03/content_1304558331.htm",
+        "title": "中国气象局：今秋或有2—4个台风登陆或影响我国",
+        "content": "根据9月气候趋势预测，高荣建议重点关注五个方面：一是防范阶段性强降水；二是防范台风登陆或影响我国沿海地区；三是防范阶段性冷空气活动对秋粮作物的影响；四是防范内蒙古西部、西北地区北部、新疆中南部等地...",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "m.gmw.cn",
+          "/2026-09/03/content_1304558331.htm",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          14
+        ],
+        "score": 0.07142857142857142,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://finance.sina.com.cn/roll/2026-09-02/doc-iniqmfsw4527239.shtml",
+        "title": "中国气象局：预计9月有2至3个台风登陆或明显影响我国_新浪财经_新浪网",
+        "content": "中新网9月2日电(记者 邵萌)9月2日，中国气象局举行新闻发布会。国家气候中心副主任高荣介绍，预计9月，西北太平洋和南海海域有5~7个台风生成，接近常年同期(5.1个)到偏多；有2~3个台风登陆或明显影响我国，较常年同期(1.6个)偏多；强度总体偏强，主要影响华东和华南沿海地区，存在较强台风北上影响我国北方地区的风险。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "finance.sina.com.cn",
+          "/roll/2026-09-02/doc-iniqmfsw4527239.shtml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          15
+        ],
+        "score": 0.06666666666666667,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.chinanews.com.cn/sh/shipin/cns-d/2026/09-02/news1067502.shtml",
+        "title": "中国气象局：预计2026年秋季有2到4个台风登陆或影响中国-中新网视频",
+        "content": "9月2日，中国气象局举行新闻发布会。国家气象中心副主任黄卓在会上介绍，截至目前，今年台风的整体情况可概括为台风的生成数量和登陆中国的台风数量具有偏多的特点。截至2026年9月1日，西北太平洋和南海共有24个台风生成，与多年同期平均(13.6个)相比偏多9.4个。今年已有7个台风登陆我国，与多年同期平均(4.9个)相比偏多2.1个。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.chinanews.com.cn",
+          "/sh/shipin/cns-d/2026/09-02/news1067502.shtml",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          16
+        ],
+        "score": 0.0625,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "https://www.news.cn/local/20260902/595e94b00cc64f92a5b1a92eeb8b7e46/c.html",
+        "title": "9月预计有2至3个台风登陆或明显影响我国-新华网",
+        "content": "国家气候中心副主任高荣2日表示，9月预计将有2至3个台风登陆或明显影响我国。其中未来10天可能有1个新生成的台风影响东南沿海地区。此外，在南海的台风“沙德尔”3日起将逐渐转向为西偏南方向移动，继续影响华南、江南南部等地。（记者刘诗平）",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "https",
+          "www.news.cn",
+          "/local/20260902/595e94b00cc64f92a5b1a92eeb8b7e46/c.html",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          17
+        ],
+        "score": 0.058823529411764705,
+        "category": "general",
+        "iframe_src": null
+      },
+      {
+        "template": "default.html",
+        "url": "http://typhoon.weather.com.cn/",
+        "title": "台风",
+        "content": "台风路径 空间天气 图片 专题 环境 旅游 生态 气象科普 一带一路 产创平台 · 预计，“科罗旺”将以每小时10-15公里的速度向东北方向移动，强度逐渐减弱。",
+        "publishedDate": null,
+        "thumbnail": "",
+        "engine": "brave",
+        "parsed_url": [
+          "http",
+          "typhoon.weather.com.cn",
+          "/",
+          "",
+          "",
+          ""
+        ],
+        "img_src": "",
+        "priority": "",
+        "engines": [
+          "brave"
+        ],
+        "positions": [
+          18
+        ],
+        "score": 0.05555555555555555,
+        "category": "general",
+        "iframe_src": null
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "brave"
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1019.04,
+  "finished_at": "2026-09-12T15:42:13.202244+00:00",
+  "url_count": 10,
+  "hostname_count": 9,
+  "exact_url_duplicates": 0
+}

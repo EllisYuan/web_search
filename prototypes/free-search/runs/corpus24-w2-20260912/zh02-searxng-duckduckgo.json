@@ -1,0 +1,78 @@
+{
+  "query_id": "zh02",
+  "query": "臺灣 玉山 主峰 海拔 國家公園",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:50:13.595854+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:50:13.616144+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 4.21
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "臺灣 玉山 主峰 海拔 國家公園",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:50:13.644057+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 227,
+      "sha256": "39c747505c08842eb4440f2b7277e8d7c6b074c0c83a3d60928aaae7dde275f4",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh02-searxng-duckduckgo/response.json",
+      "latency_ms": 1648.21
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "臺灣 玉山 主峰 海拔 國家公園",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1696.58,
+  "finished_at": "2026-09-12T15:50:15.292086+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

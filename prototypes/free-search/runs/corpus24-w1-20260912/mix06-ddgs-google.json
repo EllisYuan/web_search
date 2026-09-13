@@ -1,0 +1,51 @@
+{
+  "query_id": "mix06",
+  "query": "pgvector HNSW IVFFlat recall 中文 对比",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:48:30.538428+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:48:30.538428+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3636,
+      "sha256": "ab48637dded10712236168c463479eed55943fbd22122657c2e9c72c49293ae9",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/mix06-ddgs-google/http-0.html",
+      "latency_ms": 2838.92
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2840.07,
+  "finished_at": "2026-09-12T15:48:33.378564+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

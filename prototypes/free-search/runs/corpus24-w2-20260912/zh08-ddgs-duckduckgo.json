@@ -1,0 +1,55 @@
+{
+  "query_id": "zh08",
+  "query": "DuckDB SQLite 分析查询 对比",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:52:07.587220+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-12T15:52:07.587744+00:00",
+      "status_code": 202,
+      "retry_after": null,
+      "response_headers_observed": [
+        "content-security-policy",
+        "content-type",
+        "date",
+        "expect-ct",
+        "permissions-policy",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 14249,
+      "sha256": "d26f065c52eae269aa58bed7d9971a1eca96bd627b3cae330475bd93ce6f2f25",
+      "marker_hints": [
+        "anomaly.js",
+        "challenge-form"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh08-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 1123.9
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "challenge",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1125.06,
+  "finished_at": "2026-09-12T15:52:08.711793+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

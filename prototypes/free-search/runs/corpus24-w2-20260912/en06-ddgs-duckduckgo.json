@@ -1,0 +1,55 @@
+{
+  "query_id": "en06",
+  "query": "Mount Everest height 8848.86 Nepal survey",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:54:11.478189+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-12T15:54:11.478189+00:00",
+      "status_code": 202,
+      "retry_after": null,
+      "response_headers_observed": [
+        "content-security-policy",
+        "content-type",
+        "date",
+        "expect-ct",
+        "permissions-policy",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 14277,
+      "sha256": "a833f620e4110cd95df8a6cda235e03d5fa81213e673f460eb91557a44ad0ef9",
+      "marker_hints": [
+        "anomaly.js",
+        "challenge-form"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en06-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 1780.01
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "challenge",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1780.99,
+  "finished_at": "2026-09-12T15:54:13.258391+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

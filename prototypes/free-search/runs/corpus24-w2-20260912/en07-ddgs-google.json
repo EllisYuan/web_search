@@ -1,0 +1,51 @@
+{
+  "query_id": "en07",
+  "query": "PostgreSQL latest release September 2026",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:54:47.496413+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:54:47.496413+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3558,
+      "sha256": "a7ca443f23a65b9942ac3f8880d89aa1665cb2f933ee6858be0b69c0d695d138",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en07-ddgs-google/http-0.html",
+      "latency_ms": 2640.65
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2641.65,
+  "finished_at": "2026-09-12T15:54:50.136901+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

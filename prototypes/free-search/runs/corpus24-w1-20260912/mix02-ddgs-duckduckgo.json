@@ -1,0 +1,55 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:46:59.915667+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-12T15:46:59.916673+00:00",
+      "status_code": 202,
+      "retry_after": null,
+      "response_headers_observed": [
+        "content-security-policy",
+        "content-type",
+        "date",
+        "expect-ct",
+        "permissions-policy",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 14263,
+      "sha256": "5c56e1ed63309400c3afb73b735b6fff5cda6aa2fe1b28ab7eae78038cecfc28",
+      "marker_hints": [
+        "anomaly.js",
+        "challenge-form"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/mix02-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 1985.24
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "challenge",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1986.41,
+  "finished_at": "2026-09-12T15:47:01.902055+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

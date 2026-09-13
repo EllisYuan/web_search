@@ -1,0 +1,801 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:36:01.973189+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:36:02.011784+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 17.29
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SearXNG JSON API 配置 formats",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:36:02.063115+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 8904,
+      "sha256": "d79ec7a7248a5fd15b0028b9121a150bbfa598ed1fe9df053ab1ced063615d0f",
+      "marker_hints": [],
+      "local_body": "raw-private/corpus-prep-check/mix01-searxng-google/response.json",
+      "latency_ms": 865.02
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Something brokes SearXNG search api when i choose json ...",
+      "content": "Jun 17, 2023 · The json format should work as the csv does. Screenshots & Logs These are the docker container logs: searxng_ | DEBUG searx.network.vimeo : HTTP ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://github.com/searxng/searxng/issues/2505",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "github.com",
+        "/searxng/searxng/issues/2505",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Search API - SearXNG Documentation (2026.9.10+ba055b3e0)",
+      "content": "If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly. Supported formats are defined in settings.yml , ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://docs.searxng.org/dev/search_api.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.searxng.org",
+        "/dev/search_api.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "JSON Engine - SearXNG Documentation (2026.9.10+931fd9787)",
+      "content": "The JSON engine is a generic engine with which it is possible to configure engines in the settings.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://docs.searxng.org/dev/engines/json_engine.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.searxng.org",
+        "/dev/engines/json_engine.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Agentic APP 技术栈总结- SearXNG - 稀土掘金",
+      "content": "Apr 5, 2025 · # formats: [html, csv, json, rss] formats: - html - json. 查询参数中 ... 之后，通过以下curl 命令检查API 是否正常工作： 这将返回结果的JSON 对象。",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://juejin.cn/post/7489007289065734170",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "juejin.cn",
+        "/post/7489007289065734170",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "深入了解SearxNG搜索API：优化你的LangChain搜索体验",
+      "content": "Oct 1, 2024 · 激活JSON输出格式 默认情况下,SearxNG仅支持HTML输出。要激活JSON格式,请在 settings.yml formats: - html - json 1 2 3 4 1 2 3 4",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://blog.csdn.net/tt_jishu/article/details/142672882",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "blog.csdn.net",
+        "/tt_jishu/article/details/142672882",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Administration API — SearXNG Documentation (2025.5.30+ ...",
+      "content": "SearXNG Documentation. Get configuration data¶ GET /config HTTP/1.1. URL of the SearXNG instance and values are customizable.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://return42.github.io/searxng/admin/api.html",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "return42.github.io",
+        "/searxng/admin/api.html",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "SearXNG配置指南：settings.yml文件参数详解与优化实践",
+      "content": "SearXNG的settings.yml文件是核心配置枢纽,通过YAML语法定义搜索引擎参数、输出格式和环境变量映射。关键配置 … formats: 3 - html 4 - json # 必须添加以支持API调用 启 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://comate.baidu.com/zh/page/0aeeavemaj7",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "comate.baidu.com",
+        "/zh/page/0aeeavemaj7",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "不花一分钱！Docker部署SearXNG + OpenClaw接入指南",
+      "content": "Mar 1, 2026 · ... OpenClaw但AI无法搜索？ 需要付费填Brave API Key ... SearXNG Docker安装教程• 国内搜索引擎配置（百度、B站等） • OpenClaw完美接入• 设置 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://www.youtube.com/watch?v=NMVmoy6j6nM",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.youtube.com",
+        "/watch",
+        "",
+        "v=NMVmoy6j6nM",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "searxng - lightsong - 博客园",
+      "content": "Jun 30, 2025 · ​​JSON 格式支持​​：在 settings.yml 中启用 json 输出格式，便于API 集成。 通过上述方式，SearXNG 实现了对多源搜索引擎的灵活整合，平衡了隐私、成本与 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://www.cnblogs.com/lightsong/p/18958387",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.cnblogs.com",
+        "/lightsong/p/18958387",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "高效使用SearxNG Search API：实用指南与示例 - 稀土掘金",
+      "content": "Oct 5, 2024 · 默认情况下，SearxNG 仅启用HTML 格式输出。要使用API，需在`settings.yml` 文件中激活JSON 格式： ```yaml search: formats: - html - json. 之后 ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://juejin.cn/post/7421815032184782860",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "juejin.cn",
+        "/post/7421815032184782860",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "SearXNG JSON API 配置 formats",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Something brokes SearXNG search api when i choose json ...",
+        "content": "Jun 17, 2023 · The json format should work as the csv does. Screenshots & Logs These are the docker container logs: searxng_ | DEBUG searx.network.vimeo : HTTP ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://github.com/searxng/searxng/issues/2505",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "github.com",
+          "/searxng/searxng/issues/2505",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Search API - SearXNG Documentation (2026.9.10+ba055b3e0)",
+        "content": "If you want to consume the results as JSON, CSV, or RSS, you need to set the format parameter accordingly. Supported formats are defined in settings.yml , ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://docs.searxng.org/dev/search_api.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.searxng.org",
+          "/dev/search_api.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "JSON Engine - SearXNG Documentation (2026.9.10+931fd9787)",
+        "content": "The JSON engine is a generic engine with which it is possible to configure engines in the settings.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://docs.searxng.org/dev/engines/json_engine.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.searxng.org",
+          "/dev/engines/json_engine.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Agentic APP 技术栈总结- SearXNG - 稀土掘金",
+        "content": "Apr 5, 2025 · # formats: [html, csv, json, rss] formats: - html - json. 查询参数中 ... 之后，通过以下curl 命令检查API 是否正常工作： 这将返回结果的JSON 对象。",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://juejin.cn/post/7489007289065734170",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "juejin.cn",
+          "/post/7489007289065734170",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "深入了解SearxNG搜索API：优化你的LangChain搜索体验",
+        "content": "Oct 1, 2024 · 激活JSON输出格式 默认情况下,SearxNG仅支持HTML输出。要激活JSON格式,请在 settings.yml formats: - html - json 1 2 3 4 1 2 3 4",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://blog.csdn.net/tt_jishu/article/details/142672882",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "blog.csdn.net",
+          "/tt_jishu/article/details/142672882",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Administration API — SearXNG Documentation (2025.5.30+ ...",
+        "content": "SearXNG Documentation. Get configuration data¶ GET /config HTTP/1.1. URL of the SearXNG instance and values are customizable.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://return42.github.io/searxng/admin/api.html",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "return42.github.io",
+          "/searxng/admin/api.html",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "SearXNG配置指南：settings.yml文件参数详解与优化实践",
+        "content": "SearXNG的settings.yml文件是核心配置枢纽,通过YAML语法定义搜索引擎参数、输出格式和环境变量映射。关键配置 … formats: 3 - html 4 - json # 必须添加以支持API调用 启 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://comate.baidu.com/zh/page/0aeeavemaj7",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "comate.baidu.com",
+          "/zh/page/0aeeavemaj7",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "不花一分钱！Docker部署SearXNG + OpenClaw接入指南",
+        "content": "Mar 1, 2026 · ... OpenClaw但AI无法搜索？ 需要付费填Brave API Key ... SearXNG Docker安装教程• 国内搜索引擎配置（百度、B站等） • OpenClaw完美接入• 设置 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://www.youtube.com/watch?v=NMVmoy6j6nM",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.youtube.com",
+          "/watch",
+          "",
+          "v=NMVmoy6j6nM",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "searxng - lightsong - 博客园",
+        "content": "Jun 30, 2025 · ​​JSON 格式支持​​：在 settings.yml 中启用 json 输出格式，便于API 集成。 通过上述方式，SearXNG 实现了对多源搜索引擎的灵活整合，平衡了隐私、成本与 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://www.cnblogs.com/lightsong/p/18958387",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.cnblogs.com",
+          "/lightsong/p/18958387",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "高效使用SearxNG Search API：实用指南与示例 - 稀土掘金",
+        "content": "Oct 5, 2024 · 默认情况下，SearxNG 仅启用HTML 格式输出。要使用API，需在`settings.yml` 文件中激活JSON 格式： ```yaml search: formats: - html - json. 之后 ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://juejin.cn/post/7421815032184782860",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "juejin.cn",
+          "/post/7421815032184782860",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "searxng api 调用",
+      "searxng json format",
+      "searxng docker 安装",
+      "searxng json 403",
+      "searxng 安装",
+      "searxng 官网",
+      "searxng enable json format",
+      "searxng 搜索",
+      "searxng 查询 url",
+      "searxng 引擎"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 955.73,
+  "finished_at": "2026-09-12T15:36:02.928259+00:00",
+  "url_count": 10,
+  "hostname_count": 8,
+  "exact_url_duplicates": 0
+}

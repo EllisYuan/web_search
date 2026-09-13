@@ -1,0 +1,78 @@
+{
+  "query_id": "en03",
+  "query": "speed of light vacuum SI exact value BIPM",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:53:26.230025+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:53:26.251520+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 20.72
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "speed of light vacuum SI exact value BIPM",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:53:26.301023+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 199,
+      "sha256": "0dfce7b4a39b7b77bef24282063f10b4ff3dffbccdb4bd08950bdcb88ec2ed88",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en03-searxng-google/response.json",
+      "latency_ms": 7.33
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "speed of light vacuum SI exact value BIPM",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 78.45,
+  "finished_at": "2026-09-12T15:53:26.308449+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

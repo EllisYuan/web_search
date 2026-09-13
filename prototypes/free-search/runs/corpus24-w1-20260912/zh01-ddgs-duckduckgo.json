@@ -1,0 +1,155 @@
+{
+  "query_id": "zh01",
+  "query": "Python asyncio TaskGroup 异常处理 官方文档",
+  "route": "ddgs",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:41:17.087713+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "duckduckgo",
+  "provider_label_from_ddgs": "bing",
+  "http": [
+    {
+      "method": "POST",
+      "endpoint": "https://html.duckduckgo.com/html/",
+      "started_at": "2026-09-12T15:41:17.168016+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "cache-control",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "expect-ct",
+        "expires",
+        "permissions-policy",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "strict-transport-security",
+        "vary",
+        "x-content-type-options",
+        "x-duckduckgo-locale",
+        "x-frame-options",
+        "x-xss-protection"
+      ],
+      "bytes": 38826,
+      "sha256": "66539415848d10bd6b3e3dc02c66746b21b8e86567203f5868b6b3ac2f16f576",
+      "marker_hints": [],
+      "local_body": "raw-private/corpus24-w1-20260912/zh01-ddgs-duckduckgo/http-0.html",
+      "latency_ms": 2421.52
+    }
+  ],
+  "upstream_parsed_results": [
+    {
+      "title": "协程与任务 — Python 3.14.7 文档",
+      "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "body": "可等待对象 ¶ 如果一个对象可以在 await 语句中使用，那么它就是 可等待 对象。许多 asyncio API 都被设计为接受可等待对象。 可等待 对象有三种主要类型： 协程, 任务 和 Future. 协程 Python 协程属于 可等待 对象，因此可以在其他协程中被等待:"
+    },
+    {
+      "title": "asyncio — Asynchronous I/O — Python 3.14.7 documentation",
+      "href": "https://docs.python.org/3/library/asyncio.html",
+      "body": "asyncio is a library to write concurrent code using the async/await syntax. asyncio is used as a foundation for multiple Python asynchronous frameworks that provide high-performance network and web-servers, database connection libraries, distributed task queues, etc."
+    },
+    {
+      "title": "python - 告别 asyncio.gather：使用 TaskGroup 实现更安全、高效的并发任务管理",
+      "href": "https://runebook.dev/zh/docs/python/library/asyncio-task/asyncio.TaskGroup",
+      "body": "asyncio. TaskGroup（从 Python 3.11 开始引入）是一种更现代、更安全、更简洁的方式来管理一组并发运行的 asyncio 任务。你可以把它想象成一个任务容器。核心优点集中式错误处理 TaskGroup 会等待它内部所有任务完成，并且在任何任务抛出异常时，TaskGroup 会取消所有其他未完成的任务，然后重新抛出最早 ..."
+    },
+    {
+      "title": "TaskGroup管理协程 - FastApi 最佳实践-中文版 - GitHub Pages",
+      "href": "https://hellowac.github.io/fastapi-best-practices-zh-cn/asyncio/task_group/",
+      "body": "How to use asyncio.TaskGroup You can manage a collection of asyncio.Task objects as a group using the asyncio.TaskGroup class. The asyncio.TaskGroup will allow tasks to be created, keep track of issued tasks, cancel all tasks if one task fails, and allow all tasks in the group to be awaited together. In this tutorial, you will discover how to use the asyncio.TaskGroup in Python. Let's get ..."
+    },
+    {
+      "title": "协程和任务 — Python 3.14.0 文档 - Python 文档",
+      "href": "https://docs.pythonlang.cn/3/library/asyncio-task.html",
+      "body": "任务组 ¶ 任务组结合了任务创建 API 和一种方便可靠的方式来等待组中的所有任务完成。 class asyncio.TaskGroup ¶ 一个包含任务组的 异步上下文管理器。 任务可以使用 create_task () 添加到组中。 当上下文管理器退出时，所有任务都会被等待。 在 3.11 版本中新增。"
+    },
+    {
+      "title": "Python 3.11+ 必学：掌握 Task Groups 实现健壮的异步应用",
+      "href": "https://runebook.dev/zh/docs/python/library/asyncio-task/task-groups",
+      "body": "Task Groups (通过 asyncio. TaskGroup 实现) 是一种异步上下文管理器。它提供了一种可靠的方式来并发创建和管理一组相关的异步任务（asyncio. Task）。在退出 async with 块时等待组内的所有任务完成。"
+    },
+    {
+      "title": "首页 · python3 asyncio官方文档中文版 · 看云 - kancloud.cn",
+      "href": "https://www.kancloud.cn/kindjeff/asyncio-zh/content",
+      "body": "Python3 asyncio官方文档的中文翻译，提供详细的异步编程指南。"
+    },
+    {
+      "title": "asyncio.TaskGroup如何解决嵌套任务异常传播问题？对比asyncio.gather有何优势？",
+      "href": "https://blog.csdn.net/bdgtd88178/article/details/150014285",
+      "body": "asyncio.TaskGroup （Python 3.11+）通过 结构化并发范式 和 异常组（ExceptionGroup） 机制，系统性地解决了嵌套任务中的异常传播问题，相比 asyncio.gather 在并发任务管理上具有显著优势。以下是具体分析："
+    },
+    {
+      "title": "GitHub - ws8634/python-asyncio-taskgroup: Python asyncio.TaskGroup 协程并发 ...",
+      "href": "https://github.com/ws8634/python-asyncio-taskgroup",
+      "body": "Python asyncio.TaskGroup协程并发与多异常取消机制深度解析 基于 Python 3.11+ TaskGroup 实现结构化并发编程，演示多协程调度、异常传播与任务自动取消逻辑，适用于高可靠 IO 并发场景。"
+    },
+    {
+      "title": "从 `asyncio.gather` 到 `TaskGroup`：Python 结构化并发、取消传播与异常聚合实战指南",
+      "href": "https://blog.csdn.net/windowshht/article/details/161408696",
+      "body": "文章浏览阅读286次，点赞8次，收藏5次。 本文探讨了Python异步编程中从asyncio.gather到asyncio.TaskGroup的演进，重点分析了结构化并发、取消传播和异常聚合等核心概念。 文章指出TaskGroup相比gather提供了更安全的生命周期管理，当任务失败时会自动取消其他任务。"
+    }
+  ],
+  "results": [
+    {
+      "title": "协程与任务 — Python 3.14.7 文档",
+      "href": "https://docs.python.org/zh-cn/3/library/asyncio-task.html",
+      "body": "可等待对象 ¶ 如果一个对象可以在 await 语句中使用，那么它就是 可等待 对象。许多 asyncio API 都被设计为接受可等待对象。 可等待 对象有三种主要类型： 协程, 任务 和 Future. 协程 Python 协程属于 可等待 对象，因此可以在其他协程中被等待:"
+    },
+    {
+      "title": "asyncio — Asynchronous I/O — Python 3.14.7 documentation",
+      "href": "https://docs.python.org/3/library/asyncio.html",
+      "body": "asyncio is a library to write concurrent code using the async/await syntax. asyncio is used as a foundation for multiple Python asynchronous frameworks that provide high-performance network and web-servers, database connection libraries, distributed task queues, etc."
+    },
+    {
+      "title": "python - 告别 asyncio.gather：使用 TaskGroup 实现更安全、高效的并发任务管理",
+      "href": "https://runebook.dev/zh/docs/python/library/asyncio-task/asyncio.TaskGroup",
+      "body": "asyncio. TaskGroup（从 Python 3.11 开始引入）是一种更现代、更安全、更简洁的方式来管理一组并发运行的 asyncio 任务。你可以把它想象成一个任务容器。核心优点集中式错误处理 TaskGroup 会等待它内部所有任务完成，并且在任何任务抛出异常时，TaskGroup 会取消所有其他未完成的任务，然后重新抛出最早 ..."
+    },
+    {
+      "title": "TaskGroup管理协程 - FastApi 最佳实践-中文版 - GitHub Pages",
+      "href": "https://hellowac.github.io/fastapi-best-practices-zh-cn/asyncio/task_group/",
+      "body": "How to use asyncio.TaskGroup You can manage a collection of asyncio.Task objects as a group using the asyncio.TaskGroup class. The asyncio.TaskGroup will allow tasks to be created, keep track of issued tasks, cancel all tasks if one task fails, and allow all tasks in the group to be awaited together. In this tutorial, you will discover how to use the asyncio.TaskGroup in Python. Let's get ..."
+    },
+    {
+      "title": "协程和任务 — Python 3.14.0 文档 - Python 文档",
+      "href": "https://docs.pythonlang.cn/3/library/asyncio-task.html",
+      "body": "任务组 ¶ 任务组结合了任务创建 API 和一种方便可靠的方式来等待组中的所有任务完成。 class asyncio.TaskGroup ¶ 一个包含任务组的 异步上下文管理器。 任务可以使用 create_task () 添加到组中。 当上下文管理器退出时，所有任务都会被等待。 在 3.11 版本中新增。"
+    },
+    {
+      "title": "Python 3.11+ 必学：掌握 Task Groups 实现健壮的异步应用",
+      "href": "https://runebook.dev/zh/docs/python/library/asyncio-task/task-groups",
+      "body": "Task Groups (通过 asyncio. TaskGroup 实现) 是一种异步上下文管理器。它提供了一种可靠的方式来并发创建和管理一组相关的异步任务（asyncio. Task）。在退出 async with 块时等待组内的所有任务完成。"
+    },
+    {
+      "title": "首页 · python3 asyncio官方文档中文版 · 看云 - kancloud.cn",
+      "href": "https://www.kancloud.cn/kindjeff/asyncio-zh/content",
+      "body": "Python3 asyncio官方文档的中文翻译，提供详细的异步编程指南。"
+    },
+    {
+      "title": "asyncio.TaskGroup如何解决嵌套任务异常传播问题？对比asyncio.gather有何优势？",
+      "href": "https://blog.csdn.net/bdgtd88178/article/details/150014285",
+      "body": "asyncio.TaskGroup （Python 3.11+）通过 结构化并发范式 和 异常组（ExceptionGroup） 机制，系统性地解决了嵌套任务中的异常传播问题，相比 asyncio.gather 在并发任务管理上具有显著优势。以下是具体分析："
+    },
+    {
+      "title": "GitHub - ws8634/python-asyncio-taskgroup: Python asyncio.TaskGroup 协程并发 ...",
+      "href": "https://github.com/ws8634/python-asyncio-taskgroup",
+      "body": "Python asyncio.TaskGroup协程并发与多异常取消机制深度解析 基于 Python 3.11+ TaskGroup 实现结构化并发编程，演示多协程调度、异常传播与任务自动取消逻辑，适用于高可靠 IO 并发场景。"
+    },
+    {
+      "title": "从 `asyncio.gather` 到 `TaskGroup`：Python 结构化并发、取消传播与异常聚合实战指南",
+      "href": "https://blog.csdn.net/windowshht/article/details/161408696",
+      "body": "文章浏览阅读286次，点赞8次，收藏5次。 本文探讨了Python异步编程中从asyncio.gather到asyncio.TaskGroup的演进，重点分析了结构化并发、取消传播和异常聚合等核心概念。 文章指出TaskGroup相比gather提供了更安全的生命周期管理，当任务失败时会自动取消其他任务。"
+    }
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2504.17,
+  "finished_at": "2026-09-12T15:41:19.591690+00:00",
+  "url_count": 10,
+  "hostname_count": 7,
+  "exact_url_duplicates": 0
+}

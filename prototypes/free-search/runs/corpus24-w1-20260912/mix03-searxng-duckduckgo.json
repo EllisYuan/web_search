@@ -1,0 +1,78 @@
+{
+  "query_id": "mix03",
+  "query": "Redis Valkey license 开源 对比",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:47:29.481742+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:47:29.515011+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 4.09
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Redis Valkey license 开源 对比",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:47:29.551239+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 197,
+      "sha256": "f814d0f51c5495b269350e2fde88b700d7afd34aa1af5b19b67cc34d48222c81",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/mix03-searxng-duckduckgo/response.json",
+      "latency_ms": 459.34
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Redis Valkey license 开源 对比",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 529.22,
+  "finished_at": "2026-09-12T15:47:30.010602+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,78 @@
+{
+  "query_id": "mix01",
+  "query": "SearXNG JSON API 配置 formats",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:55:27.548327+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:55:27.568648+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.98
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SearXNG JSON API 配置 formats",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:55:27.597010+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 195,
+      "sha256": "51e46ce11010440d22880576c8303d7147222e51f92cb771ee7f2775b2744f9e",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix01-searxng-google/response.json",
+      "latency_ms": 5.99
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SearXNG JSON API 配置 formats",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 55.08,
+  "finished_at": "2026-09-12T15:55:27.603505+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

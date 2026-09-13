@@ -1,0 +1,51 @@
+{
+  "query_id": "zh03",
+  "query": "中国气象局 2026 年 9 月 台风",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:42:05.231181+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:42:05.231181+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3711,
+      "sha256": "f1c7bf406bc45db89af280825fb0077db6ced22286403fb9338f253b2eefba17",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/zh03-ddgs-google/http-0.html",
+      "latency_ms": 2558.94
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2560.1,
+  "finished_at": "2026-09-12T15:42:07.790729+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

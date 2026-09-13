@@ -1,0 +1,78 @@
+{
+  "query_id": "mix08",
+  "query": "Firefox release notes 2026 9月",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:57:35.837626+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:57:35.858904+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 4.74
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Firefox release notes 2026 9月",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:57:35.892153+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 201,
+      "sha256": "ea992ce6c8dcb411be0f71cbd7794515ab9117dc41df070ae418c360ce8529f8",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix08-searxng-brave/response.json",
+      "latency_ms": 30.68
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Firefox release notes 2026 9月",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 86.45,
+  "finished_at": "2026-09-12T15:57:35.924247+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

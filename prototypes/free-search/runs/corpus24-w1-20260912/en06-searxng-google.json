@@ -1,0 +1,78 @@
+{
+  "query_id": "en06",
+  "query": "Mount Everest height 8848.86 Nepal survey",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:45:53.472184+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:45:53.496144+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.8
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Mount Everest height 8848.86 Nepal survey",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:45:53.528150+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 199,
+      "sha256": "17f945f78e026f49fa29bbb457816445ec85962c373e20aa2cbf7d788569412e",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/en06-searxng-google/response.json",
+      "latency_ms": 28.29
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Mount Everest height 8848.86 Nepal survey",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 85.16,
+  "finished_at": "2026-09-12T15:45:53.557454+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,78 @@
+{
+  "query_id": "zh04",
+  "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:51:03.135981+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:51:03.156129+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 26.47
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:51:03.211082+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 259,
+      "sha256": "72939d81a54e723c4b7a43c17d15427b46771ccb8fc64cb3cbe3b51c12573091",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh04-searxng-duckduckgo/response.json",
+      "latency_ms": 1635.66
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1710.8,
+  "finished_at": "2026-09-12T15:51:04.846381+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

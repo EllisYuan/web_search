@@ -1,0 +1,78 @@
+{
+  "query_id": "mix07",
+  "query": "UTF-8 BOM EF BB BF Unicode 官方",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:57:33.781313+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:57:33.801338+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 4.75
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "UTF-8 BOM EF BB BF Unicode 官方",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:57:33.829857+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 206,
+      "sha256": "3d2a005d52de0b7bde676e50cd18acaed40b0af12b8059d78bc8717ce1d19892",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix07-searxng-brave/response.json",
+      "latency_ms": 5.98
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "UTF-8 BOM EF BB BF Unicode 官方",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 54.87,
+  "finished_at": "2026-09-12T15:57:33.835695+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,31 @@
+{
+  "started_at": "2026-09-12T15:49:44.962379+00:00",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.4",
+  "packages": {
+    "ddgs": "9.16.0",
+    "primp": "2.0.0",
+    "lxml": "6.1.3",
+    "click": "8.5.0"
+  },
+  "config": {
+    "window": "corpus24-w2-20260912",
+    "routes": "ddgs:duckduckgo,ddgs:brave,ddgs:google,searxng:duckduckgo,searxng:brave,searxng:google",
+    "ids": "all",
+    "reverse": true,
+    "timeout": 12,
+    "pause": 2.0,
+    "region": "us-en",
+    "searxng_language": null,
+    "timelimit": null,
+    "searxng": "http://127.0.0.1:18888"
+  },
+  "corpus_sha256": "7ab47e8e73ea065d588fca911ceee86ab199ec04e08044995c051aff8773a7c6",
+  "egress": "Windows host for DDGS; Docker Desktop WSL2 NAT for SearXNG; public IP/geolocation not measured",
+  "proxy": "none configured in probe environment",
+  "verify_tls": true,
+  "cache": "fresh DDGS client per query; no probe result cache; SearXNG engine suspension possible",
+  "retry_count": 0,
+  "concurrency": 1,
+  "injected": false
+}

@@ -1,0 +1,78 @@
+{
+  "query_id": "en04",
+  "query": "Python 3.14 release September 2026",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:53:48.722814+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:53:48.748725+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.92
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python 3.14 release September 2026",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:53:48.776564+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 192,
+      "sha256": "07443c9036eb49b2f2004b03a7b047880be73bd811a286975a9be12b0d860c1a",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en04-searxng-google/response.json",
+      "latency_ms": 16.5
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Python 3.14 release September 2026",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 70.94,
+  "finished_at": "2026-09-12T15:53:48.793738+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

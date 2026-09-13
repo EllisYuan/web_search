@@ -1,0 +1,51 @@
+{
+  "query_id": "zh02",
+  "query": "臺灣 玉山 主峰 海拔 國家公園",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:34:59.096070+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:34:59.097938+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3774,
+      "sha256": "85718b6a5b613f283966cc45898cb77a54de7ae6d6e24b717498ab91ba302842",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus-prep-check/zh02-ddgs-google/http-0.html",
+      "latency_ms": 2808.69
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2811.17,
+  "finished_at": "2026-09-12T15:35:01.906986+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

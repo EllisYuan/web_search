@@ -1,0 +1,78 @@
+{
+  "query_id": "en08",
+  "query": "Playwright Selenium browser automation comparison",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:55:04.765411+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:55:04.790840+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 3.63
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Playwright Selenium browser automation comparison",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:55:04.819635+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 207,
+      "sha256": "b858e70bb5a243a8125c06b64fc59daeb14b24ae7844b536900703cc32d2e7d5",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en08-searxng-google/response.json",
+      "latency_ms": 5.37
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Playwright Selenium browser automation comparison",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 59.98,
+  "finished_at": "2026-09-12T15:55:04.825348+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

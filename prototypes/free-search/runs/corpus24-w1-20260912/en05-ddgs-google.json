@@ -1,0 +1,51 @@
+{
+  "query_id": "en05",
+  "query": "SearXNG search API JSON formats settings",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:45:25.913343+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:45:25.913857+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3558,
+      "sha256": "be92314432fc4a94f88bd4a54ca2e1d5da665c6f7eb1dcbb8c96554e091268cd",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/en05-ddgs-google/http-0.html",
+      "latency_ms": 2704.41
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2705.5,
+  "finished_at": "2026-09-12T15:45:28.618577+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

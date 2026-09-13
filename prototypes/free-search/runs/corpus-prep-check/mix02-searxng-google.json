@@ -1,0 +1,801 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:36:22.243496+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:36:22.283783+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 8.68
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Docker Desktop Windows WSL 2 backend 官方",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:36:22.328052+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 8201,
+      "sha256": "ee60931c0300586f00a520a9a36ca8077452b451fa16a5df2baa00c9c5dd0700",
+      "marker_hints": [],
+      "local_body": "raw-private/corpus-prep-check/mix02-searxng-google/response.json",
+      "latency_ms": 756.38
+    }
+  ],
+  "results": [
+    {
+      "template": "default.html",
+      "title": "Docker Desktop WSL 2 backend on Windows",
+      "content": "Turn on the Docker WSL 2 backend and get to work using best practices, GPU support, and more in this thorough guide.Prerequisites · Turn on Docker Desktop WSL 2",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        1
+      ],
+      "score": 1.0,
+      "category": "general",
+      "url": "https://docs.docker.com/desktop/features/wsl/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.docker.com",
+        "/desktop/features/wsl/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Install Docker Desktop on Windows",
+      "content": "Docker Desktop for Windows supports three backends: WSL 2, Hyper-V, and Docker VMM (Beta). WSL 2 is the default and works for most users without administrator ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        2
+      ],
+      "score": 0.5,
+      "category": "general",
+      "url": "https://docs.docker.com/desktop/setup/install/windows-install/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.docker.com",
+        "/desktop/setup/install/windows-install/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Get started with containers on WSL - Microsoft Learn",
+      "content": "Jul 30, 2026 · This step-by-step guide will help you get started building and running Linux containers on Windows using wslc.exe , the container CLI that ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        3
+      ],
+      "score": 0.3333333333333333,
+      "category": "general",
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "learn.microsoft.com",
+        "/en-us/windows/wsl/tutorials/wsl-containers",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Introducing the Docker Desktop WSL 2 Backend",
+      "content": "Oct 24, 2019 · Earlier this year, we released a technical preview of our vision for the future of Docker development on Windows using WSL 2.What is new? · Introducing our new architecture",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        4
+      ],
+      "score": 0.25,
+      "category": "general",
+      "url": "https://www.docker.com/blog/new-docker-desktop-wsl2-backend/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.docker.com",
+        "/blog/new-docker-desktop-wsl2-backend/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Can someone help me understand Docker Desktop WSL 2 ...",
+      "content": "Nov 10, 2022 · WSL 2 is a Linux OS running inside the Windows Hypervisor with some specific integrations with Windows. Docker Desktop takes advantage of this ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        5
+      ],
+      "score": 0.2,
+      "category": "general",
+      "url": "https://www.reddit.com/r/AskProgramming/comments/yqy23d/can_someone_help_me_understand_docker_desktop_wsl/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.reddit.com",
+        "/r/AskProgramming/comments/yqy23d/can_someone_help_me_understand_docker_desktop_wsl/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Install Docker Desktop for Windows with WSL2 backend",
+      "content": "Install Docker Desktop for Windows with WSL2 backend · Verify that your Windows 10 installation is version 2004 or later · Verify that your system is capable of ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        6
+      ],
+      "score": 0.16666666666666666,
+      "category": "general",
+      "url": "https://gist.github.com/miliarch/59953116f1e919b1e5ad4ed23fae7d29",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "gist.github.com",
+        "/miliarch/59953116f1e919b1e5ad4ed23fae7d29",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "WSL 2 With Docker Getting Started and Docker Desktop ...",
+      "content": "Oct 12, 2021 · Adam Culp of Beachcasts programming videos shows how to perform a Docker installation on Windows 10 using WSL 2 and leveraging an Ubuntu ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        7
+      ],
+      "score": 0.14285714285714285,
+      "category": "general",
+      "url": "https://www.youtube.com/watch?v=h0Lwtcje-Jo",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "www.youtube.com",
+        "/watch",
+        "",
+        "v=h0Lwtcje-Jo",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Using Docker in WSL 2 - Visual Studio Code",
+      "content": "Mar 2, 2020 · DockerD runs directly within WSL so there's no need for the Hyper-V VM and all Linux containers run within the Linux userspace on Windows for ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        8
+      ],
+      "score": 0.125,
+      "category": "general",
+      "url": "https://code.visualstudio.com/blogs/2020/03/02/docker-in-wsl2",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "code.visualstudio.com",
+        "/blogs/2020/03/02/docker-in-wsl2",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "WSL | Docker Docs",
+      "content": "WSL 2 adds support for \"Linux distributions\" to Windows, where each distribution behaves like a VM except they all run on top of a single shared Linux kernel.",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        9
+      ],
+      "score": 0.1111111111111111,
+      "category": "general",
+      "url": "https://docker.ubitools.com/desktop/features/wsl/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docker.ubitools.com",
+        "/desktop/features/wsl/",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "template": "default.html",
+      "title": "Develop with Docker Desktop using WSL 2 on Windows",
+      "content": "Before you begin, make sure you have enabled WSL 2 integration in Docker Desktop under Settings > Resources > WSL Integration. Open VS Code and install the WSL ...",
+      "img_src": "",
+      "iframe_src": "",
+      "audio_src": "",
+      "thumbnail": "",
+      "publishedDate": null,
+      "pubdate": "",
+      "length": null,
+      "views": "",
+      "author": "",
+      "metadata": "",
+      "priority": "",
+      "engines": [
+        "google"
+      ],
+      "open_group": false,
+      "close_group": false,
+      "positions": [
+        10
+      ],
+      "score": 0.1,
+      "category": "general",
+      "url": "https://docs.docker.com/desktop/features/wsl/use-wsl/",
+      "engine": "google",
+      "parsed_url": [
+        "https",
+        "docs.docker.com",
+        "/desktop/features/wsl/use-wsl/",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "raw_response": {
+    "query": "Docker Desktop Windows WSL 2 backend 官方",
+    "results": [
+      {
+        "template": "default.html",
+        "title": "Docker Desktop WSL 2 backend on Windows",
+        "content": "Turn on the Docker WSL 2 backend and get to work using best practices, GPU support, and more in this thorough guide.Prerequisites · Turn on Docker Desktop WSL 2",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          1
+        ],
+        "score": 1.0,
+        "category": "general",
+        "url": "https://docs.docker.com/desktop/features/wsl/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.docker.com",
+          "/desktop/features/wsl/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Install Docker Desktop on Windows",
+        "content": "Docker Desktop for Windows supports three backends: WSL 2, Hyper-V, and Docker VMM (Beta). WSL 2 is the default and works for most users without administrator ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          2
+        ],
+        "score": 0.5,
+        "category": "general",
+        "url": "https://docs.docker.com/desktop/setup/install/windows-install/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.docker.com",
+          "/desktop/setup/install/windows-install/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Get started with containers on WSL - Microsoft Learn",
+        "content": "Jul 30, 2026 · This step-by-step guide will help you get started building and running Linux containers on Windows using wslc.exe , the container CLI that ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          3
+        ],
+        "score": 0.3333333333333333,
+        "category": "general",
+        "url": "https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "learn.microsoft.com",
+          "/en-us/windows/wsl/tutorials/wsl-containers",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Introducing the Docker Desktop WSL 2 Backend",
+        "content": "Oct 24, 2019 · Earlier this year, we released a technical preview of our vision for the future of Docker development on Windows using WSL 2.What is new? · Introducing our new architecture",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          4
+        ],
+        "score": 0.25,
+        "category": "general",
+        "url": "https://www.docker.com/blog/new-docker-desktop-wsl2-backend/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.docker.com",
+          "/blog/new-docker-desktop-wsl2-backend/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Can someone help me understand Docker Desktop WSL 2 ...",
+        "content": "Nov 10, 2022 · WSL 2 is a Linux OS running inside the Windows Hypervisor with some specific integrations with Windows. Docker Desktop takes advantage of this ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          5
+        ],
+        "score": 0.2,
+        "category": "general",
+        "url": "https://www.reddit.com/r/AskProgramming/comments/yqy23d/can_someone_help_me_understand_docker_desktop_wsl/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.reddit.com",
+          "/r/AskProgramming/comments/yqy23d/can_someone_help_me_understand_docker_desktop_wsl/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Install Docker Desktop for Windows with WSL2 backend",
+        "content": "Install Docker Desktop for Windows with WSL2 backend · Verify that your Windows 10 installation is version 2004 or later · Verify that your system is capable of ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          6
+        ],
+        "score": 0.16666666666666666,
+        "category": "general",
+        "url": "https://gist.github.com/miliarch/59953116f1e919b1e5ad4ed23fae7d29",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "gist.github.com",
+          "/miliarch/59953116f1e919b1e5ad4ed23fae7d29",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "WSL 2 With Docker Getting Started and Docker Desktop ...",
+        "content": "Oct 12, 2021 · Adam Culp of Beachcasts programming videos shows how to perform a Docker installation on Windows 10 using WSL 2 and leveraging an Ubuntu ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          7
+        ],
+        "score": 0.14285714285714285,
+        "category": "general",
+        "url": "https://www.youtube.com/watch?v=h0Lwtcje-Jo",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "www.youtube.com",
+          "/watch",
+          "",
+          "v=h0Lwtcje-Jo",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Using Docker in WSL 2 - Visual Studio Code",
+        "content": "Mar 2, 2020 · DockerD runs directly within WSL so there's no need for the Hyper-V VM and all Linux containers run within the Linux userspace on Windows for ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          8
+        ],
+        "score": 0.125,
+        "category": "general",
+        "url": "https://code.visualstudio.com/blogs/2020/03/02/docker-in-wsl2",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "code.visualstudio.com",
+          "/blogs/2020/03/02/docker-in-wsl2",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "WSL | Docker Docs",
+        "content": "WSL 2 adds support for \"Linux distributions\" to Windows, where each distribution behaves like a VM except they all run on top of a single shared Linux kernel.",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          9
+        ],
+        "score": 0.1111111111111111,
+        "category": "general",
+        "url": "https://docker.ubitools.com/desktop/features/wsl/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docker.ubitools.com",
+          "/desktop/features/wsl/",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "template": "default.html",
+        "title": "Develop with Docker Desktop using WSL 2 on Windows",
+        "content": "Before you begin, make sure you have enabled WSL 2 integration in Docker Desktop under Settings > Resources > WSL Integration. Open VS Code and install the WSL ...",
+        "img_src": "",
+        "iframe_src": "",
+        "audio_src": "",
+        "thumbnail": "",
+        "publishedDate": null,
+        "pubdate": "",
+        "length": null,
+        "views": "",
+        "author": "",
+        "metadata": "",
+        "priority": "",
+        "engines": [
+          "google"
+        ],
+        "open_group": false,
+        "close_group": false,
+        "positions": [
+          10
+        ],
+        "score": 0.1,
+        "category": "general",
+        "url": "https://docs.docker.com/desktop/features/wsl/use-wsl/",
+        "engine": "google",
+        "parsed_url": [
+          "https",
+          "docs.docker.com",
+          "/desktop/features/wsl/use-wsl/",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [
+      "docker windows 镜像",
+      "docker desktop 历史 版本 下载",
+      "docker windows 安装",
+      "docker desktop 下载",
+      "docker desktop for windows 安装",
+      "windows11 安装 docker desktop",
+      "wsl2 docker",
+      "windows docker 使用",
+      "docker desktop for windows 下载",
+      "docker desktop 官网"
+    ],
+    "unresponsive_engines": []
+  },
+  "unresponsive_engines": [],
+  "actual_engines": [
+    "google"
+  ],
+  "status": "success",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 841.11,
+  "finished_at": "2026-09-12T15:36:23.083562+00:00",
+  "url_count": 10,
+  "hostname_count": 8,
+  "exact_url_duplicates": 0
+}

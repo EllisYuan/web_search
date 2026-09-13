@@ -1,0 +1,51 @@
+{
+  "query_id": "zh04",
+  "query": "臺灣 香港 新加坡 個人資料 保護 法規 比較",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:50:46.321087+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:50:46.321595+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3915,
+      "sha256": "c3aebd633c0bc95edd1807ed48fe2e8863df39dfdfa56138b57193e8d8d0e846",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh04-ddgs-google/http-0.html",
+      "latency_ms": 2724.15
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2725.1,
+  "finished_at": "2026-09-12T15:50:49.046094+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

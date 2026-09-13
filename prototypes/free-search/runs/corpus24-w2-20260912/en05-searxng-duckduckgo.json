@@ -1,0 +1,78 @@
+{
+  "query_id": "en05",
+  "query": "SearXNG search API JSON formats settings",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:53:54.909723+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:53:54.934596+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 25.69
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "SearXNG search API JSON formats settings",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:53:54.982730+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 191,
+      "sha256": "587f7254f059319f126603095f9ff4d0ac44bcc2c370c5fc3e2880c667bd6fc0",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en05-searxng-duckduckgo/response.json",
+      "latency_ms": 1787.82
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "SearXNG search API JSON formats settings",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1861.36,
+  "finished_at": "2026-09-12T15:53:56.771187+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

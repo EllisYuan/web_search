@@ -1,0 +1,51 @@
+{
+  "query_id": "mix05",
+  "query": "Kubernetes 2026 September release 最新",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:48:11.328408+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:48:11.328408+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 74048,
+      "sha256": "e5052d397a16a85b61e3c119d9232de0b877af0f4390785fc139bee33ca57e7a",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/mix05-ddgs-brave/http-0.html",
+      "latency_ms": 2204.04
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2205.12,
+  "finished_at": "2026-09-12T15:48:13.532370+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

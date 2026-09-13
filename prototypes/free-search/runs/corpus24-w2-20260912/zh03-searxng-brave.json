@@ -1,0 +1,78 @@
+{
+  "query_id": "zh03",
+  "query": "中国气象局 2026 年 9 月 台风",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:50:35.651488+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:50:35.684466+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 4.75
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "中国气象局 2026 年 9 月 台风",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:50:35.720427+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 231,
+      "sha256": "7e904b6c4faaad505f05570d2f79165bcbb0b34bd5472e988923269728d91f00",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh03-searxng-brave/response.json",
+      "latency_ms": 6.32
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "中国气象局 2026 年 9 月 台风",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 75.48,
+  "finished_at": "2026-09-12T15:50:35.726794+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

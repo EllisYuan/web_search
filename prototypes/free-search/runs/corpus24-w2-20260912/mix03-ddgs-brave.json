@@ -1,0 +1,50 @@
+{
+  "query_id": "mix03",
+  "query": "Redis Valkey license 开源 对比",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:56:07.919083+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:56:07.919620+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 73922,
+      "sha256": "c251e3ce747f7025d6699c856f714d0f960743a1509c69da58321f0bfeb6ce4a",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix03-ddgs-brave/http-0.html",
+      "latency_ms": 1936.64
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1937.79,
+  "finished_at": "2026-09-12T15:56:09.856439+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

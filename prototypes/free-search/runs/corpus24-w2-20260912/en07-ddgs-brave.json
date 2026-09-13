@@ -1,0 +1,51 @@
+{
+  "query_id": "en07",
+  "query": "PostgreSQL latest release September 2026",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:54:31.863696+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:54:31.864029+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 73921,
+      "sha256": "7ce9e5be1ceb26e42c28b4a29c205c29696025a1dd024908172b99575b3bce93",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/en07-ddgs-brave/http-0.html",
+      "latency_ms": 1983.45
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1984.6,
+  "finished_at": "2026-09-12T15:54:33.848354+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

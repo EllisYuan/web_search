@@ -1,0 +1,78 @@
+{
+  "query_id": "zh06",
+  "query": "香港天文台 熱帶氣旋 警告 信號 八號",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:43:20.985252+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:43:21.015343+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 17.06
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "香港天文台 熱帶氣旋 警告 信號 八號",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:43:21.065320+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 261,
+      "sha256": "19ff91a7f93a18b46241dc0af3ccc5ed4f73ea49291004d39da440a7558617de",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/zh06-searxng-brave/response.json",
+      "latency_ms": 10.41
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "香港天文台 熱帶氣旋 警告 信號 八號",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 90.5,
+  "finished_at": "2026-09-12T15:43:21.075611+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

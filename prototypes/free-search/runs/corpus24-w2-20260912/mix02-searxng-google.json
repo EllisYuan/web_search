@@ -1,0 +1,78 @@
+{
+  "query_id": "mix02",
+  "query": "Docker Desktop Windows WSL 2 backend 官方",
+  "route": "searxng",
+  "backend": "google",
+  "started_at": "2026-09-12T15:55:50.109600+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:55:50.133206+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 14.93
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Docker Desktop Windows WSL 2 backend 官方",
+        "engines": "google",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:55:50.179588+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 207,
+      "sha256": "a98f2b834a78d2ec810a2fec7b1cbc5dcdbc291dd6684c4566c0f95f34b06928",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix02-searxng-google/response.json",
+      "latency_ms": 6.66
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Docker Desktop Windows WSL 2 backend 官方",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "google",
+        "Suspended: CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "google",
+      "Suspended: CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 77.36,
+  "finished_at": "2026-09-12T15:55:50.187003+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

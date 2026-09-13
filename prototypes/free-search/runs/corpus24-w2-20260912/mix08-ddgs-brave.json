@@ -1,0 +1,51 @@
+{
+  "query_id": "mix08",
+  "query": "Firefox release notes 2026 9月",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:57:46.292804+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:57:46.293310+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 73865,
+      "sha256": "3c1b329d5ce19d902b7958ae37994313107f28ca93cb92a5735d69c28cc7832a",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/mix08-ddgs-brave/http-0.html",
+      "latency_ms": 1464.87
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1465.9,
+  "finished_at": "2026-09-12T15:57:47.758710+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,51 @@
+{
+  "query_id": "zh06",
+  "query": "香港天文台 熱帶氣旋 警告 信號 八號",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:51:32.069549+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:51:32.070083+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "expires",
+        "pragma",
+        "server",
+        "x-xss-protection"
+      ],
+      "bytes": 3855,
+      "sha256": "a137d93e0219f7542a3e2a48e4a5668ce2f25bbd46d74adfe7cf1023f8cb64df",
+      "marker_hints": [
+        "unusual traffic",
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh06-ddgs-google/http-0.html",
+      "latency_ms": 2954.64
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2956.05,
+  "finished_at": "2026-09-12T15:51:35.025407+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

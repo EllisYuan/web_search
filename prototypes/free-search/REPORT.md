@@ -67,6 +67,54 @@ container 状态命令一度显示 `Up 5 hours`，但服务端不响应；重启
 
 `retry_count` 本轮仍是诚实的静态 0：caller 显式发起可审计 attempt 的机制还没有建，`batch-observations.json` 里已经预留的 `attempts` 形状留给后续单独一轮再确认 CLI 和 `batch-index.json` 的呈现方式。
 
+## 24 query 完整 top-10 审阅（2026-09-12）
+
+目标是用 `probe.py --window <name> --ids all --pause 2` 跑满 `corpus.json` 全部 24 个 query × 6 条 route/backend（`ddgs:duckduckgo`、`ddgs:brave`、`ddgs:google`、`searxng:duckduckgo`、`searxng:brave`、`searxng:google`），对每条实际返回的结果做 top-10 相关性标注。实际执行了两窗口：`corpus24-w1-20260912`（UTC 约 15:41–15:49）与 `corpus24-w2-20260912`（同一参数加 `--reverse`，UTC 约 15:49–15:58），各 144 次调用，合计 288 次。container 全程健康（`Up`），未触发 `docker start` 或 `run.ps1` 重启。**结果是这轮没能做到"24 query 完整 top-10"：288 次调用只有 8 次 success，其余 280 次全部是 `rate_limited`/`challenge`。**
+
+**必须先说明的敏化背景**：这是当天第四轮真实上游调用——前面已经跑过 `healthcheck-20260912`、`instance-down-20260912`、`real-batch-20260912-healthcheck`，以及 `run.ps1` 附带触发的 `corpus-prep-check` 6-query smoke。开跑前上游大概率已被当天累计请求量敏化。**下面的数字不代表免费上游的典型/baseline 状态**，只能证明"同一天连续高频复测会触发近乎全锁定"；上一节"下一步问题"里点名要做的跨天、低频复测本轮仍未做，上游在低频、干净状态下的真实表现仍未验证。
+
+两窗口合计按 route/backend 拆分：
+
+| route | backend | 调用数 | success | rate_limited | challenge | 观察 |
+|---|---|---:|---:|---:|---:|---|
+| ddgs | duckduckgo | 48 | 1 | 0 | 47 | 唯一成功落在 zh01 |
+| ddgs | brave | 48 | 3 | 45 | 0 | zh01–zh03 各成功 1 次后转 rate_limited |
+| ddgs | google | 48 | 0 | 48 | 0 | 两窗口全程 0 成功 |
+| searxng | duckduckgo | 48 | 0 | 0 | 48 | 两窗口全程 0 成功 |
+| searxng | brave | 48 | 4 | 44 | 0 | zh01–zh04 各成功 1 次后转 rate_limited |
+| searxng | google | 48 | 0 | 0 | 48 | 两窗口全程 0 成功 |
+| 合计 | — | 288 | 8 | 137 | 143 | — |
+
+8 次成功全部发生在 window 1 开头、按 corpus 顺序最先出现的 4 个 query（zh01–zh04）：最后一次成功是 `zh04 searxng brave`（15:42:27），4 秒后 `zh04 ddgs brave` 就转为 `rate_limited`（15:42:35），此后到 window 1 结束（65 次 rate_limited + 71 次 challenge）再没有出现过 success。**Window 2 全程 144 次调用 0 成功**（72 次 rate_limited + 72 次 challenge），比此前任何一次单条 engine 的 suspension（如 Brave 的 `suspended_time=180`）都更彻底——这次是六条 route/backend 组合同时、持续锁定，不是某一条 engine 的局部拒绝。`ddgs:google`、`searxng:duckduckgo`、`searxng:google` 三条组合两窗口合计 0 成功，本轮完全没有拿到它们的候选样本。
+
+20/24 个 query（zh05–zh08、en01–en08、mix01–mix08）本轮两窗口都是零返回，没有任何 top-10 数据；只有 zh01–zh04 这 4 个 query 拿到了真实候选，而且只来自 `ddgs:duckduckgo`（仅 zh01）、`ddgs:brave`（zh01–zh03）、`searxng:brave`（zh01–zh04）三条 route/backend。
+
+对这 4 个 query 实际返回的全部结果做了 top-10 逐条标注，rollup：
+
+| route | backend | 覆盖 query | reviewed top-10 | relevant | 保守独立 Source | known URL/site 命中 |
+|---|---|---|---:|---:|---:|---|
+| ddgs | duckduckgo | zh01 | 10 | 6 | 3 | 1 request 命中 known URL，1 命中 known site |
+| ddgs | brave | zh01–zh03 | 30 | 20 | 10 | 2 命中 known URL，3 命中 known site |
+| searxng | brave | zh01–zh04 | 40 | 24 | 17 | 2 命中 known URL，3 命中 known site |
+
+`quality-annotations.json` 本轮新增 47 条判断（zh01 +15、zh02 +7、zh03 +15、zh04 +10），累计 99 条，覆盖 8/24 个 query id（`en01`、`en02`、`mix01`、`mix02`、`zh01`、`zh02`、`zh03`、`zh04`）；总体分布 `{relevant: 64, partial: 25, irrelevant: 8, unknown: 2}`；`scope` 字段已如实更新为这次只覆盖 zh01–zh04 的部分结果；`user_accepted` 仍为 `false`。规则细节与全部理由见 [quality-annotations.json](quality-annotations.json)，独立 Source 归并沿用上一节同一套保守约定，未新引入例外。
+
+几个具体例子：
+
+- `SearXNG Brave / zh02` 直接命中官方 FAQ：[样例](runs/corpus24-w1-20260912/zh02-searxng-brave.json) 标题就是"玉山的高度為何？"，corpus 指定的 `known_relevant_urls` 裸域名 `https://www.ysnp.gov.tw/` 本身当天也出现在结果里，两条都判 relevant——这是本轮少见的精确命中，不代表整体候选质量。
+- `DDGS DuckDuckGo / zh01` 的 [结果](runs/corpus24-w1-20260912/zh01-ddgs-duckduckgo.json) 里 `aiotools.readthedocs.io` 的 "Task Group" 文档判 irrelevant：这是第三方库自己的同名概念，不是 Python 官方 `asyncio.TaskGroup`，同名不同物。
+- `zh03`（台风 + 指定月份）的 [结果](runs/corpus24-w1-20260912/zh03-ddgs-brave.json) 里新浪财经、中新网等 4 条标题只写"今秋"/"2026年秋季"，没有明确到指定月份，按 query 自己的 `relevance_rule`（需同时匹配月份）判 partial，即使台风预测主题完全相符。
+- `zh04`（台/港/新个资保护）的 [结果](runs/corpus24-w1-20260912/zh04-searxng-brave.json) 里 `law.pdpc.gov.tw`（台湾个人资料保护委员会筹备处）与新加坡官方 PDPC（`pdpc.gov.sg`）撞名但不同源；因为台湾本身是 query 指定的三地之一，仍判 relevant，`reason` 字段专门写明这不是新加坡 PDPC，避免后续误读；域名相似不代表同一机构。
+- 两窗口 stdout 共出现 3 次 `h2 connection driver error: peer closed connection without sending TLS close_notify`（window 1 一次、window 2 两次），两次运行退出码仍为 0，判定为传输层噪声，未计入上述失败分类统计。
+
+**仍未验证**：
+
+- 24 个 query 里有 20 个本轮完全没有 top-10 数据（zh05–zh08、全部 en0x、全部 mix0x），"24 query 完整 top-10 审阅"这个目标本轮只完成了 4/24。
+- `ddgs:google`、`searxng:duckduckgo`、`searxng:google` 三条 route/backend 组合两窗口合计 0 成功，无法据此判断它们在非饱和状态下的候选质量或相关性表现。
+- 今天的近乎全锁定是否等于免费上游的真实上限，还是单纯当天累计请求量过大导致，尚未通过跨天、低频复测区分；六条 route/backend 是否共享同一个上游/IP 级限流，还是六个 engine suspension 恰好同时触发，本轮也没有隔离验证。
+- zh01–zh04 之外的任何 query，在 top-10 位置 4–10 的表现此前从未审阅过；即使是 zh01–zh04，今天新增的 top-10 覆盖也只来自 3 条 route，不是全部 6 条。
+- 以上不构成任何 route 的"获胜"结论，也不改变 ticket #6 的验证状态；本节不写入 map 的 Decisions so far。
+
 ## 质量与独立 Source
 
 site 分组按本轮观察到的域名/所属网站显式归并，不用“最后两段 hostname”猜测公共后缀。Source 再合并已识别镜像及同一 project 的 docs/GitHub；疑似衍生且未核实独立创作的 Runebook 页面不进入保守独立 Source 数。完整规则和例外写在每条 [标注](quality-annotations.json)。不是所有网站的所有权或内容来源审计。

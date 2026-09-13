@@ -1,0 +1,51 @@
+{
+  "query_id": "en01",
+  "query": "PostgreSQL multicolumn indexes official documentation",
+  "route": "ddgs",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:44:14.751393+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "brave",
+  "provider_label_from_ddgs": "brave",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://search.brave.com/search",
+      "started_at": "2026-09-12T15:44:14.751900+00:00",
+      "status_code": 429,
+      "retry_after": null,
+      "response_headers_observed": [
+        "alt-svc",
+        "cache-control",
+        "content-length",
+        "content-security-policy",
+        "content-type",
+        "date",
+        "via",
+        "x-amz-cf-id",
+        "x-amz-cf-pop",
+        "x-cache"
+      ],
+      "bytes": 73910,
+      "sha256": "c715bd5c15eb84303ecbe62eb8787ac090ca585d2a045170f01028a2a00e959c",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/en01-ddgs-brave/http-0.html",
+      "latency_ms": 2245.91
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "rate_limited",
+  "error_type": "DDGSException",
+  "error": "No results found.",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 2247.27,
+  "finished_at": "2026-09-12T15:44:16.998308+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

@@ -1,0 +1,78 @@
+{
+  "query_id": "zh05",
+  "query": "PostgreSQL 多列索引 最左前缀 官方",
+  "route": "searxng",
+  "backend": "duckduckgo",
+  "started_at": "2026-09-12T15:43:01.206771+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:43:01.231815+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 6.45
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "PostgreSQL 多列索引 最左前缀 官方",
+        "engines": "duckduckgo",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:43:01.268326+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 224,
+      "sha256": "41160c43472b85079d2d97ba2211c2bc2390d6a60f121053ae0cea5a8c819afa",
+      "marker_hints": [
+        "captcha"
+      ],
+      "local_body": "raw-private/corpus24-w1-20260912/zh05-searxng-duckduckgo/response.json",
+      "latency_ms": 1125.1
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "PostgreSQL 多列索引 最左前缀 官方",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "duckduckgo",
+        "CAPTCHA"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "duckduckgo",
+      "CAPTCHA"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "challenge",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1186.62,
+  "finished_at": "2026-09-12T15:43:02.393090+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

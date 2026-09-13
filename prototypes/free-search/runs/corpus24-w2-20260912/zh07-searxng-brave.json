@@ -1,0 +1,78 @@
+{
+  "query_id": "zh07",
+  "query": "Python 3.14 最新 安全 发布 2026",
+  "route": "searxng",
+  "backend": "brave",
+  "started_at": "2026-09-12T15:51:49.149502+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "health_check": {
+    "endpoint": "http://127.0.0.1:18888/healthz",
+    "started_at": "2026-09-12T15:51:49.168214+00:00",
+    "status_code": 200,
+    "ok": true,
+    "latency_ms": 28.72
+  },
+  "http": [
+    {
+      "endpoint": "http://127.0.0.1:18888/search",
+      "params": {
+        "q": "Python 3.14 最新 安全 发布 2026",
+        "engines": "brave",
+        "format": "json"
+      },
+      "started_at": "2026-09-12T15:51:49.230643+00:00",
+      "status_code": 200,
+      "retry_after": null,
+      "response_headers_observed": [
+        "connection",
+        "content-length",
+        "content-type",
+        "date",
+        "referrer-policy",
+        "server",
+        "server-timing",
+        "x-content-type-options",
+        "x-download-options",
+        "x-robots-tag"
+      ],
+      "bytes": 222,
+      "sha256": "2ef54329969290c861ca249c56d8b9ce59a572264c175f96da929c6d6b3c0679",
+      "marker_hints": [
+        "too many requests"
+      ],
+      "local_body": "raw-private/corpus24-w2-20260912/zh07-searxng-brave/response.json",
+      "latency_ms": 6.44
+    }
+  ],
+  "results": [],
+  "raw_response": {
+    "query": "Python 3.14 最新 安全 发布 2026",
+    "results": [],
+    "answers": [],
+    "corrections": [],
+    "infoboxes": [],
+    "suggestions": [],
+    "unresponsive_engines": [
+      [
+        "brave",
+        "Suspended: too many requests"
+      ]
+    ]
+  },
+  "unresponsive_engines": [
+    [
+      "brave",
+      "Suspended: too many requests"
+    ]
+  ],
+  "actual_engines": [],
+  "status": "rate_limited",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 87.7,
+  "finished_at": "2026-09-12T15:51:49.237377+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

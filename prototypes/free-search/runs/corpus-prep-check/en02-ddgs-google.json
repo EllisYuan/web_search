@@ -1,0 +1,33 @@
+{
+  "query_id": "en02",
+  "query": "SQLite DuckDB analytical queries comparison",
+  "route": "ddgs",
+  "backend": "google",
+  "started_at": "2026-09-12T15:35:56.524814+00:00",
+  "injected": false,
+  "retry_count": 0,
+  "actual_engine": "google",
+  "provider_label_from_ddgs": "google",
+  "http": [
+    {
+      "method": "GET",
+      "endpoint": "https://www.google.com/wml/search",
+      "started_at": "2026-09-12T15:35:56.525825+00:00",
+      "error_type": "DDGSException",
+      "error": "RequestError: RequestError('error sending request for url (https://www.google.com/wml/search?q=SQLite+DuckDB+analytical+queries+comparison&sca_esv=1&filter=1&start=0&hl=en-US&lr=lang_en&cr=countryUS) > received fatal alert: DecodeError')",
+      "latency_ms": 1329.5
+    }
+  ],
+  "upstream_parsed_results": [],
+  "results": [],
+  "status": "error",
+  "error_type": "DDGSException",
+  "error": "RequestError: RequestError('error sending request for url (https://www.google.com/wml/search?q=SQLite+DuckDB+analytical+queries+comparison&sca_esv=1&filter=1&start=0&hl=en-US&lr=lang_en&cr=countryUS) > received fatal alert: DecodeError')",
+  "upstream_request_count": 1,
+  "retry_after_values": [],
+  "latency_ms": 1332.04,
+  "finished_at": "2026-09-12T15:35:57.856145+00:00",
+  "url_count": 0,
+  "hostname_count": 0,
+  "exact_url_duplicates": 0
+}

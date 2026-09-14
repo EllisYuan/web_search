@@ -89,6 +89,21 @@ class CancellableBrowser(InjectedBrowser):
         raise AssertionError("unreachable")
 
 
+class OpenCancellationProbe(BrowserSession):
+    def __init__(self) -> None:
+        super().__init__(allow_fixture_url, 1.0)
+        self.started = asyncio.Event()
+        self.closed = asyncio.Event()
+
+    async def _open(self, url: str) -> RenderedPage:
+        self.started.set()
+        await self.closed.wait()
+        raise BrowserFailure("browser_state_invalid", "Closed by cancellation.")
+
+    async def close(self) -> None:
+        self.closed.set()
+
+
 async def test_open_renders_english_and_chinese_javascript_pages_in_real_browser() -> None:
     async with javascript_site() as base_url:
         async with httpx.AsyncClient(trust_env=False) as http:
@@ -114,6 +129,16 @@ async def test_open_renders_english_and_chinese_javascript_pages_in_real_browser
         assert body["interaction_targets"]
 
 
+async def test_open_cancellation_invalidates_before_waiting_for_browser_work() -> None:
+    browser = OpenCancellationProbe()
+    pending = asyncio.create_task(browser.open("https://example.org"))
+    await asyncio.wait_for(browser.started.wait(), timeout=1)
+    pending.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await asyncio.wait_for(pending, timeout=1)
+    assert browser.closed.is_set()
+
+
 async def test_open_does_not_accept_a_javascript_loading_shell_as_final_content() -> None:
     async with javascript_site() as base_url:
         async with httpx.AsyncClient(trust_env=False) as http:
@@ -126,6 +151,24 @@ async def test_open_does_not_accept_a_javascript_loading_shell_as_final_content(
     assert opened.structuredContent["content_markdown"] == (
         "# Hydrated\n\nContent replaced after hydration"
     )
+    assert opened.structuredContent["processing"]["browser_rendered"] is True
+
+
+async def test_open_renders_arbitrary_inline_javascript_with_static_blocks() -> None:
+    async with javascript_site() as base_url:
+        async with httpx.AsyncClient(trust_env=False) as http:
+            server = create_server(api_key=None, http=http, url_policy=allow_fixture_url)
+            async with create_connected_server_and_client_session(server) as session:
+                opened = await session.call_tool(
+                    "web_read", {"url": f"{base_url}/substantive-inline"}
+                )
+
+    assert not opened.isError
+    assert opened.structuredContent is not None
+    assert "Ready after arbitrary inline JavaScript" in opened.structuredContent[
+        "content_markdown"
+    ]
+    assert "Loading server text" not in opened.structuredContent["content_markdown"]
     assert opened.structuredContent["processing"]["browser_rendered"] is True
 
 

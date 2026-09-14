@@ -104,15 +104,16 @@ class BrowserSession:
         try:
             return await asyncio.shield(task)
         except asyncio.CancelledError:
+            await asyncio.shield(self.invalidate())
             with suppress(Exception):
                 await asyncio.shield(task)
-            await asyncio.shield(self.invalidate())
             raise
 
     async def _open(self, url: str) -> RenderedPage:
         try:
             async with asyncio.timeout(self._deadline_seconds):
                 self._playwright = await async_playwright().start()
+                self._ensure_valid()
                 self._browser = await self._playwright.chromium.launch(
                     headless=True,
                     args=[
@@ -120,12 +121,15 @@ class BrowserSession:
                         "--js-flags=--max-old-space-size=256",
                     ],
                 )
+                self._ensure_valid()
                 self._context = await self._browser.new_context(
                     service_workers="block",
                     accept_downloads=False,
                 )
+                self._ensure_valid()
                 await self._context.route("**/*", self._route)
                 self._page = await self._context.new_page()
+                self._ensure_valid()
                 self._page.on("popup", lambda popup: asyncio.create_task(popup.close()))
                 self._page.on("download", lambda download: asyncio.create_task(download.cancel()))
                 self._cdp = await self._context.new_cdp_session(self._page)
@@ -171,6 +175,15 @@ class BrowserSession:
     async def _monitor_memory(self) -> None:
         while self._valid:
             try:
+                browser_cdp = self._browser_cdp
+                if browser_cdp is None:
+                    return
+                process_info = await browser_cdp.send("SystemInfo.getProcessInfo")
+                self._browser_pids = {
+                    int(item["id"])
+                    for item in process_info.get("processInfo", [])
+                    if isinstance(item, dict) and isinstance(item.get("id"), int | float)
+                }
                 rss = sum(
                     psutil.Process(pid).memory_info().rss
                     for pid in self._browser_pids
@@ -181,6 +194,10 @@ class BrowserSession:
                     return
             except (psutil.Error, OSError):
                 pass
+            except Exception:
+                if self._valid:
+                    self._fail_resource("Browser memory monitoring became unavailable.")
+                return
             await asyncio.sleep(0.05)
 
     def _fail_resource(self, message: str) -> None:
@@ -193,6 +210,10 @@ class BrowserSession:
     def _raise_resource_failure(self) -> None:
         if self._resource_failure is not None:
             raise self._resource_failure
+
+    def _ensure_valid(self) -> None:
+        if not self._valid:
+            raise BrowserFailure("browser_state_invalid", "The browser session was cancelled.")
 
     async def _route(self, route: Route) -> None:
         request = route.request
@@ -230,9 +251,9 @@ class BrowserSession:
         try:
             return await asyncio.shield(task)
         except asyncio.CancelledError:
+            await asyncio.shield(self.invalidate())
             with suppress(Exception):
                 await asyncio.shield(task)
-            await asyncio.shield(self.invalidate())
             raise
 
     async def _interact(

@@ -538,22 +538,22 @@ def requires_browser(html: str, document: ExtractedDocument) -> bool:
     lowered = html.casefold()
     if "<script" not in lowered:
         return False
-    if not document.blocks:
-        return True
-    rendered_shell = bool(
-        re.search(r"id\s*=\s*['\"](?:app|root|__next)['\"]", lowered) or "data-reactroot" in lowered
+    executable_scripts = re.findall(
+        r"<script\b([^>]*)>(.*?)</script\s*>", html, flags=re.IGNORECASE | re.DOTALL
     )
-    external_script = bool(re.search(r"<script[^>]+\bsrc\s*=", lowered))
-    dynamic_markers = (
-        "document.",
-        "fetch(",
-        "xmlhttprequest",
-        "reactdom",
-        "hydrate",
-        "createapp(",
-        "__next_data__",
-    )
-    return rendered_shell or external_script or any(marker in lowered for marker in dynamic_markers)
+    for attributes, source in executable_scripts:
+        script_type = re.search(
+            r"\btype\s*=\s*(['\"]?)([^\s'\">]+)\1", attributes, flags=re.IGNORECASE
+        )
+        if script_type and script_type.group(2).casefold() in {
+            "application/json",
+            "application/ld+json",
+            "importmap",
+        }:
+            continue
+        if re.search(r"\bsrc\s*=", attributes, flags=re.IGNORECASE) or source.strip():
+            return True
+    return not document.blocks
 
 
 async def default_url_policy(url: str) -> bool:

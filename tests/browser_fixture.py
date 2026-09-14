@@ -19,6 +19,7 @@ async def javascript_site() -> AsyncIterator[str]:
             text = (
                 "浏览器渲染的中文正文" if language == "zh" else "English body rendered by browser"
             )
+            initial = ""
             if path.startswith("/interactions"):
                 script = """
                 const app = document.querySelector('#app');
@@ -59,6 +60,12 @@ async def javascript_site() -> AsyncIterator[str]:
                 app.innerHTML = '<h1>Changing</h1><p id="value">Before</p><button aria-expanded="false">Still present</button>';
                 setTimeout(() => document.querySelector('#value').textContent = 'After', 1500);
                 """
+            elif path.startswith("/substantive-inline"):
+                initial = "<h1>Server article</h1><p>Loading server text.</p>"
+                script = """
+                setTimeout(() => app.innerHTML =
+                  '<h1>Server article</h1><p>Ready after arbitrary inline JavaScript.</p>', 0);
+                """
             elif path.startswith("/placeholder"):
                 script = """
                 document.querySelector('#app').innerHTML =
@@ -81,6 +88,7 @@ async def javascript_site() -> AsyncIterator[str]:
                 "<!doctype html><html lang='" + language + "'><head><meta charset='utf-8'>"
                 "<title>Rendered fixture</title></head><body><main id='app'>"
                 + ("<p>Loading...</p>" if path.startswith("/placeholder") else "")
+                + initial
                 + "</main>"
                 "<script>" + script + "</script></body></html>"
             ).encode("utf-8")

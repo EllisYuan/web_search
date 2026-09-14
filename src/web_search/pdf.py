@@ -15,6 +15,9 @@ from typing import Any
 import pypdfium2 as pdfium  # type: ignore[import-untyped]
 
 MAX_PDF_TOTAL_PAGES = 10_000
+MAX_PDF_PAGE_CHARS = 1_000_000
+MAX_PDF_EXTRACTED_CHARS = 2_000_000
+MAX_LAYOUT_RECTS = 512
 
 
 class PdfExtractionError(Exception):
@@ -51,6 +54,7 @@ class PdfTextArtifact:
     page: int
     text: str
     region: dict[str, float] | None = None
+    structure_incomplete: bool = False
 
 
 def _unprocessed_ranges(total_pages: int, processed_pages: set[int]) -> list[dict[str, Any]]:
@@ -78,6 +82,20 @@ def unprocessed_page_ranges(
     return _unprocessed_ranges(total_pages, set(processed_pages))
 
 
+def _has_layout_ambiguity(text_page: Any) -> bool:
+    count = text_page.count_rects()
+    if count > MAX_LAYOUT_RECTS:
+        return True
+    rects = [text_page.get_rect(index) for index in range(count)]
+    for index, (left, bottom, right, top) in enumerate(rects):
+        for other_left, other_bottom, other_right, other_top in rects[index + 1 :]:
+            same_row = min(top, other_top) > max(bottom, other_bottom)
+            horizontal_gap = max(other_left - right, left - other_right)
+            if same_row and horizontal_gap > 16:
+                return True
+    return False
+
+
 def extract_pdf_text(
     data: bytes,
     page_number: int,
@@ -88,6 +106,9 @@ def extract_pdf_text(
             raise IndexError("PDF page is outside the captured document.")
         with closing(document[page_number - 1]) as page:
             with closing(page.get_textpage()) as text_page:
+                if text_page.count_chars() > MAX_PDF_PAGE_CHARS:
+                    raise OverflowError("PDF page exceeds the native text character limit.")
+                structure_incomplete = _has_layout_ambiguity(text_page)
                 if region is None:
                     text = text_page.get_text_range()
                 else:
@@ -100,14 +121,19 @@ def extract_pdf_text(
     normalized = text.replace("\r\n", "\n").replace("\r", "\n").strip()
     if not normalized:
         raise ValueError("PDF target has no readable text layer.")
-    return PdfTextArtifact(page_number, normalized, region)
+    structure_incomplete = (
+        structure_incomplete
+        or "\t" in normalized
+        or any(re.search(r"\S {3,}\S", line) for line in normalized.splitlines())
+    )
+    return PdfTextArtifact(page_number, normalized, region, structure_incomplete)
 
 
 def make_pdf_block(artifact: PdfTextArtifact) -> PdfBlock:
     return PdfBlock(
         block_id=secrets.token_urlsafe(9),
         section_id=f"pdf-page-{artifact.page}",
-        markdown=artifact.text,
+        markdown=f"## Page {artifact.page}\n\n{artifact.text}",
         text=artifact.text,
         page=artifact.page,
         source_region=artifact.region,
@@ -115,8 +141,7 @@ def make_pdf_block(artifact: PdfTextArtifact) -> PdfBlock:
 
 
 def pdf_structure_warning(artifact: PdfTextArtifact) -> dict[str, Any] | None:
-    lines = [line for line in artifact.text.splitlines() if line.strip()]
-    if len(lines) <= 1 and not any(re.search(r"\S {3,}\S", line) for line in lines):
+    if not artifact.structure_incomplete:
         return None
     locator: dict[str, Any] = {"page": artifact.page}
     if artifact.region is not None:
@@ -251,6 +276,7 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
         processed_pages: set[int] = set()
         failures: list[dict[str, Any]] = []
         warnings: list[dict[str, Any]] = []
+        extracted_chars = 0
         for page_number in range(1, min(total_pages, max_pages) + 1):
             if time.monotonic() >= deadline:
                 warnings.append(
@@ -262,10 +288,20 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
                     }
                 )
                 break
-            processed_pages.add(page_number)
             try:
                 with closing(document[page_number - 1]) as page:
                     with closing(page.get_textpage()) as text_page:
+                        if text_page.count_chars() > MAX_PDF_PAGE_CHARS:
+                            failures.append(
+                                {
+                                    "kind": "page_size_limit",
+                                    "message": "The page exceeds the native text character limit.",
+                                    "locator": {"page": page_number},
+                                    "next_action": "read_other_page",
+                                }
+                            )
+                            continue
+                        layout_ambiguous = _has_layout_ambiguity(text_page)
                         text = text_page.get_text_range()
                 text = text.replace("\r\n", "\n").replace("\r", "\n").strip()
             except pdfium.PdfiumError:
@@ -278,6 +314,7 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
                     }
                 )
                 continue
+            processed_pages.add(page_number)
             if not text:
                 failures.append(
                     {
@@ -288,17 +325,39 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
                     }
                 )
                 continue
+            if extracted_chars + len(text) > MAX_PDF_EXTRACTED_CHARS:
+                processed_pages.remove(page_number)
+                failures.append(
+                    {
+                        "kind": "document_text_limit",
+                        "message": "PDF extraction reached the server text character limit.",
+                        "locator": {"page": page_number},
+                        "next_action": "open",
+                    }
+                )
+                break
+            extracted_chars += len(text)
             section_id = f"pdf-page-{page_number}"
             blocks.append(
                 PdfBlock(
                     block_id=secrets.token_urlsafe(9),
                     section_id=section_id,
-                    markdown=text,
+                    markdown=f"## Page {page_number}\n\n{text}",
                     text=text,
                     page=page_number,
                 )
             )
-            warning = pdf_structure_warning(PdfTextArtifact(page_number, text))
+            warning = pdf_structure_warning(
+                PdfTextArtifact(
+                    page_number,
+                    text,
+                    structure_incomplete=(
+                        layout_ambiguous
+                        or "\t" in text
+                        or any(re.search(r"\S {3,}\S", line) for line in text.splitlines())
+                    ),
+                )
+            )
             if warning is not None:
                 warnings.append(warning)
 

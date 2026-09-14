@@ -5,10 +5,13 @@ from __future__ import annotations
 import asyncio
 import base64
 import ipaddress
+import json
 import math
+import os
 import re
 import secrets
 import socket
+import sys
 import tempfile
 import time
 import unicodedata
@@ -25,8 +28,9 @@ import httpx
 from jsonschema import Draft202012Validator
 
 from web_search.pdf import (
+    PdfBlock,
+    PdfExtraction,
     PdfExtractionError,
-    extract_pdf,
     extract_pdf_text,
     make_pdf_block,
     pdf_structure_warning,
@@ -1787,8 +1791,9 @@ class WebReadService:
                 True,
             )
         url = arguments["url"]
+        deadline = asyncio.get_running_loop().time() + self._timeout_seconds
         try:
-            async with asyncio.timeout(self._timeout_seconds):
+            async with asyncio.timeout_at(deadline):
                 response, failure = await self._fetch(url)
         except TimeoutError:
             return error_result(
@@ -1799,7 +1804,7 @@ class WebReadService:
         assert response is not None
         content_type = response.headers.get("content-type", "").split(";", 1)[0].strip().lower()
         if content_type == "application/pdf" or response.content.startswith(b"%PDF-"):
-            return self._open_pdf(response, arguments)
+            return await self._open_pdf(response, arguments, deadline)
         if content_type not in {"text/html", "application/xhtml+xml"}:
             return (
                 error_result(
@@ -1885,10 +1890,77 @@ class WebReadService:
         )
         return result, False
 
-    def _open_pdf(
+    @staticmethod
+    async def _extract_pdf_in_worker(
+        artifact_path: Path, max_pages: int, deadline: float
+    ) -> PdfExtraction:
+        loop = asyncio.get_running_loop()
+        remaining = deadline - loop.time()
+        if remaining <= 0:
+            raise PdfExtractionError("timeout", "PDF extraction timed out.")
+        process: asyncio.subprocess.Process | None = None
+        executable = sys.executable
+        environment = None
+        base_executable = getattr(sys, "_base_executable", None)
+        if sys.platform == "win32" and base_executable:
+            # The venv launcher starts a second process; launch the base interpreter
+            # directly so killing the timed-out worker cannot leave that child alive.
+            executable = base_executable
+            environment = {**os.environ, "PYTHONPATH": os.pathsep.join(sys.path)}
+        stage = "starting"
+        try:
+            async with asyncio.timeout_at(deadline):
+                process = await asyncio.create_subprocess_exec(
+                    executable,
+                    "-m",
+                    "web_search.pdf_worker",
+                    str(artifact_path),
+                    str(max_pages),
+                    str(remaining),
+                    stdin=asyncio.subprocess.DEVNULL,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.DEVNULL,
+                    env=environment,
+                )
+                stage = "running"
+                output, _ = await process.communicate()
+        except TimeoutError as error:
+            raise PdfExtractionError(
+                "timeout", f"PDF extraction timed out while {stage} worker."
+            ) from error
+        finally:
+            if process is not None and process.returncode is None:
+                with suppress(ProcessLookupError):
+                    process.kill()
+                await process.wait()
+        if process is None or process.returncode != 0:
+            raise PdfExtractionError("extraction_failed", "PDF extraction worker failed.")
+        try:
+            payload = json.loads(output)
+            if not payload["ok"]:
+                raise PdfExtractionError(payload["category"], payload["message"])
+            data = payload["extraction"]
+            return PdfExtraction(
+                title=data["title"],
+                metadata=data["metadata"],
+                outline=data["outline"],
+                blocks=[PdfBlock(**block) for block in data["blocks"]],
+                total_pages=data["total_pages"],
+                processed_pages=frozenset(data["processed_pages"]),
+                unprocessed_ranges=data["unprocessed_ranges"],
+                failures=data["failures"],
+                warnings=data["warnings"],
+            )
+        except (KeyError, TypeError, ValueError) as error:
+            raise PdfExtractionError(
+                "extraction_failed", "PDF extraction worker returned invalid data."
+            ) from error
+
+    async def _open_pdf(
         self,
         response: CapturedSource,
         arguments: dict[str, Any],
+        deadline: float,
     ) -> tuple[dict[str, Any], bool]:
         artifact_path: Path | None = None
         try:
@@ -1903,10 +1975,10 @@ class WebReadService:
             ) as artifact:
                 artifact.write(response.content)
                 artifact_path = Path(artifact.name)
-            extraction = extract_pdf(
+            extraction = await self._extract_pdf_in_worker(
                 artifact_path,
-                max_pages=arguments.get("max_pages", DEFAULT_MAX_PAGES),
-                deadline_seconds=self._timeout_seconds,
+                arguments.get("max_pages", DEFAULT_MAX_PAGES),
+                deadline,
             )
         except PdfExtractionError as error:
             if artifact_path is not None:
@@ -1917,6 +1989,7 @@ class WebReadService:
                     "open",
                     error.category,
                     str(error),
+                    retryable=error.category == "timeout",
                     capture_status="complete",
                     extraction_status=(
                         "unavailable" if error.category == "access_blocked" else "failed"

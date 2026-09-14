@@ -13,7 +13,11 @@ from pypdf.generic import (
 )
 
 
-def text_pdf(*pages: str, title: str = "Fixture PDF", outline: bool = False) -> bytes:
+def text_pdf(
+    *pages: str | list[tuple[str, int, int]],
+    title: str = "Fixture PDF",
+    outline: bool = False,
+) -> bytes:
     writer = PdfWriter()
     writer.add_metadata({"/Title": title, "/Author": "Contract fixture"})
     cid_info = DictionaryObject(
@@ -33,7 +37,8 @@ def text_pdf(*pages: str, title: str = "Fixture PDF", outline: bool = False) -> 
     )
     for page_number, page_text in enumerate(pages, start=1):
         page = writer.add_blank_page(width=612, height=792)
-        codepoints = list(dict.fromkeys(page_text))
+        fragments = [(page_text, 72, 720)] if isinstance(page_text, str) else page_text
+        codepoints = list(dict.fromkeys("".join(fragment for fragment, _, _ in fragments)))
         codes = {character: index for index, character in enumerate(codepoints, start=1)}
         mappings = "\n".join(
             f"<{code:04X}> <{ord(character):04X}>" for character, code in codes.items()
@@ -64,9 +69,12 @@ def text_pdf(*pages: str, title: str = "Fixture PDF", outline: bool = False) -> 
         page[NameObject("/Resources")] = DictionaryObject(
             {NameObject("/Font"): DictionaryObject({NameObject("/F1"): writer._add_object(font)})}
         )
-        encoded = "".join(f"{codes[character]:04X}" for character in page_text)
+        commands = []
+        for fragment, x, y in fragments:
+            encoded = "".join(f"{codes[character]:04X}" for character in fragment)
+            commands.append(f"BT /F1 12 Tf {x} {y} Td <{encoded}> Tj ET")
         content = DecodedStreamObject()
-        content.set_data(f"BT /F1 12 Tf 72 720 Td <{encoded}> Tj ET".encode("ascii"))
+        content.set_data("\n".join(commands).encode("ascii"))
         page[NameObject("/Contents")] = writer._add_object(content)
         if outline:
             writer.add_outline_item(f"Page {page_number}", page_number - 1)

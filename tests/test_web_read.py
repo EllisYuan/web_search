@@ -170,7 +170,11 @@ async def test_advance_pdf_page_creates_version_without_refetch_and_keeps_old_ve
 
 async def test_advance_validates_regions_and_commits_only_complete_targets() -> None:
     requests = 0
-    pdf = text_pdf("Initial page.", "Caption\nColumn A    Column B", "")
+    pdf = text_pdf(
+        "Initial page.",
+        [("Caption", 72, 740), ("Column A", 72, 720), ("Column B", 300, 720)],
+        "",
+    )
 
     def source(request: httpx.Request) -> httpx.Response:
         nonlocal requests
@@ -422,7 +426,7 @@ async def test_advance_timeout_does_not_publish_a_partial_version(
         source,
         api_key=None,
         url_policy=allow_public_url,
-        timeout_seconds=0.1,
+        timeout_seconds=1.0,
     ) as session:
         opened = await session.call_tool(
             "web_read", {"url": "https://example.org/timeout.pdf", "max_pages": 1}
@@ -432,7 +436,7 @@ async def test_advance_timeout_does_not_publish_a_partial_version(
         original_extract: Any = getattr(web_read_module, "extract_pdf_text")
 
         def delayed_extract(*args: Any, **kwargs: Any) -> Any:
-            threading.Event().wait(0.2)
+            threading.Event().wait(1.2)
             return original_extract(*args, **kwargs)
 
         monkeypatch.setattr(web_read_module, "extract_pdf_text", delayed_extract)
@@ -463,7 +467,7 @@ async def test_advance_timeout_does_not_publish_a_partial_version(
     assert timed_out.structuredContent["error"]["category"] == "timeout"
     assert timed_out.structuredContent["version"] == initial["version"]
     assert old_page.structuredContent is not None
-    assert old_page.structuredContent["content_markdown"] == "Committed page one."
+    assert old_page.structuredContent["content_markdown"] == ("## Page 1\n\nCommitted page one.")
     assert uncommitted.isError
 
 
@@ -524,7 +528,9 @@ async def test_cancelled_advance_keeps_the_committed_version(
         )
 
     assert old_page.structuredContent is not None
-    assert old_page.structuredContent["content_markdown"] == "Committed before cancellation."
+    assert old_page.structuredContent["content_markdown"] == (
+        "## Page 1\n\nCommitted before cancellation."
+    )
     assert uncommitted.isError
 
 
@@ -614,7 +620,7 @@ async def test_pdf_budgets_and_state_reads_keep_processing_and_output_separate()
             "next_action": "advance",
         }
     ]
-    assert "".join(chunks) == "First page evidence with a stable locator."
+    assert "".join(chunks) == "## Page 1\n\nFirst page evidence with a stable locator."
     assert page.structuredContent is not None
     assert block.structuredContent is not None
     assert page.structuredContent["content_markdown"] == "".join(chunks)
@@ -631,7 +637,15 @@ async def test_pdf_budgets_and_state_reads_keep_processing_and_output_separate()
 
 
 async def test_pdf_partial_text_layer_and_structure_warning_are_located() -> None:
-    pdf = text_pdf("", "Column A   Column B\nvalue 1   milliseconds")
+    pdf = text_pdf(
+        "",
+        [
+            ("Column A", 72, 720),
+            ("Column B", 300, 720),
+            ("value 1", 72, 700),
+            ("milliseconds", 300, 700),
+        ],
+    )
 
     def source(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
@@ -1202,7 +1216,7 @@ async def test_source_failures_are_safe_and_timeout_does_not_commit_partial_stat
         source,
         api_key=None,
         url_policy=allow_public_url,
-        timeout_seconds=0.01,
+        timeout_seconds=1.0,
     ) as session:
         timed_out = await session.call_tool("web_read", {"url": "https://example.org/slow"})
         denied = await session.call_tool("web_read", {"url": "https://example.org/denied"})
@@ -1267,6 +1281,93 @@ async def test_linked_footnote_is_kept_with_section_and_unreliable_table_is_disc
     assert body["content_markdown"].count("Unit: milliseconds.") == 1
     assert section.structuredContent is not None
     assert "Unit: milliseconds." in section.structuredContent["content_markdown"]
+
+
+async def test_pdf_plain_multiline_text_does_not_claim_structure_failure() -> None:
+    pdf = text_pdf("First paragraph.\nSecond paragraph.")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool("web_read", {"url": "https://example.org/plain.pdf"})
+
+    assert opened.structuredContent is not None
+    assert opened.structuredContent["extraction_status"] == "complete"
+    assert opened.structuredContent["warnings"] == []
+    assert "Second paragraph." in opened.structuredContent["content_markdown"]
+
+
+async def test_pdf_worker_obeys_shared_open_deadline_and_cleans_artifact(tmp_path: Path) -> None:
+    pdf = text_pdf("The native text must not outlive a timed-out open.")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        timeout_seconds=0.05,
+        artifact_directory=tmp_path,
+    ) as session:
+        result = await session.call_tool("web_read", {"url": "https://example.org/slow.pdf"})
+
+    assert result.isError
+    assert result.structuredContent is not None
+    assert result.structuredContent["error"]["category"] == "timeout"
+    assert result.structuredContent["capture_status"] == "complete"
+    assert list(tmp_path.glob("web-read-*.pdf")) == []
+
+
+async def test_pdf_without_text_layer_returns_failure_without_retaining_artifact(
+    tmp_path: Path,
+) -> None:
+    pdf = text_pdf("")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+    ) as session:
+        opened = await session.call_tool("web_read", {"url": "https://example.org/blank.pdf"})
+
+    assert opened.isError
+    assert opened.structuredContent is not None
+    assert opened.structuredContent["error"]["category"] == "extraction_failed"
+    assert opened.structuredContent["capture_status"] == "complete"
+    assert opened.structuredContent["extraction_status"] == "unavailable"
+    assert opened.structuredContent["failures"][0]["locator"] == {"page": 1}
+    assert list(tmp_path.glob("web-read-*.pdf")) == []
+
+
+async def test_pdf_read_id_does_not_survive_new_server_session() -> None:
+    requests = 0
+    pdf = text_pdf("short-lived state")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool("web_read", {"url": "https://example.org/state.pdf"})
+        assert opened.structuredContent is not None
+        read_id = opened.structuredContent["read_id"]
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        stale = await session.call_tool(
+            "web_read", {"action": "read", "read_id": read_id, "page": 1}
+        )
+
+    assert stale.isError
+    assert stale.structuredContent is not None
+    assert stale.structuredContent["error"]["category"] == "state_expired"
+    assert requests == 1
 
 
 async def test_acquisition_size_limit_and_gate_do_not_evict_existing_state() -> None:

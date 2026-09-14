@@ -301,7 +301,7 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
     assert body["capture_status"] == "complete"
     assert body["extraction_status"] == "partial"
     assert body["output_status"] == "truncated"
-    assert "".join(chunks) == "PDF fixture first page."
+    assert "".join(chunks) == "## Page 1\n\nPDF fixture first page."
     assert found.structuredContent is not None
     assert found.structuredContent["matches"][0]["page"] == 1
     assert unread.isError and unread.structuredContent is not None

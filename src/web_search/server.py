@@ -15,6 +15,7 @@ from mcp import types
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 
+from web_search.image import ImageProcessor
 from web_search.network import PinnedPublicTransport
 from web_search.tavily import search
 from web_search.web_read import (
@@ -117,6 +118,7 @@ def create_server(
     idle_ttl_seconds: float = 900.0,
     resource_gate: ResourceGate | None = None,
     artifact_directory: str | Path | None = None,
+    image_processor: ImageProcessor | None = None,
 ) -> Server[Any]:
     read_options: dict[str, Any] = {
         "timeout_seconds": timeout_seconds,
@@ -124,6 +126,7 @@ def create_server(
         "idle_ttl_seconds": idle_ttl_seconds,
         "resource_gate": resource_gate,
         "artifact_directory": artifact_directory,
+        "image_processor": image_processor,
     }
     if url_policy is not None:
         read_options["url_policy"] = url_policy

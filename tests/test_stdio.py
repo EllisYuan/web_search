@@ -192,6 +192,25 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
                     html = await session.call_tool(
                         "web_read", {"url": "https://example.org/source"}
                     )
+                    image = await session.call_tool(
+                        "web_read", {"url": "https://example.org/source.png"}
+                    )
+                    assert image.structuredContent is not None
+                    image_body = image.structuredContent
+                    image_asset = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "asset",
+                            "read_id": image_body["read_id"],
+                            "version": image_body["version"],
+                            "asset_type": "image",
+                            "asset_id": image_body["asset_id"],
+                        },
+                    )
+                    image_released = await session.call_tool(
+                        "web_read",
+                        {"action": "release", "read_id": image_body["read_id"]},
+                    )
                     pdf = await session.call_tool(
                         "web_read",
                         {
@@ -293,10 +312,18 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
         finally:
             errors.close()
         assert list(Path(artifact_temp).glob("*.pdf")) == []
+        assert list(Path(artifact_temp).glob("*.image")) == []
 
     assert not html.isError and html.structuredContent is not None
     assert "Search 后读取的原文" in html.structuredContent["content_markdown"]
     assert not pdf.isError
+    assert not image.isError
+    assert "AX-2026-0917" in image_body["content_markdown"]
+    assert image_body["processing"]["execution_providers"] == ["CPUExecutionProvider"]
+    assert not image_asset.isError
+    assert any(isinstance(part, ImageContent) for part in image_asset.content)
+    assert image_released.structuredContent is not None
+    assert image_released.structuredContent["released"] is True
     assert body["metadata"]["page_count"] == 3
     assert body["capture_status"] == "complete"
     assert body["extraction_status"] == "partial"

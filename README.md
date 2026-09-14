@@ -2,7 +2,7 @@
 
 为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-当前交付支持 static HTML，以及 born-digital text PDF 的有限 page extraction。PDF capture 可通过显式 `advance` 按 page / normalized region 追加处理，并通过 `asset` 取得已捕获 page crop；`read` / `find` 只读取指定 version 已完成的 extraction。`interact`、OCR 与 JavaScript rendering 仍是后续 v1 action。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+当前交付支持 static HTML、born-digital text PDF，以及独立 image URL 的 CPU-only OCR。PDF capture 可通过显式 `advance` 按 page / normalized region 追加处理并取得 page crop；image capture 可按 normalized region 追加 OCR 并取回原始 image。`read` / `find` 只读取指定 version 已完成的 extraction。`interact`、网页内 image OCR、scanned PDF OCR 与 JavaScript rendering 仍是后续 v1 action。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -64,7 +64,21 @@ uv sync --locked
 {"action":"asset","read_id":"...","version":"...","asset_type":"pdf_page_crop","page":7,"region":{"x":0,"y":0,"width":1,"height":0.5}}
 ```
 
-当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、`max_pages=100`、`max_regions=1000`、PDF crop 12,000,000 pixels / 5,000,000 bytes，默认 operation deadline 为 30 秒、最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。PDF 使用 native text layer，不执行 OCR；table / column reading order 不可靠时保留文字并返回 `structure_incomplete`，caller 可用 page crop 核对。
+独立 image `open` 会对整张 image 执行一个 region 的 OCR，返回 image metadata、每条原文的 `source_region` / `confidence`、空 `outline` 和实际 runtime/model metadata。caller 可显式追加最多 4 个 region；成功 region 原子建立新 `version`，失败 region 单独保留：
+
+```json
+{"action":"advance","read_id":"...","version":"...","targets":[{"region":{"x":0,"y":0,"width":1,"height":0.4}}],"max_regions":1}
+```
+
+原始 image 使用响应中的 opaque `asset_id` 取得，不会 refetch：
+
+```json
+{"action":"asset","read_id":"...","version":"...","asset_type":"image","asset_id":"..."}
+```
+
+OCR 固定使用 RapidOCR 3.x bundled PP-OCR models 与 ONNX Runtime `CPUExecutionProvider`，intra/inter threads 固定为 2/1；caller 不能选择 engine、model、execution provider 或 process concurrency。响应记录实际 package version、每个 session 的 provider、model source/SHA-256/license。RapidOCR 及 PP-OCR models 为 Apache-2.0，ONNX Runtime 为 MIT，Pillow 为 MIT-CMU。
+
+当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、`max_pages=100`、schema `max_regions=1000`、单次 image OCR 最多 4 regions、decoded image 12,000,000 pixels、PDF crop 12,000,000 pixels / 5,000,000 bytes，默认 operation deadline 为 30 秒、最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。PDF 使用 native text layer，不执行 OCR；table / column reading order 不可靠时保留文字并返回 `structure_incomplete`，caller 可用 page crop 或原始 image 核对。
 
 ## 调用与结果
 

@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+from pathlib import Path
 
 import httpx
 from pdf_fixture import text_pdf
@@ -23,6 +24,12 @@ def respond(request: httpx.Request) -> httpx.Response:
                     title="Inspector PDF",
                     outline=True,
                 ),
+            )
+        if request.url.path == "/source.png":
+            return httpx.Response(
+                200,
+                headers={"content-type": "image/png"},
+                content=(Path(__file__).parent / "fixtures" / "image-en.png").read_bytes(),
             )
         return httpx.Response(
             200,

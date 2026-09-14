@@ -426,7 +426,7 @@ async def test_advance_timeout_does_not_publish_a_partial_version(
         source,
         api_key=None,
         url_policy=allow_public_url,
-        timeout_seconds=1.0,
+        timeout_seconds=3.0,
     ) as session:
         opened = await session.call_tool(
             "web_read", {"url": "https://example.org/timeout.pdf", "max_pages": 1}
@@ -436,7 +436,7 @@ async def test_advance_timeout_does_not_publish_a_partial_version(
         original_extract: Any = getattr(web_read_module, "extract_pdf_text")
 
         def delayed_extract(*args: Any, **kwargs: Any) -> Any:
-            threading.Event().wait(1.2)
+            threading.Event().wait(3.2)
             return original_extract(*args, **kwargs)
 
         monkeypatch.setattr(web_read_module, "extract_pdf_text", delayed_extract)

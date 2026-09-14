@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "tavily-web-search-mcp"
 version = "0.1.0"
-description = "Search-only Tavily MCP server for local agents"
+description = "Composable Search and progressive Web Read MCP server for local agents"
 requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
@@ -14,6 +14,9 @@ dependencies = [
     "jsonschema>=4.25.1,<5",
     "mcp>=1.28,<2",
     "pypdfium2>=5.1,<6",
+    "rapidocr==3.9.2",
+    "onnxruntime>=1.29,<2",
+    "pillow>=12.3,<13",
 ]
 
 [project.scripts]

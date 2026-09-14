@@ -1,6 +1,6 @@
 # #14 Windows MCP smoke
 
-2026-09-13 在 Windows CPU-only 环境完成 Search Batch 切片验证。需求来源为 [#14](https://github.com/EllisYuan/web_search/issues/14)，完整 client 输出见 [issue14-smoke.json](issue14-smoke.json)。#13 的单 query 记录见 [issue13-windows-smoke.md](issue13-windows-smoke.md)。
+2026-09-13 在 Windows CPU-only 环境完成 Search Batch 切片验证。本文记录 #14 当时的观测；`tests/inspector_smoke.py` 之后在 [#15](https://github.com/EllisYuan/web_search/issues/15) 扩展为限流、额度与 timeout 场景，并改用 `tests/fixture_http_stdio_server.py`，重跑脚本会得到 [#15 的记录](issue15-windows-smoke.md)，不再复现下表。需求来源为 [#14](https://github.com/EllisYuan/web_search/issues/14)，完整 client 输出见 [issue14-smoke.json](issue14-smoke.json)。#13 的单 query 记录见 [issue13-windows-smoke.md](issue13-windows-smoke.md)。
 
 目标 MCP client 是 MCP Inspector CLI 2.6.0，runtime 为 Node.js 24.11.1；server 使用 Python 3.12.4 和 MCP Python SDK 1.30.0，transport 为真实 subprocess `stdio`。这是独立 Node MCP client 与 Python server 的实际连接验证。
 
@@ -23,7 +23,7 @@ client 使用临时 `mcpServers` 配置文件，在 `env.TAVILY_API_KEY` 传入 
 
 ```powershell
 npm install --prefix .scratch/issue13-inspector --no-save --ignore-scripts --package-lock=false --registry https://registry.npmjs.org --cache .scratch/issue13-npm-cache @modelcontextprotocol/inspector@2.6.0
-.venv\Scripts\python tests/inspector_smoke.py --inspector-package .scratch/issue13-inspector/node_modules/@modelcontextprotocol/inspector --output docs/testing/issue14-smoke.json
+.venv\Scripts\python tests/inspector_smoke.py --inspector-package .scratch/issue13-inspector/node_modules/@modelcontextprotocol/inspector --output .scratch/issue14-smoke.json
 ```
 
 脚本逐场景执行 `--method tools/list` 或 `tools/call`，通过 `--config` 提供临时 server 配置，通过 `--tool-args-json` 提交 batch 输入，并验证响应、text/structured 一致性、退出状态与凭据隔离。参考 [Inspector CLI 官方说明](https://github.com/modelcontextprotocol/inspector/blob/main/clients/cli/README.md)。

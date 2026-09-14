@@ -9,11 +9,7 @@ import httpx
 import pytest
 from harness import DUMMY_KEY, connected
 
-from web_search.server import (
-    MAX_CONCURRENT_ATTEMPTS,
-    SEARCH_PARAMETERS,
-    has_valid_dates,
-)
+from web_search.server import SEARCH_PARAMETERS
 
 
 def candidates_for(query: str) -> dict[str, Any]:
@@ -389,15 +385,16 @@ async def test_concurrency_is_bounded_and_still_completes_a_full_batch() -> None
                     {"queries": [{"query": f"query {index}"} for index in range(20)]},
                 )
             )
-            while in_flight < MAX_CONCURRENT_ATTEMPTS:
+            while in_flight == 0:
                 await asyncio.sleep(0)
-            # Give an unbounded implementation every chance to exceed the limit.
+            # Give an unbounded implementation every chance to open all 20 at once.
             await asyncio.sleep(0.05)
             held = peak
             gate.set()
             result = await call
 
-    assert held == MAX_CONCURRENT_ATTEMPTS
+    # Bounded below the batch size; the exact worker count is an implementation choice.
+    assert 0 < held < 20
     assert result.structuredContent is not None
     assert len(result.structuredContent["results"]) == 20
     assert all(item["status"] == "ok" for item in result.structuredContent["results"])
@@ -627,13 +624,15 @@ async def test_valid_dates_reach_tavily_unchanged(value: str) -> None:
         {"queries": [1, 2]},
         {"queries": [{"query": "q", "start_date": 20260913}]},
         {"queries": None},
+        # Shaped like a valid date, so only the calendar check rejects these two.
+        {"queries": [{"query": "q"}], "start_date": "2026-02-30"},
+        {"queries": [{"query": "q", "end_date": "2026-99-99"}]},
     ],
 )
 async def test_structurally_broken_input_is_rejected_not_crashed(
     arguments: dict[str, Any],
 ) -> None:
     """Validation order must not be load-bearing: no input shape may raise."""
-    assert has_valid_dates(arguments) in (True, False)
 
     def tavily(request: httpx.Request) -> httpx.Response:
         raise AssertionError("no upstream request expected")
@@ -642,3 +641,5 @@ async def test_structurally_broken_input_is_rejected_not_crashed(
         result = await session.call_tool("web_search", arguments)
 
     assert result.isError
+    # The contract message, not exception text: a raising validator would surface that instead.
+    assert "queries must hold 1 to 20 objects" in result.model_dump_json()

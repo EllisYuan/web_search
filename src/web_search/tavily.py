@@ -106,7 +106,9 @@ async def _attempt(
 ) -> dict[str, Any]:
     query = body["query"]
     try:
-        # HTTPX timeouts cover phases; this deadline also bounds the entire attempt.
+        # HTTPX timeouts cover phases; this deadline bounds the whole wait for the response,
+        # including a body that trickles in. Parsing below is CPU-bound, which no asyncio
+        # deadline can interrupt, but its input is already bounded by this wait.
         async with asyncio.timeout(timeout_seconds):
             response = await http.post(
                 "https://api.tavily.com/search",

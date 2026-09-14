@@ -9,6 +9,17 @@ from web_search.server import read_api_key, serve
 
 
 def respond(request: httpx.Request) -> httpx.Response:
+    if request.method == "GET":
+        assert str(request.url).startswith("https://example.org/source")
+        return httpx.Response(
+            200,
+            headers={"content-type": "text/html"},
+            text=(
+                "<html lang='zh-CN'><head><title>读取 fixture</title></head>"
+                "<body><main><h1>证据</h1><p>Search 后读取的原文。</p>"
+                "<h2>Details</h2><p>Deterministic finding.</p></main></body></html>"
+            ),
+        )
     assert request.method == "POST"
     assert str(request.url) == "https://api.tavily.com/search"
     body = json.loads(request.content)
@@ -35,5 +46,15 @@ def respond(request: httpx.Request) -> httpx.Response:
     )
 
 
+async def allow_fixture_url(url: str) -> bool:
+    return url.startswith("https://example.org/source")
+
+
 if __name__ == "__main__":
-    asyncio.run(serve(read_api_key(), transport=httpx.MockTransport(respond)))
+    asyncio.run(
+        serve(
+            read_api_key(),
+            transport=httpx.MockTransport(respond),
+            url_policy=allow_fixture_url,
+        )
+    )

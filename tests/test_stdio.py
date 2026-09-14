@@ -21,7 +21,7 @@ async def test_real_stdio_discovery_and_mixed_batch() -> None:
             async with ClientSession(read, write) as session:
                 await session.initialize()
                 tools = await session.list_tools()
-                assert [tool.name for tool in tools.tools] == ["web_search"]
+                assert [tool.name for tool in tools.tools] == ["web_search", "web_read"]
                 ok = await session.call_tool("web_search", {"queries": [{"query": "中文 MCP"}]})
                 denied = await session.call_tool(
                     "web_search",
@@ -37,6 +37,33 @@ async def test_real_stdio_discovery_and_mixed_batch() -> None:
                             {"query": "batch advanced", "search_depth": "advanced"},
                         ],
                     },
+                )
+                assert ok.structuredContent is not None
+                candidate_url = ok.structuredContent["results"][0]["candidates"][0]["url"]
+                opened = await session.call_tool(
+                    "web_read", {"url": candidate_url, "max_output_chars": 20}
+                )
+                assert opened.structuredContent is not None
+                continued = await session.call_tool(
+                    "web_read",
+                    {
+                        "action": "read",
+                        "read_id": opened.structuredContent["read_id"],
+                        "cursor": opened.structuredContent["next_cursor"],
+                        "max_output_chars": 20,
+                    },
+                )
+                found = await session.call_tool(
+                    "web_read",
+                    {
+                        "action": "find",
+                        "read_id": opened.structuredContent["read_id"],
+                        "query": "FINDING",
+                    },
+                )
+                released = await session.call_tool(
+                    "web_read",
+                    {"action": "release", "read_id": opened.structuredContent["read_id"]},
                 )
         errors.seek(0)
         stderr = errors.read()
@@ -70,6 +97,16 @@ async def test_real_stdio_discovery_and_mixed_batch() -> None:
     assert [item["status"] for item in items] == ["ok", "error", "ok"]
     assert items[0]["candidates"][0]["url"].endswith("depth=basic")
     assert items[2]["candidates"][0]["url"].endswith("depth=advanced")
+
+    assert not opened.isError and not continued.isError and not found.isError
+    assert opened.structuredContent is not None
+    assert opened.structuredContent["output_status"] == "truncated"
+    assert continued.structuredContent is not None
+    assert continued.structuredContent["content_markdown"]
+    assert found.structuredContent is not None
+    assert found.structuredContent["matches"][0]["text"] == "finding"
+    assert released.structuredContent is not None
+    assert released.structuredContent["released"] is True
 
     for result in (ok, denied, mixed):
         assert not result.isError

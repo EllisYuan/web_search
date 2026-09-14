@@ -1,8 +1,8 @@
-# Tavily web_search MCP
+# Web Search and Read MCP
 
-为本机 agent 提供 Search-only MCP tool。已实现 [#12 Search spec](https://github.com/EllisYuan/web_search/issues/12) 的三个实施切片（#13、#14、[#15](https://github.com/EllisYuan/web_search/issues/15)）：`web_search` 接受含 1–20 项的 `queries`，支持 batch 级与逐 query 的 Search 参数，返回候选 Source URL 与 Tavily SERP metadata，并在限流、额度限制、网络失败或慢请求下保留逐项结果。
+为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-提供可解释的错误分类与有效 `Retry-After` 等待提示，不自动 retry。`web_read` 与 Deep Research 综合不在本次实现内。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+[#17](https://github.com/EllisYuan/web_search/issues/17) 交付 static HTML vertical slice：`open`、`read`、`find`、`release`、短期 process-local state、固定 cursor、三条完整性 status、URL public boundary 与有界 acquisition。`advance`、`interact`、`asset` 仍是后续 v1 action，当前调用会明确返回 error，不会伪装成功。Deep Research 的 planning 与 synthesis 仍由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -16,7 +16,7 @@ uv sync --locked
 
 本机 transport 为 `stdio`：MCP client 启动进程，并通过 stdin/stdout 进行 MCP 通信。启动命令为 `.venv\Scripts\python.exe -m web_search`，也可执行安装生成的 `web-search-mcp`。stdout 专用于协议数据。
 
-在 MCP client 的 server 配置中设置 `TAVILY_API_KEY`。以下是通用配置示例，将路径换成实际仓库位置，在本地填入 key：
+`web_read` 不依赖 Tavily。未设置或设置为空白的 `TAVILY_API_KEY` 时，server 正常启动且 discovery 只返回 `web_read`；设置非空 key 时，启动即固定注册 `web_search` 与 `web_read`。以下是同时启用两个 tool 的通用配置示例：
 
 ```json
 {
@@ -32,11 +32,29 @@ uv sync --locked
 }
 ```
 
-`TAVILY_API_KEY` 是约定的环境变量名，由 client 启动 server 时传入；agent 每次只提交 Search 输入。使用绝对 interpreter 路径即可从其他 working directory 启动。配置可保存在被 Git 忽略的 `.mcp.local.json` 中，再按 client 的方式加载。server 不自动读取 `.env`，不提供设置页面或费用管理。缺少 key、空值或纯空白值会以 exit code 2 立即退出；启动不调用 Tavily，也不探测 key 是否有效。真实用量与费用由部署者管理。
+`TAVILY_API_KEY` 是可选的 Search 配置，由 client 启动 server 时传入，不是 tool 参数。使用绝对 interpreter 路径即可从其他 working directory 启动。配置可保存在被 Git 忽略的 `.mcp.local.json` 中，再按 client 的方式加载。server 不自动读取 `.env`，不提供设置页面或费用管理；启动不调用 Tavily，也不探测 key 是否有效。真实 Search 用量与费用由部署者管理。
+
+## Web Read
+
+`open` 可省略 `action`。caller 必须显式提供选中的公开 HTTP(S) URL；Search 不会自动读取 candidates：
+
+```json
+{"url": "https://example.org/article", "max_output_chars": 12000}
+```
+
+首次读取返回 `read_id`、固定 `version`、`metadata`、可得的 `outline`、结构化 `content_markdown`、block/section locators、processing path，以及互相独立的 `capture_status`、`extraction_status`、`output_status`。若 output 被截断，使用相同 `read_id`、`version`、`next_cursor` 和 `max_output_chars` 继续：
+
+```json
+{"action": "read", "read_id": "...", "version": "...", "cursor": "...", "max_output_chars": 12000}
+```
+
+也可用响应中的 opaque `section_id` / `block_id` 发起新的 selection。`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。
+
+当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、`max_pages=100`、`max_regions=1000`，默认 acquisition deadline 为 30 秒、最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。当前只实现 static `text/html` / `application/xhtml+xml`，不进行 browser rendering、PDF processing 或 OCR。
 
 ## 调用与结果
 
-discovery 只提供 `web_search`。一次调用提交一个 Search Batch：
+配置非空 Tavily key 时 discovery 同时提供 `web_search` 和 `web_read`。一次 Search 调用提交一个 Search Batch：
 
 ```json
 {

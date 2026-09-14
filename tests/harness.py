@@ -22,7 +22,9 @@ Handler = (
 async def connected(
     handler: Handler | httpx.AsyncBaseTransport,
     *,
+    api_key: str | None = DUMMY_KEY,
     timeout_seconds: float | None = None,
+    **server_options: Any,
 ) -> AsyncIterator[ClientSession]:
     transport = (
         handler if isinstance(handler, httpx.AsyncBaseTransport) else httpx.MockTransport(handler)
@@ -31,6 +33,6 @@ async def connected(
         options: dict[str, Any] = {}
         if timeout_seconds is not None:
             options["timeout_seconds"] = timeout_seconds
-        server = create_server(api_key=DUMMY_KEY, http=http, **options)
+        server = create_server(api_key=api_key, http=http, **options, **server_options)
         async with create_connected_server_and_client_session(server) as session:
             yield session

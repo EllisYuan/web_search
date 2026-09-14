@@ -29,7 +29,7 @@ async def test_discovery_and_single_query_search() -> None:
 
     async with connected(tavily) as session:
         discovery = await session.list_tools()
-        assert [tool.name for tool in discovery.tools] == ["web_search"]
+        assert [tool.name for tool in discovery.tools] == ["web_search", "web_read"]
         tool = discovery.tools[0]
         assert tool.description and "Tavily" in tool.description
         schema: dict[str, Any] = tool.inputSchema

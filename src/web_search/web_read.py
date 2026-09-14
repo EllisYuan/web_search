@@ -534,6 +534,25 @@ def with_browser_warnings(document: ExtractedDocument, rendered: RenderedPage) -
     )
 
 
+def with_browser_failure_warning(
+    document: ExtractedDocument, url: str, error: BrowserFailure
+) -> ExtractedDocument:
+    warning = {
+        "kind": "browser_render_failed",
+        "message": f"Browser rendering failed ({error.category}); static content was preserved.",
+        "locator": {"url": url},
+        "next_action": "read",
+    }
+    return ExtractedDocument(
+        document.title,
+        document.language,
+        document.description,
+        document.blocks,
+        document.outline,
+        [*document.warnings, warning],
+    )
+
+
 def requires_browser(html: str, document: ExtractedDocument) -> bool:
     lowered = html.casefold()
     if "<script" not in lowered:
@@ -1508,6 +1527,8 @@ class WebReadService:
             )
         browser: BrowserSession | None = None
         rendered: RenderedPage | None = None
+        browser_failed = False
+        static_document = document
         if requires_browser(response.text, document):
             remaining = deadline - asyncio.get_running_loop().time()
             if remaining <= 0:
@@ -1521,25 +1542,61 @@ class WebReadService:
             browser = self._browser_factory(self._url_policy, remaining)
             try:
                 rendered = await browser.open(url)
-                document = with_browser_warnings(extract_html(rendered.html), rendered)
+                rendered_document = with_browser_warnings(extract_html(rendered.html), rendered)
             except BrowserFailure as error:
-                return error_result(
-                    "open",
-                    error.category,
-                    str(error),
-                    retryable=error.category == "timeout",
-                    capture_status="complete",
-                    extraction_status="failed",
-                ), True
-            if not document.blocks:
                 await browser.close()
-                return error_result(
-                    "open",
-                    "extraction_failed",
-                    "Rendered DOM contained no extractable content.",
-                    capture_status="complete",
-                    extraction_status="failed",
-                ), True
+                browser = None
+                rendered = None
+                if not document.blocks:
+                    return error_result(
+                        "open",
+                        error.category,
+                        str(error),
+                        retryable=error.category == "timeout",
+                        capture_status="complete",
+                        extraction_status="failed",
+                    ), True
+                document = with_browser_failure_warning(document, response.url, error)
+                browser_failed = True
+            except Exception:
+                await browser.close()
+                browser = None
+                rendered = None
+                if not document.blocks:
+                    return error_result(
+                        "open",
+                        "extraction_failed",
+                        "Rendered DOM extraction failed.",
+                        capture_status="complete",
+                        extraction_status="failed",
+                    ), True
+                document = with_browser_failure_warning(
+                    document,
+                    response.url,
+                    BrowserFailure("extraction_failed", "Rendered DOM extraction failed."),
+                )
+                browser_failed = True
+            else:
+                document = rendered_document
+            if rendered is not None and not document.blocks:
+                assert browser is not None
+                await browser.close()
+                browser = None
+                if not static_document.blocks:
+                    return error_result(
+                        "open",
+                        "extraction_failed",
+                        "Rendered DOM contained no extractable content.",
+                        capture_status="complete",
+                        extraction_status="failed",
+                    ), True
+                rendered = None
+                document = with_browser_failure_warning(
+                    static_document,
+                    response.url,
+                    BrowserFailure("extraction_failed", "Rendered DOM had no readable content."),
+                )
+                browser_failed = True
         elif not document.blocks:
             return error_result(
                 "open",
@@ -1590,7 +1647,11 @@ class WebReadService:
                     "path": (
                         ["http_fetch", "browser_render", "rendered_dom_extract"]
                         if rendered is not None
-                        else ["http_fetch", "html_parse", "text_extract"]
+                        else (
+                            ["http_fetch", "html_parse", "text_extract", "browser_render_failed"]
+                            if browser_failed
+                            else ["http_fetch", "html_parse", "text_extract"]
+                        )
                     ),
                     "browser_rendered": rendered is not None,
                     "ocr_used": False,

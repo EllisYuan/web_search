@@ -497,6 +497,16 @@ async def test_browser_partial_and_full_failures_are_disclosed() -> None:
             text="<div id='app'></div><script></script>",
         )
 
+    def static_shell(_: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            headers={"content-type": "text/html"},
+            text=(
+                "<article><h1>Reliable article</h1><p>Preserved static evidence.</p></article>"
+                "<script>analytics()</script>"
+            ),
+        )
+
     from harness import connected
 
     async with connected(
@@ -517,6 +527,15 @@ async def test_browser_partial_and_full_failures_are_disclosed() -> None:
         ),
     ) as session:
         failed = await session.call_tool("web_read", {"url": "https://example.org/fail"})
+    async with connected(
+        static_shell,
+        api_key=None,
+        url_policy=allow_fixture_url,
+        browser_factory=lambda policy, timeout: InjectedBrowser(
+            policy, timeout, fail_open="timeout"
+        ),
+    ) as session:
+        fallback = await session.call_tool("web_read", {"url": "https://example.org/article"})
 
     assert partial.structuredContent is not None
     assert partial.structuredContent["status"] == "partial"
@@ -525,6 +544,13 @@ async def test_browser_partial_and_full_failures_are_disclosed() -> None:
     assert failed.isError
     assert failed.structuredContent is not None
     assert failed.structuredContent["error"]["category"] == "timeout"
+    assert not fallback.isError
+    assert fallback.structuredContent is not None
+    assert fallback.structuredContent["status"] == "partial"
+    assert "Preserved static evidence" in fallback.structuredContent["content_markdown"]
+    assert fallback.structuredContent["locators"]
+    assert fallback.structuredContent["warnings"][0]["kind"] == "browser_render_failed"
+    assert fallback.structuredContent["processing"]["browser_rendered"] is False
 
 
 async def test_cancelled_interaction_invalidates_browser_and_preserves_artifact() -> None:

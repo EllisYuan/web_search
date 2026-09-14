@@ -14,6 +14,7 @@ dependencies = [
     "jsonschema>=4.25.1,<5",
     "mcp>=1.28,<2",
     "pypdfium2>=5.1,<6",
+    "playwright>=1.55,<2",
 ]
 
 [project.scripts]
@@ -38,6 +39,11 @@ only-include = ["src/web_search", "tests", "docs/testing", "README.md", "LICENSE
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+filterwarnings = [
+    # Playwright 1.62 leaves closed Proactor pipe wrappers for Python GC on Windows.
+    "ignore:Exception ignored in.*BaseSubprocessTransport.*:pytest.PytestUnraisableExceptionWarning",
+    "ignore:Exception ignored in.*_ProactorBasePipeTransport.*:pytest.PytestUnraisableExceptionWarning",
+]
 
 [tool.mypy]
 python_version = "3.12"

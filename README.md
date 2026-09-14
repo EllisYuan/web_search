@@ -2,7 +2,7 @@
 
 为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-[#18](https://github.com/EllisYuan/web_search/issues/18) 完成第一阶段 vertical slice：static HTML 与 born-digital text PDF 支持 `open`、`read`、`find`、`release`、短期 process-local state、固定 cursor、三条完整性 status、URL public boundary 与有界 acquisition/extraction。PDF 只读取原有 text layer，不执行 OCR。`advance`、`interact`、`asset` 仍是后续 v1 action，当前调用会明确返回 error。Deep Research 的 planning 与 synthesis 仍由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+当前 Web Read vertical slice 支持 static HTML、需要 JavaScript 的页面和 born-digital text PDF。三类内容都支持 `open`、`read`、`find`、`release`、短期 process-local state、固定 cursor 与独立完整性 status；JavaScript 页面还支持 caller 显式选择 `expand`、`select_tab`、`load_more` 和有界 `scroll`。PDF 只读取原有 text layer，不执行 OCR；`advance` 与 `asset` 仍是保留 action。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -10,9 +10,10 @@
 
 ```powershell
 uv sync --locked
+uv run playwright install chromium
 ```
 
-`uv.lock` 固定完整 dependency 版本。当前验证环境使用 Python 3.12.4、MCP Python SDK 1.30.0、HTTPX 0.28.1、HTTP Core 1.0.9、jsonschema 4.26.0、pytest 9.1.1、pytest-asyncio 1.4.0、mypy 1.20.2 和 Ruff 0.16.7。选择 Python 是为了沿用本机已有 runtime；使用 SDK 的 low-level Server 公开精确 JSON Schema，通过 HTTPX 直接调用 Tavily，不引入 Tavily SDK 的额外行为。MCP SDK 固定在仍维护的 1.x 系列，升级 major version 需重新验证。
+`uv.lock` 固定完整 dependency 版本，Playwright 另外要求安装与该版本匹配的 Chromium binary。当前验证环境使用 Python 3.12.4、MCP Python SDK 1.30.0、Playwright 1.62.0、HTTPX 0.28.1、HTTP Core 1.0.9、jsonschema 4.26.0、pytest 9.1.1、pytest-asyncio 1.4.0、mypy 1.20.2 和 Ruff 0.16.7。选择 Python 是为了沿用本机已有 runtime；使用 SDK 的 low-level Server 公开精确 JSON Schema，通过 HTTPX 直接调用 Tavily，不引入 Tavily SDK 的额外行为。MCP SDK 固定在仍维护的 1.x 系列，升级 major version 需重新验证。
 
 本机 transport 为 `stdio`：MCP client 启动进程，并通过 stdin/stdout 进行 MCP 通信。启动命令为 `.venv\Scripts\python.exe -m web_search`，也可执行安装生成的 `web-search-mcp`。stdout 专用于协议数据。
 
@@ -62,7 +63,15 @@ PDF `open` 的 `max_pages` 默认 10、最大 100，只限制本次 native text 
 
 `find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。PDF capture artifact 会随 release、idle expiry 或 process shutdown 清理，restart 后旧 handle 不恢复。
 
-当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、每次 PDF processing 100 pages、captured PDF 10,000 pages、单页 native text 1,000,000 chars、整份 extracted text 2,000,000 chars，以及保留的 `max_regions=1000`；默认 `open` deadline 为 30 秒，HTTP acquisition 与 PDF extraction 共用该 deadline，超时会终止隔离的 PDF worker，最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。第一阶段只实现 static `text/html` / `application/xhtml+xml` 与 text PDF，不进行 browser rendering、rasterization 或 OCR，也不宣称覆盖 mixed/scanned PDF 的未读 page。
+静态抽取只得到可识别的 JavaScript shell 或 loading placeholder 时，`open` 在同一 deadline 内启动隔离 Chromium context，并从 rendered DOM 抽取正文。响应以 `processing.browser_rendered=true` 披露该路径，并返回可操作元素的 opaque `target_id`、描述、operation 与可用 value。interaction 必须携带返回 target 时的当前 `version`：
+
+```json
+{"action":"interact","read_id":"...","version":"...","target_id":"...","operation":"select_tab","operation_value":"Evidence"}
+```
+
+成功 interaction 返回本次新增正文、`previous_version`、实际 `version`、`version_changed` 和新页面上的 targets。若 DOM 改变但没有新增正文，`content_markdown` 为空；若 DOM 未改变，version 保持不变。每个 read 最多保留 16 个 browser version，达到上限后停止 interaction；旧 version、locator 和 cursor 在 state TTL 内仍绑定旧 artifact。`read`、`find` 与 cursor 不会触发 navigation、render 或 interaction。target、operation/value 或 version 不匹配会明确失败；target 消失和 browser session 失效分别返回 `not_found` 与 `browser_state_invalid`。
+
+当前 hard limits 为每次 output 100,000 chars、HTTP acquisition 和 rendered DOM 各 2,000,000 bytes、每个 browser session 100 次 request、5 个 viewport scroll step、16 个保留 version、单 browser page、最多 2 个 renderer process 与 256 MiB V8 old-space；每次 PDF processing 100 pages、captured PDF 10,000 pages、单页 native text 1,000,000 chars、整份 extracted text 2,000,000 chars，以及保留的 `max_regions=1000`。默认 `open` deadline 为 30 秒，HTTP acquisition 与后续 browser/PDF extraction 共用该 deadline，interaction 也有 deadline；最多 5 次 HTTP redirect。初始 URL、redirect 与 browser request 都检查 scheme、userinfo、DNS/IP public boundary；browser 不继承 cookies/credentials、阻止 service worker、download、popup navigation、font/media/WebSocket 和 interaction 导航，不会自动 click 或 scroll，也不会绕过登录、paywall、CAPTCHA 或访问控制。PDF rasterization、OCR、mixed/scanned PDF 的未读 page 仍未实现。
 
 ## 调用与结果
 
@@ -204,5 +213,7 @@ HTTP 400 的 `message` 提示检查参数值及组合；401 提示检查 MCP cli
 日常迭代运行单文件，例如 `python -m pytest tests/test_search_failures.py`。主要 tests 通过真实 MCP session 做 discovery/tool calls，仅在 Tavily HTTP transport 边界提供 fixtures，并对收到的 body 断言参数继承与覆盖。错误矩阵与固定时钟测试使用 MockTransport；连接释放、持续 trickle、timeout 排队与恢复测试使用真实 loopback HTTP service，并在同一 session / HTTP client 尚未关闭时观察断连及后续 Search。另有启动 subprocess 和真实 `stdio` subprocess 测试。新增恢复测试不依赖内部 worker 数；dummy key、固定响应、缩短的内部测试期限均与真实 Tavily 账户隔离。
 
 Windows 目标 client 为 MCP Inspector CLI 2.6.0（独立 Node client），transport 为真实 subprocess `stdio`。最新 [#15 Windows smoke 与父 spec 验收矩阵](docs/testing/issue15-windows-smoke.md) 覆盖最终 discovery、正常 batch、partial、全部失败、rate limit 和 timeout 展示，完整输出见 [issue15-smoke.json](docs/testing/issue15-smoke.json)。历史 [#13 单 query smoke](docs/testing/issue13-windows-smoke.md)、[#14 batch smoke](docs/testing/issue14-windows-smoke.md) 保留原证据。三者都是 contract smoke，不是 live Tavily Search；[#11 的历史 live evidence](https://github.com/EllisYuan/web_search/issues/11#issuecomment-5652708001) 单独记录，不因本次实施关闭或改变结论。
+
+[#20 Windows browser stdio smoke](docs/testing/issue20-windows-smoke.md) 使用真实 Chromium、真实 subprocess stdio MCP session 和 loopback JavaScript fixture，覆盖 rendered DOM 与显式 interaction；它不代表任意公开网站的兼容率。
 
 实现参考：[MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk/tree/v1.x)、[HTTPX timeout](https://www.python-httpx.org/advanced/timeouts/)、[HTTPX transport fixtures](https://www.python-httpx.org/advanced/transports/)。

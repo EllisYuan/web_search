@@ -29,6 +29,6 @@ uv run ruff format --check src tests --no-cache
 uv run pytest -q -p no:cacheprovider
 ```
 
-最终结果：mypy strict、Ruff check / format check 全部通过，**171 tests passed**（9.60s），无 skip。
+最终结果：mypy strict、Ruff check / format check 全部通过，**171 tests passed**（10.18s），无 skip。
 
 本记录只验收 #17 的 static HTML vertical slice，不宣称 JavaScript rendering、PDF、OCR、`advance`、`interact` 或 `asset` 已实现，也不构成 extraction quality 或 latency SLA。

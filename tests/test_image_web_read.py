@@ -163,6 +163,10 @@ async def test_image_open_read_find_asset_and_cleanup_use_captured_bytes(tmp_pat
         assert asset.structuredContent is not None
         assert asset.structuredContent["asset_id"] == body["asset_id"]
         assert asset.structuredContent["version"] == body["version"]
+        assert asset.structuredContent["locator"] == {
+            "asset_id": body["asset_id"],
+            "source_region": FULL_REGION,
+        }
         images = [part for part in asset.content if part.type == "image"]
         assert len(images) == 1
         assert base64.b64decode(images[0].data) == PNG_BYTES
@@ -253,6 +257,25 @@ async def test_image_advance_regions_builds_atomic_version_and_preserves_old_ver
                 "max_regions": 1,
             },
         )
+        server_limited = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": old["read_id"],
+                "targets": [
+                    {
+                        "region": {
+                            "x": index / 10,
+                            "y": 0.0,
+                            "width": 0.05,
+                            "height": 0.05,
+                        }
+                    }
+                    for index in range(5)
+                ],
+                "max_regions": 5,
+            },
+        )
         old_cursor = await session.call_tool(
             "web_read",
             {
@@ -290,6 +313,9 @@ async def test_image_advance_regions_builds_atomic_version_and_preserves_old_ver
     assert invalid.isError
     assert invalid.structuredContent is not None
     assert invalid.structuredContent["error"]["category"] == "invalid_request"
+    assert server_limited.isError
+    assert server_limited.structuredContent is not None
+    assert server_limited.structuredContent["error"]["category"] == "invalid_request"
     assert not old_cursor.isError
     assert old_cursor.structuredContent is not None
     assert old_cursor.structuredContent["version"] == old["version"]
@@ -337,6 +363,82 @@ async def test_real_cpu_ocr_reads_controlled_english_and_chinese_images(
         assert all(item["license"] == "Apache-2.0" for item in body["processing"]["models"])
 
 
+async def test_real_cpu_ocr_discloses_columns_low_resolution_and_rotation(
+    tmp_path: Path,
+) -> None:
+    cases = [
+        ("columns-en.png", ["Left A: 101", "Right B: 202"]),
+        ("lowres-en.png", ["AX-2026-0917", "12345.67"]),
+        ("rotated-zh.png", ["京东20260917", "兰花"]),
+    ]
+    for filename, references in cases:
+        payload = (Path(__file__).parent / "fixtures" / filename).read_bytes()
+
+        def source(request: httpx.Request, data: bytes = payload) -> httpx.Response:
+            return httpx.Response(200, headers={"content-type": "image/png"}, content=data)
+
+        async with connected(
+            source,
+            api_key=None,
+            url_policy=allow_public_url,
+            artifact_directory=tmp_path,
+            timeout_seconds=30,
+        ) as session:
+            opened = await session.call_tool(
+                "web_read", {"url": f"https://example.org/{filename}"}
+            )
+
+        assert not opened.isError, opened.model_dump_json()
+        assert opened.structuredContent is not None
+        body = opened.structuredContent
+        assert all(reference in body["content_markdown"] for reference in references)
+        assert body["status"] == "partial"
+        assert body["extraction_status"] == "partial"
+        assert any(warning["kind"] == "structure_incomplete" for warning in body["warnings"])
+        assert "|" not in body["content_markdown"]
+
+
+async def test_real_cpu_ocr_isolates_too_small_region_failure(
+    tmp_path: Path,
+) -> None:
+    payload = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
+    valid = {"x": 0.0, "y": 0.0, "width": 1.0, "height": 0.5}
+    too_small = {"x": 0.9, "y": 0.9, "width": 1e-12, "height": 1e-12}
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "image/png"}, content=payload)
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        timeout_seconds=30,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/region-failure.png"}
+        )
+        assert opened.structuredContent is not None
+        advanced = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": opened.structuredContent["read_id"],
+                "version": opened.structuredContent["version"],
+                "targets": [{"region": valid}, {"region": too_small}],
+                "max_regions": 2,
+            },
+        )
+
+    assert not advanced.isError
+    assert advanced.structuredContent is not None
+    body = advanced.structuredContent
+    assert body["processed_targets"] == [{"region": valid}]
+    assert "AX-2026-0917" in body["content_markdown"]
+    assert body["failures"][-1]["locator"] == {"region": too_small}
+    assert body["unprocessed_ranges"][-1]["locator"] == {"region": too_small}
+
+
 async def test_image_decode_failure_does_not_publish_state_or_leave_artifact(
     tmp_path: Path,
 ) -> None:
@@ -362,6 +464,43 @@ async def test_image_decode_failure_does_not_publish_state_or_leave_artifact(
     assert failed.structuredContent["error"]["category"] == "extraction_failed"
     assert failed.structuredContent["capture_status"] == "complete"
     assert failed.structuredContent["extraction_status"] == "failed"
+    assert list(tmp_path.iterdir()) == []
+
+
+async def test_image_file_size_limit_precedes_decode_and_ocr(tmp_path: Path) -> None:
+    processor_called = False
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            headers={"content-type": "image/png"},
+            content=b"x" * 2_000_001,
+        )
+
+    async def processor(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        nonlocal processor_called
+        processor_called = True
+        return extraction()
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=processor,
+    ) as session:
+        failed = await session.call_tool(
+            "web_read", {"url": "https://example.org/oversized.png"}
+        )
+
+    assert failed.isError
+    assert failed.structuredContent is not None
+    assert failed.structuredContent["error"]["category"] == "resource_exhausted"
+    assert processor_called is False
     assert list(tmp_path.iterdir()) == []
 
 

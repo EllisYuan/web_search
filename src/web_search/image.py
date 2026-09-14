@@ -137,8 +137,23 @@ def run_cpu_ocr(path: Path, regions: list[NormalizedRegion]) -> ImageExtraction:
         top = round(requested["y"] * height)
         right = round((requested["x"] + requested["width"]) * width)
         bottom = round((requested["y"] + requested["height"]) * height)
-        crop = np.asarray(rgb.crop((left, top, right, bottom)))[:, :, ::-1]
-        result = cast(RapidOCROutput, engine(crop))
+        try:
+            if right <= left or bottom <= top:
+                raise ValueError("region is smaller than one decoded pixel")
+            crop = np.asarray(rgb.crop((left, top, right, bottom)))[:, :, ::-1]
+            result = cast(RapidOCROutput, engine(crop))
+        except (MemoryError, OverflowError):
+            raise
+        except Exception:
+            failures.append(
+                {
+                    "kind": "region_ocr_failed",
+                    "message": "CPU OCR failed for the requested image region.",
+                    "locator": {"region": requested},
+                    "next_action": "asset",
+                }
+            )
+            continue
         if result.txts is None or result.boxes is None or result.scores is None:
             failures.append(
                 {
@@ -168,6 +183,18 @@ def run_cpu_ocr(path: Path, regions: list[NormalizedRegion]) -> ImageExtraction:
                         "next_action": "asset",
                     }
                 )
+
+    warnings.append(
+        {
+            "kind": "structure_incomplete",
+            "message": (
+                "OCR text does not establish reliable document, table, or figure "
+                "structure or complete text coverage; review the captured image asset."
+            ),
+            "locator": {"regions": regions},
+            "next_action": "asset",
+        }
+    )
 
     models = []
     for name, model_source in MODEL_SOURCES.items():

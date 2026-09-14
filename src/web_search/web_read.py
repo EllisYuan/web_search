@@ -762,9 +762,13 @@ class WebReadService:
 
     @staticmethod
     def _cleanup_state(state: ReadState) -> None:
-        if state.artifact_path is not None:
+        WebReadService._remove_artifact(state.artifact_path)
+
+    @staticmethod
+    def _remove_artifact(artifact_path: Path | None) -> None:
+        if artifact_path is not None:
             with suppress(FileNotFoundError):
-                state.artifact_path.unlink()
+                artifact_path.unlink()
 
     @staticmethod
     def _extraction_status(snapshot: VersionSnapshot) -> str:
@@ -1217,6 +1221,10 @@ class WebReadService:
                 "version": snapshot.version,
                 "asset_type": "image",
                 "asset_id": state.asset_id,
+                "locator": {
+                    "asset_id": state.asset_id,
+                    "source_region": {"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0},
+                },
                 "mime_type": state.metadata["content_type"],
                 "width": state.metadata["width"],
                 "height": state.metadata["height"],
@@ -2222,9 +2230,7 @@ class WebReadService:
                 deadline,
             )
         except TimeoutError:
-            if artifact_path is not None:
-                with suppress(FileNotFoundError):
-                    artifact_path.unlink()
+            self._remove_artifact(artifact_path)
             return (
                 error_result(
                     "open",
@@ -2237,9 +2243,7 @@ class WebReadService:
                 True,
             )
         except OverflowError:
-            if artifact_path is not None:
-                with suppress(FileNotFoundError):
-                    artifact_path.unlink()
+            self._remove_artifact(artifact_path)
             return (
                 error_result(
                     "open",
@@ -2251,9 +2255,7 @@ class WebReadService:
                 True,
             )
         except Exception:
-            if artifact_path is not None:
-                with suppress(FileNotFoundError):
-                    artifact_path.unlink()
+            self._remove_artifact(artifact_path)
             return (
                 error_result(
                     "open",
@@ -2354,20 +2356,16 @@ class WebReadService:
                 return await self._image_processor(artifact_path, regions, deadline)
 
     @staticmethod
-    async def _extract_image_in_worker(
-        artifact_path: Path,
-        regions: list[dict[str, float]],
-        deadline: float,
-    ) -> ImageExtraction:
-        loop = asyncio.get_running_loop()
-        remaining = deadline - loop.time()
-        if remaining <= 0:
+    async def _run_worker(module: str, arguments: list[str], deadline: float) -> bytes:
+        if deadline - asyncio.get_running_loop().time() <= 0:
             raise TimeoutError
         process: asyncio.subprocess.Process | None = None
         executable = sys.executable
         environment = None
         base_executable = getattr(sys, "_base_executable", None)
         if sys.platform == "win32" and base_executable:
+            # The venv launcher starts a second process; launch the base interpreter
+            # directly so a timeout cannot leave that child alive.
             executable = base_executable
             environment = {**os.environ, "PYTHONPATH": os.pathsep.join(sys.path)}
         try:
@@ -2375,24 +2373,34 @@ class WebReadService:
                 process = await asyncio.create_subprocess_exec(
                     executable,
                     "-m",
-                    "web_search.image_worker",
-                    str(artifact_path),
-                    json.dumps(regions, separators=(",", ":")),
+                    module,
+                    *arguments,
                     stdin=asyncio.subprocess.DEVNULL,
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.DEVNULL,
                     env=environment,
                 )
                 output, _ = await process.communicate()
-        except TimeoutError:
-            raise
         finally:
             if process is not None and process.returncode is None:
                 with suppress(ProcessLookupError):
                     process.kill()
                 await process.wait()
         if process is None or process.returncode != 0:
-            raise RuntimeError("Image OCR worker failed.")
+            raise RuntimeError(f"{module} worker failed.")
+        return output
+
+    @staticmethod
+    async def _extract_image_in_worker(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        output = await WebReadService._run_worker(
+            "web_search.image_worker",
+            [str(artifact_path), json.dumps(regions, separators=(",", ":"))],
+            deadline,
+        )
         payload = json.loads(output)
         if not payload.get("ok"):
             category = payload.get("category")
@@ -2420,43 +2428,20 @@ class WebReadService:
         remaining = deadline - loop.time()
         if remaining <= 0:
             raise PdfExtractionError("timeout", "PDF extraction timed out.")
-        process: asyncio.subprocess.Process | None = None
-        executable = sys.executable
-        environment = None
-        base_executable = getattr(sys, "_base_executable", None)
-        if sys.platform == "win32" and base_executable:
-            # The venv launcher starts a second process; launch the base interpreter
-            # directly so killing the timed-out worker cannot leave that child alive.
-            executable = base_executable
-            environment = {**os.environ, "PYTHONPATH": os.pathsep.join(sys.path)}
-        stage = "starting"
         try:
-            async with asyncio.timeout_at(deadline):
-                process = await asyncio.create_subprocess_exec(
-                    executable,
-                    "-m",
-                    "web_search.pdf_worker",
-                    str(artifact_path),
-                    str(max_pages),
-                    str(remaining),
-                    stdin=asyncio.subprocess.DEVNULL,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.DEVNULL,
-                    env=environment,
-                )
-                stage = "running"
-                output, _ = await process.communicate()
+            output = await WebReadService._run_worker(
+                "web_search.pdf_worker",
+                [str(artifact_path), str(max_pages), str(remaining)],
+                deadline,
+            )
         except TimeoutError as error:
             raise PdfExtractionError(
-                "timeout", f"PDF extraction timed out while {stage} worker."
+                "timeout", "PDF extraction worker timed out."
             ) from error
-        finally:
-            if process is not None and process.returncode is None:
-                with suppress(ProcessLookupError):
-                    process.kill()
-                await process.wait()
-        if process is None or process.returncode != 0:
-            raise PdfExtractionError("extraction_failed", "PDF extraction worker failed.")
+        except RuntimeError as error:
+            raise PdfExtractionError(
+                "extraction_failed", "PDF extraction worker failed."
+            ) from error
         try:
             payload = json.loads(output)
             if not payload["ok"]:

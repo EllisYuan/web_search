@@ -26,14 +26,15 @@ async def javascript_site() -> AsyncIterator[str]:
                   <h1>Initial</h1><p>Original version text</p>
                   <button id="expand" aria-expanded="false">Expand details</button>
                   <div role="tablist"><button role="tab">Overview</button><button role="tab">Evidence</button></div>
+                  <p id="tab-body" hidden>Selected tab evidence</p>
                   <button id="more">Load more</button><div id="tail" style="height:2000px"></div>`;
                 document.querySelector('#expand').onclick = event => {
                   event.currentTarget.setAttribute('aria-expanded', 'true');
                   event.currentTarget.insertAdjacentHTML('afterend', '<p>Expanded evidence</p>');
                 };
                 document.querySelector('[role=tablist]').onclick = event => {
-                  if (event.target.textContent === 'Evidence' && !document.querySelector('#tab-body')) {
-                    event.currentTarget.insertAdjacentHTML('afterend', '<p id="tab-body">Selected tab evidence</p>');
+                  if (event.target.textContent === 'Evidence') {
+                    document.querySelector('#tab-body').hidden = false;
                   }
                 };
                 document.querySelector('#more').onclick = event => {
@@ -51,6 +52,12 @@ async def javascript_site() -> AsyncIterator[str]:
                 const app = document.querySelector('#app');
                 app.innerHTML = '<h1>Transient</h1><p>Stable text</p><button aria-expanded="false">Temporary target</button>';
                 setTimeout(() => document.querySelector('button').remove(), 1500);
+                """
+            elif path.startswith("/changing"):
+                script = """
+                const app = document.querySelector('#app');
+                app.innerHTML = '<h1>Changing</h1><p id="value">Before</p><button aria-expanded="false">Still present</button>';
+                setTimeout(() => document.querySelector('#value').textContent = 'After', 1500);
                 """
             elif path.startswith("/placeholder"):
                 script = """

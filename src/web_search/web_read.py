@@ -281,6 +281,7 @@ class ReadState:
     render_digest: str | None = None
     interaction_targets: tuple[InteractionTarget, ...] = ()
     documents: dict[str, ExtractedDocument] = field(default_factory=dict)
+    interaction_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 
 
 @dataclass
@@ -535,12 +536,24 @@ def with_browser_warnings(document: ExtractedDocument, rendered: RenderedPage) -
 
 def requires_browser(html: str, document: ExtractedDocument) -> bool:
     lowered = html.casefold()
+    if "<script" not in lowered:
+        return False
     if not document.blocks:
-        return "<script" in lowered
+        return True
     rendered_shell = bool(
         re.search(r"id\s*=\s*['\"](?:app|root|__next)['\"]", lowered) or "data-reactroot" in lowered
     )
-    return "<script" in lowered and rendered_shell and len(document.markdown.strip()) < 200
+    external_script = bool(re.search(r"<script[^>]+\bsrc\s*=", lowered))
+    dynamic_markers = (
+        "document.",
+        "fetch(",
+        "xmlhttprequest",
+        "reactdom",
+        "hydrate",
+        "createapp(",
+        "__next_data__",
+    )
+    return rendered_shell or external_script or any(marker in lowered for marker in dynamic_markers)
 
 
 async def default_url_policy(url: str) -> bool:
@@ -719,7 +732,13 @@ class WebReadService:
             if now - state.last_access >= self._idle_ttl_seconds
         ]
         for read_id in expired:
-            await self._cleanup_state(self._states.pop(read_id))
+            state = self._states.get(read_id)
+            if state is None:
+                continue
+            async with state.interaction_lock:
+                if self._states.get(read_id) is state:
+                    del self._states[read_id]
+                    await self._cleanup_state(state)
         self._released = {
             read_id: record
             for read_id, record in self._released.items()
@@ -812,6 +831,15 @@ class WebReadService:
         return error_result(action, "internal_error", "Action dispatch is not implemented."), True
 
     async def _release(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
+        state = self._states.get(arguments["read_id"])
+        if state is None:
+            return await self._release_unlocked(arguments)
+        async with state.interaction_lock:
+            return await self._release_unlocked(arguments)
+
+    async def _release_unlocked(
+        self, arguments: dict[str, Any]
+    ) -> tuple[dict[str, Any], bool]:
         read_id = arguments["read_id"]
         previous = self._released.get(read_id)
         if previous is not None:
@@ -1209,6 +1237,22 @@ class WebReadService:
         if failure is not None:
             return failure
         assert state is not None
+        async with state.interaction_lock:
+            if self._states.get(state.read_id) is not state:
+                return (
+                    error_result(
+                        "interact",
+                        "state_expired",
+                        "The read state is no longer available.",
+                        next_action="open",
+                    ),
+                    True,
+                )
+            return await self._interact_locked(state, arguments)
+
+    async def _interact_locked(
+        self, state: ReadState, arguments: dict[str, Any]
+    ) -> tuple[dict[str, Any], bool]:
         if "version" not in arguments or arguments["version"] != state.version:
             return self._state_error(
                 state,
@@ -1252,7 +1296,17 @@ class WebReadService:
                 if error.category in {"timeout", "browser_state_invalid"}
                 else "interact",
             )
+        except Exception:
+            await state.browser.invalidate()
+            return self._state_error(
+                state,
+                "interact",
+                "extraction_failed",
+                "The rendered interaction result could not be extracted.",
+                next_action="read",
+            )
         if not document.blocks:
+            await state.browser.invalidate()
             return self._state_error(
                 state,
                 "interact",
@@ -1263,12 +1317,12 @@ class WebReadService:
 
         added = self._added_blocks(previous_document, document)
         changed = rendered.digest != state.render_digest
+        state.interaction_targets = rendered.targets
         if changed:
             state.version = secrets.token_urlsafe(12)
             state.document = document
             state.documents[state.version] = document
             state.render_digest = rendered.digest
-            state.interaction_targets = rendered.targets
             state.metadata = {
                 **state.metadata,
                 "url": rendered.url,

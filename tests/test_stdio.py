@@ -280,6 +280,9 @@ async def test_real_stdio_renders_and_interacts_with_javascript_page() -> None:
                             "operation": "expand",
                         },
                     )
+                    failed = await session.call_tool(
+                        "web_read", {"url": f"{base_url}/empty-js"}
+                    )
             errors.seek(0)
             stderr = errors.read()
 
@@ -290,4 +293,6 @@ async def test_real_stdio_renders_and_interacts_with_javascript_page() -> None:
     assert interacted.structuredContent["content_markdown"] == "Expanded evidence"
     assert interacted.structuredContent["previous_version"] == body["version"]
     assert interacted.structuredContent["version"] != body["version"]
+    assert failed.isError and failed.structuredContent is not None
+    assert failed.structuredContent["error"]["category"] == "extraction_failed"
     assert stderr == ""

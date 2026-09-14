@@ -168,6 +168,7 @@ async def test_interact_executes_only_selected_operations_and_preserves_old_vers
                 assert not opened.isError, opened.structuredContent
                 assert opened.structuredContent is not None
                 original = opened.structuredContent
+                assert "Selected tab evidence" not in original["content_markdown"]
                 original_version = original["version"]
                 original_cursor = original["next_cursor"]
                 original_block = original["locators"][1]["block_id"]
@@ -296,6 +297,12 @@ async def test_interact_validates_target_operation_value_and_real_page_presence(
                         "operation_value": "Overview",
                     },
                 )
+                assert unchanged.structuredContent is not None
+                unchanged_tab = next(
+                    item
+                    for item in unchanged.structuredContent["interaction_targets"]
+                    if item["operation"] == "select_tab"
+                )
 
                 disappearing = await session.call_tool(
                     "web_read", {"url": f"{base_url}/disappearing"}
@@ -319,6 +326,26 @@ async def test_interact_validates_target_operation_value_and_real_page_presence(
                     },
                 )
 
+                changing = await session.call_tool("web_read", {"url": f"{base_url}/changing"})
+                assert changing.structuredContent is not None
+                changing_body = changing.structuredContent
+                changing_target = next(
+                    item
+                    for item in changing_body["interaction_targets"]
+                    if item["operation"] == "expand"
+                )
+                await asyncio.sleep(1.6)
+                diverged = await session.call_tool(
+                    "web_read",
+                    {
+                        "action": "interact",
+                        "read_id": changing_body["read_id"],
+                        "version": changing_body["version"],
+                        "target_id": changing_target["target_id"],
+                        "operation": "expand",
+                    },
+                )
+
     for response in (wrong_operation, bad_value):
         assert response.isError
         assert response.structuredContent is not None
@@ -327,9 +354,13 @@ async def test_interact_validates_target_operation_value_and_real_page_presence(
     assert unchanged.structuredContent["version_changed"] is False
     assert unchanged.structuredContent["version"] == body["version"]
     assert unchanged.structuredContent["content_markdown"] == ""
+    assert unchanged_tab["target_id"] == tab["target_id"]
     assert gone.isError
     assert gone.structuredContent is not None
     assert gone.structuredContent["error"]["category"] == "not_found"
+    assert diverged.isError
+    assert diverged.structuredContent is not None
+    assert diverged.structuredContent["error"]["category"] == "version_mismatch"
 
 
 async def test_read_and_find_use_committed_artifact_and_timeout_invalidates_browser() -> None:

@@ -4,15 +4,17 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
-import re
 import secrets
 from collections.abc import Awaitable, Callable
+from contextlib import suppress
 from dataclasses import dataclass
 from typing import Any, Literal
 
+import psutil
 from playwright.async_api import (
     Browser,
     BrowserContext,
+    CDPSession,
     Locator,
     Page,
     Playwright,
@@ -29,6 +31,8 @@ Operation = Literal["expand", "select_tab", "load_more", "scroll"]
 MAX_BROWSER_REQUESTS = 100
 MAX_SCROLL_STEPS = 5
 MAX_RENDERED_DOM_BYTES = 2_000_000
+MAX_BROWSER_RESPONSE_BYTES = 10_000_000
+MAX_BROWSER_RSS_BYTES = 512_000_000
 
 
 class BrowserFailure(Exception):
@@ -80,14 +84,32 @@ class BrowserSession:
         self._browser: Browser | None = None
         self._context: BrowserContext | None = None
         self._page: Page | None = None
+        self._cdp: CDPSession | None = None
+        self._browser_cdp: CDPSession | None = None
         self._targets: dict[str, InteractionTarget] = {}
+        self._target_ids: dict[tuple[Any, ...], str] = {}
         self._request_count = 0
         self._blocked_requests = 0
         self._policy_blocked = False
         self._navigation_locked = False
         self._valid = True
+        self._current_digest = ""
+        self._resource_failure: BrowserFailure | None = None
+        self._response_bytes = 0
+        self._browser_pids: set[int] = set()
+        self._memory_task: asyncio.Task[None] | None = None
 
     async def open(self, url: str) -> RenderedPage:
+        task = asyncio.create_task(self._open(url))
+        try:
+            return await asyncio.shield(task)
+        except asyncio.CancelledError:
+            with suppress(Exception):
+                await asyncio.shield(task)
+            await asyncio.shield(self.invalidate())
+            raise
+
+    async def _open(self, url: str) -> RenderedPage:
         try:
             async with asyncio.timeout(self._deadline_seconds):
                 self._playwright = await async_playwright().start()
@@ -105,11 +127,24 @@ class BrowserSession:
                 await self._context.route("**/*", self._route)
                 self._page = await self._context.new_page()
                 self._page.on("popup", lambda popup: asyncio.create_task(popup.close()))
+                self._page.on("download", lambda download: asyncio.create_task(download.cancel()))
+                self._cdp = await self._context.new_cdp_session(self._page)
+                await self._cdp.send("Network.enable")
+                self._cdp.on("Network.dataReceived", self._record_response_bytes)
+                self._browser_cdp = await self._browser.new_browser_cdp_session()
+                process_info = await self._browser_cdp.send("SystemInfo.getProcessInfo")
+                self._browser_pids = {
+                    int(item["id"])
+                    for item in process_info.get("processInfo", [])
+                    if isinstance(item, dict) and isinstance(item.get("id"), int | float)
+                }
+                self._memory_task = asyncio.create_task(self._monitor_memory())
                 await self._page.goto(url, wait_until="domcontentloaded")
                 try:
                     await self._page.wait_for_load_state("networkidle", timeout=1_000)
                 except PlaywrightTimeoutError:
                     pass
+                self._raise_resource_failure()
                 rendered = await self._snapshot()
                 self._navigation_locked = True
                 return rendered
@@ -121,24 +156,47 @@ class BrowserSession:
             raise
         except Exception as error:
             await self.invalidate()
+            if self._resource_failure is not None:
+                raise self._resource_failure from error
             category = "access_blocked" if self._policy_blocked else "extraction_failed"
             raise BrowserFailure(category, "Browser rendering failed.") from error
+
+    def _record_response_bytes(self, event: dict[str, Any]) -> None:
+        encoded = event.get("encodedDataLength", 0)
+        if isinstance(encoded, int | float):
+            self._response_bytes += int(encoded)
+        if self._response_bytes > MAX_BROWSER_RESPONSE_BYTES:
+            self._fail_resource("Browser responses exceed the transfer limit.")
+
+    async def _monitor_memory(self) -> None:
+        while self._valid:
+            try:
+                rss = sum(
+                    psutil.Process(pid).memory_info().rss
+                    for pid in self._browser_pids
+                    if psutil.pid_exists(pid)
+                )
+                if rss > MAX_BROWSER_RSS_BYTES:
+                    self._fail_resource("Browser memory exceeds the process limit.")
+                    return
+            except (psutil.Error, OSError):
+                pass
+            await asyncio.sleep(0.05)
+
+    def _fail_resource(self, message: str) -> None:
+        if self._resource_failure is None:
+            self._resource_failure = BrowserFailure("resource_exhausted", message)
+        page = self._page
+        if page is not None and not page.is_closed():
+            asyncio.create_task(page.close())
+
+    def _raise_resource_failure(self) -> None:
+        if self._resource_failure is not None:
+            raise self._resource_failure
 
     async def _route(self, route: Route) -> None:
         request = route.request
         self._request_count += 1
-        if self._navigation_locked and request.is_navigation_request():
-            self._blocked_requests += 1
-            await route.abort("blockedbyclient")
-            return
-        if self._request_count > MAX_BROWSER_REQUESTS:
-            self._blocked_requests += 1
-            await route.abort("blockedbyclient")
-            return
-        if request.resource_type in {"font", "media", "websocket"}:
-            self._blocked_requests += 1
-            await route.abort("blockedbyclient")
-            return
         try:
             allowed = await self._url_policy(request.url)
         except Exception:
@@ -148,9 +206,36 @@ class BrowserSession:
             self._policy_blocked = True
             await route.abort("blockedbyclient")
             return
+        if self._request_count > MAX_BROWSER_REQUESTS:
+            self._blocked_requests += 1
+            await route.abort("blockedbyclient")
+            return
+        if request.resource_type in {"font", "image", "media", "websocket"}:
+            self._blocked_requests += 1
+            await route.abort("blockedbyclient")
+            return
+        if self._navigation_locked and request.is_navigation_request():
+            self._blocked_requests += 1
+            await route.abort("blockedbyclient")
+            return
         await route.continue_()
 
     async def interact(
+        self,
+        target_id: str,
+        operation: str,
+        operation_value: str | int | None,
+    ) -> RenderedPage:
+        task = asyncio.create_task(self._interact(target_id, operation, operation_value))
+        try:
+            return await asyncio.shield(task)
+        except asyncio.CancelledError:
+            with suppress(Exception):
+                await asyncio.shield(task)
+            await asyncio.shield(self.invalidate())
+            raise
+
+    async def _interact(
         self,
         target_id: str,
         operation: str,
@@ -167,34 +252,39 @@ class BrowserSession:
         self._validate_value(target, operation_value)
         try:
             async with asyncio.timeout(self._deadline_seconds):
+                self._raise_resource_failure()
                 if target.operation == "select_tab":
                     assert isinstance(operation_value, str)
                     locator = self._page.locator(dict(target.value_selectors)[operation_value])
                 else:
                     locator = self._page.locator(target.selector)
+                if target.operation != "scroll" and await locator.count() != 1:
+                    await self.invalidate()
+                    raise BrowserFailure("not_found", "The interaction target no longer exists.")
+                if await self._visible_digest() != self._current_digest:
+                    await self.invalidate()
+                    raise BrowserFailure(
+                        "version_mismatch", "The live page changed after the committed version."
+                    )
                 if target.operation == "scroll":
                     assert isinstance(operation_value, int)
                     for _ in range(operation_value):
                         await self._page.evaluate("window.scrollBy(0, window.innerHeight)")
                         await self._page.wait_for_timeout(100)
                 else:
-                    if await locator.count() != 1:
-                        raise BrowserFailure(
-                            "not_found", "The interaction target no longer exists."
-                        )
                     await locator.click()
                     await self._page.wait_for_timeout(100)
+                self._raise_resource_failure()
                 return await self._snapshot()
         except TimeoutError as error:
             await self.invalidate()
             raise BrowserFailure("timeout", "Browser interaction timed out.") from error
         except BrowserFailure:
             raise
-        except asyncio.CancelledError:
-            await self.invalidate()
-            raise
         except Exception as error:
             await self.invalidate()
+            if self._resource_failure is not None:
+                raise self._resource_failure from error
             raise BrowserFailure("browser_state_invalid", "Browser interaction failed.") from error
 
     @staticmethod
@@ -220,20 +310,59 @@ class BrowserSession:
         assert self._page is not None
         targets = await self._discover_targets()
         self._targets = {target.target_id: target for target in targets}
-        html = await self._page.content()
-        html = re.sub(r' data-web-read-target="[^"]*"', "", html)
+        html = await self._visible_html()
         if len(html.encode("utf-8")) > MAX_RENDERED_DOM_BYTES:
             raise BrowserFailure("resource_exhausted", "Rendered DOM exceeds the size limit.")
         language = await self._page.locator("html").get_attribute("lang")
+        digest = hashlib.sha256(html.encode("utf-8")).hexdigest()
+        self._current_digest = digest
         return RenderedPage(
             url=self._page.url,
             html=html,
             title=await self._page.title(),
             language=language,
-            digest=hashlib.sha256(html.encode("utf-8")).hexdigest(),
+            digest=digest,
             targets=targets,
             blocked_requests=self._blocked_requests,
         )
+
+    async def _visible_html(self) -> str:
+        assert self._page is not None
+        html = await self._page.evaluate(
+            """() => {
+                const clone = document.documentElement.cloneNode(true);
+                const source = [
+                    document.documentElement,
+                    ...document.documentElement.querySelectorAll('*')
+                ];
+                const copied = [clone, ...clone.querySelectorAll('*')];
+                for (let i = copied.length - 1; i >= 0; i--) {
+                    const item = source[i];
+                    const style = getComputedStyle(item);
+                    const closedDetails = item.closest('details:not([open])');
+                    const hiddenDetails = closedDetails && item !== closedDetails &&
+                        item.tagName !== 'SUMMARY';
+                    if (item.hidden || item.getAttribute('aria-hidden') === 'true' ||
+                        style.display === 'none' || style.visibility === 'hidden' ||
+                        hiddenDetails) {
+                        copied[i].remove();
+                    } else {
+                        copied[i].removeAttribute('data-web-read-target');
+                    }
+                }
+                const attributes = [...clone.attributes]
+                    .map(a => ` ${a.name}="${a.value}"`).join('');
+                return '<html' + attributes +
+                    '>' + clone.innerHTML + '</html>';
+            }"""
+        )
+        if not isinstance(html, str):
+            raise BrowserFailure("extraction_failed", "Rendered DOM could not be serialized.")
+        return html
+
+    async def _visible_digest(self) -> str:
+        html = await self._visible_html()
+        return hashlib.sha256(html.encode("utf-8")).hexdigest()
 
     async def _discover_targets(self) -> tuple[InteractionTarget, ...]:
         assert self._page is not None
@@ -284,14 +413,15 @@ class BrowserSession:
 
     @staticmethod
     async def _selector(locator: Locator) -> str:
-        token = "web-read-" + secrets.token_urlsafe(8)
+        existing = await locator.get_attribute("data-web-read-target")
+        token = existing or "web-read-" + secrets.token_urlsafe(8)
         await locator.evaluate(
             "(element, value) => element.setAttribute('data-web-read-target', value)", token
         )
         return f'[data-web-read-target="{token}"]'
 
-    @staticmethod
     def _target(
+        self,
         operation: Operation,
         description: str,
         selector: str,
@@ -299,8 +429,10 @@ class BrowserSession:
         operation_values: tuple[str, ...] = (),
         value_selectors: tuple[tuple[str, str], ...] = (),
     ) -> InteractionTarget:
+        signature: tuple[Any, ...] = (operation, description[:200], operation_values)
+        target_id = self._target_ids.setdefault(signature, secrets.token_urlsafe(12))
         return InteractionTarget(
-            secrets.token_urlsafe(12),
+            target_id,
             operation,
             description[:200],
             selector,
@@ -314,10 +446,18 @@ class BrowserSession:
 
     async def close(self) -> None:
         context, browser, playwright = self._context, self._browser, self._playwright
+        memory_task = self._memory_task
         self._page = None
         self._context = None
         self._browser = None
         self._playwright = None
+        self._cdp = None
+        self._browser_cdp = None
+        self._memory_task = None
+        if memory_task is not None and memory_task is not asyncio.current_task():
+            memory_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await memory_task
         if context is not None:
             try:
                 await context.close()

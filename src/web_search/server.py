@@ -6,6 +6,7 @@ import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import date
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -115,12 +116,14 @@ def create_server(
     clock: Clock | None = None,
     idle_ttl_seconds: float = 900.0,
     resource_gate: ResourceGate | None = None,
+    artifact_directory: str | Path | None = None,
 ) -> Server[Any]:
     read_options: dict[str, Any] = {
         "timeout_seconds": timeout_seconds,
         "clock": clock,
         "idle_ttl_seconds": idle_ttl_seconds,
         "resource_gate": resource_gate,
+        "artifact_directory": artifact_directory,
     }
     if url_policy is not None:
         read_options["url_policy"] = url_policy

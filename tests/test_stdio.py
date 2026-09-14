@@ -168,3 +168,81 @@ async def test_real_stdio_rate_quota_timeout_and_subsequent_search() -> None:
         assert isinstance(result.content[0], TextContent)
         assert json.loads(result.content[0].text) == result.structuredContent
         assert key not in result.model_dump_json() + stderr
+
+
+async def test_real_stdio_first_phase_html_and_text_pdf_without_key() -> None:
+    params = StdioServerParameters(
+        command=sys.executable,
+        args=[str(Path(__file__).with_name("fixture_stdio_server.py"))],
+        env={"TAVILY_API_KEY": ""},
+    )
+    with TemporaryFile(mode="w+", encoding="utf-8") as errors:
+        async with stdio_client(params, errlog=cast(TextIO, errors)) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                tools = await session.list_tools()
+                assert [tool.name for tool in tools.tools] == ["web_read"]
+                html = await session.call_tool("web_read", {"url": "https://example.org/source"})
+                pdf = await session.call_tool(
+                    "web_read",
+                    {
+                        "url": "https://example.org/source.pdf",
+                        "max_pages": 1,
+                        "max_output_chars": 10,
+                    },
+                )
+                assert pdf.structuredContent is not None
+                body = pdf.structuredContent
+                assert "content_markdown" in body, body.get("error")
+                chunks = [body["content_markdown"]]
+                cursor = body["next_cursor"]
+                while cursor is not None:
+                    continued = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "read",
+                            "read_id": body["read_id"],
+                            "version": body["version"],
+                            "cursor": cursor,
+                            "max_output_chars": 10,
+                        },
+                    )
+                    assert continued.structuredContent is not None
+                    chunks.append(continued.structuredContent["content_markdown"])
+                    cursor = continued.structuredContent["next_cursor"]
+                found = await session.call_tool(
+                    "web_read",
+                    {
+                        "action": "find",
+                        "read_id": body["read_id"],
+                        "scope": "page",
+                        "page": 1,
+                        "query": "FIRST PAGE",
+                    },
+                )
+                unread = await session.call_tool(
+                    "web_read", {"action": "read", "read_id": body["read_id"], "page": 2}
+                )
+                released = await session.call_tool(
+                    "web_read", {"action": "release", "read_id": body["read_id"]}
+                )
+        errors.seek(0)
+        stderr = errors.read()
+
+    assert not html.isError and html.structuredContent is not None
+    assert "Search 后读取的原文" in html.structuredContent["content_markdown"]
+    assert not pdf.isError
+    assert body["metadata"]["page_count"] == 2
+    assert body["capture_status"] == "complete"
+    assert body["extraction_status"] == "partial"
+    assert body["output_status"] == "truncated"
+    assert "".join(chunks) == "## Page 1\n\nPDF fixture first page."
+    assert found.structuredContent is not None
+    assert found.structuredContent["matches"][0]["page"] == 1
+    assert unread.isError and unread.structuredContent is not None
+    assert "has not been processed" in unread.structuredContent["error"]["message"]
+    assert released.structuredContent is not None
+    assert released.structuredContent["released"] is True
+    assert isinstance(pdf.content[0], TextContent)
+    assert json.loads(pdf.content[0].text) == body
+    assert stderr == ""

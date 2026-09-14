@@ -2,7 +2,7 @@
 
 为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-[#17](https://github.com/EllisYuan/web_search/issues/17) 交付 static HTML vertical slice：`open`、`read`、`find`、`release`、短期 process-local state、固定 cursor、三条完整性 status、URL public boundary 与有界 acquisition。`advance`、`interact`、`asset` 仍是后续 v1 action，当前调用会明确返回 error，不会伪装成功。Deep Research 的 planning 与 synthesis 仍由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+[#18](https://github.com/EllisYuan/web_search/issues/18) 完成第一阶段 vertical slice：static HTML 与 born-digital text PDF 支持 `open`、`read`、`find`、`release`、短期 process-local state、固定 cursor、三条完整性 status、URL public boundary 与有界 acquisition/extraction。PDF 只读取原有 text layer，不执行 OCR。`advance`、`interact`、`asset` 仍是后续 v1 action，当前调用会明确返回 error。Deep Research 的 planning 与 synthesis 仍由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -48,9 +48,21 @@ uv sync --locked
 {"action": "read", "read_id": "...", "version": "...", "cursor": "...", "max_output_chars": 12000}
 ```
 
-也可用响应中的 opaque `section_id` / `block_id` 发起新的 selection。`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。
+也可用响应中的 opaque `section_id` / `block_id` 发起新的 selection。text PDF 还可按已处理 page 读取或查找：
 
-当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、`max_pages=100`、`max_regions=1000`，默认 acquisition deadline 为 30 秒、最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。当前只实现 static `text/html` / `application/xhtml+xml`，不进行 browser rendering、PDF processing 或 OCR。
+```json
+{"action":"read","read_id":"...","version":"...","page":3,"max_output_chars":12000}
+```
+
+```json
+{"action":"find","read_id":"...","query":"target phrase","scope":"page","page":3}
+```
+
+PDF `open` 的 `max_pages` 默认 10、最大 100，只限制本次 native text extraction；`max_output_chars` 独立限制本次响应。`metadata.page_count` 表示捕获文档页数，`unprocessed_ranges` 表示尚未处理的 page。请求未处理 page 会明确返回 error，且 `read`、`find` 和 cursor continuation 都不会 refetch、rasterize 或执行新 extraction。第一阶段如需更多 page，应显式重新 `open` 并提高 `max_pages`；响应中的 `next_action=advance` 是后续阶段的保留动作。无 text layer、损坏或加密 PDF 会返回可解释 error；mixed PDF 中已有可靠文字会保留，并为其他 page 返回带 locator 的 failure。table/multi-column reading order 无法确认时，文字按原 text layer 保留并标记 `structure_incomplete`。
+
+`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。PDF capture artifact 会随 release、idle expiry 或 process shutdown 清理，restart 后旧 handle 不恢复。
+
+当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、每次 PDF processing 100 pages、captured PDF 10,000 pages、单页 native text 1,000,000 chars、整份 extracted text 2,000,000 chars，以及保留的 `max_regions=1000`；默认 `open` deadline 为 30 秒，HTTP acquisition 与 PDF extraction 共用该 deadline，超时会终止隔离的 PDF worker，最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。第一阶段只实现 static `text/html` / `application/xhtml+xml` 与 text PDF，不进行 browser rendering、rasterization 或 OCR，也不宣称覆盖 mixed/scanned PDF 的未读 page。
 
 ## 调用与结果
 

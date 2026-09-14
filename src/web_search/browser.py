@@ -429,7 +429,13 @@ class BrowserSession:
         operation_values: tuple[str, ...] = (),
         value_selectors: tuple[tuple[str, str], ...] = (),
     ) -> InteractionTarget:
-        signature: tuple[Any, ...] = (operation, description[:200], operation_values)
+        signature: tuple[Any, ...] = (
+            operation,
+            description[:200],
+            selector,
+            operation_values,
+            tuple(selector for _, selector in value_selectors),
+        )
         target_id = self._target_ids.setdefault(signature, secrets.token_urlsafe(12))
         return InteractionTarget(
             target_id,

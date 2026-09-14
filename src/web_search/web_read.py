@@ -525,6 +525,16 @@ def validate_input(arguments: dict[str, Any]) -> str | None:
         }
         if "read_id" not in arguments or "query" not in arguments or set(arguments) - allowed:
             return "find requires read_id and query, without url or cursor."
+        scope = arguments.get("scope")
+        has_section = "section_id" in arguments
+        has_page = "page" in arguments
+        if (
+            (scope == "section" and (not has_section or has_page))
+            or (scope == "page" and (not has_page or has_section))
+            or (scope == "document" and (has_section or has_page))
+            or (scope is None and has_section and has_page)
+        ):
+            return "find scope must match exactly one optional section or page selector."
     elif action == "advance":
         allowed = {
             "action",
@@ -806,6 +816,18 @@ class WebReadService:
             selected = [
                 block for block in state.document.blocks if block.block_id == arguments["block_id"]
             ]
+            if selected and not selected[0].markdown.startswith("#"):
+                heading = next(
+                    (
+                        block
+                        for block in state.document.blocks
+                        if block.section_id == selected[0].section_id
+                        and block.markdown.startswith("#")
+                    ),
+                    None,
+                )
+                if heading is not None:
+                    selected.insert(0, heading)
         else:
             selected = []
         if not selected:
@@ -840,23 +862,11 @@ class WebReadService:
         if failure is not None:
             return failure
         assert state is not None
-        scope = arguments.get("scope", "document")
         section_id = arguments.get("section_id")
-        if scope == "section" and section_id is None:
-            result = error_result(
-                "find", "invalid_request", "section scope requires section_id.", next_action="find"
-            )
-            result.update({"read_id": state.read_id, "version": state.version})
-            return result, True
-        if scope != "section" and section_id is not None:
-            result = error_result(
-                "find",
-                "invalid_request",
-                "section_id is only valid with section scope.",
-                next_action="find",
-            )
-            result.update({"read_id": state.read_id, "version": state.version})
-            return result, True
+        page = arguments.get("page")
+        scope = arguments.get("scope") or (
+            "section" if section_id is not None else "page" if page is not None else "document"
+        )
         if scope == "page":
             selected: list[Block] = []
         elif scope == "section":
@@ -915,6 +925,15 @@ class WebReadService:
                     "next_action": "find",
                 }
             )
+        searched_scope: dict[str, Any] = {
+            "scope": scope,
+            "processed_blocks": len(selected),
+            "unprocessed_ranges": [],
+        }
+        if section_id is not None:
+            searched_scope["section_id"] = section_id
+        if page is not None:
+            searched_scope["page"] = page
         result = {
             "action": "find",
             "status": "partial" if omitted or state.document.warnings else "ok",
@@ -922,11 +941,7 @@ class WebReadService:
             "version": state.version,
             "query": arguments["query"],
             "matches": matches,
-            "searched_scope": {
-                "scope": scope,
-                "processed_blocks": len(selected),
-                "unprocessed_ranges": [],
-            },
+            "searched_scope": searched_scope,
             "message": (
                 "No normalized text match was found in the searched scope."
                 if not matches and not omitted

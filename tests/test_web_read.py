@@ -151,7 +151,7 @@ async def test_cursor_and_selection_read_from_state_without_refetch() -> None:
     assert section.structuredContent is not None
     assert section.structuredContent["content_markdown"] == "## Second\n\nklmnopqrstuv"
     assert block.structuredContent is not None
-    assert block.structuredContent["content_markdown"] == "klmnopqrstuv"
+    assert block.structuredContent["content_markdown"] == "## Second\n\nklmnopqrstuv"
     assert requests == 1
 
 
@@ -341,6 +341,9 @@ async def test_invalid_requests_are_rejected_before_policy_or_network() -> None:
         {"url": "https://example.org", "max_pages": 101},
         {"action": "read", "read_id": "x", "cursor": "a", "block_id": "b"},
         {"action": "find", "read_id": "x", "query": "q", "cursor": "a"},
+        {"action": "find", "read_id": "x", "query": "q", "scope": "section"},
+        {"action": "find", "read_id": "x", "query": "q", "scope": "page"},
+        {"action": "find", "read_id": "x", "query": "q", "scope": "document", "page": 1},
         {"action": "advance", "read_id": "x", "targets": []},
         {"action": "advance", "read_id": "x", "targets": [{"page": 1, "extra": 2}]},
         {"action": "interact", "read_id": "x", "operation": "expand"},

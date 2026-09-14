@@ -9,7 +9,8 @@ import secrets
 import socket
 import time
 import unicodedata
-from collections.abc import Awaitable, Callable
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import asynccontextmanager, suppress
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from html.parser import HTMLParser
@@ -230,7 +231,7 @@ class ExtractedDocument:
 
     @property
     def markdown(self) -> str:
-        return "\n\n".join(block.markdown for block in self.blocks)
+        return render_blocks(self.blocks)[0]
 
 
 @dataclass
@@ -239,6 +240,7 @@ class CursorRecord:
     content: str
     offset: int
     budget: int
+    boundaries: tuple[int, ...]
 
 
 @dataclass
@@ -251,6 +253,12 @@ class ReadState:
     cursors: dict[str, CursorRecord] = field(default_factory=dict)
 
 
+@dataclass
+class ReleasedRecord:
+    result: dict[str, Any]
+    released_at: float
+
+
 @dataclass(frozen=True)
 class CapturedSource:
     url: str
@@ -261,6 +269,18 @@ class CapturedSource:
     @property
     def text(self) -> str:
         return self.content.decode(self.encoding, errors="replace")
+
+
+def render_blocks(blocks: list[Block]) -> tuple[str, tuple[int, ...]]:
+    content = "\n\n".join(block.markdown for block in blocks)
+    boundaries: list[int] = []
+    offset = 0
+    for index, block in enumerate(blocks):
+        offset += len(block.markdown)
+        if index < len(blocks) - 1:
+            offset += 2
+        boundaries.append(offset)
+    return content, tuple(boundaries)
 
 
 def _plain_text(node: Node) -> str:
@@ -383,7 +403,24 @@ def extract_html(html: str) -> ExtractedDocument:
         if node.attrs.get("id") in reference_ids
     }
 
-    def add(markdown: str, text: str, section_id: str | None = None) -> Block | None:
+    def add(
+        markdown: str,
+        text: str,
+        section_id: str | None = None,
+        source: Node | None = None,
+    ) -> Block | None:
+        if source is not None:
+            footnotes = []
+            for anchor in _find_all(source, "a"):
+                href = anchor.attrs.get("href", "")
+                target = reference_targets.get(href[1:]) if href.startswith("#") else None
+                if target is not None and target is not source:
+                    footnote = _plain_text(target)
+                    if footnote and footnote not in footnotes:
+                        footnotes.append(footnote)
+            if footnotes:
+                markdown += "\n\n" + "\n\n".join(f"Footnote: {footnote}" for footnote in footnotes)
+                text += " " + " ".join(footnotes)
         cleaned = markdown.strip()
         if cleaned:
             block = Block(
@@ -411,7 +448,7 @@ def extract_html(html: str) -> ExtractedDocument:
             rendered = _table_markdown(node)
             if rendered:
                 markdown, text, reliable = rendered
-                block = add(markdown, text)
+                block = add(markdown, text, source=node)
                 if not reliable and block is not None:
                     warnings.append(
                         {
@@ -424,32 +461,18 @@ def extract_html(html: str) -> ExtractedDocument:
             return
         if node.tag == "pre":
             text = _plain_text(node)
-            add(f"```\n{text}\n```", text)
+            add(f"```\n{text}\n```", text, source=node)
             return
         if node.tag in {"p", "blockquote"}:
             text = _plain_text(node)
             if text:
                 prefix = "> " if node.tag == "blockquote" else ""
-                footnotes = []
-                for anchor in _find_all(node, "a"):
-                    href = anchor.attrs.get("href", "")
-                    target = reference_targets.get(href[1:]) if href.startswith("#") else None
-                    if target is not None and target is not node:
-                        footnote = _plain_text(target)
-                        if footnote and footnote not in footnotes:
-                            footnotes.append(footnote)
-                markdown = prefix + text
-                if footnotes:
-                    markdown += "\n\n" + "\n\n".join(
-                        f"Footnote: {footnote}" for footnote in footnotes
-                    )
-                    text += " " + " ".join(footnotes)
-                add(markdown, text)
+                add(prefix + text, text, source=node)
             return
         if node.tag == "li":
             text = _plain_text(node)
             if text:
-                add(f"- {text}", text)
+                add(f"- {text}", text, source=node)
             return
         for child in node.children:
             if isinstance(child, Node):
@@ -579,12 +602,14 @@ def error_result(
     *,
     retryable: bool = False,
     next_action: str = "open",
+    capture_status: str = "not_started",
+    extraction_status: str = "not_started",
 ) -> dict[str, Any]:
     return {
         "action": action,
         "status": "error",
-        "capture_status": "not_started",
-        "extraction_status": "not_started",
+        "capture_status": capture_status,
+        "extraction_status": extraction_status,
         "output_status": "empty",
         "error": {
             "category": category,
@@ -616,9 +641,62 @@ class WebReadService:
         self._idle_ttl_seconds = idle_ttl_seconds
         self._resource_gate = resource_gate or (lambda: True)
         self._states: dict[str, ReadState] = {}
-        self._released: dict[str, dict[str, Any]] = {}
+        self._released: dict[str, ReleasedRecord] = {}
+
+    def _purge_expired(self) -> None:
+        now = self._clock()
+        self._states = {
+            read_id: state
+            for read_id, state in self._states.items()
+            if now - state.last_access < self._idle_ttl_seconds
+        }
+        self._released = {
+            read_id: record
+            for read_id, record in self._released.items()
+            if now - record.released_at < self._idle_ttl_seconds
+        }
+
+    @asynccontextmanager
+    async def lifecycle(self) -> AsyncIterator[None]:
+        async def cleanup() -> None:
+            interval = min(60.0, max(0.01, self._idle_ttl_seconds / 2))
+            while True:
+                await asyncio.sleep(interval)
+                self._purge_expired()
+
+        cleanup_task = asyncio.create_task(cleanup())
+        try:
+            yield
+        finally:
+            cleanup_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await cleanup_task
+            self._states.clear()
+            self._released.clear()
+
+    @staticmethod
+    def _state_error(
+        state: ReadState,
+        action: str,
+        category: str,
+        message: str,
+        *,
+        next_action: str,
+    ) -> tuple[dict[str, Any], bool]:
+        result = error_result(action, category, message, next_action=next_action)
+        result.update(
+            {
+                "read_id": state.read_id,
+                "version": state.version,
+                "capture_status": "complete",
+                "extraction_status": "partial" if state.document.warnings else "complete",
+                "warnings": state.document.warnings,
+            }
+        )
+        return result, True
 
     async def dispatch(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
+        self._purge_expired()
         action = arguments.get("action", "open")
         problem = validate_input(arguments)
         if problem:
@@ -646,7 +724,7 @@ class WebReadService:
         read_id = arguments["read_id"]
         previous = self._released.get(read_id)
         if previous is not None:
-            return previous.copy(), False
+            return previous.result.copy(), False
         state = self._states.get(read_id)
         if state is None:
             failure = error_result(
@@ -658,14 +736,13 @@ class WebReadService:
             return failure, True
         requested_version = arguments.get("version")
         if requested_version is not None and requested_version != state.version:
-            failure = error_result(
+            return self._state_error(
+                state,
                 "release",
                 "version_mismatch",
                 "The requested version does not belong to this read state.",
                 next_action="release",
             )
-            failure.update({"read_id": read_id, "version": state.version})
-            return failure, True
         del self._states[read_id]
         result: dict[str, Any] = {
             "action": "release",
@@ -681,7 +758,7 @@ class WebReadService:
             "warnings": state.document.warnings,
             "available_actions": [],
         }
-        self._released[read_id] = result
+        self._released[read_id] = ReleasedRecord(result, self._clock())
         return result.copy(), False
 
     def _state_for(
@@ -703,16 +780,13 @@ class WebReadService:
             return None, (failure, True)
         requested_version = arguments.get("version")
         if requested_version is not None and requested_version != state.version:
-            failure = error_result(
+            return None, self._state_error(
+                state,
                 action,
                 "version_mismatch",
                 "The requested version does not belong to the current document state.",
                 next_action="read_current_version",
             )
-            failure.update({"read_id": read_id, "version": state.version})
-            failure["capture_status"] = "complete"
-            failure["extraction_status"] = "complete"
-            return None, (failure, True)
         state.last_access = now
         return state, None
 
@@ -722,19 +796,35 @@ class WebReadService:
         action: str,
         state: ReadState,
         content: str,
+        boundaries: tuple[int, ...],
         offset: int,
         budget: int,
     ) -> tuple[dict[str, Any], bool]:
-        chunk = content[offset : offset + budget]
-        end = offset + len(chunk)
+        hard_end = min(len(content), offset + budget)
+        fitting_boundaries = [point for point in boundaries if offset < point <= hard_end]
+        split_block = not fitting_boundaries and hard_end < len(content)
+        end = max(fitting_boundaries, default=hard_end)
+        chunk = content[offset:end]
         next_cursor = None
         if end < len(content):
             next_cursor = secrets.token_urlsafe(18)
-            state.cursors[next_cursor] = CursorRecord(state.version, content, end, budget)
+            state.cursors[next_cursor] = CursorRecord(
+                state.version, content, end, budget, boundaries
+            )
+        warnings = list(state.document.warnings)
+        if split_block:
+            warnings.append(
+                {
+                    "kind": "block_split",
+                    "message": "A single block exceeded max_output_chars and was split.",
+                    "locator": {"start_char": offset, "end_char": end},
+                    "next_action": "read",
+                }
+            )
         return (
             {
                 "action": action,
-                "status": "partial" if state.document.warnings else "ok",
+                "status": "partial" if warnings else "ok",
                 "read_id": state.read_id,
                 "version": state.version,
                 "content_markdown": chunk,
@@ -743,7 +833,7 @@ class WebReadService:
                 "output_status": "truncated" if next_cursor else ("complete" if chunk else "empty"),
                 "unprocessed_ranges": [],
                 "failures": [],
-                "warnings": state.document.warnings,
+                "warnings": warnings,
                 "next_cursor": next_cursor,
                 "available_actions": AVAILABLE_ACTIONS,
                 "returned_range": {
@@ -764,43 +854,35 @@ class WebReadService:
             cursor_token = arguments["cursor"]
             cursor = state.cursors.pop(cursor_token, None)
             if cursor is None:
-                result = error_result(
+                return self._state_error(
+                    state,
                     "read",
                     "cursor_invalid",
                     "The cursor is invalid or has already been consumed.",
                     next_action="read",
                 )
-                result.update({"read_id": state.read_id, "version": state.version})
-                result["capture_status"] = "complete"
-                result["extraction_status"] = "partial" if state.document.warnings else "complete"
-                return result, True
             if cursor.version != state.version:
-                result = error_result(
+                return self._state_error(
+                    state,
                     "read",
                     "version_mismatch",
                     "The cursor belongs to a different document version.",
                     next_action="read_current_version",
                 )
-                result.update({"read_id": state.read_id, "version": state.version})
-                result["capture_status"] = "complete"
-                result["extraction_status"] = "partial" if state.document.warnings else "complete"
-                return result, True
             supplied_budget = arguments.get("max_output_chars", cursor.budget)
             if supplied_budget != cursor.budget:
-                result = error_result(
+                return self._state_error(
+                    state,
                     "read",
                     "cursor_invalid",
                     "A cursor fixes max_output_chars; start a new selection to change it.",
                     next_action="read",
                 )
-                result.update({"read_id": state.read_id, "version": state.version})
-                result["capture_status"] = "complete"
-                result["extraction_status"] = "partial" if state.document.warnings else "complete"
-                return result, True
             return self._content_response(
                 action="read",
                 state=state,
                 content=cursor.content,
+                boundaries=cursor.boundaries,
                 offset=cursor.offset,
                 budget=cursor.budget,
             )
@@ -831,31 +913,53 @@ class WebReadService:
         else:
             selected = []
         if not selected:
-            result = error_result(
-                "read", "not_found", "The requested selection was not found.", next_action="read"
+            return self._state_error(
+                state,
+                "read",
+                "not_found",
+                "The requested selection was not found.",
+                next_action="read",
             )
-            result.update({"read_id": state.read_id, "version": state.version})
-            result["capture_status"] = "complete"
-            result["extraction_status"] = "complete"
-            return result, True
-        content = "\n\n".join(block.markdown for block in selected)
+        content, boundaries = render_blocks(selected)
         return self._content_response(
             action="read",
             state=state,
             content=content,
+            boundaries=boundaries,
             offset=0,
             budget=arguments.get("max_output_chars", DEFAULT_MAX_OUTPUT_CHARS),
         )
 
     @staticmethod
-    def _normalized_with_positions(value: str) -> tuple[str, list[int]]:
-        normalized: list[str] = []
-        positions: list[int] = []
-        for index, character in enumerate(value):
-            folded = unicodedata.normalize("NFKC", character).casefold()
-            normalized.append(folded)
-            positions.extend([index] * len(folded))
-        return "".join(normalized), positions
+    def _normalize(value: str) -> str:
+        return unicodedata.normalize("NFKC", value).casefold()
+
+    @classmethod
+    def _original_span(cls, value: str, start: int, end: int) -> tuple[int, int]:
+        lengths: dict[int, int] = {}
+
+        def normalized_prefix_length(index: int) -> int:
+            if index not in lengths:
+                lengths[index] = len(cls._normalize(value[:index]))
+            return lengths[index]
+
+        low, high = 0, len(value)
+        while low < high:
+            middle = (low + high) // 2
+            if normalized_prefix_length(middle) < start:
+                low = middle + 1
+            else:
+                high = middle
+        original_start = low
+
+        low, high = original_start, len(value)
+        while low < high:
+            middle = (low + high + 1) // 2
+            if normalized_prefix_length(middle) <= end:
+                low = middle
+            else:
+                high = middle - 1
+        return original_start, low
 
     def _find(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
         state, failure = self._state_for("find", arguments)
@@ -874,28 +978,29 @@ class WebReadService:
         else:
             selected = state.document.blocks
         if not selected and scope != "document":
-            result = error_result(
-                "find", "not_found", "The requested search scope was not found.", next_action="find"
+            return self._state_error(
+                state,
+                "find",
+                "not_found",
+                "The requested search scope was not found.",
+                next_action="find",
             )
-            result.update({"read_id": state.read_id, "version": state.version})
-            result["capture_status"] = "complete"
-            result["extraction_status"] = "complete"
-            return result, True
 
-        normalized_query, _ = self._normalized_with_positions(arguments["query"])
+        normalized_query = self._normalize(arguments["query"])
         matches: list[dict[str, Any]] = []
         budget = arguments.get("max_output_chars", DEFAULT_MAX_OUTPUT_CHARS)
         used = 0
         omitted = 0
         for block in selected:
-            normalized_text, positions = self._normalized_with_positions(block.text)
+            normalized_text = self._normalize(block.text)
             search_from = 0
             while (
                 normalized_query
                 and (found_at := normalized_text.find(normalized_query, search_from)) >= 0
             ):
-                original_start = positions[found_at]
-                original_end = positions[found_at + len(normalized_query) - 1] + 1
+                original_start, original_end = self._original_span(
+                    block.text, found_at, found_at + len(normalized_query)
+                )
                 context_start = max(0, original_start - 40)
                 context_end = min(len(block.text), original_end + 40)
                 context = block.text[context_start:context_end]
@@ -1008,6 +1113,7 @@ class WebReadService:
                     "resource_exhausted",
                     "Source exceeds the acquisition size limit.",
                     retryable=True,
+                    capture_status="partial",
                 )
             body = bytearray()
             try:
@@ -1019,6 +1125,7 @@ class WebReadService:
                             "resource_exhausted",
                             "Source exceeds the acquisition size limit.",
                             retryable=True,
+                            capture_status="partial",
                         )
             except httpx.TimeoutException:
                 return None, error_result(
@@ -1067,18 +1174,35 @@ class WebReadService:
         if content_type not in {"text/html", "application/xhtml+xml"}:
             return (
                 error_result(
-                    "open", "unsupported_format", "This delivery slice supports static HTML only."
+                    "open",
+                    "unsupported_format",
+                    "This delivery slice supports static HTML only.",
+                    capture_status="complete",
+                    extraction_status="unavailable",
                 ),
                 True,
             )
         try:
             document = extract_html(response.text)
         except Exception:
-            return error_result("open", "extraction_failed", "Static HTML extraction failed."), True
+            return (
+                error_result(
+                    "open",
+                    "extraction_failed",
+                    "Static HTML extraction failed.",
+                    capture_status="complete",
+                    extraction_status="failed",
+                ),
+                True,
+            )
         if not document.blocks:
             return (
                 error_result(
-                    "open", "extraction_failed", "Static HTML contained no extractable content."
+                    "open",
+                    "extraction_failed",
+                    "Static HTML contained no extractable content.",
+                    capture_status="complete",
+                    extraction_status="failed",
                 ),
                 True,
             )
@@ -1097,42 +1221,28 @@ class WebReadService:
             metadata["description"] = document.description
         state = ReadState(read_id, version, metadata, document, self._clock())
         self._states[read_id] = state
-        budget = arguments.get("max_output_chars", DEFAULT_MAX_OUTPUT_CHARS)
-        content = document.markdown
-        chunk = content[:budget]
-        next_cursor = None
-        if len(chunk) < len(content):
-            next_cursor = secrets.token_urlsafe(18)
-            state.cursors[next_cursor] = CursorRecord(version, content, len(chunk), budget)
-        result: dict[str, Any] = {
-            "action": "open",
-            "status": "partial" if document.warnings else "ok",
-            "read_id": read_id,
-            "version": version,
-            "metadata": metadata,
-            "outline": document.outline,
-            "content_markdown": chunk,
-            "capture_status": "complete",
-            "extraction_status": "partial" if document.warnings else "complete",
-            "output_status": "truncated" if next_cursor else "complete",
-            "processing": {
-                "path": ["http_fetch", "html_parse", "text_extract"],
-                "browser_rendered": False,
-                "ocr_used": False,
-            },
-            "unprocessed_ranges": [],
-            "failures": [],
-            "warnings": document.warnings,
-            "next_cursor": next_cursor,
-            "interaction_targets": [],
-            "available_actions": AVAILABLE_ACTIONS,
-            "locators": self._locators(document),
-            "returned_range": {
-                "start_char": 0,
-                "end_char": len(chunk),
-                "total_chars": len(content),
-            },
-        }
+        content, boundaries = render_blocks(document.blocks)
+        result, _ = self._content_response(
+            action="open",
+            state=state,
+            content=content,
+            boundaries=boundaries,
+            offset=0,
+            budget=arguments.get("max_output_chars", DEFAULT_MAX_OUTPUT_CHARS),
+        )
+        result.update(
+            {
+                "metadata": metadata,
+                "outline": document.outline,
+                "processing": {
+                    "path": ["http_fetch", "html_parse", "text_extract"],
+                    "browser_rendered": False,
+                    "ocr_used": False,
+                },
+                "interaction_targets": [],
+                "locators": self._locators(document),
+            }
+        )
         return result, False
 
     @staticmethod

@@ -3,6 +3,8 @@
 import asyncio
 import json
 import os
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from datetime import date
 from typing import Any
 
@@ -12,6 +14,7 @@ from mcp import types
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 
+from web_search.network import PinnedPublicTransport
 from web_search.tavily import search
 from web_search.web_read import (
     WEB_READ_DESCRIPTION,
@@ -113,7 +116,6 @@ def create_server(
     idle_ttl_seconds: float = 900.0,
     resource_gate: ResourceGate | None = None,
 ) -> Server[Any]:
-    server: Server[Any] = Server("tavily-web-search", version="0.1.0")
     read_options: dict[str, Any] = {
         "timeout_seconds": timeout_seconds,
         "clock": clock,
@@ -123,6 +125,13 @@ def create_server(
     if url_policy is not None:
         read_options["url_policy"] = url_policy
     web_read = WebReadService(http, **read_options)
+
+    @asynccontextmanager
+    async def lifespan(_: Server[Any]) -> AsyncIterator[dict[str, Any]]:
+        async with web_read.lifecycle():
+            yield {}
+
+    server: Server[Any] = Server("tavily-web-search", version="0.1.0", lifespan=lifespan)
 
     @server.list_tools()  # type: ignore[no-untyped-call, untyped-decorator]
     async def list_tools() -> list[types.Tool]:
@@ -238,7 +247,12 @@ async def serve(
     url_policy: URLPolicy | None = None,
 ) -> None:
     """Own HTTP and stdio lifetimes; injection is only for offline fixtures."""
-    async with httpx.AsyncClient(transport=transport, timeout=timeout_seconds) as http:
+    effective_transport = transport or PinnedPublicTransport()
+    async with httpx.AsyncClient(
+        transport=effective_transport,
+        timeout=timeout_seconds,
+        trust_env=False,
+    ) as http:
         server = create_server(
             api_key=api_key,
             http=http,

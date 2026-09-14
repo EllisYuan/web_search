@@ -109,6 +109,7 @@ async def test_cursor_and_selection_read_from_state_without_refetch() -> None:
         body = opened.structuredContent
         chunks = [body["content_markdown"]]
         ranges = [body["returned_range"]]
+        warnings = list(body["warnings"])
         cursor = body["next_cursor"]
         while cursor:
             continued = await session.call_tool(
@@ -125,6 +126,7 @@ async def test_cursor_and_selection_read_from_state_without_refetch() -> None:
             assert continued.structuredContent is not None
             chunks.append(continued.structuredContent["content_markdown"])
             ranges.append(continued.structuredContent["returned_range"])
+            warnings.extend(continued.structuredContent["warnings"])
             cursor = continued.structuredContent["next_cursor"]
 
         section = await session.call_tool(
@@ -147,7 +149,10 @@ async def test_cursor_and_selection_read_from_state_without_refetch() -> None:
         )
 
     assert "".join(chunks) == "# First\n\nabcdefghij\n\n## Second\n\nklmnopqrstuv"
-    assert [item["start_char"] for item in ranges] == [0, 9, 18, 27, 36]
+    assert ranges[0]["start_char"] == 0
+    assert all(left["end_char"] == right["start_char"] for left, right in zip(ranges, ranges[1:]))
+    assert ranges[-1]["end_char"] == ranges[-1]["total_chars"]
+    assert any(warning["kind"] == "block_split" for warning in warnings)
     assert section.structuredContent is not None
     assert section.structuredContent["content_markdown"] == "## Second\n\nklmnopqrstuv"
     assert block.structuredContent is not None
@@ -166,7 +171,7 @@ async def test_find_is_deterministic_and_discloses_the_searched_scope() -> None:
             headers={"content-type": "text/html"},
             text=(
                 "<main><h1>Deutsch</h1><p>Die Straße ist offen.</p>"
-                "<h1>中文</h1><p>目标事实位于这里。</p></main>"
+                "<h1>中文</h1><p>目标事实位于这里。Cafe\u0301.</p></main>"
             ),
         )
 
@@ -194,6 +199,14 @@ async def test_find_is_deterministic_and_discloses_the_searched_scope() -> None:
                 "section_id": state["outline"][1]["section_id"],
             },
         )
+        composed = await session.call_tool(
+            "web_read",
+            {
+                "action": "find",
+                "read_id": state["read_id"],
+                "query": "CAFÉ",
+            },
+        )
 
     assert not found.isError
     assert found.structuredContent is not None
@@ -209,6 +222,8 @@ async def test_find_is_deterministic_and_discloses_the_searched_scope() -> None:
     assert missing.structuredContent["matches"] == []
     assert missing.structuredContent["searched_scope"]["scope"] == "section"
     assert "searched scope" in missing.structuredContent["message"]
+    assert composed.structuredContent is not None
+    assert composed.structuredContent["matches"][0]["text"] == "Cafe\u0301"
     assert requests == 1
 
 
@@ -453,6 +468,10 @@ async def test_source_failures_are_safe_and_timeout_does_not_commit_partial_stat
             return httpx.Response(403, text="credential=do-not-disclose")
         if request.url.path == "/pdf":
             return httpx.Response(200, headers={"content-type": "application/pdf"}, content=b"%PDF")
+        if request.url.path == "/empty":
+            return httpx.Response(
+                200, headers={"content-type": "text/html"}, text="<html><body></body></html>"
+            )
         return httpx.Response(
             200, headers={"content-type": "text/html"}, text="<main><p>recovered</p></main>"
         )
@@ -466,6 +485,7 @@ async def test_source_failures_are_safe_and_timeout_does_not_commit_partial_stat
         timed_out = await session.call_tool("web_read", {"url": "https://example.org/slow"})
         denied = await session.call_tool("web_read", {"url": "https://example.org/denied"})
         unsupported = await session.call_tool("web_read", {"url": "https://example.org/pdf"})
+        empty = await session.call_tool("web_read", {"url": "https://example.org/empty"})
         recovered = await session.call_tool("web_read", {"url": "https://example.org/recovered"})
         reserved = await session.call_tool(
             "web_read", {"action": "advance", "read_id": "missing", "targets": [{"page": 1}]}
@@ -474,15 +494,21 @@ async def test_source_failures_are_safe_and_timeout_does_not_commit_partial_stat
     assert timed_out.structuredContent is not None
     assert denied.structuredContent is not None
     assert unsupported.structuredContent is not None
+    assert empty.structuredContent is not None
     assert recovered.structuredContent is not None
     assert reserved.structuredContent is not None
     assert timed_out.structuredContent["error"]["category"] == "timeout"
     assert denied.structuredContent["error"]["category"] == "access_blocked"
     assert "do-not-disclose" not in denied.model_dump_json()
     assert unsupported.structuredContent["error"]["category"] == "unsupported_format"
+    assert unsupported.structuredContent["capture_status"] == "complete"
+    assert unsupported.structuredContent["extraction_status"] == "unavailable"
+    assert empty.structuredContent["error"]["category"] == "extraction_failed"
+    assert empty.structuredContent["capture_status"] == "complete"
+    assert empty.structuredContent["extraction_status"] == "failed"
     assert recovered.structuredContent["content_markdown"] == "recovered"
     assert reserved.structuredContent["error"]["category"] == "unsupported_format"
-    assert requests == ["/slow", "/denied", "/pdf", "/recovered"]
+    assert requests == ["/slow", "/denied", "/pdf", "/empty", "/recovered"]
 
 
 async def test_linked_footnote_is_kept_with_section_and_unreliable_table_is_disclosed() -> None:
@@ -491,8 +517,9 @@ async def test_linked_footnote_is_kept_with_section_and_unreliable_table_is_disc
             200,
             headers={"content-type": "text/html"},
             text=(
-                "<main><h1>Claim</h1><p>Result<a href='#note-1'>[1]</a>.</p>"
-                "<table><tr><td>A</td><td>B</td></tr><tr><td>only one</td></tr></table>"
+                "<main><h1>Claim</h1><p>Result.</p>"
+                "<table><tr><td>A<a href='#note-1'>[1]</a></td><td>B</td></tr>"
+                "<tr><td>only one</td></tr></table>"
                 "<h2>Notes</h2><p id='note-1'>[1] Unit: milliseconds.</p></main>"
             ),
         )

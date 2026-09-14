@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import time
 from collections.abc import Awaitable, Callable
 
 import httpx
@@ -7,6 +8,7 @@ import pytest
 from browser_fixture import javascript_site
 from mcp.shared.memory import create_connected_server_and_client_session
 
+import web_search.web_read as web_read_module
 from web_search.browser import BrowserFailure, BrowserSession, InteractionTarget, RenderedPage
 from web_search.server import create_server
 from web_search.web_read import WebReadService
@@ -165,9 +167,7 @@ async def test_open_renders_arbitrary_inline_javascript_with_static_blocks() -> 
 
     assert not opened.isError
     assert opened.structuredContent is not None
-    assert "Ready after arbitrary inline JavaScript" in opened.structuredContent[
-        "content_markdown"
-    ]
+    assert "Ready after arbitrary inline JavaScript" in opened.structuredContent["content_markdown"]
     assert "Loading server text" not in opened.structuredContent["content_markdown"]
     assert opened.structuredContent["processing"]["browser_rendered"] is True
 
@@ -551,6 +551,47 @@ async def test_browser_partial_and_full_failures_are_disclosed() -> None:
     assert fallback.structuredContent["locators"]
     assert fallback.structuredContent["warnings"][0]["kind"] == "browser_render_failed"
     assert fallback.structuredContent["processing"]["browser_rendered"] is False
+
+
+async def test_expired_browser_budget_preserves_static_content(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    original_extract = web_read_module.extract_html
+    browser_created = False
+
+    def slow_extract(html: str) -> web_read_module.ExtractedDocument:
+        time.sleep(0.02)
+        return original_extract(html)
+
+    def factory(policy: Callable[[str], Awaitable[bool]], timeout: float) -> BrowserSession:
+        nonlocal browser_created
+        browser_created = True
+        return InjectedBrowser(policy, timeout)
+
+    def static_shell(_: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            headers={"content-type": "text/html"},
+            text="<article><p>Deadline-safe static evidence.</p></article><script>run()</script>",
+        )
+
+    monkeypatch.setattr(web_read_module, "extract_html", slow_extract)
+    async with httpx.AsyncClient(transport=httpx.MockTransport(static_shell)) as http:
+        service = WebReadService(
+            http,
+            url_policy=allow_fixture_url,
+            timeout_seconds=0.01,
+            browser_factory=factory,
+        )
+        async with service.lifecycle():
+            result, is_error = await service.dispatch({"url": "https://example.org/article"})
+
+    assert not is_error
+    assert not browser_created
+    assert result["status"] == "partial"
+    assert "Deadline-safe static evidence" in result["content_markdown"]
+    assert result["locators"]
+    assert result["warnings"][0]["kind"] == "browser_render_failed"
 
 
 async def test_cancelled_interaction_invalidates_browser_and_preserves_artifact() -> None:

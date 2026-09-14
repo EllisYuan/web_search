@@ -1531,20 +1531,17 @@ class WebReadService:
         static_document = document
         if requires_browser(response.text, document):
             remaining = deadline - asyncio.get_running_loop().time()
-            if remaining <= 0:
-                return error_result(
-                    "open",
-                    "timeout",
-                    "Browser rendering could not start before the deadline.",
-                    retryable=True,
-                    capture_status="complete",
-                ), True
-            browser = self._browser_factory(self._url_policy, remaining)
             try:
+                if remaining <= 0:
+                    raise BrowserFailure(
+                        "timeout", "Browser rendering could not start before the deadline."
+                    )
+                browser = self._browser_factory(self._url_policy, remaining)
                 rendered = await browser.open(url)
                 rendered_document = with_browser_warnings(extract_html(rendered.html), rendered)
             except BrowserFailure as error:
-                await browser.close()
+                if browser is not None:
+                    await browser.close()
                 browser = None
                 rendered = None
                 if not document.blocks:
@@ -1559,7 +1556,8 @@ class WebReadService:
                 document = with_browser_failure_warning(document, response.url, error)
                 browser_failed = True
             except Exception:
-                await browser.close()
+                if browser is not None:
+                    await browser.close()
                 browser = None
                 rendered = None
                 if not document.blocks:

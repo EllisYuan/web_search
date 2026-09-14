@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tavily-web-search-mcp"
+version = "0.1.0"
+description = "Search-only Tavily MCP server for local agents"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = [
+    "httpx>=0.28.1,<0.29",
+    "jsonschema>=4.25.1,<5",
+    "mcp>=1.28,<2",
+]
+
+[project.scripts]
+web-search-mcp = "web_search.server:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.18,<2",
+    "pytest>=8.4,<10",
+    "pytest-asyncio>=1.2,<2",
+    "ruff>=0.13,<1",
+    "types-jsonschema>=4.25,<5",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/web_search"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src/web_search", "tests", "docs/testing", "README.md", "LICENSE", "pyproject.toml", "uv.lock"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

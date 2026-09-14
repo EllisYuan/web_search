@@ -1,12 +1,734 @@
 import asyncio
+import base64
+import threading
+from pathlib import Path
 from typing import Any
 
 import httpx
+import pytest
 from harness import connected
+from pdf_fixture import encrypted_pdf, text_pdf
+
+import web_search.web_read as web_read_module
 
 
 async def allow_public_url(url: str) -> bool:
     return True
+
+
+async def test_open_text_pdf_returns_native_text_metadata_outline_and_page_locators() -> None:
+    requests = 0
+    pdf = text_pdf("Overview 中文正文 and English evidence.", title="双语 PDF", outline=True)
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        result = await session.call_tool(
+            "web_read", {"url": "https://example.org/report.pdf", "max_output_chars": 10_000}
+        )
+
+    assert not result.isError
+    assert result.structuredContent is not None
+    body = result.structuredContent
+    assert body["metadata"]["content_type"] == "application/pdf"
+    assert body["metadata"]["title"] == "双语 PDF"
+    assert body["metadata"]["author"] == "Contract fixture"
+    assert body["metadata"]["page_count"] == 1
+    assert "Overview 中文正文 and English evidence." in body["content_markdown"]
+    assert body["outline"][0]["title"] == "Page 1"
+    assert body["outline"][0]["page"] == 1
+    assert body["locators"][0]["page"] == 1
+    assert body["processing"] == {
+        "path": ["http_fetch", "pdf_parse", "native_text_extract"],
+        "browser_rendered": False,
+        "ocr_used": False,
+    }
+    assert body["capture_status"] == "complete"
+    assert body["extraction_status"] == "complete"
+    assert body["unprocessed_ranges"] == []
+    assert requests == 1
+
+
+async def test_advance_pdf_page_creates_version_without_refetch_and_keeps_old_version() -> None:
+    requests = 0
+    pdf = text_pdf(
+        "Page one baseline text with enough content for a cursor.",
+        "Page two remains unprocessed.",
+        "Page three explicitly advanced evidence.",
+    )
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {
+                "url": "https://example.org/long.pdf",
+                "max_pages": 1,
+                "max_output_chars": 12,
+            },
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        old_block_id = initial["locators"][0]["block_id"]
+        advanced = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "targets": [{"page": 3}],
+                "max_pages": 1,
+            },
+        )
+        assert advanced.structuredContent is not None
+        assert not advanced.isError, advanced.model_dump_json()
+        current = advanced.structuredContent
+        current_page = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "version": current["version"],
+                "page": 3,
+            },
+        )
+        old_page = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "page": 1,
+            },
+        )
+        stale_selector = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "block_id": old_block_id,
+            },
+        )
+        historical_selector = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "block_id": old_block_id,
+            },
+        )
+        migrated_cursor = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "cursor": initial["next_cursor"],
+            },
+        )
+        old_cursor = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "cursor": initial["next_cursor"],
+                "max_output_chars": 12,
+            },
+        )
+
+    assert current["version"] != initial["version"]
+    assert "Page three explicitly advanced evidence." in current["content_markdown"]
+    assert current["processed_targets"] == [{"page": 3}]
+    assert current["unprocessed_ranges"][0]["locator"] == {"start_page": 2, "end_page": 2}
+    assert current_page.structuredContent is not None
+    assert (
+        "Page three explicitly advanced evidence."
+        in current_page.structuredContent["content_markdown"]
+    )
+    assert old_page.structuredContent is not None
+    assert "Page one baseline" in old_page.structuredContent["content_markdown"]
+    assert stale_selector.structuredContent is not None
+    assert stale_selector.structuredContent["error"]["category"] == "version_mismatch"
+    assert not historical_selector.isError
+    assert historical_selector.structuredContent is not None
+    assert "Page one baseline" in historical_selector.structuredContent["content_markdown"]
+    assert migrated_cursor.structuredContent is not None
+    assert migrated_cursor.structuredContent["error"]["category"] == "version_mismatch"
+    assert not old_cursor.isError
+    assert old_cursor.structuredContent is not None
+    assert old_cursor.structuredContent["version"] == initial["version"]
+    assert requests == 1
+
+
+async def test_advance_validates_regions_and_commits_only_complete_targets() -> None:
+    requests = 0
+    pdf = text_pdf("Initial page.", "Caption\nColumn A    Column B", "")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/regions.pdf", "max_pages": 1}
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        invalid = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "targets": [{"page": 2, "region": {"x": 0.8, "y": 0, "width": 0.3, "height": 1}}],
+            },
+        )
+        partial = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "targets": [
+                    {"page": 2, "region": {"x": 0, "y": 0, "width": 1, "height": 1}},
+                    {"page": 3},
+                ],
+            },
+        )
+        assert partial.structuredContent is not None
+        body = partial.structuredContent
+        repeated = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": body["version"],
+                "targets": [{"page": 2, "region": {"x": 0, "y": 0, "width": 1, "height": 1}}],
+            },
+        )
+
+    assert invalid.isError
+    assert invalid.structuredContent is not None
+    assert invalid.structuredContent["error"]["category"] == "invalid_request"
+    assert not partial.isError
+    assert body["status"] == "partial"
+    assert body["version"] != initial["version"]
+    assert body["processed_targets"] == [
+        {"page": 2, "region": {"x": 0, "y": 0, "width": 1, "height": 1}}
+    ]
+    assert body["failures"][-1]["locator"] == {"page": 3}
+    assert body["locators"][-1]["source_region"] == {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+    }
+    structure_warning = next(
+        warning for warning in body["warnings"] if warning["kind"] == "structure_incomplete"
+    )
+    assert structure_warning["locator"]["page"] == 2
+    assert structure_warning["next_action"] == "asset"
+    assert repeated.structuredContent is not None
+    assert repeated.structuredContent["version"] == body["version"]
+    assert repeated.structuredContent["content_markdown"] == ""
+    assert repeated.structuredContent["warnings"][-1]["kind"] == "already_processed"
+    assert requests == 1
+
+
+async def test_failed_region_is_reported_until_an_explicit_retry_succeeds(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pdf = text_pdf("Processed page one.", "Successful page two.")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/region-retry.pdf", "max_pages": 1}
+        )
+        assert opened.structuredContent is not None
+        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+
+        def fail_region(*args: Any, **kwargs: Any) -> Any:
+            page = args[1]
+            region = args[2]
+            if page == 1 and region is not None:
+                raise ValueError("injected region failure")
+            return original_extract(*args, **kwargs)
+
+        monkeypatch.setattr(web_read_module, "extract_pdf_text", fail_region)
+        partial = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": opened.structuredContent["read_id"],
+                "targets": [
+                    {"page": 2},
+                    {"page": 1, "region": {"x": 0, "y": 0, "width": 1, "height": 1}},
+                ],
+            },
+        )
+        assert partial.structuredContent is not None
+        failed = partial.structuredContent
+        monkeypatch.setattr(web_read_module, "extract_pdf_text", original_extract)
+        retried = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": opened.structuredContent["read_id"],
+                "version": failed["version"],
+                "targets": [{"page": 1, "region": {"x": 0, "y": 0, "width": 1, "height": 1}}],
+            },
+        )
+
+    assert failed["failures"][-1]["locator"]["region"]["width"] == 1
+    assert failed["unprocessed_ranges"] == [
+        {
+            "kind": "unprocessed_region",
+            "message": "PDF region text has not been processed.",
+            "locator": {
+                "page": 1,
+                "region": {"x": 0, "y": 0, "width": 1, "height": 1},
+            },
+            "next_action": "advance",
+        }
+    ]
+    assert retried.structuredContent is not None
+    assert retried.structuredContent["failures"] == []
+    assert retried.structuredContent["unprocessed_ranges"] == []
+
+
+async def test_concurrent_advance_uses_compare_and_swap_before_commit(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pdf = text_pdf("Committed page one.", "Concurrent page two.", "Concurrent page three.")
+    barrier = threading.Barrier(2)
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/concurrent.pdf", "max_pages": 1}
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+
+        def synchronized_extract(*args: Any, **kwargs: Any) -> Any:
+            barrier.wait(timeout=2)
+            return original_extract(*args, **kwargs)
+
+        monkeypatch.setattr(web_read_module, "extract_pdf_text", synchronized_extract)
+        results = await asyncio.gather(
+            *(
+                session.call_tool(
+                    "web_read",
+                    {
+                        "action": "advance",
+                        "read_id": initial["read_id"],
+                        "version": initial["version"],
+                        "targets": [{"page": page}],
+                    },
+                )
+                for page in (2, 3)
+            )
+        )
+        monkeypatch.setattr(web_read_module, "extract_pdf_text", original_extract)
+
+    successes = [result for result in results if not result.isError]
+    conflicts = [result for result in results if result.isError]
+    assert len(successes) == 1
+    assert len(conflicts) == 1
+    assert conflicts[0].structuredContent is not None
+    assert conflicts[0].structuredContent["error"]["category"] == "version_mismatch"
+
+
+async def test_asset_returns_captured_pdf_crop_as_mcp_image_without_refetch() -> None:
+    requests = 0
+    pdf = text_pdf("Crop target text.")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/crop.pdf", "max_pages": 1}
+        )
+        assert opened.structuredContent is not None
+        asset = await session.call_tool(
+            "web_read",
+            {
+                "action": "asset",
+                "read_id": opened.structuredContent["read_id"],
+                "version": opened.structuredContent["version"],
+                "asset_type": "pdf_page_crop",
+                "page": 1,
+                "region": {"x": 0, "y": 0, "width": 1, "height": 0.5},
+            },
+        )
+        released = await session.call_tool(
+            "web_read",
+            {"action": "release", "read_id": opened.structuredContent["read_id"]},
+        )
+        expired = await session.call_tool(
+            "web_read",
+            {
+                "action": "asset",
+                "read_id": opened.structuredContent["read_id"],
+                "asset_type": "pdf_page_crop",
+                "page": 1,
+            },
+        )
+
+    assert not asset.isError
+    assert asset.structuredContent is not None
+    body = asset.structuredContent
+    assert body["mime_type"] == "image/png"
+    assert body["page"] == 1
+    assert body["region"] == {"x": 0, "y": 0, "width": 1, "height": 0.5}
+    image_parts = [item for item in asset.content if item.type == "image"]
+    assert len(image_parts) == 1
+    assert image_parts[0].mimeType == "image/png"
+    assert base64.b64decode(image_parts[0].data).startswith(b"\x89PNG\r\n\x1a\n")
+    assert released.structuredContent is not None
+    assert released.structuredContent["released"] is True
+    assert expired.isError
+    assert expired.structuredContent is not None
+    assert expired.structuredContent["error"]["category"] == "state_expired"
+    assert requests == 1
+
+
+async def test_advance_timeout_does_not_publish_a_partial_version(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pdf = text_pdf("Committed page one.", "Delayed page two.")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        timeout_seconds=0.1,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/timeout.pdf", "max_pages": 1}
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+
+        def delayed_extract(*args: Any, **kwargs: Any) -> Any:
+            threading.Event().wait(0.2)
+            return original_extract(*args, **kwargs)
+
+        monkeypatch.setattr(web_read_module, "extract_pdf_text", delayed_extract)
+        timed_out = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "targets": [{"page": 2}],
+            },
+        )
+        old_page = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "page": 1,
+            },
+        )
+        uncommitted = await session.call_tool(
+            "web_read", {"action": "read", "read_id": initial["read_id"], "page": 2}
+        )
+
+    assert timed_out.isError
+    assert timed_out.structuredContent is not None
+    assert timed_out.structuredContent["error"]["category"] == "timeout"
+    assert timed_out.structuredContent["version"] == initial["version"]
+    assert old_page.structuredContent is not None
+    assert old_page.structuredContent["content_markdown"] == "Committed page one."
+    assert uncommitted.isError
+
+
+async def test_cancelled_advance_keeps_the_committed_version(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pdf = text_pdf("Committed before cancellation.", "Cancelled page.")
+    started = threading.Event()
+    resume = threading.Event()
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/cancel.pdf", "max_pages": 1}
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+
+        def blocked_extract(*args: Any, **kwargs: Any) -> Any:
+            started.set()
+            resume.wait(2)
+            return original_extract(*args, **kwargs)
+
+        monkeypatch.setattr(web_read_module, "extract_pdf_text", blocked_extract)
+        call = asyncio.create_task(
+            session.call_tool(
+                "web_read",
+                {
+                    "action": "advance",
+                    "read_id": initial["read_id"],
+                    "version": initial["version"],
+                    "targets": [{"page": 2}],
+                },
+            )
+        )
+        assert await asyncio.to_thread(started.wait, 1)
+        call.cancel()
+        try:
+            with pytest.raises(asyncio.CancelledError):
+                await call
+        finally:
+            resume.set()
+        await asyncio.sleep(0)
+        old_page = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "page": 1,
+            },
+        )
+        uncommitted = await session.call_tool(
+            "web_read", {"action": "read", "read_id": initial["read_id"], "page": 2}
+        )
+
+    assert old_page.structuredContent is not None
+    assert old_page.structuredContent["content_markdown"] == "Committed before cancellation."
+    assert uncommitted.isError
+
+
+async def test_pdf_budgets_and_state_reads_keep_processing_and_output_separate() -> None:
+    requests = 0
+    pdf = text_pdf(
+        "First page evidence with a stable locator.",
+        "Second page evidence remains captured only.",
+        "Third page evidence remains captured only.",
+    )
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {
+                "url": "https://example.org/long.pdf",
+                "max_pages": 1,
+                "max_output_chars": 12,
+            },
+        )
+        assert opened.structuredContent is not None
+        body = opened.structuredContent
+        chunks = [body["content_markdown"]]
+        cursor = body["next_cursor"]
+        while cursor:
+            continued = await session.call_tool(
+                "web_read",
+                {
+                    "action": "read",
+                    "read_id": body["read_id"],
+                    "version": body["version"],
+                    "cursor": cursor,
+                    "max_output_chars": 12,
+                },
+            )
+            assert continued.structuredContent is not None
+            chunks.append(continued.structuredContent["content_markdown"])
+            cursor = continued.structuredContent["next_cursor"]
+        page = await session.call_tool(
+            "web_read", {"action": "read", "read_id": body["read_id"], "page": 1}
+        )
+        block = await session.call_tool(
+            "web_read",
+            {
+                "action": "read",
+                "read_id": body["read_id"],
+                "block_id": body["locators"][0]["block_id"],
+            },
+        )
+        found = await session.call_tool(
+            "web_read",
+            {
+                "action": "find",
+                "read_id": body["read_id"],
+                "query": "EVIDENCE",
+                "scope": "page",
+                "page": 1,
+            },
+        )
+        unread = await session.call_tool(
+            "web_read", {"action": "read", "read_id": body["read_id"], "page": 2}
+        )
+        unsearched = await session.call_tool(
+            "web_read",
+            {
+                "action": "find",
+                "read_id": body["read_id"],
+                "query": "Second",
+                "scope": "page",
+                "page": 2,
+            },
+        )
+
+    assert body["capture_status"] == "complete"
+    assert body["extraction_status"] == "partial"
+    assert body["output_status"] == "truncated"
+    assert body["unprocessed_ranges"] == [
+        {
+            "kind": "unprocessed_pages",
+            "message": "PDF page text has not been processed.",
+            "locator": {"start_page": 2, "end_page": 3},
+            "next_action": "advance",
+        }
+    ]
+    assert "".join(chunks) == "First page evidence with a stable locator."
+    assert page.structuredContent is not None
+    assert block.structuredContent is not None
+    assert page.structuredContent["content_markdown"] == "".join(chunks)
+    assert block.structuredContent["content_markdown"] == "".join(chunks)
+    assert found.structuredContent is not None
+    assert found.structuredContent["matches"][0]["page"] == 1
+    assert found.structuredContent["searched_scope"]["page"] == 1
+    assert unread.isError and unsearched.isError
+    assert unread.structuredContent is not None
+    assert unsearched.structuredContent is not None
+    assert "has not been processed" in unread.structuredContent["error"]["message"]
+    assert "has not been processed" in unsearched.structuredContent["error"]["message"]
+    assert requests == 1
+
+
+async def test_pdf_partial_text_layer_and_structure_warning_are_located() -> None:
+    pdf = text_pdf("", "Column A   Column B\nvalue 1   milliseconds")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
+
+    async with connected(source, api_key=None, url_policy=allow_public_url) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/mixed.pdf", "max_pages": 2}
+        )
+        assert opened.structuredContent is not None
+        body = opened.structuredContent
+        blank_page = await session.call_tool(
+            "web_read", {"action": "read", "read_id": body["read_id"], "page": 1}
+        )
+
+    assert not opened.isError
+    assert body["extraction_status"] == "partial"
+    assert body["failures"][0]["kind"] == "text_layer_unavailable"
+    assert body["failures"][0]["locator"] == {"page": 1}
+    assert body["warnings"][0]["kind"] == "structure_incomplete"
+    assert body["warnings"][0]["locator"] == {"page": 2}
+    assert "Column A" in body["content_markdown"]
+    assert blank_page.isError
+    assert blank_page.structuredContent is not None
+    assert "no readable native text layer" in blank_page.structuredContent["error"]["message"]
+
+
+async def test_encrypted_pdf_is_explainable_and_artifacts_are_cleaned(tmp_path: Path) -> None:
+    responses = [
+        text_pdf("retained artifact"),
+        text_pdf("shutdown cleanup"),
+        text_pdf("expiry cleanup"),
+        encrypted_pdf(),
+    ]
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            headers={"content-type": "application/pdf"},
+            content=responses.pop(0),
+        )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+    ) as session:
+        first = await session.call_tool("web_read", {"url": "https://example.org/first.pdf"})
+        assert first.structuredContent is not None
+        assert len(list(tmp_path.glob("web-read-*.pdf"))) == 1
+        await session.call_tool(
+            "web_read", {"action": "release", "read_id": first.structuredContent["read_id"]}
+        )
+        assert list(tmp_path.glob("web-read-*.pdf")) == []
+        await session.call_tool("web_read", {"url": "https://example.org/second.pdf"})
+        assert len(list(tmp_path.glob("web-read-*.pdf"))) == 1
+    assert list(tmp_path.glob("web-read-*.pdf")) == []
+
+    now = [0.0]
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        clock=lambda: now[0],
+        idle_ttl_seconds=5,
+    ) as session:
+        expiring = await session.call_tool("web_read", {"url": "https://example.org/expiring.pdf"})
+        assert expiring.structuredContent is not None
+        now[0] = 5.0
+        expired = await session.call_tool(
+            "web_read",
+            {
+                "action": "find",
+                "read_id": expiring.structuredContent["read_id"],
+                "query": "expiry",
+            },
+        )
+        assert expired.isError
+        assert list(tmp_path.glob("web-read-*.pdf")) == []
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+    ) as session:
+        encrypted = await session.call_tool(
+            "web_read", {"url": "https://example.org/encrypted.pdf"}
+        )
+
+    assert encrypted.isError
+    assert encrypted.structuredContent is not None
+    assert encrypted.structuredContent["error"]["category"] == "access_blocked"
+    assert encrypted.structuredContent["capture_status"] == "complete"
+    assert encrypted.structuredContent["extraction_status"] == "unavailable"
+    assert list(tmp_path.glob("web-read-*.pdf")) == []
 
 
 async def test_discovery_without_tavily_key_only_exposes_web_read() -> None:
@@ -484,7 +1206,7 @@ async def test_source_failures_are_safe_and_timeout_does_not_commit_partial_stat
     ) as session:
         timed_out = await session.call_tool("web_read", {"url": "https://example.org/slow"})
         denied = await session.call_tool("web_read", {"url": "https://example.org/denied"})
-        unsupported = await session.call_tool("web_read", {"url": "https://example.org/pdf"})
+        damaged_pdf = await session.call_tool("web_read", {"url": "https://example.org/pdf"})
         empty = await session.call_tool("web_read", {"url": "https://example.org/empty"})
         recovered = await session.call_tool("web_read", {"url": "https://example.org/recovered"})
         reserved = await session.call_tool(
@@ -493,21 +1215,21 @@ async def test_source_failures_are_safe_and_timeout_does_not_commit_partial_stat
 
     assert timed_out.structuredContent is not None
     assert denied.structuredContent is not None
-    assert unsupported.structuredContent is not None
+    assert damaged_pdf.structuredContent is not None
     assert empty.structuredContent is not None
     assert recovered.structuredContent is not None
     assert reserved.structuredContent is not None
     assert timed_out.structuredContent["error"]["category"] == "timeout"
     assert denied.structuredContent["error"]["category"] == "access_blocked"
     assert "do-not-disclose" not in denied.model_dump_json()
-    assert unsupported.structuredContent["error"]["category"] == "unsupported_format"
-    assert unsupported.structuredContent["capture_status"] == "complete"
-    assert unsupported.structuredContent["extraction_status"] == "unavailable"
+    assert damaged_pdf.structuredContent["error"]["category"] == "extraction_failed"
+    assert damaged_pdf.structuredContent["capture_status"] == "complete"
+    assert damaged_pdf.structuredContent["extraction_status"] == "failed"
     assert empty.structuredContent["error"]["category"] == "extraction_failed"
     assert empty.structuredContent["capture_status"] == "complete"
     assert empty.structuredContent["extraction_status"] == "failed"
     assert recovered.structuredContent["content_markdown"] == "recovered"
-    assert reserved.structuredContent["error"]["category"] == "unsupported_format"
+    assert reserved.structuredContent["error"]["category"] == "state_expired"
     assert requests == ["/slow", "/denied", "/pdf", "/empty", "/recovered"]
 
 

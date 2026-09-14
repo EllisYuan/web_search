@@ -4,6 +4,7 @@ import asyncio
 import json
 
 import httpx
+from pdf_fixture import text_pdf
 
 from web_search.server import read_api_key, serve
 
@@ -11,6 +12,18 @@ from web_search.server import read_api_key, serve
 def respond(request: httpx.Request) -> httpx.Response:
     if request.method == "GET":
         assert str(request.url).startswith("https://example.org/source")
+        if request.url.path == "/source.pdf":
+            return httpx.Response(
+                200,
+                headers={"content-type": "application/pdf"},
+                content=text_pdf(
+                    "PDF fixture first page.",
+                    "",
+                    "PDF fixture third page advanced through captured bytes.",
+                    title="Inspector PDF",
+                    outline=True,
+                ),
+            )
         return httpx.Response(
             200,
             headers={"content-type": "text/html"},

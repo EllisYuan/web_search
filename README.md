@@ -2,7 +2,7 @@
 
 为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-[#17](https://github.com/EllisYuan/web_search/issues/17) 交付 static HTML vertical slice：`open`、`read`、`find`、`release`、短期 process-local state、固定 cursor、三条完整性 status、URL public boundary 与有界 acquisition。`advance`、`interact`、`asset` 仍是后续 v1 action，当前调用会明确返回 error，不会伪装成功。Deep Research 的 planning 与 synthesis 仍由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+当前交付支持 static HTML，以及 born-digital text PDF 的有限 page extraction。PDF capture 可通过显式 `advance` 按 page / normalized region 追加处理，并通过 `asset` 取得已捕获 page crop；`read` / `find` 只读取指定 version 已完成的 extraction。`interact`、OCR 与 JavaScript rendering 仍是后续 v1 action。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -48,9 +48,23 @@ uv sync --locked
 {"action": "read", "read_id": "...", "version": "...", "cursor": "...", "max_output_chars": 12000}
 ```
 
-也可用响应中的 opaque `section_id` / `block_id` 发起新的 selection。`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。
+也可用响应中的 opaque `section_id` / `block_id` 或已处理 PDF `page` 发起新的 selection。`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。
 
-当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、`max_pages=100`、`max_regions=1000`，默认 acquisition deadline 为 30 秒、最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。当前只实现 static `text/html` / `application/xhtml+xml`，不进行 browser rendering、PDF processing 或 OCR。
+长 PDF 可在首次 `max_pages` 之后显式追加处理；每次只处理 `targets`，并创建新 `version`：
+
+```json
+{"action":"advance","read_id":"...","version":"...","targets":[{"page":7},{"page":9,"region":{"x":0,"y":0.4,"width":1,"height":0.3}}]}
+```
+
+旧 version 在 state 有效期内仍可显式读取。cursor 固定 version；省略 `version` 时，旧 cursor 不会迁移到当前 version。重复 target 返回 `already_processed` warning，不追加重复正文。部分 target 失败时，完整成功的 target 原子提交到新 version，并在 `failures` 和 `unprocessed_ranges` 中保留 locator。
+
+`asset` 只使用已捕获 PDF，不进行新的 HTTP acquisition。结果包含 page / region / version locator，并通过 MCP `ImageContent` 返回 PNG，而不是本机路径：
+
+```json
+{"action":"asset","read_id":"...","version":"...","asset_type":"pdf_page_crop","page":7,"region":{"x":0,"y":0,"width":1,"height":0.5}}
+```
+
+当前 hard limits 为每次 output 100,000 chars、acquisition 2,000,000 bytes、`max_pages=100`、`max_regions=1000`、PDF crop 12,000,000 pixels / 5,000,000 bytes，默认 operation deadline 为 30 秒、最多 5 次 redirect。初始 URL 与每次 redirect 都会检查 scheme、userinfo、DNS/IP public boundary；不会绕过登录、paywall、CAPTCHA 或访问控制。PDF 使用 native text layer，不执行 OCR；table / column reading order 不可靠时保留文字并返回 `structure_incomplete`，caller 可用 page crop 核对。
 
 ## 调用与结果
 

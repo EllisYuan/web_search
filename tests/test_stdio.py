@@ -1,12 +1,12 @@
 import json
 import sys
 from pathlib import Path
-from tempfile import TemporaryFile
+from tempfile import TemporaryDirectory, TemporaryFile
 from typing import TextIO, cast
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
-from mcp.types import TextContent
+from mcp.types import ImageContent, TextContent
 
 
 async def test_real_stdio_discovery_and_mixed_batch() -> None:
@@ -168,3 +168,159 @@ async def test_real_stdio_rate_quota_timeout_and_subsequent_search() -> None:
         assert isinstance(result.content[0], TextContent)
         assert json.loads(result.content[0].text) == result.structuredContent
         assert key not in result.model_dump_json() + stderr
+
+
+async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
+    with TemporaryDirectory() as artifact_temp:
+        params = StdioServerParameters(
+            command=sys.executable,
+            args=[str(Path(__file__).with_name("fixture_stdio_server.py"))],
+            env={
+                "TAVILY_API_KEY": "",
+                "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
+                "TEMP": artifact_temp,
+                "TMP": artifact_temp,
+            },
+        )
+        errors = TemporaryFile(mode="w+", encoding="utf-8")
+        try:
+            async with stdio_client(params, errlog=cast(TextIO, errors)) as (read, write):
+                async with ClientSession(read, write) as session:
+                    await session.initialize()
+                    tools = await session.list_tools()
+                    assert [tool.name for tool in tools.tools] == ["web_read"]
+                    html = await session.call_tool(
+                        "web_read", {"url": "https://example.org/source"}
+                    )
+                    pdf = await session.call_tool(
+                        "web_read",
+                        {
+                            "url": "https://example.org/source.pdf",
+                            "max_pages": 1,
+                            "max_output_chars": 10,
+                        },
+                    )
+                    assert pdf.structuredContent is not None
+                    body = pdf.structuredContent
+                    stale_selection = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "read",
+                            "read_id": body["read_id"],
+                            "version": body["version"],
+                            "block_id": body["locators"][0]["block_id"],
+                            "max_output_chars": 10,
+                        },
+                    )
+                    assert stale_selection.structuredContent is not None
+                    stale_cursor = stale_selection.structuredContent["next_cursor"]
+                    chunks = [body["content_markdown"]]
+                    cursor = body["next_cursor"]
+                    while cursor is not None:
+                        continued = await session.call_tool(
+                            "web_read",
+                            {
+                                "action": "read",
+                                "read_id": body["read_id"],
+                                "version": body["version"],
+                                "cursor": cursor,
+                                "max_output_chars": 10,
+                            },
+                        )
+                        assert continued.structuredContent is not None
+                        chunks.append(continued.structuredContent["content_markdown"])
+                        cursor = continued.structuredContent["next_cursor"]
+                    found = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "find",
+                            "read_id": body["read_id"],
+                            "scope": "page",
+                            "page": 1,
+                            "query": "FIRST PAGE",
+                        },
+                    )
+                    unread = await session.call_tool(
+                        "web_read", {"action": "read", "read_id": body["read_id"], "page": 2}
+                    )
+                    invalid = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "advance",
+                            "read_id": body["read_id"],
+                            "targets": [
+                                {
+                                    "page": 2,
+                                    "region": {"x": 0.8, "y": 0, "width": 0.3, "height": 1},
+                                }
+                            ],
+                        },
+                    )
+                    advanced = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "advance",
+                            "read_id": body["read_id"],
+                            "version": body["version"],
+                            "targets": [{"page": 3}, {"page": 2}],
+                        },
+                    )
+                    assert advanced.structuredContent is not None
+                    stale = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "read",
+                            "read_id": body["read_id"],
+                            "cursor": stale_cursor,
+                            "max_output_chars": 10,
+                        },
+                    )
+                    crop = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "asset",
+                            "read_id": body["read_id"],
+                            "version": advanced.structuredContent["version"],
+                            "asset_type": "pdf_page_crop",
+                            "page": 3,
+                        },
+                    )
+                    released = await session.call_tool(
+                        "web_read", {"action": "release", "read_id": body["read_id"]}
+                    )
+            errors.seek(0)
+            stderr = errors.read()
+        finally:
+            errors.close()
+        assert list(Path(artifact_temp).glob("*.pdf")) == []
+
+    assert not html.isError and html.structuredContent is not None
+    assert "Search 后读取的原文" in html.structuredContent["content_markdown"]
+    assert not pdf.isError
+    assert body["metadata"]["page_count"] == 3
+    assert body["capture_status"] == "complete"
+    assert body["extraction_status"] == "partial"
+    assert body["output_status"] == "truncated"
+    assert "".join(chunks) == "PDF fixture first page."
+    assert found.structuredContent is not None
+    assert found.structuredContent["matches"][0]["page"] == 1
+    assert unread.isError and unread.structuredContent is not None
+    assert "has not been processed" in unread.structuredContent["error"]["message"]
+    assert invalid.isError and invalid.structuredContent is not None
+    assert invalid.structuredContent["error"]["category"] == "invalid_request"
+    assert not advanced.isError and advanced.structuredContent is not None
+    assert advanced.structuredContent["status"] == "partial"
+    assert advanced.structuredContent["failures"][-1]["locator"] == {"page": 2}
+    assert advanced.structuredContent["version"] != body["version"]
+    assert "third page advanced" in advanced.structuredContent["content_markdown"]
+    assert advanced.structuredContent["processing"]["source_acquisition"] is False
+    assert stale.isError and stale.structuredContent is not None
+    assert stale.structuredContent["error"]["category"] == "version_mismatch"
+    assert not crop.isError and crop.structuredContent is not None
+    assert crop.structuredContent["page"] == 3
+    assert any(isinstance(part, ImageContent) for part in crop.content)
+    assert released.structuredContent is not None
+    assert released.structuredContent["released"] is True
+    assert isinstance(pdf.content[0], TextContent)
+    assert json.loads(pdf.content[0].text) == body
+    assert stderr == ""

@@ -4,6 +4,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory, TemporaryFile
 from typing import TextIO, cast
 
+from browser_fixture import javascript_site
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from mcp.types import ImageContent, TextContent
@@ -350,4 +351,51 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
     assert released.structuredContent["released"] is True
     assert isinstance(pdf.content[0], TextContent)
     assert json.loads(pdf.content[0].text) == body
+    assert stderr == ""
+
+
+async def test_real_stdio_renders_and_interacts_with_javascript_page() -> None:
+    params = StdioServerParameters(
+        command=sys.executable,
+        args=[str(Path(__file__).with_name("fixture_browser_stdio_server.py"))],
+        env={"TAVILY_API_KEY": ""},
+    )
+    async with javascript_site() as base_url:
+        with TemporaryFile(mode="w+", encoding="utf-8") as errors:
+            async with stdio_client(params, errlog=cast(TextIO, errors)) as (read, write):
+                async with ClientSession(read, write) as session:
+                    await session.initialize()
+                    opened = await session.call_tool(
+                        "web_read", {"url": f"{base_url}/interactions"}
+                    )
+                    assert opened.structuredContent is not None
+                    body = opened.structuredContent
+                    expand = next(
+                        target
+                        for target in body["interaction_targets"]
+                        if target["operation"] == "expand"
+                    )
+                    interacted = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "interact",
+                            "read_id": body["read_id"],
+                            "version": body["version"],
+                            "target_id": expand["target_id"],
+                            "operation": "expand",
+                        },
+                    )
+                    failed = await session.call_tool("web_read", {"url": f"{base_url}/empty-js"})
+            errors.seek(0)
+            stderr = errors.read()
+
+    assert not opened.isError
+    assert body["processing"]["browser_rendered"] is True
+    assert "Original version text" in body["content_markdown"]
+    assert not interacted.isError and interacted.structuredContent is not None
+    assert interacted.structuredContent["content_markdown"] == "Expanded evidence"
+    assert interacted.structuredContent["previous_version"] == body["version"]
+    assert interacted.structuredContent["version"] != body["version"]
+    assert failed.isError and failed.structuredContent is not None
+    assert failed.structuredContent["error"]["category"] == "extraction_failed"
     assert stderr == ""

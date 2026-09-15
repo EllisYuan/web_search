@@ -16,8 +16,9 @@ def main() -> None:
         result = {
             "ok": False,
             "category": (
-                "resource_exhausted" if isinstance(error, (MemoryError, OverflowError)) else
-                "extraction_failed"
+                "resource_exhausted"
+                if isinstance(error, (MemoryError, OverflowError))
+                else "extraction_failed"
             ),
             "message": str(error),
         }

@@ -11,8 +11,7 @@ from PIL import Image
 from web_search.image import ImageExtraction, OcrBlock
 
 PNG_BYTES = base64.b64decode(
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUB"
-    "AScY42YAAAAASUVORK5CYII="
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
 )
 FULL_REGION = {"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}
 
@@ -346,9 +345,7 @@ async def test_real_cpu_ocr_reads_controlled_english_and_chinese_images(
             artifact_directory=tmp_path,
             timeout_seconds=30,
         ) as session:
-            opened = await session.call_tool(
-                "web_read", {"url": f"https://example.org/{filename}"}
-            )
+            opened = await session.call_tool("web_read", {"url": f"https://example.org/{filename}"})
 
         assert not opened.isError, opened.model_dump_json()
         assert opened.structuredContent is not None
@@ -384,9 +381,7 @@ async def test_real_cpu_ocr_discloses_columns_low_resolution_and_rotation(
             artifact_directory=tmp_path,
             timeout_seconds=30,
         ) as session:
-            opened = await session.call_tool(
-                "web_read", {"url": f"https://example.org/{filename}"}
-            )
+            opened = await session.call_tool("web_read", {"url": f"https://example.org/{filename}"})
 
         assert not opened.isError, opened.model_dump_json()
         assert opened.structuredContent is not None
@@ -455,9 +450,7 @@ async def test_image_decode_failure_does_not_publish_state_or_leave_artifact(
         url_policy=allow_public_url,
         artifact_directory=tmp_path,
     ) as session:
-        failed = await session.call_tool(
-            "web_read", {"url": "https://example.org/broken.png"}
-        )
+        failed = await session.call_tool("web_read", {"url": "https://example.org/broken.png"})
 
     assert failed.isError
     assert failed.structuredContent is not None
@@ -493,9 +486,7 @@ async def test_image_file_size_limit_precedes_decode_and_ocr(tmp_path: Path) -> 
         artifact_directory=tmp_path,
         image_processor=processor,
     ) as session:
-        failed = await session.call_tool(
-            "web_read", {"url": "https://example.org/oversized.png"}
-        )
+        failed = await session.call_tool("web_read", {"url": "https://example.org/oversized.png"})
 
     assert failed.isError
     assert failed.structuredContent is not None
@@ -546,9 +537,7 @@ async def test_image_partial_ocr_keeps_reliable_text_and_discloses_review_asset(
                 }
             ],
             runtime=extraction().runtime,
-            processed_regions=[
-                {"x": 0.0, "y": 0.0, "width": 0.5, "height": 1.0}
-            ],
+            processed_regions=[{"x": 0.0, "y": 0.0, "width": 0.5, "height": 1.0}],
         )
 
     async with connected(
@@ -581,9 +570,7 @@ async def test_image_pixel_limit_rejects_before_inference_and_cleans_capture(
     Image.new("1", (4000, 4000)).save(output, format="PNG")
 
     def source(request: httpx.Request) -> httpx.Response:
-        return httpx.Response(
-            200, headers={"content-type": "image/png"}, content=output.getvalue()
-        )
+        return httpx.Response(200, headers={"content-type": "image/png"}, content=output.getvalue())
 
     async with connected(
         source,
@@ -630,9 +617,7 @@ async def test_image_advance_timeout_preserves_committed_version(
         image_processor=processor,
         timeout_seconds=0.01,
     ) as session:
-        opened = await session.call_tool(
-            "web_read", {"url": "https://example.org/timeout.png"}
-        )
+        opened = await session.call_tool("web_read", {"url": "https://example.org/timeout.png"})
         assert opened.structuredContent is not None
         initial = opened.structuredContent
         timed_out = await session.call_tool(
@@ -641,9 +626,7 @@ async def test_image_advance_timeout_preserves_committed_version(
                 "action": "advance",
                 "read_id": initial["read_id"],
                 "version": initial["version"],
-                "targets": [
-                    {"region": {"x": 0.0, "y": 0.0, "width": 0.5, "height": 0.5}}
-                ],
+                "targets": [{"region": {"x": 0.0, "y": 0.0, "width": 0.5, "height": 0.5}}],
             },
         )
         preserved = await session.call_tool(

@@ -21,6 +21,7 @@ from web_search.tavily import search
 from web_search.web_read import (
     WEB_READ_DESCRIPTION,
     WEB_READ_INPUT_SCHEMA,
+    BrowserFactory,
     Clock,
     ResourceGate,
     URLPolicy,
@@ -119,6 +120,7 @@ def create_server(
     resource_gate: ResourceGate | None = None,
     artifact_directory: str | Path | None = None,
     image_processor: ImageProcessor | None = None,
+    browser_factory: BrowserFactory | None = None,
 ) -> Server[Any]:
     read_options: dict[str, Any] = {
         "timeout_seconds": timeout_seconds,
@@ -130,6 +132,8 @@ def create_server(
     }
     if url_policy is not None:
         read_options["url_policy"] = url_policy
+    if browser_factory is not None:
+        read_options["browser_factory"] = browser_factory
     web_read = WebReadService(http, **read_options)
 
     @asynccontextmanager

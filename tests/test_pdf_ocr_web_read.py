@@ -245,6 +245,57 @@ async def test_partial_pdf_ocr_region_keeps_text_but_remains_retryable(
     assert not retried.structuredContent["unprocessed_ranges"]
 
 
+async def test_mixed_pdf_deduplicates_short_chinese_native_text(tmp_path: Path) -> None:
+    image = (Path(__file__).parent / "fixtures" / "image-zh.png").read_bytes()
+    payload = mixed_page_pdf(image, "单位")
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=payload)
+
+    async def processor(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        return ImageExtraction(
+            width=1200,
+            height=500,
+            format="PNG",
+            mime_type="image/png",
+            blocks=[
+                OcrBlock(
+                    "单位 扫描值 42",
+                    0.98,
+                    {"x": 0.1, "y": 0.2, "width": 0.7, "height": 0.2},
+                )
+            ],
+            failures=[],
+            warnings=[],
+            runtime={"execution_providers": ["CPUExecutionProvider"]},
+            processed_regions=regions,
+        )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=processor,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {
+                "url": "https://example.org/mixed-short-zh.pdf",
+                "max_pages": 1,
+                "max_regions": 1,
+            },
+        )
+
+    assert opened.structuredContent is not None
+    assert opened.structuredContent["content_markdown"].count("单位") == 1
+    assert "扫描值 42" in opened.structuredContent["content_markdown"]
+
+
 async def test_failure_only_pdf_advance_discloses_ocr_execution(tmp_path: Path) -> None:
     image = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
     payload = scanned_pdf(image, image)
@@ -278,24 +329,7 @@ async def test_failure_only_pdf_advance_discloses_ocr_execution(tmp_path: Path) 
                 runtime={"execution_providers": ["CPUExecutionProvider"]},
                 processed_regions=regions,
             )
-        return ImageExtraction(
-            width=1200,
-            height=500,
-            format="PNG",
-            mime_type="image/png",
-            blocks=[],
-            failures=[
-                {
-                    "kind": "region_ocr_failed",
-                    "message": "Injected OCR failure.",
-                    "locator": {"region": regions[0]},
-                    "next_action": "advance",
-                }
-            ],
-            warnings=[],
-            runtime={"execution_providers": ["CPUExecutionProvider"]},
-            processed_regions=[],
-        )
+        raise RuntimeError("Injected OCR backend failure.")
 
     async with connected(
         source,
@@ -332,9 +366,9 @@ async def test_failure_only_pdf_advance_discloses_ocr_execution(tmp_path: Path) 
         "pdf_rasterize",
         "cpu_ocr",
     ]
-    assert advanced.structuredContent["processing"]["execution_providers"] == [
-        "CPUExecutionProvider"
-    ]
+    assert advanced.structuredContent["failures"][-1]["kind"] == (
+        "target_extraction_failed"
+    )
 
 
 async def test_advance_scanned_pdf_page_is_nonsequential_atomic_and_keeps_old_cursor(

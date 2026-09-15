@@ -276,6 +276,10 @@ class PdfOcrOutcome:
     warnings: list[dict[str, Any]]
 
 
+class PdfOcrBackendError(RuntimeError):
+    """The raster succeeded, but the configured OCR backend failed."""
+
+
 @dataclass(frozen=True)
 class PdfTargetCompletion:
     target: dict[str, Any]
@@ -1059,9 +1063,38 @@ class WebReadService:
         native_segments = [
             segment.strip()
             for segment in native_text.splitlines()
-            if len(cls._normalize(segment).strip()) >= 8
+            if cls._normalize(segment).strip()
         ]
+        normalized_ocr = cls._normalize(ocr_text)
         for segment in native_segments:
+            normalized_segment = cls._normalize(segment).strip()
+            offset = 0
+            while (start := normalized_ocr.find(normalized_segment, offset)) >= 0:
+                end = start + len(normalized_segment)
+                starts_ascii_word = normalized_segment[0].isascii() and (
+                    normalized_segment[0].isalnum() or normalized_segment[0] == "_"
+                )
+                ends_ascii_word = normalized_segment[-1].isascii() and (
+                    normalized_segment[-1].isalnum() or normalized_segment[-1] == "_"
+                )
+                invalid_start = (
+                    starts_ascii_word
+                    and start > 0
+                    and normalized_ocr[start - 1].isascii()
+                    and normalized_ocr[start - 1].isalnum()
+                )
+                invalid_end = (
+                    ends_ascii_word
+                    and end < len(normalized_ocr)
+                    and normalized_ocr[end].isascii()
+                    and normalized_ocr[end].isalnum()
+                )
+                if not invalid_start and not invalid_end:
+                    removals.append(cls._original_span(ocr_text, start, end))
+                offset = max(end, start + 1)
+        for segment in native_segments:
+            if len(cls._normalize(segment).strip()) < 8:
+                continue
             native_tokens = [
                 cls._normalize(match.group()) for match in token_pattern.finditer(segment)
             ]
@@ -1262,6 +1295,17 @@ class WebReadService:
                                 }
                             )
                             continue
+                        except PdfOcrBackendError:
+                            ocr_used = True
+                            operation_failures.append(
+                                {
+                                    "kind": "target_extraction_failed",
+                                    "message": "CPU OCR failed for the requested PDF target.",
+                                    "locator": target,
+                                    "next_action": "asset",
+                                }
+                            )
+                            continue
                         except Exception:
                             operation_failures.append(
                                 {
@@ -1400,6 +1444,26 @@ class WebReadService:
                                 {
                                     "kind": "raster_limit",
                                     "message": "The PDF image region exceeds a raster limit.",
+                                    "locator": candidate_target,
+                                    "next_action": "asset",
+                                }
+                            )
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "message": "PDF region OCR has not completed.",
+                                    "locator": candidate_target,
+                                    "next_action": "advance",
+                                }
+                            )
+                            continue
+                        except PdfOcrBackendError:
+                            ocr_used = True
+                            target_incomplete = True
+                            operation_failures.append(
+                                {
+                                    "kind": "region_ocr_failed",
+                                    "message": "CPU OCR failed for the PDF image region.",
                                     "locator": candidate_target,
                                     "next_action": "asset",
                                 }
@@ -2896,11 +2960,16 @@ class WebReadService:
             ) as raster:
                 raster.write(payload)
                 raster_path = Path(raster.name)
-            return await self._process_image(
-                raster_path,
-                [{"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}],
-                deadline,
-            )
+            try:
+                return await self._process_image(
+                    raster_path,
+                    [{"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}],
+                    deadline,
+                )
+            except (TimeoutError, MemoryError, OverflowError):
+                raise
+            except Exception as error:
+                raise PdfOcrBackendError("The PDF raster OCR backend failed.") from error
         finally:
             self._remove_artifact(raster_path)
 

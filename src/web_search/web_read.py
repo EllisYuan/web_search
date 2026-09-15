@@ -35,6 +35,7 @@ from web_search.pdf import (
     PdfTextUnavailableError,
     extract_pdf_text,
     make_pdf_block,
+    pdf_image_regions,
     pdf_structure_warning,
     render_pdf_crop,
     unprocessed_page_ranges,
@@ -265,6 +266,20 @@ class Block:
     source_region: dict[str, float] | None = None
     confidence: float | None = None
     processing_lineage: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True)
+class PdfOcrOutcome:
+    blocks: list[Block]
+    failures: list[dict[str, Any]]
+    warnings: list[dict[str, Any]]
+
+
+@dataclass(frozen=True)
+class PdfTargetCompletion:
+    target: dict[str, Any]
+    blocks: list[Block]
+    processed_regions: list[dict[str, float]]
 
 
 @dataclass(frozen=True)
@@ -936,6 +951,99 @@ class WebReadService:
             return f"page:{target['page']}"
         return cls._region_key(target.get("page", 0), region)
 
+    @classmethod
+    def _locator_was_resolved(
+        cls,
+        locator: dict[str, Any],
+        resolved_pages: set[int],
+        resolved_region_keys: set[str],
+        resolved_targets: set[str],
+    ) -> bool:
+        page = locator.get("page")
+        region = locator.get("region")
+        if not isinstance(page, int):
+            return False
+        if isinstance(region, dict):
+            return (
+                cls._region_key(page, region) in resolved_region_keys
+                or cls._target_key(locator) in resolved_targets
+            )
+        return page in resolved_pages or cls._target_key(locator) in resolved_targets
+
+    @staticmethod
+    def _project_region(
+        parent: dict[str, float], child: dict[str, float]
+    ) -> dict[str, float]:
+        return {
+            "x": parent["x"] + child["x"] * parent["width"],
+            "y": parent["y"] + child["y"] * parent["height"],
+            "width": child["width"] * parent["width"],
+            "height": child["height"] * parent["height"],
+        }
+
+    @classmethod
+    def _pdf_ocr_outcome(
+        cls,
+        extraction: ImageExtraction,
+        *,
+        page: int,
+        region: dict[str, float],
+        target_locator: dict[str, Any],
+        native_text: str,
+        has_page_heading: bool,
+    ) -> PdfOcrOutcome:
+        def locator(raw: Any) -> dict[str, Any]:
+            source = raw if isinstance(raw, dict) else {}
+            mapped: dict[str, Any] = {"page": page}
+            if isinstance(source.get("source_region"), dict):
+                mapped["source_region"] = cls._project_region(
+                    region, source["source_region"]
+                )
+            if isinstance(source.get("region"), dict):
+                mapped["region"] = cls._project_region(region, source["region"])
+            if isinstance(source.get("regions"), list):
+                mapped["regions"] = [
+                    cls._project_region(region, item)
+                    for item in source["regions"]
+                    if isinstance(item, dict)
+                ]
+            if len(mapped) == 1:
+                mapped["region"] = region
+            return mapped
+
+        warnings = [
+            {**warning, "locator": locator(warning.get("locator"))}
+            for warning in extraction.warnings
+        ]
+        failures = [
+            {**failure, "locator": target_locator}
+            for failure in extraction.failures
+        ]
+        native_key = re.sub(r"\s+", " ", cls._normalize(native_text)).strip()
+        blocks: list[Block] = []
+        heading_available = has_page_heading
+        for item in extraction.blocks:
+            item_key = re.sub(r"\s+", " ", cls._normalize(item.text)).strip()
+            if not item_key or (native_key and item_key in native_key):
+                continue
+            blocks.append(
+                Block(
+                    secrets.token_urlsafe(9),
+                    f"pdf-page-{page}",
+                    item.text if heading_available else f"## Page {page}\n\n{item.text}",
+                    item.text,
+                    page=page,
+                    source_region=cls._project_region(region, item.source_region),
+                    confidence=item.confidence,
+                    processing_lineage={
+                        "source": "ocr",
+                        "path": ["captured_pdf", "pdf_rasterize", "cpu_ocr"],
+                    },
+                )
+            )
+            heading_available = True
+        return PdfOcrOutcome(blocks, failures, warnings)
+
     @staticmethod
     def _unprocessed_ranges(
         total_pages: int,
@@ -956,6 +1064,18 @@ class WebReadService:
                 }
             )
         return ranges
+
+    @staticmethod
+    def _page_has_unprocessed_range(snapshot: VersionSnapshot, page: int) -> bool:
+        for item in snapshot.unprocessed_ranges:
+            locator = item.get("locator", {})
+            if locator.get("page") == page:
+                return True
+            start = locator.get("start_page")
+            end = locator.get("end_page")
+            if isinstance(start, int) and isinstance(end, int) and start <= page <= end:
+                return True
+        return False
 
     async def _advance(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
         state, failure = self._state_for("advance", arguments)
@@ -1002,13 +1122,18 @@ class WebReadService:
             )
 
         data = await asyncio.to_thread(state.artifact_path.read_bytes)
-        completed: list[tuple[dict[str, Any], list[Block]]] = []
+        completed: list[PdfTargetCompletion] = []
         duplicate_targets: list[dict[str, Any]] = []
         operation_failures: list[dict[str, Any]] = []
         operation_warnings: list[dict[str, Any]] = []
+        operation_unprocessed: list[dict[str, Any]] = []
         ocr_runtime: dict[str, Any] = {}
         ocr_used = False
         ocr_attempts = 0
+        ocr_budget = min(
+            arguments.get("max_regions", DEFAULT_MAX_REGIONS),
+            MAX_PDF_OCR_REGIONS_PER_CALL,
+        )
         whole_pages = {target["page"] for target in targets if "region" not in target}
         seen_targets: set[str] = set()
         failed_pages = {
@@ -1024,7 +1149,9 @@ class WebReadService:
                     region = target.get("region")
                     target_key = self._target_key(target)
                     duplicate = (
-                        page in current.processed_pages and page not in failed_pages
+                        page in current.processed_pages
+                        and page not in failed_pages
+                        and not self._page_has_unprocessed_range(current, page)
                         if region is None
                         else self._region_key(page, region) in current.processed_regions
                     )
@@ -1039,12 +1166,25 @@ class WebReadService:
                     try:
                         artifact = await asyncio.to_thread(extract_pdf_text, data, page, region)
                     except PdfTextUnavailableError:
-                        if ocr_attempts >= MAX_PDF_OCR_REGIONS_PER_CALL:
+                        if ocr_attempts >= ocr_budget:
                             operation_failures.append(
                                 {
                                     "kind": "ocr_region_limit",
                                     "message": "PDF OCR reached the per-operation region limit.",
                                     "locator": target,
+                                    "next_action": "advance",
+                                }
+                            )
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "message": "PDF region OCR has not been processed.",
+                                    "locator": {"page": page, "region": region or {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "width": 1.0,
+                                        "height": 1.0,
+                                    }},
                                     "next_action": "advance",
                                 }
                             )
@@ -1058,6 +1198,8 @@ class WebReadService:
                         }
                         try:
                             ocr = await self._ocr_pdf_region(data, page, ocr_region, deadline)
+                        except TimeoutError:
+                            raise
                         except (MemoryError, OverflowError):
                             operation_failures.append(
                                 {
@@ -1083,23 +1225,23 @@ class WebReadService:
                             continue
                         ocr_used = True
                         ocr_runtime = ocr.runtime
-                        operation_warnings.extend(
-                            {
-                                **warning,
-                                "locator": {"page": page, **warning.get("locator", {})},
-                            }
-                            for warning in ocr.warnings
-                        )
-                        mapped_failures = [
-                            {
-                                **failure,
-                                "locator": target,
-                            }
-                            for failure in ocr.failures
+                        page_blocks = [
+                            block for block in current.document.blocks if block.page == page
                         ]
-                        operation_failures.extend(mapped_failures)
-                        if not ocr.blocks:
-                            if not mapped_failures:
+                        outcome = self._pdf_ocr_outcome(
+                            ocr,
+                            page=page,
+                            region=ocr_region,
+                            target_locator=target,
+                            native_text="\n".join(block.text for block in page_blocks),
+                            has_page_heading=any(
+                                block.markdown.startswith("#") for block in page_blocks
+                            ),
+                        )
+                        operation_warnings.extend(outcome.warnings)
+                        operation_failures.extend(outcome.failures)
+                        if not outcome.blocks:
+                            if not outcome.failures and not page_blocks:
                                 operation_failures.append(
                                     {
                                         "kind": "target_extraction_failed",
@@ -1110,50 +1252,9 @@ class WebReadService:
                                         "next_action": "asset",
                                     }
                                 )
-                            continue
-                        native_text = self._normalize(
-                            "\n".join(
-                                block.text
-                                for block in current.document.blocks
-                                if block.page == page
-                            )
-                        )
-                        ocr_blocks: list[Block] = []
-                        for index, item in enumerate(ocr.blocks):
-                            if self._normalize(item.text) in native_text:
+                            if outcome.failures or not page_blocks:
                                 continue
-                            source_region = {
-                                "x": ocr_region["x"]
-                                + item.source_region["x"] * ocr_region["width"],
-                                "y": ocr_region["y"]
-                                + item.source_region["y"] * ocr_region["height"],
-                                "width": item.source_region["width"] * ocr_region["width"],
-                                "height": item.source_region["height"] * ocr_region["height"],
-                            }
-                            ocr_blocks.append(
-                                Block(
-                                    secrets.token_urlsafe(9),
-                                    f"pdf-page-{page}",
-                                    (
-                                        f"## Page {page}\n\n{item.text}"
-                                        if index == 0
-                                        else item.text
-                                    ),
-                                    item.text,
-                                    page=page,
-                                    source_region=source_region,
-                                    confidence=item.confidence,
-                                    processing_lineage={
-                                        "source": "ocr",
-                                        "path": [
-                                            "captured_pdf",
-                                            "pdf_rasterize",
-                                            "cpu_ocr",
-                                        ],
-                                    },
-                                )
-                            )
-                        completed.append((target, ocr_blocks))
+                        completed.append(PdfTargetCompletion(target, outcome.blocks, [ocr_region]))
                         continue
                     except Exception:
                         operation_failures.append(
@@ -1169,23 +1270,134 @@ class WebReadService:
                     warning = pdf_structure_warning(artifact)
                     if warning is not None:
                         operation_warnings.append(warning)
+                    target_blocks = [] if page in current.processed_pages else [
+                        Block(
+                            pdf_block.block_id,
+                            pdf_block.section_id,
+                            pdf_block.markdown,
+                            pdf_block.text,
+                            page=pdf_block.page,
+                            source_region=pdf_block.source_region,
+                            processing_lineage={
+                                "source": "native_text",
+                                "path": ["captured_pdf", "native_text_extract"],
+                            },
+                        )
+                    ]
+                    processed_ocr_regions: list[dict[str, float]] = []
+                    try:
+                        candidate_regions = await asyncio.to_thread(
+                            pdf_image_regions, data, page, region
+                        )
+                    except Exception:
+                        operation_failures.append(
+                            {
+                                "kind": "image_region_detection_failed",
+                                "message": "PDF image regions could not be located.",
+                                "locator": target,
+                                "next_action": "asset",
+                            }
+                        )
+                        candidate_regions = []
+                    if candidate_regions:
+                        operation_warnings.append(
+                            {
+                                "kind": "structure_incomplete",
+                                "message": (
+                                    "Native and OCR text reading order on this mixed PDF page "
+                                    "is not verified."
+                                ),
+                                "locator": {"page": page},
+                                "next_action": "asset",
+                            }
+                        )
+                    for candidate_region in candidate_regions:
+                        candidate_key = self._region_key(page, candidate_region)
+                        if candidate_key in current.processed_regions:
+                            continue
+                        candidate_target = {"page": page, "region": candidate_region}
+                        if ocr_attempts >= ocr_budget:
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "message": "PDF region OCR has not been processed.",
+                                    "locator": candidate_target,
+                                    "next_action": "advance",
+                                }
+                            )
+                            continue
+                        ocr_attempts += 1
+                        try:
+                            ocr = await self._ocr_pdf_region(
+                                data, page, candidate_region, deadline
+                            )
+                        except TimeoutError:
+                            raise
+                        except (MemoryError, OverflowError):
+                            operation_failures.append(
+                                {
+                                    "kind": "raster_limit",
+                                    "message": "The PDF image region exceeds a raster limit.",
+                                    "locator": candidate_target,
+                                    "next_action": "asset",
+                                }
+                            )
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "message": "PDF region OCR has not completed.",
+                                    "locator": candidate_target,
+                                    "next_action": "advance",
+                                }
+                            )
+                            continue
+                        except Exception:
+                            operation_failures.append(
+                                {
+                                    "kind": "region_ocr_failed",
+                                    "message": "CPU OCR failed for the PDF image region.",
+                                    "locator": candidate_target,
+                                    "next_action": "asset",
+                                }
+                            )
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "message": "PDF region OCR has not completed.",
+                                    "locator": candidate_target,
+                                    "next_action": "advance",
+                                }
+                            )
+                            continue
+                        ocr_used = True
+                        ocr_runtime = ocr.runtime
+                        outcome = self._pdf_ocr_outcome(
+                            ocr,
+                            page=page,
+                            region=candidate_region,
+                            target_locator=candidate_target,
+                            native_text=artifact.text,
+                            has_page_heading=True,
+                        )
+                        operation_warnings.extend(outcome.warnings)
+                        operation_failures.extend(outcome.failures)
+                        if outcome.failures:
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "message": "PDF region OCR has not completed.",
+                                    "locator": candidate_target,
+                                    "next_action": "advance",
+                                }
+                            )
+                        if outcome.blocks or not outcome.failures:
+                            target_blocks.extend(outcome.blocks)
+                            processed_ocr_regions.append(candidate_region)
                     completed.append(
-                        (
+                        PdfTargetCompletion(
                             target,
-                            [
-                                Block(
-                                    pdf_block.block_id,
-                                    pdf_block.section_id,
-                                    pdf_block.markdown,
-                                    pdf_block.text,
-                                    page=pdf_block.page,
-                                    source_region=pdf_block.source_region,
-                                    processing_lineage={
-                                        "source": "native_text",
-                                        "path": ["captured_pdf", "native_text_extract"],
-                                    },
-                                )
-                            ],
+                            target_blocks,
+                            processed_ocr_regions,
                         )
                     )
         except TimeoutError:
@@ -1221,9 +1433,10 @@ class WebReadService:
                 {
                     "status": "partial" if operation_failures else "ok",
                     "processed_targets": [],
-                    "unprocessed_ranges": self._unprocessed_ranges(
-                        state.total_pages, current.processed_pages, failures
-                    ),
+                    "unprocessed_ranges": [
+                        *current.unprocessed_ranges,
+                        *operation_unprocessed,
+                    ],
                     "failures": failures,
                     "warnings": [*result["warnings"], *duplicate_warnings],
                     "processing": {
@@ -1240,17 +1453,21 @@ class WebReadService:
         processed_regions = set(current.processed_regions)
         completed_blocks: list[Block] = []
         completed_targets: list[dict[str, Any]] = []
-        for target, target_blocks in completed:
+        for completion in completed:
+            target = completion.target
+            target_blocks = completion.blocks
             page = target["page"]
             region = target.get("region")
             if region is None:
-                blocks = [existing for existing in blocks if existing.page != page]
+                if page not in current.processed_pages:
+                    blocks = [existing for existing in blocks if existing.page != page]
                 processed_pages.add(page)
-                processed_regions = {
-                    key for key in processed_regions if not key.startswith(f"{page}:")
-                }
             else:
                 processed_regions.add(self._region_key(page, region))
+            processed_regions.update(
+                self._region_key(page, completed_region)
+                for completed_region in completion.processed_regions
+            )
             blocks.extend(target_blocks)
             completed_blocks.extend(target_blocks)
             completed_targets.append(target)
@@ -1274,23 +1491,68 @@ class WebReadService:
                 "The document advanced concurrently; completed targets were not committed.",
                 next_action="advance_current_version",
             )
-        resolved_pages = {target["page"] for target, _ in completed if "region" not in target}
-        resolved_targets = {self._target_key(target) for target, _ in completed}
+        resolved_pages = {
+            completion.target["page"]
+            for completion in completed
+            if "region" not in completion.target
+        }
+        resolved_targets = {
+            self._target_key(completion.target) for completion in completed
+        }
+        resolved_region_keys = {
+            self._region_key(completion.target["page"], region)
+            for completion in completed
+            for region in completion.processed_regions
+        }
+        resolved_region_keys.update(
+            self._region_key(
+                completion.target["page"], completion.target["region"]
+            )
+            for completion in completed
+            if isinstance(completion.target.get("region"), dict)
+        )
         unresolved = [
             item
             for item in current.failures
-            if item.get("locator", {}).get("page") not in resolved_pages
-            and self._target_key(item["locator"]) not in resolved_targets
+            if not self._locator_was_resolved(
+                item.get("locator", {}),
+                resolved_pages,
+                resolved_region_keys,
+                resolved_targets,
+            )
         ]
         failures = [*unresolved, *operation_failures]
+        pending_regions = [
+            item
+            for item in current.unprocessed_ranges
+            if not (
+                isinstance(item.get("locator", {}).get("page"), int)
+                and isinstance(item.get("locator", {}).get("region"), dict)
+                and self._region_key(
+                    item["locator"]["page"], item["locator"]["region"]
+                )
+                in resolved_region_keys
+            )
+        ]
+        unprocessed_ranges = [
+            *self._unprocessed_ranges(state.total_pages, processed_pages, failures),
+            *[
+                item
+                for item in pending_regions
+                if item.get("kind") == "unprocessed_region"
+            ],
+            *operation_unprocessed,
+        ]
+        unique_unprocessed = {
+            json.dumps(item, sort_keys=True, separators=(",", ":")): item
+            for item in unprocessed_ranges
+        }
         snapshot = VersionSnapshot(
             version=version,
             document=document,
             processed_pages=frozenset(processed_pages),
             processed_regions=frozenset(processed_regions),
-            unprocessed_ranges=self._unprocessed_ranges(
-                state.total_pages, processed_pages, failures
-            ),
+            unprocessed_ranges=list(unique_unprocessed.values()),
             failures=failures,
         )
         state.version = version
@@ -1310,13 +1572,23 @@ class WebReadService:
             budget=arguments.get("max_output_chars", DEFAULT_MAX_OUTPUT_CHARS),
             snapshot=snapshot,
         )
+        native_used = any(
+            block.processing_lineage is not None
+            and block.processing_lineage.get("source") == "native_text"
+            for block in completed_blocks
+        )
         result.update(
             {
                 "processed_targets": completed_targets,
                 "warnings": [*result["warnings"], *duplicate_warnings],
                 "processing": (
                     {
-                        "path": ["captured_pdf", "pdf_rasterize", "cpu_ocr"],
+                        "path": [
+                            "captured_pdf",
+                            *(["native_text_extract"] if native_used else []),
+                            "pdf_rasterize",
+                            "cpu_ocr",
+                        ],
                         "source_acquisition": False,
                         "ocr_used": True,
                         **ocr_runtime,
@@ -2703,6 +2975,7 @@ class WebReadService:
         ocr_failures: list[dict[str, Any]] = []
         ocr_warnings: list[dict[str, Any]] = []
         ocr_runtime: dict[str, Any] = {}
+        ocr_attempted = False
         processed_targets: list[dict[str, Any]] = []
         scanned_pages = {
             failure["locator"]["page"]
@@ -2717,14 +2990,27 @@ class WebReadService:
         candidate_targets = extraction.ocr_regions
         page_has_heading = {block.page for block in extraction.blocks}
         native_by_page = {
-            page: self._normalize(
-                "\n".join(block.text for block in extraction.blocks if block.page == page)
-            )
+            page: "\n".join(block.text for block in extraction.blocks if block.page == page)
             for page in extraction.processed_pages
         }
+        mixed_warning_pages: set[int] = set()
         for target in candidate_targets[:region_budget]:
             page = target["page"]
             region = target["region"]
+            ocr_attempted = True
+            if native_by_page.get(page) and page not in mixed_warning_pages:
+                ocr_warnings.append(
+                    {
+                        "kind": "structure_incomplete",
+                        "message": (
+                            "Native and OCR text reading order on this mixed PDF page "
+                            "is not verified."
+                        ),
+                        "locator": {"page": page},
+                        "next_action": "asset",
+                    }
+                )
+                mixed_warning_pages.add(page)
             try:
                 ocr = await self._ocr_pdf_region(pdf_data, page, region, deadline)
             except asyncio.CancelledError:
@@ -2761,56 +3047,32 @@ class WebReadService:
                 )
                 continue
             ocr_runtime = ocr.runtime
-            ocr_warnings.extend(
-                {
-                    **warning,
-                    "locator": {"page": page, **warning.get("locator", {})},
-                }
-                for warning in ocr.warnings
+            outcome = self._pdf_ocr_outcome(
+                ocr,
+                page=page,
+                region=region,
+                target_locator=target,
+                native_text=native_by_page.get(page, ""),
+                has_page_heading=page in page_has_heading,
             )
-            target_failures = [
-                {
-                    **failure,
-                    "locator": {"page": page, "region": region},
-                }
-                for failure in ocr.failures
-            ]
-            ocr_failures.extend(target_failures)
-            unique_ocr_blocks = [
-                item
-                for item in ocr.blocks
-                if not self._normalize(item.text)
-                or self._normalize(item.text) not in native_by_page.get(page, "")
-            ]
-            if not unique_ocr_blocks and target_failures:
-                continue
-            processed_targets.append(target)
-            for item in unique_ocr_blocks:
-                source_region = {
-                    "x": region["x"] + item.source_region["x"] * region["width"],
-                    "y": region["y"] + item.source_region["y"] * region["height"],
-                    "width": item.source_region["width"] * region["width"],
-                    "height": item.source_region["height"] * region["height"],
-                }
-                ocr_blocks.append(
-                    Block(
-                        secrets.token_urlsafe(9),
-                        f"pdf-page-{page}",
-                        (
-                            f"## Page {page}\n\n{item.text}"
-                            if page not in page_has_heading
-                            else item.text
-                        ),
-                        item.text,
-                        page=page,
-                        source_region=source_region,
-                        confidence=item.confidence,
-                        processing_lineage={
-                            "source": "ocr",
-                            "path": ["captured_pdf", "pdf_rasterize", "cpu_ocr"],
-                        },
+            ocr_warnings.extend(outcome.warnings)
+            ocr_failures.extend(outcome.failures)
+            if not outcome.blocks:
+                if outcome.failures:
+                    continue
+                if page in scanned_pages:
+                    ocr_failures.append(
+                        {
+                            "kind": "region_ocr_failed",
+                            "message": "No reliable text was detected in the PDF region.",
+                            "locator": target,
+                            "next_action": "asset",
+                        }
                     )
-                )
+                    continue
+            processed_targets.append(target)
+            ocr_blocks.extend(outcome.blocks)
+            if outcome.blocks:
                 page_has_heading.add(page)
 
         resolved_ocr_pages = {
@@ -2904,6 +3166,10 @@ class WebReadService:
             "page_count": extraction.total_pages,
             "retrieved_at": retrieved_at,
         }
+        processed_region_keys = frozenset(
+            self._region_key(target["page"], target["region"])
+            for target in processed_targets
+        )
         state = ReadState(
             read_id=read_id,
             version=version,
@@ -2915,13 +3181,14 @@ class WebReadService:
             total_pages=extraction.total_pages,
             unprocessed_ranges=unprocessed_ranges,
             failures=failures,
+            processed_regions=processed_region_keys,
             media_kind="pdf",
             versions={
                 version: VersionSnapshot(
                     version,
                     document,
                     extraction.processed_pages,
-                    frozenset(),
+                    processed_region_keys,
                     unprocessed_ranges,
                     failures,
                 )
@@ -2931,7 +3198,7 @@ class WebReadService:
             version=version,
             document=document,
             processed_pages=extraction.processed_pages,
-            processed_regions=frozenset(),
+            processed_regions=processed_region_keys,
             unprocessed_ranges=unprocessed_ranges,
             failures=failures,
         )
@@ -2962,7 +3229,7 @@ class WebReadService:
                         "ocr_used": True,
                         **ocr_runtime,
                     }
-                    if ocr_blocks
+                    if ocr_attempted
                     else {
                         "path": ["http_fetch", "pdf_parse", "native_text_extract"],
                         "browser_rendered": False,

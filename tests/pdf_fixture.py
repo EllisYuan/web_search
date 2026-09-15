@@ -3,7 +3,7 @@
 from io import BytesIO
 
 from PIL import Image
-from pypdf import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter, Transformation
 from pypdf.generic import (
     ArrayObject,
     DecodedStreamObject,
@@ -122,6 +122,27 @@ def combine_pdfs(*documents: bytes) -> bytes:
     for payload in documents:
         for page in PdfReader(BytesIO(payload)).pages:
             writer.add_page(page)
+    output = BytesIO()
+    writer.write(output)
+    return output.getvalue()
+
+
+def mixed_regions_pdf(image: bytes, native_text: str) -> bytes:
+    """Create one native page with two separate raster regions."""
+    writer = PdfWriter(clone_from=PdfReader(BytesIO(text_pdf(native_text))))
+    raster = PdfWriter(clone_from=PdfReader(BytesIO(scanned_pdf(image))))
+    page = writer.pages[0]
+    image_page = raster.pages[0]
+    page.merge_transformed_page(
+        image_page,
+        Transformation().scale(0.7).translate(60, 430),
+        over=False,
+    )
+    page.merge_transformed_page(
+        image_page,
+        Transformation().scale(0.7).translate(60, 160),
+        over=False,
+    )
     output = BytesIO()
     writer.write(output)
     return output.getvalue()

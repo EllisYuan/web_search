@@ -131,6 +131,39 @@ def _page_image_regions(page: Any) -> list[dict[str, float]]:
     return sorted(regions, key=lambda item: (item["y"], item["x"]))
 
 
+def pdf_image_regions(
+    data: bytes,
+    page_number: int,
+    selection: dict[str, float] | None = None,
+) -> list[dict[str, float]]:
+    """Locate raster regions on one captured PDF page, optionally clipped to a selection."""
+    with closing(pdfium.PdfDocument(data)) as document:
+        if page_number < 1 or page_number > len(document):
+            raise IndexError("PDF page is outside the captured document.")
+        with closing(document[page_number - 1]) as page:
+            regions = _page_image_regions(page)
+    if selection is None:
+        return regions
+    clipped: list[dict[str, float]] = []
+    selection_right = selection["x"] + selection["width"]
+    selection_bottom = selection["y"] + selection["height"]
+    for region in regions:
+        left = max(selection["x"], region["x"])
+        top = max(selection["y"], region["y"])
+        right = min(selection_right, region["x"] + region["width"])
+        bottom = min(selection_bottom, region["y"] + region["height"])
+        if right > left and bottom > top:
+            clipped.append(
+                {
+                    "x": left,
+                    "y": top,
+                    "width": right - left,
+                    "height": bottom - top,
+                }
+            )
+    return clipped
+
+
 def extract_pdf_text(
     data: bytes,
     page_number: int,

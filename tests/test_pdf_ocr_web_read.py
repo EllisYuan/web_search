@@ -4,7 +4,13 @@ from pathlib import Path
 import httpx
 import pytest
 from harness import connected
-from pdf_fixture import combine_pdfs, mixed_page_pdf, scanned_pdf, text_pdf
+from pdf_fixture import (
+    combine_pdfs,
+    mixed_page_pdf,
+    mixed_regions_pdf,
+    scanned_pdf,
+    text_pdf,
+)
 
 from web_search.image import ImageExtraction, OcrBlock
 
@@ -688,3 +694,181 @@ async def test_real_pdf_ocr_preserves_rotation_and_columns_with_structure_warnin
         assert body["extraction_status"] == "partial"
         assert any(warning["kind"] == "structure_incomplete" for warning in body["warnings"])
         assert "|" not in body["content_markdown"]
+
+
+async def test_advance_whole_mixed_page_reuses_native_and_ocr_image_regions(
+    tmp_path: Path,
+) -> None:
+    image = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
+    payload = combine_pdfs(
+        text_pdf("Initial native page."),
+        mixed_page_pdf(image, "Mixed page native NATIVE-ADVANCE"),
+    )
+    calls = 0
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=payload)
+
+    async def processor(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        nonlocal calls
+        calls += 1
+        return ImageExtraction(
+            width=1200,
+            height=500,
+            format="PNG",
+            mime_type="image/png",
+            blocks=[
+                OcrBlock(
+                    "Mixed page native NATIVE-ADVANCE",
+                    0.99,
+                    {"x": 0.1, "y": 0.05, "width": 0.7, "height": 0.1},
+                ),
+                OcrBlock(
+                    "Mixed page scanned SCAN-ADVANCE-22",
+                    0.98,
+                    {"x": 0.1, "y": 0.3, "width": 0.7, "height": 0.1},
+                ),
+            ],
+            failures=[],
+            warnings=[],
+            runtime={"execution_providers": ["CPUExecutionProvider"]},
+            processed_regions=regions,
+        )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=processor,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {"url": "https://example.org/advance-mixed.pdf", "max_pages": 1},
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        advanced = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "targets": [{"page": 2}],
+                "max_pages": 1,
+                "max_regions": 1,
+            },
+        )
+
+    assert not advanced.isError
+    assert advanced.structuredContent is not None
+    body = advanced.structuredContent
+    assert calls == 1
+    assert body["content_markdown"].count("Mixed page native NATIVE-ADVANCE") == 1
+    assert "Mixed page scanned SCAN-ADVANCE-22" in body["content_markdown"]
+    assert {locator["processing_lineage"]["source"] for locator in body["locators"]} == {
+        "native_text",
+        "ocr",
+    }
+    assert body["processing"]["ocr_used"] is True
+
+
+async def test_mixed_page_pending_region_advances_once_and_stays_processed(
+    tmp_path: Path,
+) -> None:
+    image = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
+    payload = mixed_regions_pdf(image, "Mixed region native NATIVE-PENDING")
+    calls = 0
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=payload)
+
+    async def processor(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        nonlocal calls
+        calls += 1
+        return ImageExtraction(
+            width=600,
+            height=300,
+            format="PNG",
+            mime_type="image/png",
+            blocks=[
+                OcrBlock(
+                    f"Scanned pending region OCR-{calls}",
+                    0.99,
+                    {"x": 0.1, "y": 0.1, "width": 0.7, "height": 0.2},
+                )
+            ],
+            failures=[],
+            warnings=[],
+            runtime={"execution_providers": ["CPUExecutionProvider"]},
+            processed_regions=regions,
+        )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=processor,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {
+                "url": "https://example.org/mixed-pending.pdf",
+                "max_pages": 1,
+                "max_regions": 1,
+            },
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        pending = [
+            item
+            for item in initial["unprocessed_ranges"]
+            if item["kind"] == "unprocessed_region"
+        ]
+        assert len(pending) == 1
+
+        target = pending[0]["locator"]
+        advanced = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "targets": [target],
+                "max_regions": 1,
+            },
+        )
+        assert advanced.structuredContent is not None
+        updated = advanced.structuredContent
+
+        repeated = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": updated["version"],
+                "targets": [target],
+                "max_regions": 1,
+            },
+        )
+
+    assert calls == 2
+    assert "Scanned pending region OCR-1" in initial["content_markdown"]
+    assert "Scanned pending region OCR-2" in updated["content_markdown"]
+    assert not any(item["locator"] == target for item in updated["unprocessed_ranges"])
+    assert not repeated.isError
+    assert repeated.structuredContent is not None
+    assert repeated.structuredContent["version"] == updated["version"]
+    assert any(
+        warning["kind"] == "already_processed"
+        for warning in repeated.structuredContent["warnings"]
+    )

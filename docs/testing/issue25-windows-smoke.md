@@ -2,7 +2,7 @@
 
 ## 结论
 
-本次实现了 operation deadline checkpoint、MCP cancellation / EOF cleanup、delivery interruption 观察、browser invalidation，以及 PDF completed-target publication。**完整 Web Read v1 gate 尚未通过，#25 保持 open。** Accepted spec 的 implementation 状态及 parent / map 均未改写。
+本次实现了 operation deadline checkpoint、MCP cancellation / EOF cleanup、delivery interruption 观察、browser invalidation，以及 PDF completed-target publication。**完整 Web Read v1 gate 尚未通过。** 2026-09-16，用户在获知验收缺口后明确要求“上传并关单”；#25 按当前实现交付关闭，关闭不表示下列原始验收缺口已经消除。Accepted spec 的 implementation 状态及 parent / map 均未改写。
 
 本记录区分受控 failure injection、真实 native / browser / OCR 执行，以及独立 MCP Inspector client。成功读取若因 structure warning 或 bounded extraction 返回 `partial`，仍检查可靠文字与缺口；不会将 `partial` 自动解释为没有实现该格式。
 
@@ -75,7 +75,7 @@ Inspector CLI 每个场景启动新 process；此 evidence 不覆盖同一 Inspe
 3. 独立目标 client 的完整 stateful recovery acceptance，以及每种必需格式在三个 interruption 阶段的完整组合矩阵，尚未全部提供 evidence；当前 Inspector CLI 验证限于上文 11 个场景。
 4. 初次 PDF extraction / 多 region image worker 尚未返回完整结果时，parent 会终止该 worker，保留先前已提交 state；没有提供 worker 内尚未返回 prefix 的逐 artifact recovery evidence。不能据 PDF advance prefix tests 扩展为所有 processing 路径均已逐 artifact 验收。
 
-上述缺口使完整 v1 gate 保持未通过。不能关闭 #25 或将 accepted spec 的 implementation 状态改为完整 v1。
+上述缺口使完整 v1 gate 保持未通过。本次按用户明确要求关闭 #25；不据此将 accepted spec 的 implementation 状态改为完整 v1，也不改写或关闭 parent / map。
 
 ## 最终验证
 

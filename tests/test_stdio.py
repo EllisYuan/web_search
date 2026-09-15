@@ -171,7 +171,7 @@ async def test_real_stdio_rate_quota_timeout_and_subsequent_search() -> None:
         assert key not in result.model_dump_json() + stderr
 
 
-async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
+async def test_real_stdio_media_advance_assets_and_webpage_ocr_without_key() -> None:
     with TemporaryDirectory() as artifact_temp:
         params = StdioServerParameters(
             command=sys.executable,

@@ -7,7 +7,7 @@
 运行：
 
 ```powershell
-.venv\Scripts\python.exe -m pytest tests/test_stdio.py::test_real_stdio_pdf_advance_and_asset_without_key -q
+.venv\Scripts\python.exe -m pytest tests/test_stdio.py::test_real_stdio_media_advance_assets_and_webpage_ocr_without_key -q
 ```
 
 该 test 通过真实 subprocess `stdio` transport 启动 production MCP server，并由 MCP Python client 依次调用公开 `web_read` contract：
@@ -26,7 +26,7 @@
 .venv\Scripts\python.exe -m pytest tests/test_webpage_image_ocr.py -q
 ```
 
-最终结果为 `11 passed`。其中两条没有注入 OCR success：
+最终结果为 `14 passed`。其中两条没有注入 OCR success：
 
 - static HTML 引用 `image-en.png`，production OCR 保留 `AX-2026-0917` 与 `12345.67`。
 - 真实 loopback JavaScript 页面由 headless Chromium 渲染，初始中文 image 保留 `京东20260917`；caller 显式执行 `load_more` 后，新 version 同时提交 DOM text `New rendered image` 与新英文 image 的 `AX-2026-0917`。

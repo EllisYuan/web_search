@@ -337,6 +337,18 @@ class ImageReference:
     alt: str | None
 
 
+@dataclass(frozen=True)
+class WebpageImageCaptureResult:
+    blocks: list[Block]
+    assets: dict[str, WebpageImage]
+    unprocessed_ranges: list[dict[str, Any]]
+    failures: list[dict[str, Any]]
+    warnings: list[dict[str, Any]]
+    capture_status: str
+    runtimes: list[dict[str, Any]]
+    uncaptured_sources: frozenset[str]
+
+
 @dataclass
 class ReadState:
     read_id: str
@@ -360,6 +372,8 @@ class ReadState:
     interaction_targets: tuple[InteractionTarget, ...] = ()
     documents: dict[str, ExtractedDocument] = field(default_factory=dict)
     webpage_assets: dict[str, dict[str, WebpageImage]] = field(default_factory=dict)
+    webpage_image_sources: dict[str, frozenset[str]] = field(default_factory=dict)
+    webpage_uncaptured_sources: dict[str, frozenset[str]] = field(default_factory=dict)
     interaction_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 
 
@@ -2046,6 +2060,8 @@ class WebReadService:
         previous_document = state.document
         previous_snapshot = self._snapshot(state)
         previous_assets = state.webpage_assets.get(previous_version, {})
+        previous_sources = state.webpage_image_sources.get(previous_version, frozenset())
+        previous_uncaptured = state.webpage_uncaptured_sources.get(previous_version, frozenset())
         deadline = asyncio.get_running_loop().time() + self._timeout_seconds
         image_runtimes: list[dict[str, Any]] = []
         new_assets: dict[str, WebpageImage] = {}
@@ -2083,27 +2099,40 @@ class WebReadService:
                         item
                         for item in previous_snapshot.failures
                         if item.get("locator", {}).get("asset_id") in retained_ids
+                        or item.get("locator", {}).get("source_url") in active_urls
+                        or (
+                            item.get("kind") == "image_capture_limit"
+                            and bool(previous_uncaptured & active_urls)
+                        )
                     ]
                     retained_warnings = [
                         item
                         for item in previous_document.warnings
                         if item.get("locator", {}).get("asset_id") in retained_ids
                     ]
-                    (
-                        image_blocks,
-                        new_assets,
-                        image_unprocessed,
-                        image_failures,
-                        image_warnings,
-                        capture_status,
-                        image_runtimes,
-                    ) = await self._capture_webpage_images(
+                    captured_images = await self._capture_webpage_images(
                         rendered.html,
                         rendered.url,
                         deadline,
                         DEFAULT_MAX_REGIONS,
-                        known_source_urls={asset.source_url for asset in previous_assets.values()},
+                        known_source_urls=set(previous_sources),
                     )
+                    image_blocks = captured_images.blocks
+                    new_assets = captured_images.assets
+                    image_unprocessed = captured_images.unprocessed_ranges
+                    image_failures = captured_images.failures
+                    image_warnings = captured_images.warnings
+                    uncaptured_sources = (
+                        previous_uncaptured & active_urls
+                    ) | captured_images.uncaptured_sources
+                    retained_capture_failure = any(
+                        failure.get("kind", "").startswith("image_capture")
+                        for failure in retained_failures
+                    )
+                    capture_status = (
+                        "partial" if uncaptured_sources or retained_capture_failure else "complete"
+                    )
+                    image_runtimes = captured_images.runtimes
                     image_capture_used = bool(new_assets) or any(
                         failure.get("kind", "").startswith("image_capture")
                         for failure in image_failures
@@ -2179,6 +2208,19 @@ class WebReadService:
                 next_action="read",
             )
 
+        if state.version != previous_version:
+            for asset in new_assets.values():
+                self._remove_artifact(asset.artifact_path)
+            if changed:
+                await state.browser.invalidate()
+            return self._state_error(
+                state,
+                "interact",
+                "version_mismatch",
+                "The read advanced concurrently; the interaction result was not committed.",
+                next_action="read_current_version",
+            )
+
         added = self._added_blocks(previous_document, document)
         state.interaction_targets = rendered.targets
         if changed:
@@ -2195,6 +2237,8 @@ class WebReadService:
             )
             state.documents[state.version] = document
             state.webpage_assets[state.version] = assets
+            state.webpage_image_sources[state.version] = frozenset(active_urls)
+            state.webpage_uncaptured_sources[state.version] = frozenset(uncaptured_sources)
             state.unprocessed_ranges = unprocessed
             state.failures = failures
             state.render_digest = rendered.digest
@@ -2357,15 +2401,7 @@ class WebReadService:
         deadline: float,
         max_regions: int,
         known_source_urls: set[str] | None = None,
-    ) -> tuple[
-        list[Block],
-        dict[str, WebpageImage],
-        list[dict[str, Any]],
-        list[dict[str, Any]],
-        list[dict[str, Any]],
-        str,
-        list[dict[str, Any]],
-    ]:
+    ) -> WebpageImageCaptureResult:
         known_urls = known_source_urls or set()
         references = [
             reference
@@ -2447,7 +2483,7 @@ class WebReadService:
             asset_id = secrets.token_urlsafe(12)
             asset = WebpageImage(
                 asset_id=asset_id,
-                source_url=captured.url,
+                source_url=reference.source_url,
                 artifact_path=artifact_path,
                 content_type=content_type,
                 caption=reference.caption,
@@ -2547,7 +2583,17 @@ class WebReadService:
                         "next_action": "advance",
                     }
                 )
-        return blocks, assets, unprocessed, failures, warnings, capture_status, runtimes
+        return WebpageImageCaptureResult(
+            blocks=blocks,
+            assets=assets,
+            unprocessed_ranges=unprocessed,
+            failures=failures,
+            warnings=warnings,
+            capture_status=capture_status,
+            runtimes=runtimes,
+            uncaptured_sources=frozenset(reference.source_url for reference in references)
+            - frozenset(asset.source_url for asset in assets.values()),
+        )
 
     async def _open(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
         if not self._resource_gate():
@@ -2685,21 +2731,23 @@ class WebReadService:
             ), True
         image_html = rendered.html if rendered is not None else response.text
         image_base_url = rendered.url if rendered is not None else response.url
+        image_source_urls = frozenset(
+            reference.source_url for reference in discover_html_images(image_html, image_base_url)
+        )
         try:
-            (
-                image_blocks,
-                webpage_assets,
-                image_unprocessed,
-                image_failures,
-                image_warnings,
-                capture_status,
-                image_runtimes,
-            ) = await self._capture_webpage_images(
+            captured_images = await self._capture_webpage_images(
                 image_html,
                 image_base_url,
                 deadline,
                 arguments.get("max_regions", DEFAULT_MAX_REGIONS),
             )
+            image_blocks = captured_images.blocks
+            webpage_assets = captured_images.assets
+            image_unprocessed = captured_images.unprocessed_ranges
+            image_failures = captured_images.failures
+            image_warnings = captured_images.warnings
+            capture_status = captured_images.capture_status
+            image_runtimes = captured_images.runtimes
         except asyncio.CancelledError:
             if browser is not None:
                 await asyncio.shield(browser.close())
@@ -2776,6 +2824,8 @@ class WebReadService:
         )
         state.documents[version] = document
         state.webpage_assets[version] = webpage_assets
+        state.webpage_image_sources[version] = image_source_urls
+        state.webpage_uncaptured_sources[version] = captured_images.uncaptured_sources
         self._states[read_id] = state
         content, boundaries = render_blocks(document.blocks)
         result, _ = self._content_response(
@@ -2980,7 +3030,27 @@ class WebReadService:
             failure_copy = dict(failure)
             failure_copy["locator"] = {**failure.get("locator", {}), "asset_id": asset_id}
             operation_failures.append(failure_copy)
+        warning_copies: list[dict[str, Any]] = []
+        for warning in extraction.warnings:
+            warning_copy = dict(warning)
+            warning_copy["locator"] = {**warning.get("locator", {}), "asset_id": asset_id}
+            warning_copies.append(warning_copy)
         if not processed:
+            failures = [*current.failures, *operation_failures]
+            unprocessed = list(current.unprocessed_ranges)
+            for failure in operation_failures:
+                locator = failure.get("locator", {})
+                if isinstance(locator.get("region"), dict):
+                    unprocessed.append(
+                        {
+                            "kind": "unprocessed_image_region",
+                            "message": (
+                                "The captured webpage image region has not been OCR processed."
+                            ),
+                            "locator": locator,
+                            "next_action": "advance",
+                        }
+                    )
             result, _ = self._content_response(
                 action="advance",
                 state=state,
@@ -2992,9 +3062,16 @@ class WebReadService:
             )
             result.update(
                 {
+                    "status": "partial" if operation_failures else result["status"],
+                    "extraction_status": "partial" if failures or unprocessed else "complete",
                     "processed_targets": [],
-                    "failures": [*current.failures, *operation_failures],
-                    "warnings": [*result["warnings"], *duplicate_warnings],
+                    "unprocessed_ranges": unprocessed,
+                    "failures": failures,
+                    "warnings": [
+                        *result["warnings"],
+                        *warning_copies,
+                        *duplicate_warnings,
+                    ],
                     "processing": {
                         "path": ["captured_webpage_image", "image_decode", "cpu_ocr"],
                         "source_acquisition": False,
@@ -3005,11 +3082,6 @@ class WebReadService:
             )
             return result, False
 
-        warning_copies: list[dict[str, Any]] = []
-        for warning in extraction.warnings:
-            warning_copy = dict(warning)
-            warning_copy["locator"] = {**warning.get("locator", {}), "asset_id": asset_id}
-            warning_copies.append(warning_copy)
         pending_document = ExtractedDocument(
             current.document.title,
             current.document.language,
@@ -3081,6 +3153,12 @@ class WebReadService:
         state.versions[version] = snapshot
         state.documents[version] = document
         state.webpage_assets[version] = new_assets
+        state.webpage_image_sources[version] = state.webpage_image_sources.get(
+            current.version, frozenset()
+        )
+        state.webpage_uncaptured_sources[version] = state.webpage_uncaptured_sources.get(
+            current.version, frozenset()
+        )
         content, boundaries = render_blocks(completed_blocks)
         result, _ = self._content_response(
             action="advance",

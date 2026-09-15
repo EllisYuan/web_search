@@ -1,3 +1,4 @@
+import asyncio
 import hashlib
 from collections.abc import Awaitable, Callable
 from pathlib import Path
@@ -12,6 +13,7 @@ from mcp.types import ImageContent
 from web_search.browser import BrowserSession, InteractionTarget, RenderedPage
 from web_search.image import ImageExtraction, OcrBlock
 from web_search.server import create_server
+from web_search.web_read import WebReadService
 
 pytestmark = pytest.mark.asyncio
 
@@ -58,6 +60,48 @@ class GrowingImageBrowser(BrowserSession):
 
     async def close(self) -> None:
         self.closed = True
+
+
+class RacingImageBrowser(BrowserSession):
+    def __init__(self, _: Callable[[str], Awaitable[bool]], __: float) -> None:
+        self.started = asyncio.Event()
+        self.resume = asyncio.Event()
+        self.invalidated = False
+
+    @staticmethod
+    def page(*, expanded: bool) -> RenderedPage:
+        extra = '<p>Interaction evidence.</p><img src="/third.png">' if expanded else ""
+        html = (
+            "<html><body><main><p>Baseline.</p>"
+            '<img src="/first.png"><img src="/second.png">'
+            f"<button>Expand</button>{extra}</main></body></html>"
+        )
+        return RenderedPage(
+            url="https://example.org/race",
+            html=html,
+            title="Race",
+            language="en",
+            digest=hashlib.sha256(html.encode()).hexdigest(),
+            targets=(InteractionTarget("race-target", "expand", "Expand", "#expand"),),
+            blocked_requests=0,
+        )
+
+    async def open(self, url: str) -> RenderedPage:
+        return self.page(expanded=False)
+
+    async def interact(
+        self, target_id: str, operation: str, operation_value: str | int | None
+    ) -> RenderedPage:
+        assert (target_id, operation, operation_value) == ("race-target", "expand", None)
+        self.started.set()
+        await self.resume.wait()
+        return self.page(expanded=True)
+
+    async def close(self) -> None:
+        self.invalidated = True
+
+    async def invalidate(self) -> None:
+        self.invalidated = True
 
 
 async def allow_public_url(url: str) -> bool:
@@ -594,6 +638,196 @@ async def test_captured_image_ocr_failure_requires_explicit_advance_to_retry(
     assert calls == 2
 
 
+async def test_webpage_advance_discloses_ocr_failure_without_committing_a_version(
+    tmp_path: Path,
+) -> None:
+    calls = 0
+
+    async def no_text(
+        path: Path, regions: list[dict[str, float]], deadline: float
+    ) -> ImageExtraction:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return await fixture_ocr(path, regions, deadline)
+        return ImageExtraction(
+            width=800,
+            height=400,
+            format="PNG",
+            mime_type="image/png",
+            blocks=[],
+            failures=[
+                {
+                    "kind": "region_ocr_failed",
+                    "message": "No reliable text.",
+                    "locator": {"region": regions[0]},
+                    "next_action": "asset",
+                }
+            ],
+            warnings=[],
+            runtime={"execution_providers": ["CPUExecutionProvider"]},
+            processed_regions=[],
+        )
+
+    async with connected(
+        multi_image_source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=no_text,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read", {"url": "https://example.org/gallery", "max_regions": 1}
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        target = initial["unprocessed_ranges"][0]["locator"]
+        advanced = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "asset_id": target["asset_id"],
+                "targets": [{"region": target["region"]}],
+            },
+        )
+
+    assert not advanced.isError
+    assert advanced.structuredContent is not None
+    body = advanced.structuredContent
+    assert body["version"] == initial["version"]
+    assert body["status"] == "partial"
+    assert body["extraction_status"] == "partial"
+    assert body["failures"][-1]["kind"] == "region_ocr_failed"
+    assert body["unprocessed_ranges"][-1]["locator"]["asset_id"] == target["asset_id"]
+    assert calls == 2
+
+
+async def test_interaction_does_not_refetch_a_previously_failed_image_reference() -> None:
+    image_requests = 0
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal image_requests
+        if request.url.path == "/broken-app":
+            return httpx.Response(
+                200,
+                headers={"content-type": "text/html"},
+                text="<html><body><main></main><script></script></body></html>",
+            )
+        image_requests += 1
+        return httpx.Response(404)
+
+    class BrokenImageBrowser(GrowingImageBrowser):
+        @staticmethod
+        def page(url: str, *, expanded: bool) -> RenderedPage:
+            extra = "<p>Expanded.</p>" if expanded else ""
+            html = (
+                "<html><body><main><p>Rendered.</p>"
+                f'<img src="/broken.png"><button>Expand</button>{extra}</main></body></html>'
+            )
+            return RenderedPage(
+                url=url,
+                html=html,
+                title="Broken image",
+                language="en",
+                digest=hashlib.sha256(html.encode()).hexdigest(),
+                targets=(InteractionTarget("expand-target", "expand", "Expand", "#expand"),),
+                blocked_requests=0,
+            )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        browser_factory=BrokenImageBrowser,
+    ) as session:
+        opened = await session.call_tool("web_read", {"url": "https://example.org/broken-app"})
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        interacted = await session.call_tool(
+            "web_read",
+            {
+                "action": "interact",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "target_id": "expand-target",
+                "operation": "expand",
+            },
+        )
+
+    assert not opened.isError and not interacted.isError
+    assert image_requests == 1
+    assert interacted.structuredContent is not None
+    assert interacted.structuredContent["capture_status"] == "partial"
+    assert interacted.structuredContent["failures"][0]["kind"] == "image_capture_failed"
+
+
+async def test_interaction_cannot_overwrite_a_concurrent_webpage_image_advance(
+    tmp_path: Path,
+) -> None:
+    browsers: list[RacingImageBrowser] = []
+
+    def factory(policy: Callable[[str], Awaitable[bool]], timeout: float) -> BrowserSession:
+        browser = RacingImageBrowser(policy, timeout)
+        browsers.append(browser)
+        return browser
+
+    def source(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/race":
+            return httpx.Response(
+                200,
+                headers={"content-type": "text/html"},
+                text="<html><body><main></main><script></script></body></html>",
+            )
+        payload = PNG_BYTES if request.url.path != "/second.png" else ZH_PNG_BYTES
+        return httpx.Response(200, headers={"content-type": "image/png"}, content=payload)
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(source)) as http:
+        service = WebReadService(
+            http,
+            url_policy=allow_public_url,
+            artifact_directory=tmp_path,
+            image_processor=fixture_ocr,
+            browser_factory=factory,
+        )
+        async with service.lifecycle():
+            opened, opened_error = await service.dispatch(
+                {"url": "https://example.org/race", "max_regions": 1}
+            )
+            pending_target = opened["unprocessed_ranges"][0]["locator"]
+            interaction = asyncio.create_task(
+                service.dispatch(
+                    {
+                        "action": "interact",
+                        "read_id": opened["read_id"],
+                        "version": opened["version"],
+                        "target_id": "race-target",
+                        "operation": "expand",
+                    }
+                )
+            )
+            await asyncio.wait_for(browsers[0].started.wait(), timeout=1)
+            advanced, advanced_error = await service.dispatch(
+                {
+                    "action": "advance",
+                    "read_id": opened["read_id"],
+                    "version": opened["version"],
+                    "asset_id": pending_target["asset_id"],
+                    "targets": [{"region": pending_target["region"]}],
+                }
+            )
+            browsers[0].resume.set()
+            interacted, interacted_error = await interaction
+
+    assert not opened_error and not advanced_error
+    assert advanced["version"] != opened["version"]
+    assert interacted_error
+    assert interacted["error"]["category"] == "version_mismatch"
+    assert interacted["version"] == advanced["version"]
+    assert browsers[0].invalidated is True
+
+
 async def test_interaction_atomically_adds_new_rendered_image_to_only_the_new_version(
     tmp_path: Path,
 ) -> None:
@@ -685,6 +919,7 @@ async def test_real_cpu_ocr_reads_text_image_embedded_in_static_html(tmp_path: P
     assert body["processing"]["ocr_used"] is True
     runtime = body["processing"]["image_ocr"][0]
     assert runtime["execution_providers"] == ["CPUExecutionProvider"]
+    assert any(warning["kind"] == "structure_incomplete" for warning in body["warnings"])
 
 
 async def test_real_browser_and_cpu_ocr_commit_new_image_after_interaction(

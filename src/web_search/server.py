@@ -16,6 +16,7 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 
 from web_search.image import ImageProcessor
+from web_search.mcp_delivery import ReadServer
 from web_search.network import PinnedPublicTransport
 from web_search.resources import AdmissionController
 from web_search.tavily import search
@@ -144,7 +145,7 @@ def create_server(
         async with web_read.lifecycle():
             yield {}
 
-    server: Server[Any] = Server("tavily-web-search", version="0.1.0", lifespan=lifespan)
+    server: Server[Any] = ReadServer(web_read, version="0.1.0", lifespan=lifespan)
 
     @server.list_tools()  # type: ignore[no-untyped-call, untyped-decorator]
     async def list_tools() -> list[types.Tool]:

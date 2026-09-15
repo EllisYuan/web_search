@@ -28,6 +28,16 @@ def main() -> None:
             json.dumps(
                 {
                     "mcpServers": {
+                        "read_production": {
+                            "command": sys.executable,
+                            "args": ["-m", "web_search"],
+                            "env": {"TAVILY_API_KEY": ""},
+                        },
+                        "read_fixture": {
+                            "command": sys.executable,
+                            "args": [str(root / "tests/fixture_stdio_server.py")],
+                            "env": {"TAVILY_API_KEY": ""},
+                        },
                         "production": {
                             "command": sys.executable,
                             "args": ["-m", "web_search"],
@@ -44,6 +54,20 @@ def main() -> None:
             encoding="utf-8",
         )
         scenarios: list[tuple[str, str, str, dict[str, Any] | None]] = [
+            ("read_discovery", "read_production", "tools/list", None),
+            ("read_ok", "read_fixture", "tools/call", {"url": "https://example.org/source"}),
+            (
+                "read_partial",
+                "read_fixture",
+                "tools/call",
+                {"url": "https://example.org/source.pdf", "max_pages": 1},
+            ),
+            (
+                "read_error",
+                "read_fixture",
+                "tools/call",
+                {"url": "https://example.org/source-empty"},
+            ),
             ("discovery", "production", "tools/list", None),
             (
                 "batch_with_per_query_overrides",
@@ -140,7 +164,7 @@ def main() -> None:
             if arguments is not None:
                 command += [
                     "--tool-name",
-                    "web_search",
+                    "web_read" if scenario.startswith("read_") else "web_search",
                     "--tool-args-json",
                     json.dumps(arguments, ensure_ascii=False),
                 ]
@@ -154,11 +178,28 @@ def main() -> None:
             )
             if dummy_key in completed.stdout + completed.stderr:
                 raise RuntimeError("Smoke failed: credential was disclosed; output withheld.")
-            if completed.returncode != 0:
+            if scenario == "read_error":
+                assert completed.returncode != 0
+                assert json.loads(completed.stderr)["error"]["code"] == "tool_is_error"
+            elif completed.returncode != 0:
                 raise RuntimeError(f"Inspector {scenario} failed: {completed.stderr}")
             payload = json.loads(completed.stdout)["result"]
-            if arguments is None:
-                assert [tool["name"] for tool in payload["tools"]] == ["web_search"]
+            if scenario.startswith("read_"):
+                if arguments is None:
+                    assert [tool["name"] for tool in payload["tools"]] == ["web_read"]
+                else:
+                    body = payload["structuredContent"]
+                    assert json.loads(payload["content"][0]["text"]) == body
+                    assert payload["isError"] is (scenario == "read_error")
+                    assert body["status"] == scenario.removeprefix("read_")
+                    if scenario == "read_ok":
+                        assert "原文" in body["content_markdown"]
+                    elif scenario == "read_partial":
+                        assert body["unprocessed_ranges"] and body["content_markdown"]
+                    else:
+                        assert body["error"]["category"] == "extraction_failed"
+            elif arguments is None:
+                assert [tool["name"] for tool in payload["tools"]] == ["web_search", "web_read"]
                 schema = payload["tools"][0]["inputSchema"]["properties"]
                 assert schema["queries"]["minItems"] == 1
                 assert schema["queries"]["maxItems"] == 20
@@ -237,7 +278,8 @@ def main() -> None:
             observations.append(
                 {
                     "scenario": scenario,
-                    "exit_code": 0,
+                    "exit_code": completed.returncode,
+                    "stderr": completed.stderr,
                     "arguments": arguments,
                     "response": payload,
                     "credential_check": "stdout and stderr contain no configured dummy key",

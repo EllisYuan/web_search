@@ -730,7 +730,9 @@ async def test_open_scanned_pdf_enforces_region_hard_limit_and_locates_remaining
     assert body["extraction_status"] == "partial"
 
 
-async def test_pdf_ocr_advance_timeout_does_not_commit_completed_prefix(tmp_path: Path) -> None:
+async def test_pdf_ocr_advance_timeout_commits_completed_targets_and_reports_gap(
+    tmp_path: Path,
+) -> None:
     image = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
     payload = scanned_pdf(image, image, image)
     calls = 0
@@ -804,13 +806,15 @@ async def test_pdf_ocr_advance_timeout_does_not_commit_completed_prefix(tmp_path
             },
         )
 
-    assert timed_out.isError
+    assert not timed_out.isError
     assert timed_out.structuredContent is not None
-    assert timed_out.structuredContent["error"]["category"] == "timeout"
-    assert timed_out.structuredContent["version"] == initial["version"]
-    assert current_page_two.isError
+    assert timed_out.structuredContent["status"] == "partial"
+    assert any(item["kind"] == "timeout" for item in timed_out.structuredContent["failures"])
+    assert timed_out.structuredContent["version"] != initial["version"]
+    assert not current_page_two.isError
     assert current_page_two.structuredContent is not None
-    assert current_page_two.structuredContent["version"] == initial["version"]
+    assert "OCR call 2" in current_page_two.structuredContent["content_markdown"]
+    assert current_page_two.structuredContent["version"] == timed_out.structuredContent["version"]
     assert list(tmp_path.glob("*.png")) == []
 
 

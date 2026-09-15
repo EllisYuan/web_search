@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
 
+import anyio
 import psutil
 from playwright.async_api import (
     Browser,
@@ -119,9 +120,10 @@ class BrowserSession:
         try:
             return await asyncio.shield(task)
         except asyncio.CancelledError:
-            await asyncio.shield(self.invalidate())
-            with suppress(Exception):
-                await asyncio.shield(task)
+            with anyio.CancelScope(shield=True):
+                await self.invalidate()
+                with suppress(Exception, asyncio.CancelledError):
+                    await asyncio.shield(task)
             raise
 
     async def _open(self, url: str) -> RenderedPage:
@@ -291,9 +293,11 @@ class BrowserSession:
         try:
             return await asyncio.shield(task)
         except asyncio.CancelledError:
-            await asyncio.shield(self.invalidate())
-            with suppress(Exception):
-                await asyncio.shield(task)
+            with anyio.CancelScope(shield=True):
+                await self.invalidate()
+                task.cancel()
+                with suppress(Exception, asyncio.CancelledError):
+                    await task
             raise
 
     async def _interact(
@@ -523,6 +527,10 @@ class BrowserSession:
         await self.close()
 
     async def close(self) -> None:
+        with anyio.CancelScope(shield=True):
+            await self._close()
+
+    async def _close(self) -> None:
         context, browser, playwright = self._context, self._browser, self._playwright
         memory_task = self._memory_task
         self._page = None

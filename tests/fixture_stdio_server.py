@@ -15,6 +15,8 @@ from web_search.server import read_api_key, serve
 def respond(request: httpx.Request) -> httpx.Response:
     if request.method == "GET":
         assert str(request.url).startswith("https://example.org/source")
+        if request.url.path == "/source-empty":
+            return httpx.Response(200, headers={"content-type": "text/html"}, text="<html></html>")
         if request.url.path == "/source.pdf":
             return httpx.Response(
                 200,

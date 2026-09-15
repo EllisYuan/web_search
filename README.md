@@ -37,6 +37,8 @@ uv run playwright install chromium
 
 ## Web Read
 
+完整 Web Read v1 gate **尚未通过**。当前 implementation、可复跑 evidence 和未通过项见 [#25 验收记录](docs/testing/issue25-windows-smoke.md)。
+
 `open` 可省略 `action`。caller 必须显式提供选中的公开 HTTP(S) URL；Search 不会自动读取 candidates：
 
 ```json
@@ -50,6 +52,24 @@ uv run playwright install chromium
 ```
 
 也可用响应中的 opaque `section_id` / `block_id` 或已处理 PDF `page` 发起新的 selection。`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。
+
+### 中断后恢复
+
+每次 processing 在 resource admission 后使用同一个 deadline，后续 HTTP capture、PDF target / raster、OCR 不重新获得完整 timeout。收到 MCP `notifications/cancelled` 或 transport EOF 后停止调度，等待本次 worker / browser cleanup。Client 仅在本地停止等待、却未发送 cancellation 或关闭 transport 时，server 无法观察到这一事件。
+
+已取得 `read_id` 的 caller 可用现有 `find` 重新观察当前有效 `version`、`unprocessed_ranges` 和 `failures`，再按需要 `read`：
+
+```json
+{"action":"find","read_id":"...","query":"目标关键词"}
+```
+
+没有新的 status action。可选的 `recovery` 字段记录最近一次可观察 interruption 的 `action`、`category`、`phase`、`version`、`locator`、`retryable` 与 `next_action`；它不属于固定 version 的 extraction artifact，也不表示后台仍在推进。未命中 query 仍会返回实际搜索范围与缺口。
+
+PDF `advance` 中断时，已完整完成的 targets 可作为一致的新 snapshot 提交，并标明未完成 targets；没有完成 target 时保留旧 version。旧 version 与尚未消费的 cursor 继续读取原内容。`interact` 中断后 browser session 失效，后续 `interact` 返回 `browser_state_invalid`，需要重新 `open`；已提交的 text 和 asset 仍可读取。
+
+响应未送达时不保证 caller 能接收到 error envelope。首次 `open` 响应完全丢失且 caller 没有取得句柄时，无法找回该句柄；遗留 state 按 idle expiry / process cleanup 回收。stdio EOF 会结束当前 server session 并清理 state；新 process 的旧句柄返回 `state_expired`。所有 retry 都必须是 caller 显式发起的新 operation。
+
+### 有界追加处理
 
 长 PDF 的首次处理同时受 `max_pages`、`max_regions` 与单次 4 个 PDF OCR regions 的 server hard limit 约束；不会等待全文 OCR。可显式追加非顺序 page / region，每次只处理 `targets`，并创建新 `version`：
 

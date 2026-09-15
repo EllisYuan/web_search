@@ -615,7 +615,7 @@ async def test_image_advance_timeout_preserves_committed_version(
         url_policy=allow_public_url,
         artifact_directory=tmp_path,
         image_processor=processor,
-        timeout_seconds=0.01,
+        timeout_seconds=0.1,
     ) as session:
         opened = await session.call_tool("web_read", {"url": "https://example.org/timeout.png"})
         assert opened.structuredContent is not None

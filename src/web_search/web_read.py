@@ -6,6 +6,7 @@ import asyncio
 import base64
 import ipaddress
 import json
+import logging
 import math
 import os
 import re
@@ -40,6 +41,7 @@ from web_search.limits import (
     MAX_REGIONS,
     MAX_VERSIONS,
 )
+from web_search.operations import CURRENT_DEADLINE, checkpoint, operation_deadline
 from web_search.pdf import (
     PdfBlock,
     PdfExtraction,
@@ -61,6 +63,7 @@ from web_search.resources import (
 )
 
 WEB_READ_ACTIONS = ("open", "read", "find", "advance", "interact", "asset", "release")
+logger = logging.getLogger(__name__)
 AVAILABLE_ACTIONS = ["read", "find", "release"]
 PDF_AVAILABLE_ACTIONS = ["read", "find", "advance", "asset", "release"]
 IMAGE_AVAILABLE_ACTIONS = ["read", "find", "advance", "asset", "release"]
@@ -409,6 +412,8 @@ class ReadState:
     webpage_image_sources: dict[str, frozenset[str]] = field(default_factory=dict)
     webpage_uncaptured_sources: dict[str, frozenset[str]] = field(default_factory=dict)
     interaction_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
+    interruption: dict[str, Any] | None = None
+    browser_invalid: bool = False
 
 
 @dataclass
@@ -962,6 +967,10 @@ class WebReadService:
         }
 
     async def _cleanup_state(self, state: ReadState) -> None:
+        with anyio.CancelScope(shield=True):
+            await self._cleanup_state_shielded(state)
+
+    async def _cleanup_state_shielded(self, state: ReadState) -> None:
         if state.browser is not None:
             await state.browser.close()
         self._remove_artifact(state.artifact_path)
@@ -1111,9 +1120,98 @@ class WebReadService:
                 "warnings": selected.document.warnings,
             }
         )
+        if state.interruption is not None:
+            result["recovery"] = dict(state.interruption)
         return result, True
 
     async def dispatch(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
+        token = CURRENT_DEADLINE.set(None)
+        try:
+            await checkpoint()
+            read_id = arguments.get("read_id")
+            previous = self._states.get(read_id) if isinstance(read_id, str) else None
+            previous_failures = list(previous.failures) if previous is not None else []
+            result, failed = await self._dispatch_with_resources(arguments)
+            if result.get("error", {}).get("category") == "timeout" or (
+                not failed
+                and arguments.get("action", "open") in {"open", "advance", "interact"}
+                and any(
+                    "timeout" in item.get("kind", "") and item not in previous_failures
+                    for item in result.get("failures", [])
+                )
+            ):
+                await self.interrupted(
+                    {**arguments, "read_id": result.get("read_id", "")}, category="timeout"
+                )
+            state = self._states.get(result.get("read_id", ""))
+            if state is not None and state.interruption is not None:
+                # Recovery observations belong to the operation, never to an immutable version.
+                result["recovery"] = dict(state.interruption)
+            return result, failed
+        except asyncio.CancelledError:
+            await self.interrupted(arguments)
+            raise
+        except TimeoutError:
+            await self.interrupted(arguments, category="timeout")
+            state = self._states.get(arguments.get("read_id", ""))
+            action = arguments.get("action", "open")
+            if state is not None:
+                return self._state_error(
+                    state,
+                    action,
+                    "timeout",
+                    "The operation deadline expired.",
+                    next_action="open" if action == "interact" else action,
+                )
+            return error_result(
+                action,
+                "timeout",
+                "The operation deadline expired.",
+                retryable=True,
+                next_action="open",
+            ), True
+        finally:
+            CURRENT_DEADLINE.reset(token)
+
+    async def interrupted(
+        self, arguments: dict[str, Any], *, category: str = "cancelled", phase: str = "processing"
+    ) -> None:
+        action = arguments.get("action", "open")
+        read_id = arguments.get("read_id")
+        state = self._states.get(read_id) if isinstance(read_id, str) else None
+        logger.info(
+            "web_read interrupted action=%s category=%s phase=%s read_id=%s version=%s",
+            action,
+            category,
+            phase,
+            state.read_id if state else None,
+            state.version if state else None,
+        )
+        if state is None:
+            return
+        state.interruption = {
+            "action": action,
+            "category": category,
+            "phase": phase,
+            "version": state.version,
+            "retryable": action != "interact",
+            "next_action": "open" if action == "interact" else action,
+            "locator": {
+                key: arguments[key]
+                for key in ("targets", "target_id", "page", "asset_id")
+                if key in arguments
+            },
+        }
+        if action == "interact" and state.browser is not None:
+            was_invalid = state.browser_invalid
+            state.browser_invalid = True
+            if not was_invalid:
+                with anyio.CancelScope(shield=True):
+                    await state.browser.invalidate()
+
+    async def _dispatch_with_resources(
+        self, arguments: dict[str, Any]
+    ) -> tuple[dict[str, Any], bool]:
         await self._purge_expired()
         action = arguments.get("action", "open")
         problem = validate_input(arguments)
@@ -1130,8 +1228,12 @@ class WebReadService:
             if lease is None:
                 return self._resource_error(action, state)
             token = CURRENT_WORK.set(lease)
+            CURRENT_DEADLINE.set(asyncio.get_running_loop().time() + self._timeout_seconds)
             try:
-                return await self._accounted_dispatch(arguments, state)
+                result = await self._accounted_dispatch(arguments, state)
+                if lease.cancelled:
+                    raise asyncio.CancelledError
+                return result
             finally:
                 retained_paths = self._artifact_paths()
                 try:
@@ -1141,7 +1243,13 @@ class WebReadService:
                     CURRENT_WORK.reset(token)
                     self._admission.release(lease)
         try:
-            return await self._dispatch_action(arguments)
+            CURRENT_DEADLINE.set(asyncio.get_running_loop().time() + self._timeout_seconds)
+            result = await self._dispatch_action(arguments)
+            if action in {"read", "find"}:
+                await checkpoint()
+            return result
+        except TimeoutError:
+            raise
         except (MemoryError, OSError):
             return self._resource_error(action, self._states.get(arguments.get("read_id", "")))
 
@@ -1193,6 +1301,8 @@ class WebReadService:
                 result_state.last_access = self._clock()
                 self._admission.retain(result_state.read_id, retained_size(result_state))
             return result, failed
+        except TimeoutError:
+            raise
         except (MemoryError, OSError):
             if state is not None and checkpoint is not None:
                 # Preserve cursors created by concurrent read calls against retained versions.
@@ -1549,9 +1659,9 @@ class WebReadService:
             for failure in current.failures
             if isinstance(failure.get("locator", {}).get("page"), int)
         }
-        deadline = asyncio.get_running_loop().time() + self._timeout_seconds
+        deadline = operation_deadline(self._timeout_seconds)
         try:
-            async with asyncio.timeout(self._timeout_seconds):
+            async with asyncio.timeout_at(operation_deadline(self._timeout_seconds)):
                 for target in targets:
                     page = target["page"]
                     region = target.get("region")
@@ -1907,14 +2017,50 @@ class WebReadService:
                     )
                     if any(item["kind"] == "resource_exhausted" for item in operation_failures):
                         break
-        except TimeoutError:
-            return self._state_error(
-                state,
-                "advance",
-                "timeout",
-                "PDF advance timed out before a new version was committed.",
-                next_action="advance",
+        except (TimeoutError, asyncio.CancelledError) as interruption:
+            category = (
+                "cancelled" if isinstance(interruption, asyncio.CancelledError) else "timeout"
             )
+            if category == "cancelled":
+                lease = CURRENT_WORK.get()
+                if lease is None:
+                    raise
+                # Complete only the synchronous publication/accounting of finished targets.
+                # Dispatch then re-raises cancellation; no response is promised to the caller.
+                lease.cancelled = True
+            pending = [
+                item
+                for item in targets
+                if item not in duplicate_targets
+                and not any(item == done.target for done in completed)
+            ]
+            operation_failures.append(
+                {
+                    "kind": category,
+                    "message": "PDF processing stopped at this target.",
+                    "locator": target,
+                    "next_action": "advance",
+                }
+            )
+            operation_unprocessed.extend(
+                {
+                    "kind": "unprocessed_region" if "region" in item else "unprocessed_page",
+                    "message": "The requested PDF target has not completed.",
+                    "locator": item,
+                    "next_action": "advance",
+                }
+                for item in pending
+            )
+            if not completed:
+                result, failed = self._state_error(
+                    state,
+                    "advance",
+                    category,
+                    "PDF advance stopped before a new version was committed.",
+                    next_action="advance",
+                )
+                result["failures"] = [*current.failures, *operation_failures]
+                return result, failed
 
         duplicate_warnings = [
             {
@@ -2249,7 +2395,7 @@ class WebReadService:
             )
         data = await run_blocking(state.artifact_path.read_bytes)
         try:
-            async with asyncio.timeout(self._timeout_seconds):
+            async with asyncio.timeout_at(operation_deadline(self._timeout_seconds)):
                 crop = await self._pdf_target(
                     "crop",
                     data,
@@ -2803,12 +2949,22 @@ class WebReadService:
                 return await self._interact_locked(state, arguments)
         except asyncio.CancelledError:
             if state.browser is not None:
-                await asyncio.shield(state.browser.invalidate())
+                state.browser_invalid = True
+                with anyio.CancelScope(shield=True):
+                    await state.browser.invalidate()
             raise
 
     async def _interact_locked(
         self, state: ReadState, arguments: dict[str, Any]
     ) -> tuple[dict[str, Any], bool]:
+        if state.browser_invalid:
+            return self._state_error(
+                state,
+                "interact",
+                "browser_state_invalid",
+                "The interrupted browser session must be acquired again.",
+                next_action="open",
+            )
         if "version" not in arguments or arguments["version"] != state.version:
             return self._state_error(
                 state,
@@ -2839,7 +2995,7 @@ class WebReadService:
         previous_assets = state.webpage_assets.get(previous_version, {})
         previous_sources = state.webpage_image_sources.get(previous_version, frozenset())
         previous_uncaptured = state.webpage_uncaptured_sources.get(previous_version, frozenset())
-        deadline = asyncio.get_running_loop().time() + self._timeout_seconds
+        deadline = operation_deadline(self._timeout_seconds)
         image_runtimes: list[dict[str, Any]] = []
         new_assets: dict[str, WebpageImage] = {}
         image_capture_used = False
@@ -2962,6 +3118,7 @@ class WebReadService:
         except TimeoutError:
             for asset in new_assets.values():
                 self._remove_artifact(asset.artifact_path)
+            state.browser_invalid = True
             await state.browser.invalidate()
             return self._state_error(
                 state,
@@ -2973,6 +3130,9 @@ class WebReadService:
         except BrowserFailure as error:
             for asset in new_assets.values():
                 self._remove_artifact(asset.artifact_path)
+            if error.category in {"timeout", "browser_state_invalid"}:
+                state.browser_invalid = True
+                await state.browser.invalidate()
             return self._state_error(
                 state,
                 "interact",
@@ -3093,8 +3253,10 @@ class WebReadService:
         return added
 
     async def _fetch(self, initial_url: str) -> tuple[CapturedSource | None, dict[str, Any] | None]:
+        await checkpoint()
         url = initial_url
         for redirect_count in range(MAX_REDIRECTS + 1):
+            await checkpoint()
             if not is_valid_url_shape(url) or not await self._url_policy(url):
                 return None, error_result(
                     "open", "access_blocked", "URL is not an eligible public HTTP(S) resource."
@@ -3166,7 +3328,8 @@ class WebReadService:
                     "open", "acquisition_failed", "Source acquisition failed.", retryable=True
                 )
             finally:
-                await response.aclose()
+                with anyio.CancelScope(shield=True):
+                    await response.aclose()
             return (
                 CapturedSource(
                     url=str(response.url),
@@ -3220,6 +3383,21 @@ class WebReadService:
             )
 
         for index, reference in enumerate(references[:MAX_WEBPAGE_IMAGES]):
+            if asyncio.get_running_loop().time() >= deadline:
+                capture_status = "partial"
+                for pending_index, pending in enumerate(references[index:], start=index):
+                    failures.append(
+                        {
+                            "kind": "timeout",
+                            "message": "Image capture did not start before the deadline.",
+                            "locator": {
+                                "image_index": pending_index,
+                                "source_url": pending.source_url,
+                            },
+                            "next_action": "open",
+                        }
+                    )
+                break
             try:
                 async with asyncio.timeout_at(deadline):
                     captured, fetch_failure = await self._fetch(reference.source_url)
@@ -3235,7 +3413,9 @@ class WebReadService:
                 error = (fetch_failure or {}).get("error", {})
                 failures.append(
                     {
-                        "kind": "image_capture_failed",
+                        "kind": "timeout"
+                        if error.get("category") == "timeout"
+                        else "image_capture_failed",
                         "message": str(error.get("message", "Webpage image capture failed.")),
                         "locator": {"image_index": index, "source_url": reference.source_url},
                         "next_action": "read",
@@ -3315,7 +3495,9 @@ class WebReadService:
             except Exception as error:
                 failures.append(
                     {
-                        "kind": "image_ocr_failed",
+                        "kind": "timeout"
+                        if isinstance(error, TimeoutError)
+                        else "image_ocr_failed",
                         "message": "CPU OCR failed for the captured webpage image.",
                         "locator": locator,
                         "next_action": "advance",
@@ -3424,7 +3606,7 @@ class WebReadService:
                 True,
             )
         url = arguments["url"]
-        deadline = asyncio.get_running_loop().time() + self._timeout_seconds
+        deadline = operation_deadline(self._timeout_seconds)
         try:
             async with asyncio.timeout_at(deadline):
                 response, failure = await self._fetch(url)
@@ -3489,6 +3671,11 @@ class WebReadService:
                 )
                 rendered = await browser.open(url)
                 rendered_document = with_browser_warnings(extract_html(rendered.html), rendered)
+            except asyncio.CancelledError:
+                if browser is not None:
+                    with anyio.CancelScope(shield=True):
+                        await browser.invalidate()
+                raise
             except BrowserFailure as error:
                 if browser is not None:
                     await browser.close()
@@ -3576,9 +3763,10 @@ class WebReadService:
             image_warnings = captured_images.warnings
             capture_status = captured_images.capture_status
             image_runtimes = captured_images.runtimes
-        except asyncio.CancelledError:
+        except BaseException:
             if browser is not None:
-                await asyncio.shield(browser.close())
+                with anyio.CancelScope(shield=True):
+                    await browser.close()
             raise
         if not document.blocks and not image_blocks and not webpage_assets:
             for asset in webpage_assets.values():
@@ -3806,7 +3994,7 @@ class WebReadService:
             )
             return result, False
 
-        deadline = asyncio.get_running_loop().time() + self._timeout_seconds
+        deadline = operation_deadline(self._timeout_seconds)
         try:
             extraction = await self._process_image(asset.artifact_path, unique_regions, deadline)
         except TimeoutError:
@@ -4089,7 +4277,7 @@ class WebReadService:
                 processed_regions=[],
             )
         else:
-            deadline = asyncio.get_running_loop().time() + self._timeout_seconds
+            deadline = operation_deadline(self._timeout_seconds)
             try:
                 extraction = await self._process_image(
                     state.artifact_path, unique_regions, deadline
@@ -4411,6 +4599,7 @@ class WebReadService:
         regions: list[dict[str, float]],
         deadline: float,
     ) -> ImageExtraction:
+        await checkpoint(deadline)
         async with asyncio.timeout_at(deadline):
             return await self._image_processor(artifact_path, regions, deadline)
 
@@ -4453,6 +4642,7 @@ class WebReadService:
     async def _pdf_target(
         self, operation: str, data: bytes, arguments: dict[str, Any], deadline: float
     ) -> dict[str, Any]:
+        await checkpoint(deadline)
         path = self._admission.write(data, self._artifact_directory, ".pdf")
         try:
             output = await self._run_worker(
@@ -4477,8 +4667,7 @@ class WebReadService:
 
     @staticmethod
     async def _run_worker(module: str, arguments: list[str], deadline: float) -> bytes:
-        if deadline - asyncio.get_running_loop().time() <= 0:
-            raise TimeoutError
+        await checkpoint(deadline)
         process: asyncio.subprocess.Process | None = None
         monitor: asyncio.Task[None] | None = None
         communication: asyncio.Task[tuple[bytes, bytes]] | None = None
@@ -4492,16 +4681,26 @@ class WebReadService:
             environment = {**os.environ, "PYTHONPATH": os.pathsep.join(sys.path)}
         try:
             async with asyncio.timeout_at(deadline):
-                process = await asyncio.create_subprocess_exec(
-                    executable,
-                    "-m",
-                    module,
-                    *arguments,
-                    stdin=asyncio.subprocess.DEVNULL,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.DEVNULL,
-                    env=environment,
+                spawning = asyncio.create_task(
+                    asyncio.create_subprocess_exec(
+                        executable,
+                        "-m",
+                        module,
+                        *arguments,
+                        stdin=asyncio.subprocess.DEVNULL,
+                        stdout=asyncio.subprocess.PIPE,
+                        stderr=asyncio.subprocess.DEVNULL,
+                        env=environment,
+                    )
                 )
+                try:
+                    process = await asyncio.shield(spawning)
+                except asyncio.CancelledError:
+                    # A cancellation can arrive after OS creation but before Python
+                    # returns the handle. Join that launch so finally can reap it.
+                    with anyio.CancelScope(shield=True):
+                        process = await asyncio.shield(spawning)
+                    raise
                 monitor = asyncio.create_task(monitor_worker(process.pid))
                 communication = asyncio.create_task(process.communicate())
                 done, _ = await asyncio.wait(
@@ -4754,7 +4953,11 @@ class WebReadService:
             page
             for page in scanned_pages
             if any(target["page"] == page for target in processed_targets)
-            and not any(target["page"] == page for target in candidate_targets[region_budget:])
+            and all(
+                target in processed_targets
+                for target in candidate_targets
+                if target["page"] == page
+            )
         }
         failures = [
             failure
@@ -4773,7 +4976,8 @@ class WebReadService:
                 "locator": {"page": target["page"], "region": target["region"]},
                 "next_action": "advance",
             }
-            for target in candidate_targets[region_budget:]
+            for target in candidate_targets
+            if target not in processed_targets
         )
         unprocessed_ranges.extend(
             {

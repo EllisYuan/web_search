@@ -531,7 +531,7 @@ async def test_read_and_find_use_committed_artifact_and_timeout_invalidates_brow
             },
         )
 
-    assert browsers[0].calls == ["open", "interact", "interact", "close"]
+    assert browsers[0].calls == ["open", "interact", "close", "close"]
     assert timed_out.structuredContent is not None
     assert timed_out.structuredContent["error"]["category"] == "timeout"
     assert invalid.structuredContent is not None
@@ -611,7 +611,7 @@ async def test_expired_browser_budget_preserves_static_content(
     browser_created = False
 
     def slow_extract(html: str) -> web_read_module.ExtractedDocument:
-        time.sleep(0.02)
+        time.sleep(0.2)
         return original_extract(html)
 
     def factory(policy: Callable[[str], Awaitable[bool]], timeout: float) -> BrowserSession:
@@ -631,7 +631,7 @@ async def test_expired_browser_budget_preserves_static_content(
         service = WebReadService(
             http,
             url_policy=allow_fixture_url,
-            timeout_seconds=0.01,
+            timeout_seconds=0.1,
             browser_factory=factory,
         )
         async with service.lifecycle():

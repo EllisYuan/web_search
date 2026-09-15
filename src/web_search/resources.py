@@ -82,6 +82,7 @@ class WorkLease:
     remaining: int = WORK_TEMPORARY_BYTES
     files: set[Path] = field(default_factory=set)
     read_id: str | None = None
+    cancelled: bool = False
 
 
 CURRENT_WORK: ContextVar[WorkLease | None] = ContextVar("web_read_work", default=None)

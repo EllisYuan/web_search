@@ -17,6 +17,7 @@ from mcp.server.stdio import stdio_server
 
 from web_search.image import ImageProcessor
 from web_search.network import PinnedPublicTransport
+from web_search.resources import AdmissionController
 from web_search.tavily import search
 from web_search.web_read import (
     WEB_READ_DESCRIPTION,
@@ -121,6 +122,7 @@ def create_server(
     artifact_directory: str | Path | None = None,
     image_processor: ImageProcessor | None = None,
     browser_factory: BrowserFactory | None = None,
+    admission: AdmissionController | None = None,
 ) -> Server[Any]:
     read_options: dict[str, Any] = {
         "timeout_seconds": timeout_seconds,
@@ -129,6 +131,7 @@ def create_server(
         "resource_gate": resource_gate,
         "artifact_directory": artifact_directory,
         "image_processor": image_processor,
+        "admission": admission,
     }
     if url_policy is not None:
         read_options["url_policy"] = url_policy
@@ -272,6 +275,7 @@ async def serve(
     transport: httpx.AsyncBaseTransport | None = None,
     timeout_seconds: float = 30.0,
     url_policy: URLPolicy | None = None,
+    admission: AdmissionController | None = None,
 ) -> None:
     """Own HTTP and stdio lifetimes; injection is only for offline fixtures."""
     effective_transport = transport or PinnedPublicTransport()
@@ -285,6 +289,7 @@ async def serve(
             http=http,
             timeout_seconds=timeout_seconds,
             url_policy=url_policy,
+            admission=admission,
         )
         async with stdio_server() as (read, write):
             await server.run(read, write, server.create_initialization_options())

@@ -826,10 +826,10 @@ async def test_interaction_cannot_overwrite_a_concurrent_webpage_image_advance(
             advanced, advanced_error = await advancing
 
     assert not opened_error and not interacted_error
-    assert advance_waited
+    assert not advance_waited
     assert interacted["version"] != opened["version"]
     assert advanced_error
-    assert advanced["error"]["category"] == "version_mismatch"
+    assert advanced["error"]["category"] == "resource_exhausted"
     assert advanced["version"] == opened["version"]
 
 

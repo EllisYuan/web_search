@@ -114,10 +114,7 @@ async def test_same_page_mixed_pdf_reuses_native_text_and_deduplicates_ocr(
             mime_type="image/png",
             blocks=[
                 OcrBlock(
-                    (
-                        "Native headlng ORCHID-4096 "
-                        "Scanned table value AX-2026-0917"
-                    ),
+                    ("Native headlng ORCHID-4096 Scanned table value AX-2026-0917"),
                     0.96,
                     {"x": 0.1, "y": 0.05, "width": 0.7, "height": 0.35},
                 ),
@@ -175,14 +172,18 @@ async def test_partial_pdf_ocr_region_keeps_text_but_remains_retryable(
     ) -> ImageExtraction:
         nonlocal calls
         calls += 1
-        failure = [] if calls == 2 else [
-            {
-                "kind": "region_ocr_failed",
-                "message": "One OCR subregion failed.",
-                "locator": {"region": regions[0]},
-                "next_action": "advance",
-            }
-        ]
+        failure = (
+            []
+            if calls == 2
+            else [
+                {
+                    "kind": "region_ocr_failed",
+                    "message": "One OCR subregion failed.",
+                    "locator": {"region": regions[0]},
+                    "next_action": "advance",
+                }
+            ]
+        )
         text = "Recovered OCR tail." if calls == 2 else "Reliable OCR prefix."
         return ImageExtraction(
             width=1200,
@@ -366,9 +367,7 @@ async def test_failure_only_pdf_advance_discloses_ocr_execution(tmp_path: Path) 
         "pdf_rasterize",
         "cpu_ocr",
     ]
-    assert advanced.structuredContent["failures"][-1]["kind"] == (
-        "target_extraction_failed"
-    )
+    assert advanced.structuredContent["failures"][-1]["kind"] == ("target_extraction_failed")
 
 
 async def test_advance_scanned_pdf_page_is_nonsequential_atomic_and_keeps_old_cursor(
@@ -397,9 +396,7 @@ async def test_advance_scanned_pdf_page_is_nonsequential_atomic_and_keeps_old_cu
             height=500,
             format="PNG",
             mime_type="image/png",
-            blocks=[
-                OcrBlock(text, 0.98, {"x": 0.1, "y": 0.2, "width": 0.7, "height": 0.2})
-            ],
+            blocks=[OcrBlock(text, 0.98, {"x": 0.1, "y": 0.2, "width": 0.7, "height": 0.2})],
             failures=[],
             warnings=[],
             runtime={"execution_providers": ["CPUExecutionProvider"]},
@@ -617,10 +614,7 @@ async def test_real_cpu_ocr_reads_controlled_english_and_chinese_scanned_pdfs(
         assert all(reference in body["content_markdown"] for reference in references)
         assert body["processing"]["execution_providers"] == ["CPUExecutionProvider"]
         assert body["processing"]["ocr_used"] is True
-        assert all(
-            locator["processing_lineage"]["source"] == "ocr"
-            for locator in body["locators"]
-        )
+        assert all(locator["processing_lineage"]["source"] == "ocr" for locator in body["locators"])
 
 
 async def test_real_cpu_ocr_reads_same_page_and_cross_page_mixed_pdfs(tmp_path: Path) -> None:
@@ -636,6 +630,7 @@ async def test_real_cpu_ocr_reads_same_page_and_cross_page_mixed_pdfs(tmp_path: 
         ),
     ]
     for index, (payload, references) in enumerate(cases):
+
         def source(request: httpx.Request, data: bytes = payload) -> httpx.Response:
             return httpx.Response(
                 200,
@@ -718,7 +713,7 @@ async def test_open_scanned_pdf_enforces_region_hard_limit_and_locates_remaining
             {
                 "url": "https://example.org/bounded-long-scan.pdf",
                 "max_pages": 5,
-                "max_regions": 5,
+                "max_regions": 4,
             },
         )
 
@@ -1006,11 +1001,7 @@ async def test_mixed_page_pending_region_advances_once_and_stays_processed(
     ) -> ImageExtraction:
         nonlocal calls
         calls += 1
-        text = (
-            "Top image alpha evidence."
-            if calls == 1
-            else "Bottom image beta result."
-        )
+        text = "Top image alpha evidence." if calls == 1 else "Bottom image beta result."
         return ImageExtraction(
             width=600,
             height=300,
@@ -1047,9 +1038,7 @@ async def test_mixed_page_pending_region_advances_once_and_stays_processed(
         assert opened.structuredContent is not None
         initial = opened.structuredContent
         pending = [
-            item
-            for item in initial["unprocessed_ranges"]
-            if item["kind"] == "unprocessed_region"
+            item for item in initial["unprocessed_ranges"] if item["kind"] == "unprocessed_region"
         ]
         assert len(pending) == 1
 
@@ -1086,6 +1075,5 @@ async def test_mixed_page_pending_region_advances_once_and_stays_processed(
     assert repeated.structuredContent is not None
     assert repeated.structuredContent["version"] == updated["version"]
     assert any(
-        warning["kind"] == "already_processed"
-        for warning in repeated.structuredContent["warnings"]
+        warning["kind"] == "already_processed" for warning in repeated.structuredContent["warnings"]
     )

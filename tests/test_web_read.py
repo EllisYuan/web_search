@@ -1,5 +1,6 @@
 import asyncio
 import base64
+import json
 import threading
 from pathlib import Path
 from typing import Any
@@ -260,16 +261,18 @@ async def test_failed_region_is_reported_until_an_explicit_retry_succeeds(
             "web_read", {"url": "https://example.org/region-retry.pdf", "max_pages": 1}
         )
         assert opened.structuredContent is not None
-        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+        original_extract = web_read_module.WebReadService._run_worker
 
-        def fail_region(*args: Any, **kwargs: Any) -> Any:
-            page = args[1]
-            region = args[2]
-            if page == 1 and region is not None:
-                raise ValueError("injected region failure")
-            return original_extract(*args, **kwargs)
+        async def fail_region(module: str, args: list[str], deadline: float) -> bytes:
+            if module.endswith("pdf_target_worker") and args[1] == "text":
+                target = json.loads(args[2])
+                if target["page_number"] == 1 and target["region"] is not None:
+                    return b'{"ok":false,"category":"extraction_failed"}'
+            return await original_extract(module, args, deadline)
 
-        monkeypatch.setattr(web_read_module, "extract_pdf_text", fail_region)
+        monkeypatch.setattr(
+            web_read_module.WebReadService, "_run_worker", staticmethod(fail_region)
+        )
         partial = await session.call_tool(
             "web_read",
             {
@@ -283,7 +286,9 @@ async def test_failed_region_is_reported_until_an_explicit_retry_succeeds(
         )
         assert partial.structuredContent is not None
         failed = partial.structuredContent
-        monkeypatch.setattr(web_read_module, "extract_pdf_text", original_extract)
+        monkeypatch.setattr(
+            web_read_module.WebReadService, "_run_worker", staticmethod(original_extract)
+        )
         retried = await session.call_tool(
             "web_read",
             {
@@ -311,11 +316,12 @@ async def test_failed_region_is_reported_until_an_explicit_retry_succeeds(
     assert retried.structuredContent["unprocessed_ranges"] == []
 
 
-async def test_concurrent_advance_uses_compare_and_swap_before_commit(
+async def test_concurrent_advance_rejects_work_on_busy_state(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     pdf = text_pdf("Committed page one.", "Concurrent page two.", "Concurrent page three.")
-    barrier = threading.Barrier(2)
+    entered = threading.Event()
+    resume = threading.Event()
 
     def source(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, headers={"content-type": "application/pdf"}, content=pdf)
@@ -326,35 +332,41 @@ async def test_concurrent_advance_uses_compare_and_swap_before_commit(
         )
         assert opened.structuredContent is not None
         initial = opened.structuredContent
-        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+        original_extract = web_read_module.WebReadService._run_worker
 
-        def synchronized_extract(*args: Any, **kwargs: Any) -> Any:
-            barrier.wait(timeout=2)
-            return original_extract(*args, **kwargs)
+        async def synchronized_extract(module: str, args: list[str], deadline: float) -> bytes:
+            entered.set()
+            assert await asyncio.to_thread(resume.wait, 5)
+            return await original_extract(module, args, deadline)
 
-        monkeypatch.setattr(web_read_module, "extract_pdf_text", synchronized_extract)
-        results = await asyncio.gather(
-            *(
-                session.call_tool(
-                    "web_read",
-                    {
-                        "action": "advance",
-                        "read_id": initial["read_id"],
-                        "version": initial["version"],
-                        "targets": [{"page": page}],
-                    },
-                )
-                for page in (2, 3)
-            )
+        monkeypatch.setattr(
+            web_read_module.WebReadService, "_run_worker", staticmethod(synchronized_extract)
         )
-        monkeypatch.setattr(web_read_module, "extract_pdf_text", original_extract)
+        arguments = {
+            "action": "advance",
+            "read_id": initial["read_id"],
+            "version": initial["version"],
+        }
+        pending = asyncio.create_task(
+            session.call_tool("web_read", {**arguments, "targets": [{"page": 2}]})
+        )
+        try:
+            assert await asyncio.to_thread(entered.wait, 5)
+            rejected = await session.call_tool("web_read", {**arguments, "targets": [{"page": 3}]})
+        finally:
+            resume.set()
+            completed = await pending
+        results = [completed, rejected]
+        monkeypatch.setattr(
+            web_read_module.WebReadService, "_run_worker", staticmethod(original_extract)
+        )
 
     successes = [result for result in results if not result.isError]
     conflicts = [result for result in results if result.isError]
     assert len(successes) == 1
     assert len(conflicts) == 1
     assert conflicts[0].structuredContent is not None
-    assert conflicts[0].structuredContent["error"]["category"] == "version_mismatch"
+    assert conflicts[0].structuredContent["error"]["category"] == "resource_exhausted"
 
 
 async def test_asset_returns_captured_pdf_crop_as_mcp_image_without_refetch() -> None:
@@ -433,13 +445,15 @@ async def test_advance_timeout_does_not_publish_a_partial_version(
         )
         assert opened.structuredContent is not None
         initial = opened.structuredContent
-        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+        original_extract = web_read_module.WebReadService._run_worker
 
-        def delayed_extract(*args: Any, **kwargs: Any) -> Any:
-            threading.Event().wait(3.2)
-            return original_extract(*args, **kwargs)
+        async def delayed_extract(module: str, args: list[str], deadline: float) -> bytes:
+            await asyncio.sleep(3.2)
+            return await original_extract(module, args, deadline)
 
-        monkeypatch.setattr(web_read_module, "extract_pdf_text", delayed_extract)
+        monkeypatch.setattr(
+            web_read_module.WebReadService, "_run_worker", staticmethod(delayed_extract)
+        )
         timed_out = await session.call_tool(
             "web_read",
             {
@@ -487,14 +501,16 @@ async def test_cancelled_advance_keeps_the_committed_version(
         )
         assert opened.structuredContent is not None
         initial = opened.structuredContent
-        original_extract: Any = getattr(web_read_module, "extract_pdf_text")
+        original_extract = web_read_module.WebReadService._run_worker
 
-        def blocked_extract(*args: Any, **kwargs: Any) -> Any:
+        async def blocked_extract(module: str, args: list[str], deadline: float) -> bytes:
             started.set()
-            resume.wait(2)
-            return original_extract(*args, **kwargs)
+            await asyncio.to_thread(resume.wait, 2)
+            return await original_extract(module, args, deadline)
 
-        monkeypatch.setattr(web_read_module, "extract_pdf_text", blocked_extract)
+        monkeypatch.setattr(
+            web_read_module.WebReadService, "_run_worker", staticmethod(blocked_extract)
+        )
         call = asyncio.create_task(
             session.call_tool(
                 "web_read",

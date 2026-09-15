@@ -124,8 +124,7 @@ def _page_image_regions(page: Any) -> list[dict[str, float]]:
         if region["width"] * region["height"] < 0.001:
             continue
         if not any(
-            all(abs(region[key] - existing[key]) < 1e-6 for key in region)
-            for existing in regions
+            all(abs(region[key] - existing[key]) < 1e-6 for key in region) for existing in regions
         ):
             regions.append(region)
     return sorted(regions, key=lambda item: (item["y"], item["x"]))

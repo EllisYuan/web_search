@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import os
 import secrets
 from collections.abc import Awaitable, Callable
 from contextlib import suppress
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Literal
 
 import psutil
@@ -24,6 +26,9 @@ from playwright.async_api import (
 from playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError,
 )
+
+from web_search.limits import MAX_BROWSER_TEMPORARY_BYTES
+from web_search.resources import PROCESS_ADMISSION, AdmissionController, ResourceExhausted
 
 URLPolicy = Callable[[str], Awaitable[bool]]
 Operation = Literal["expand", "select_tab", "load_more", "scroll"]
@@ -77,7 +82,14 @@ class RenderedPage:
 class BrowserSession:
     """An isolated page whose network and actions stay inside explicit bounds."""
 
-    def __init__(self, url_policy: URLPolicy, deadline_seconds: float) -> None:
+    def __init__(
+        self,
+        url_policy: URLPolicy,
+        deadline_seconds: float,
+        *,
+        admission: AdmissionController = PROCESS_ADMISSION,
+        artifact_directory: Path | None = None,
+    ) -> None:
         self._url_policy = url_policy
         self._deadline_seconds = deadline_seconds
         self._playwright: Playwright | None = None
@@ -98,6 +110,9 @@ class BrowserSession:
         self._response_bytes = 0
         self._browser_pids: set[int] = set()
         self._memory_task: asyncio.Task[None] | None = None
+        self._admission = admission
+        self._artifact_directory = artifact_directory
+        self._temporary_path: Path | None = None
 
     async def open(self, url: str) -> RenderedPage:
         task = asyncio.create_task(self._open(url))
@@ -112,23 +127,34 @@ class BrowserSession:
     async def _open(self, url: str) -> RenderedPage:
         try:
             async with asyncio.timeout(self._deadline_seconds):
+                self._temporary_path = self._admission.browser_directory(self._artifact_directory)
                 self._playwright = await async_playwright().start()
                 self._ensure_valid()
-                self._browser = await self._playwright.chromium.launch(
+                self._context = await self._playwright.chromium.launch_persistent_context(
+                    user_data_dir=self._temporary_path / "profile",
                     headless=True,
+                    service_workers="block",
+                    accept_downloads=False,
+                    downloads_path=self._temporary_path / "downloads",
+                    traces_dir=self._temporary_path / "traces",
+                    env={
+                        **os.environ,
+                        "TMP": str(self._temporary_path),
+                        "TEMP": str(self._temporary_path),
+                    },
                     args=[
                         "--renderer-process-limit=2",
                         "--js-flags=--max-old-space-size=256",
+                        "--disk-cache-size=1048576",
+                        "--media-cache-size=1048576",
                     ],
                 )
                 self._ensure_valid()
-                self._context = await self._browser.new_context(
-                    service_workers="block",
-                    accept_downloads=False,
-                )
+                self._browser = self._context.browser
+                assert self._browser is not None
                 self._ensure_valid()
                 await self._context.route("**/*", self._route)
-                self._page = await self._context.new_page()
+                self._page = self._context.pages[0]
                 self._ensure_valid()
                 self._page.on("popup", lambda popup: asyncio.create_task(popup.close()))
                 self._page.on("download", lambda download: asyncio.create_task(download.cancel()))
@@ -155,6 +181,11 @@ class BrowserSession:
         except TimeoutError as error:
             await self.invalidate()
             raise BrowserFailure("timeout", "Browser rendering timed out.") from error
+        except (ResourceExhausted, MemoryError, OSError) as error:
+            await self.invalidate()
+            raise BrowserFailure(
+                "resource_exhausted", "Browser resources are unavailable."
+            ) from error
         except BrowserFailure:
             await self.invalidate()
             raise
@@ -192,6 +223,15 @@ class BrowserSession:
                 if rss > MAX_BROWSER_RSS_BYTES:
                     self._fail_resource("Browser memory exceeds the process limit.")
                     return
+                if self._temporary_path is not None:
+                    size = sum(
+                        path.stat().st_size
+                        for path in self._temporary_path.rglob("*")
+                        if path.is_file()
+                    )
+                    if size > MAX_BROWSER_TEMPORARY_BYTES:
+                        self._fail_resource("Browser temporary storage exceeds the session limit.")
+                        return
             except (psutil.Error, OSError):
                 pass
             except Exception:
@@ -511,3 +551,6 @@ class BrowserSession:
                 await playwright.stop()
             except Exception:
                 pass
+        if self._temporary_path is not None:
+            self._admission.remove_browser(self._temporary_path)
+            self._temporary_path = None

@@ -12,12 +12,11 @@ import re
 import secrets
 import socket
 import sys
-import tempfile
 import time
 import unicodedata
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager, suppress
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field, fields, replace
 from datetime import UTC, datetime
 from difflib import SequenceMatcher
 from html.parser import HTMLParser
@@ -25,22 +24,40 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlsplit
 
+import anyio
 import httpx
 from jsonschema import Draft202012Validator
 
 from web_search.browser import BrowserFailure, BrowserSession, InteractionTarget, RenderedPage
 from web_search.image import ImageExtraction, ImageProcessor, OcrBlock
+from web_search.limits import (
+    DEFAULT_MAX_OUTPUT_CHARS,
+    DEFAULT_MAX_PAGES,
+    DEFAULT_MAX_REGIONS,
+    MAX_CURSORS,
+    MAX_OUTPUT_CHARS,
+    MAX_PAGES,
+    MAX_REGIONS,
+    MAX_VERSIONS,
+)
 from web_search.pdf import (
     PdfBlock,
     PdfExtraction,
     PdfExtractionError,
+    PdfTextArtifact,
     PdfTextUnavailableError,
-    extract_pdf_text,
     make_pdf_block,
-    pdf_image_regions,
     pdf_structure_warning,
-    render_pdf_crop,
     unprocessed_page_ranges,
+)
+from web_search.resources import (
+    CURRENT_WORK,
+    PROCESS_ADMISSION,
+    AdmissionController,
+    ResourceExhausted,
+    monitor_worker,
+    retained_size,
+    run_blocking,
 )
 
 WEB_READ_ACTIONS = ("open", "read", "find", "advance", "interact", "asset", "release")
@@ -50,23 +67,17 @@ IMAGE_AVAILABLE_ACTIONS = ["read", "find", "advance", "asset", "release"]
 BROWSER_ACTIONS = ["read", "find", "interact", "release"]
 WEBPAGE_IMAGE_ACTIONS = ["read", "find", "advance", "asset", "release"]
 BROWSER_IMAGE_ACTIONS = ["read", "find", "advance", "interact", "asset", "release"]
-DEFAULT_MAX_OUTPUT_CHARS = 12_000
-DEFAULT_MAX_PAGES = 10
-DEFAULT_MAX_REGIONS = 10
-MAX_OUTPUT_CHARS = 100_000
-MAX_PAGES = 100
-MAX_REGIONS = 1_000
 MAX_ACQUISITION_BYTES = 2_000_000
 MAX_REDIRECTS = 5
 PDF_ASSET_DPI = 144
 MAX_RASTER_PIXELS = 12_000_000
 MAX_ASSET_BYTES = 5_000_000
-MAX_IMAGE_REGIONS_PER_CALL = 4
-MAX_BROWSER_VERSIONS = 16
+MAX_IMAGE_REGIONS_PER_CALL = MAX_REGIONS
+MAX_BROWSER_VERSIONS = MAX_VERSIONS
 MAX_WEBPAGE_IMAGES = 8
 MAX_WEBPAGE_IMAGE_BYTES = 8_000_000
 FULL_IMAGE_REGION = {"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}
-MAX_PDF_OCR_REGIONS_PER_CALL = 4
+MAX_PDF_OCR_REGIONS_PER_CALL = MAX_REGIONS
 
 WEB_READ_INPUT_SCHEMA: dict[str, Any] = {
     "type": "object",
@@ -812,7 +823,7 @@ def validate_input(arguments: dict[str, Any]) -> str | None:
         if "read_id" not in arguments or "targets" not in arguments or set(arguments) - allowed:
             return "advance requires read_id and targets, without acquisition or cursor fields."
         targets = arguments["targets"]
-        page_targets = sum("region" not in target for target in targets)
+        page_targets = len({target["page"] for target in targets if "page" in target})
         region_targets = sum("region" in target for target in targets)
         if page_targets > arguments.get("max_pages", DEFAULT_MAX_PAGES):
             return "advance page targets exceed max_pages."
@@ -909,6 +920,7 @@ class WebReadService:
         artifact_directory: str | Path | None = None,
         image_processor: ImageProcessor | None = None,
         browser_factory: BrowserFactory = BrowserSession,
+        admission: AdmissionController | None = None,
     ) -> None:
         self._http = http
         self._url_policy = url_policy
@@ -916,11 +928,11 @@ class WebReadService:
         self._clock = clock or time.monotonic
         self._idle_ttl_seconds = idle_ttl_seconds
         self._resource_gate = resource_gate or (lambda: True)
+        self._admission = admission or PROCESS_ADMISSION
         self._artifact_directory = (
             Path(artifact_directory) if artifact_directory is not None else None
         )
         self._image_processor = image_processor or self._extract_image_in_worker
-        self._image_lock = asyncio.Lock()
         self._browser_factory = browser_factory
         self._states: dict[str, ReadState] = {}
         self._released: dict[str, ReleasedRecord] = {}
@@ -934,10 +946,13 @@ class WebReadService:
         ]
         for read_id in expired:
             state = self._states.get(read_id)
-            if state is None:
+            if state is None or state.interaction_lock.locked():
                 continue
             async with state.interaction_lock:
-                if self._states.get(read_id) is state:
+                if (
+                    self._states.get(read_id) is state
+                    and self._clock() - state.last_access >= self._idle_ttl_seconds
+                ):
                     del self._states[read_id]
                     await self._cleanup_state(state)
         self._released = {
@@ -946,24 +961,21 @@ class WebReadService:
             if now - record.released_at < self._idle_ttl_seconds
         }
 
-    @staticmethod
-    async def _cleanup_state(state: ReadState) -> None:
+    async def _cleanup_state(self, state: ReadState) -> None:
         if state.browser is not None:
             await state.browser.close()
-        WebReadService._remove_artifact(state.artifact_path)
+        self._remove_artifact(state.artifact_path)
         webpage_paths = {
             asset.artifact_path
             for assets in state.webpage_assets.values()
             for asset in assets.values()
         }
         for artifact_path in webpage_paths:
-            WebReadService._remove_artifact(artifact_path)
+            self._remove_artifact(artifact_path)
+        self._admission.forget(state.read_id)
 
-    @staticmethod
-    def _remove_artifact(artifact_path: Path | None) -> None:
-        if artifact_path is not None:
-            with suppress(FileNotFoundError):
-                artifact_path.unlink()
+    def _remove_artifact(self, artifact_path: Path | None) -> None:
+        self._admission.remove(artifact_path)
 
     @staticmethod
     def _extraction_status(snapshot: VersionSnapshot) -> str:
@@ -1061,13 +1073,14 @@ class WebReadService:
         try:
             yield
         finally:
-            cleanup_task.cancel()
-            with suppress(asyncio.CancelledError):
-                await cleanup_task
-            for state in self._states.values():
-                await self._cleanup_state(state)
-            self._states.clear()
-            self._released.clear()
+            with anyio.CancelScope(shield=True):
+                cleanup_task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await cleanup_task
+                for state in self._states.values():
+                    await self._cleanup_state(state)
+                self._states.clear()
+                self._released.clear()
 
     def _state_error(
         self,
@@ -1080,7 +1093,13 @@ class WebReadService:
         snapshot: VersionSnapshot | None = None,
     ) -> tuple[dict[str, Any], bool]:
         selected = snapshot or self._snapshot(state)
-        result = error_result(action, category, message, next_action=next_action)
+        result = error_result(
+            action,
+            category,
+            message,
+            next_action=next_action,
+            retryable=category in {"resource_exhausted", "timeout"},
+        )
         result.update(
             {
                 "read_id": state.read_id,
@@ -1100,6 +1119,106 @@ class WebReadService:
         problem = validate_input(arguments)
         if problem:
             return error_result(action, "invalid_request", problem), True
+        if action in {"open", "advance", "interact", "asset"}:
+            state = self._states.get(arguments.get("read_id", ""))
+            if not self._resource_gate() or (state is not None and state.interaction_lock.locked()):
+                return self._resource_error(action, state)
+            if state is not None and action in {"advance", "interact"}:
+                if len(state.versions) >= MAX_VERSIONS:
+                    return self._resource_error(action, state)
+            lease = self._admission.acquire(self._artifact_directory)
+            if lease is None:
+                return self._resource_error(action, state)
+            token = CURRENT_WORK.set(lease)
+            try:
+                return await self._accounted_dispatch(arguments, state)
+            finally:
+                retained_paths = self._artifact_paths()
+                try:
+                    for path in lease.files - retained_paths:
+                        self._remove_artifact(path)
+                finally:
+                    CURRENT_WORK.reset(token)
+                    self._admission.release(lease)
+        try:
+            return await self._dispatch_action(arguments)
+        except (MemoryError, OSError):
+            return self._resource_error(action, self._states.get(arguments.get("read_id", "")))
+
+    def _artifact_paths(self) -> set[Path]:
+        return {
+            path
+            for state in self._states.values()
+            for path in [
+                state.artifact_path,
+                *(
+                    asset.artifact_path
+                    for assets in state.webpage_assets.values()
+                    for asset in assets.values()
+                ),
+            ]
+            if path is not None
+        }
+
+    async def _publish_state(self, state: ReadState) -> None:
+        try:
+            self._admission.retain(state.read_id, retained_size(state))
+        except (MemoryError, OSError):
+            await self._cleanup_state(state)
+            raise
+        self._states[state.read_id] = state
+        lease = CURRENT_WORK.get()
+        if lease is not None:
+            lease.read_id = state.read_id
+
+    async def _accounted_dispatch(
+        self, arguments: dict[str, Any], state: ReadState | None
+    ) -> tuple[dict[str, Any], bool]:
+        # No await separates version publication, accounting and rollback. Other callers
+        # can only observe a committed version. Shallow copies preserve immutable artifacts.
+        checkpoint = (
+            {
+                item.name: (dict(value) if isinstance(value, dict) else value)
+                for item in fields(state)
+                for value in [getattr(state, item.name)]
+            }
+            if state is not None
+            else None
+        )
+        result_state = state
+        try:
+            result, failed = await self._dispatch_action(arguments)
+            result_state = self._states.get(result.get("read_id", ""), state)
+            if result_state is not None:
+                result_state.last_access = self._clock()
+                self._admission.retain(result_state.read_id, retained_size(result_state))
+            return result, failed
+        except (MemoryError, OSError):
+            if state is not None and checkpoint is not None:
+                # Preserve cursors created by concurrent read calls against retained versions.
+                cursors = {
+                    key: cursor
+                    for key, cursor in state.cursors.items()
+                    if cursor.version in checkpoint["versions"]
+                }
+                accessed = state.last_access
+                for name, value in checkpoint.items():
+                    setattr(state, name, value)
+                state.cursors = cursors
+                state.last_access = max(accessed, state.last_access)
+                if arguments.get("action") == "interact" and state.browser is not None:
+                    await state.browser.invalidate()
+            else:
+                lease = CURRENT_WORK.get()
+                if result_state is None and lease is not None:
+                    result_state = self._states.get(lease.read_id or "")
+                if result_state is not None:
+                    self._states.pop(result_state.read_id, None)
+                    await self._cleanup_state(result_state)
+            return self._resource_error(arguments.get("action", "open"), state)
+
+    async def _dispatch_action(self, arguments: dict[str, Any]) -> tuple[dict[str, Any], bool]:
+        action = arguments.get("action", "open")
         if action == "open":
             return await self._open(arguments)
         if action == "read":
@@ -1109,12 +1228,39 @@ class WebReadService:
         if action == "advance":
             return await self._advance(arguments)
         if action == "asset":
-            return await self._asset(arguments)
+            state = self._states.get(arguments["read_id"])
+            if state is None:
+                return await self._asset(arguments)
+            async with state.interaction_lock:
+                return await self._asset(arguments)
         if action == "release":
             return await self._release(arguments)
         if action == "interact":
             return await self._interact(arguments)
         return error_result(action, "internal_error", "Action dispatch is not implemented."), True
+
+    def _resource_error(
+        self, action: str, state: ReadState | None = None
+    ) -> tuple[dict[str, Any], bool]:
+        message = "Resources cannot admit this work; release unused state or explicitly try later."
+        if state is not None:
+            result, failed = self._state_error(
+                state, action, "resource_exhausted", message, next_action="release"
+            )
+            result["error"]["retryable"] = True
+            return result, failed
+        return error_result(
+            action, "resource_exhausted", message, retryable=True, next_action="release"
+        ), True
+
+    @staticmethod
+    def _resource_failure(locator: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "kind": "resource_exhausted",
+            "message": "Allocation or temporary storage failed; completed artifacts were retained.",
+            "locator": locator,
+            "next_action": "release",
+        }
 
     @staticmethod
     def _region_key(page: int, region: dict[str, float]) -> str:
@@ -1328,8 +1474,6 @@ class WebReadService:
         if failure is not None:
             return failure
         assert state is not None
-        if state.media_kind != "html":
-            return await self._advance_locked(state, arguments)
         async with state.interaction_lock:
             if self._states.get(state.read_id) is not state:
                 result = error_result(
@@ -1371,7 +1515,7 @@ class WebReadService:
                 snapshot=self._snapshot(state, requested_version),
             )
         targets: list[dict[str, Any]] = arguments["targets"]
-        if any(target["page"] > state.total_pages for target in targets):
+        if any("page" not in target or target["page"] > state.total_pages for target in targets):
             return self._state_error(
                 state,
                 "advance",
@@ -1388,7 +1532,7 @@ class WebReadService:
                 next_action="advance",
             )
 
-        data = await asyncio.to_thread(state.artifact_path.read_bytes)
+        data = await run_blocking(state.artifact_path.read_bytes)
         completed: list[PdfTargetCompletion] = []
         duplicate_targets: list[dict[str, Any]] = []
         operation_failures: list[dict[str, Any]] = []
@@ -1397,10 +1541,7 @@ class WebReadService:
         ocr_runtime: dict[str, Any] = {}
         ocr_used = False
         ocr_attempts = 0
-        ocr_budget = min(
-            arguments.get("max_regions", DEFAULT_MAX_REGIONS),
-            MAX_PDF_OCR_REGIONS_PER_CALL,
-        )
+        ocr_budget = arguments.get("max_regions", DEFAULT_MAX_REGIONS)
         whole_pages = {target["page"] for target in targets if "region" not in target}
         seen_targets: set[str] = set()
         failed_pages = {
@@ -1431,7 +1572,11 @@ class WebReadService:
                         continue
                     seen_targets.add(target_key)
                     try:
-                        artifact = await asyncio.to_thread(extract_pdf_text, data, page, region)
+                        artifact = PdfTextArtifact(
+                            **await self._pdf_target(
+                                "text", data, {"page_number": page, "region": region}, deadline
+                            )
+                        )
                     except PdfTextUnavailableError:
                         if ocr_attempts >= ocr_budget:
                             operation_failures.append(
@@ -1471,7 +1616,10 @@ class WebReadService:
                             ocr = await self._ocr_pdf_region(data, page, ocr_region, deadline)
                         except TimeoutError:
                             raise
-                        except (MemoryError, OverflowError):
+                        except (MemoryError, OSError):
+                            operation_failures.append(self._resource_failure(target))
+                            break
+                        except OverflowError:
                             operation_failures.append(
                                 {
                                     "kind": "raster_limit",
@@ -1544,6 +1692,11 @@ class WebReadService:
                             )
                         )
                         continue
+                    except TimeoutError:
+                        raise
+                    except (MemoryError, OSError):
+                        operation_failures.append(self._resource_failure(target))
+                        break
                     except Exception:
                         operation_failures.append(
                             {
@@ -1579,9 +1732,20 @@ class WebReadService:
                     processed_ocr_regions: list[dict[str, float]] = []
                     target_incomplete = False
                     try:
-                        candidate_regions = await asyncio.to_thread(
-                            pdf_image_regions, data, page, region
-                        )
+                        candidate_regions = (
+                            await self._pdf_target(
+                                "regions",
+                                data,
+                                {"page_number": page, "selection": region},
+                                deadline,
+                            )
+                        )["regions"]
+                    except TimeoutError:
+                        raise
+                    except (MemoryError, OSError):
+                        target_incomplete = True
+                        operation_failures.append(self._resource_failure(target))
+                        candidate_regions = []
                     except Exception:
                         target_incomplete = True
                         operation_failures.append(
@@ -1626,7 +1790,19 @@ class WebReadService:
                             ocr = await self._ocr_pdf_region(data, page, candidate_region, deadline)
                         except TimeoutError:
                             raise
-                        except (MemoryError, OverflowError):
+                        except (MemoryError, OSError):
+                            target_incomplete = True
+                            operation_failures.append(self._resource_failure(candidate_target))
+                            operation_unprocessed.append(
+                                {
+                                    "kind": "unprocessed_region",
+                                    "locator": candidate_target,
+                                    "message": "PDF region OCR has not completed.",
+                                    "next_action": "advance",
+                                }
+                            )
+                            break
+                        except OverflowError:
                             target_incomplete = True
                             operation_failures.append(
                                 {
@@ -1729,6 +1905,8 @@ class WebReadService:
                             processed_ocr_regions,
                         )
                     )
+                    if any(item["kind"] == "resource_exhausted" for item in operation_failures):
+                        break
         except TimeoutError:
             return self._state_error(
                 state,
@@ -1748,6 +1926,10 @@ class WebReadService:
             for target in duplicate_targets
         ]
         if not completed:
+            if any(item["kind"] == "resource_exhausted" for item in operation_failures):
+                result, failed = self._resource_error("advance", state)
+                result["failures"] = [*current.failures, *operation_failures]
+                return result, failed
             failures = [*current.failures, *operation_failures]
             result, _ = self._content_response(
                 action="advance",
@@ -1967,7 +2149,7 @@ class WebReadService:
                     next_action="asset",
                     snapshot=snapshot,
                 )
-            payload = await asyncio.to_thread(asset.artifact_path.read_bytes)
+            payload = await run_blocking(asset.artifact_path.read_bytes)
             locator: dict[str, Any] = {
                 "asset_id": asset.asset_id,
                 "source_url": asset.source_url,
@@ -2012,7 +2194,7 @@ class WebReadService:
                     next_action="asset",
                     snapshot=snapshot,
                 )
-            payload = await asyncio.to_thread(state.artifact_path.read_bytes)
+            payload = await run_blocking(state.artifact_path.read_bytes)
             image_result: dict[str, Any] = {
                 "action": "asset",
                 "status": "ok",
@@ -2065,17 +2247,25 @@ class WebReadService:
                 next_action="asset",
                 snapshot=snapshot,
             )
-        data = await asyncio.to_thread(state.artifact_path.read_bytes)
+        data = await run_blocking(state.artifact_path.read_bytes)
         try:
             async with asyncio.timeout(self._timeout_seconds):
-                payload, width, height = await asyncio.to_thread(
-                    render_pdf_crop,
+                crop = await self._pdf_target(
+                    "crop",
                     data,
-                    page,
-                    arguments.get("region"),
-                    dpi=PDF_ASSET_DPI,
-                    max_pixels=MAX_RASTER_PIXELS,
-                    max_bytes=MAX_ASSET_BYTES,
+                    {
+                        "page_number": page,
+                        "region": arguments.get("region"),
+                        "dpi": PDF_ASSET_DPI,
+                        "max_pixels": MAX_RASTER_PIXELS,
+                        "max_bytes": MAX_ASSET_BYTES,
+                    },
+                    asyncio.get_running_loop().time() + self._timeout_seconds,
+                )
+                payload, width, height = (
+                    base64.b64decode(crop["payload"]),
+                    crop["width"],
+                    crop["height"],
                 )
         except TimeoutError:
             return self._state_error(
@@ -2212,10 +2402,17 @@ class WebReadService:
         chunk = content[offset:end]
         next_cursor = None
         if end < len(content):
+            if len(state.cursors) >= MAX_CURSORS:
+                raise ResourceExhausted
             next_cursor = secrets.token_urlsafe(18)
             state.cursors[next_cursor] = CursorRecord(
                 selected.version, content, end, budget, boundaries
             )
+            try:
+                self._admission.retain(state.read_id, retained_size(state))
+            except (MemoryError, OSError):
+                del state.cursors[next_cursor]
+                raise
         warnings = list(selected.document.warnings)
         if split_block:
             warnings.append(
@@ -2295,15 +2492,19 @@ class WebReadService:
                     next_action="read",
                     snapshot=snapshot,
                 )
-            return self._content_response(
-                action="read",
-                state=state,
-                content=cursor.content,
-                boundaries=cursor.boundaries,
-                offset=cursor.offset,
-                budget=cursor.budget,
-                snapshot=snapshot,
-            )
+            try:
+                return self._content_response(
+                    action="read",
+                    state=state,
+                    content=cursor.content,
+                    boundaries=cursor.boundaries,
+                    offset=cursor.offset,
+                    budget=cursor.budget,
+                    snapshot=snapshot,
+                )
+            except (MemoryError, OSError):
+                state.cursors[cursor_token] = cursor
+                raise
 
         snapshot = self._snapshot(state, arguments.get("version"))
         selected: list[Block]
@@ -2978,17 +3179,7 @@ class WebReadService:
         return None, error_result("open", "acquisition_failed", "Too many redirects.")
 
     def _store_webpage_image(self, content: bytes) -> Path:
-        if self._artifact_directory is not None:
-            self._artifact_directory.mkdir(parents=True, exist_ok=True)
-        with tempfile.NamedTemporaryFile(
-            mode="wb",
-            prefix="web-read-page-image-",
-            suffix=".image",
-            dir=self._artifact_directory,
-            delete=False,
-        ) as artifact:
-            artifact.write(content)
-            return Path(artifact.name)
+        return self._admission.write(content, self._artifact_directory, ".image")
 
     async def _capture_webpage_images(
         self,
@@ -3004,7 +3195,7 @@ class WebReadService:
             for reference in discover_html_images(html, base_url)
             if reference.source_url not in known_urls
         ]
-        ocr_budget = min(max_regions, MAX_IMAGE_REGIONS_PER_CALL)
+        ocr_budget = max_regions
         blocks: list[Block] = []
         assets: dict[str, WebpageImage] = {}
         unprocessed: list[dict[str, Any]] = []
@@ -3075,7 +3266,22 @@ class WebReadService:
                 )
                 continue
             captured_bytes += len(captured.content)
-            artifact_path = self._store_webpage_image(captured.content)
+            try:
+                artifact_path = self._store_webpage_image(captured.content)
+            except (MemoryError, OSError):
+                capture_status = "partial"
+                failures.append(
+                    {
+                        "kind": "resource_exhausted",
+                        "message": "Temporary storage could not retain the remaining images.",
+                        "locator": {
+                            "image_index": index,
+                            "remaining_images": len(references) - index,
+                        },
+                        "next_action": "release",
+                    }
+                )
+                break
             asset_id = secrets.token_urlsafe(12)
             asset = WebpageImage(
                 asset_id=asset_id,
@@ -3115,6 +3321,21 @@ class WebReadService:
                         "next_action": "advance",
                     }
                 )
+                if isinstance(error, (MemoryError, OSError)) and not isinstance(
+                    error, TimeoutError
+                ):
+                    failures[-1] = self._resource_failure(locator)
+                    if index + 1 < len(references):
+                        capture_status = "partial"
+                    unprocessed.append(
+                        {
+                            "kind": "unprocessed_image_region",
+                            "locator": locator,
+                            "message": "Image OCR did not complete.",
+                            "next_action": "advance",
+                        }
+                    )
+                    break
                 unprocessed.append(
                     {
                         "kind": "unprocessed_image_region",
@@ -3232,6 +3453,8 @@ class WebReadService:
             )
         try:
             document = extract_html(response.text)
+        except MemoryError:
+            raise
         except Exception:
             return (
                 error_result(
@@ -3254,7 +3477,16 @@ class WebReadService:
                     raise BrowserFailure(
                         "timeout", "Browser rendering could not start before the deadline."
                     )
-                browser = self._browser_factory(self._url_policy, remaining)
+                browser = (
+                    BrowserSession(
+                        self._url_policy,
+                        remaining,
+                        admission=self._admission,
+                        artifact_directory=self._artifact_directory,
+                    )
+                    if self._browser_factory is BrowserSession
+                    else self._browser_factory(self._url_policy, remaining)
+                )
                 rendered = await browser.open(url)
                 rendered_document = with_browser_warnings(extract_html(rendered.html), rendered)
             except BrowserFailure as error:
@@ -3267,7 +3499,7 @@ class WebReadService:
                         "open",
                         error.category,
                         str(error),
-                        retryable=error.category == "timeout",
+                        retryable=error.category in {"timeout", "resource_exhausted"},
                         capture_status="complete",
                         extraction_status="failed",
                     ), True
@@ -3422,7 +3654,7 @@ class WebReadService:
         state.webpage_assets[version] = webpage_assets
         state.webpage_image_sources[version] = image_source_urls
         state.webpage_uncaptured_sources[version] = captured_images.uncaptured_sources
-        self._states[read_id] = state
+        await self._publish_state(state)
         content, boundaries = render_blocks(document.blocks)
         result, _ = self._content_response(
             action="open",
@@ -3595,6 +3827,8 @@ class WebReadService:
                 next_action="asset",
                 snapshot=current,
             )
+        except (MemoryError, OSError):
+            raise
         except Exception:
             return self._state_error(
                 state,
@@ -3876,6 +4110,8 @@ class WebReadService:
                     "Image OCR exceeded a decode or pixel limit.",
                     next_action="asset",
                 )
+            except (MemoryError, OSError):
+                raise
             except Exception:
                 return self._state_error(
                     state,
@@ -4040,17 +4276,9 @@ class WebReadService:
     ) -> tuple[dict[str, Any], bool]:
         artifact_path: Path | None = None
         try:
-            if self._artifact_directory is not None:
-                self._artifact_directory.mkdir(parents=True, exist_ok=True)
-            with tempfile.NamedTemporaryFile(
-                mode="wb",
-                prefix="web-read-",
-                suffix=".image",
-                dir=self._artifact_directory,
-                delete=False,
-            ) as artifact:
-                artifact.write(response.content)
-                artifact_path = Path(artifact.name)
+            artifact_path = self._admission.write(
+                response.content, self._artifact_directory, ".image"
+            )
             extraction = await self._process_image(
                 artifact_path,
                 [{"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}],
@@ -4081,6 +4309,9 @@ class WebReadService:
                 ),
                 True,
             )
+        except (MemoryError, OSError):
+            self._remove_artifact(artifact_path)
+            return self._resource_error("open")
         except Exception:
             self._remove_artifact(artifact_path)
             return (
@@ -4145,7 +4376,7 @@ class WebReadService:
             asset_id=asset_id,
             image_runtime=extraction.runtime,
         )
-        self._states[read_id] = state
+        await self._publish_state(state)
         content, boundaries = render_blocks(blocks)
         result, _ = self._content_response(
             action="open",
@@ -4181,8 +4412,7 @@ class WebReadService:
         deadline: float,
     ) -> ImageExtraction:
         async with asyncio.timeout_at(deadline):
-            async with self._image_lock:
-                return await self._image_processor(artifact_path, regions, deadline)
+            return await self._image_processor(artifact_path, regions, deadline)
 
     async def _ocr_pdf_region(
         self,
@@ -4193,44 +4423,65 @@ class WebReadService:
     ) -> ImageExtraction:
         raster_path: Path | None = None
         try:
-            payload, _, _ = await asyncio.to_thread(
-                render_pdf_crop,
+            crop = await self._pdf_target(
+                "crop",
                 pdf_data,
-                page,
-                region,
-                dpi=PDF_ASSET_DPI,
-                max_pixels=MAX_RASTER_PIXELS,
-                max_bytes=MAX_ASSET_BYTES,
+                {
+                    "page_number": page,
+                    "region": region,
+                    "dpi": PDF_ASSET_DPI,
+                    "max_pixels": MAX_RASTER_PIXELS,
+                    "max_bytes": MAX_ASSET_BYTES,
+                },
+                deadline,
             )
-            if self._artifact_directory is not None:
-                self._artifact_directory.mkdir(parents=True, exist_ok=True)
-            with tempfile.NamedTemporaryFile(
-                mode="wb",
-                prefix="web-read-pdf-raster-",
-                suffix=".png",
-                dir=self._artifact_directory,
-                delete=False,
-            ) as raster:
-                raster.write(payload)
-                raster_path = Path(raster.name)
+            payload = base64.b64decode(crop["payload"])
+            raster_path = self._admission.write(payload, self._artifact_directory, ".png")
             try:
                 return await self._process_image(
                     raster_path,
                     [{"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}],
                     deadline,
                 )
-            except (TimeoutError, MemoryError, OverflowError):
+            except (MemoryError, OverflowError, OSError):
                 raise
             except Exception as error:
                 raise PdfOcrBackendError("The PDF raster OCR backend failed.") from error
         finally:
             self._remove_artifact(raster_path)
 
+    async def _pdf_target(
+        self, operation: str, data: bytes, arguments: dict[str, Any], deadline: float
+    ) -> dict[str, Any]:
+        path = self._admission.write(data, self._artifact_directory, ".pdf")
+        try:
+            output = await self._run_worker(
+                "web_search.pdf_target_worker",
+                [str(path), operation, json.dumps(arguments)],
+                deadline,
+            )
+        finally:
+            self._remove_artifact(path)
+        result = json.loads(output)
+        if not result.get("ok"):
+            category = result.get("category")
+            if category == "text_unavailable":
+                raise PdfTextUnavailableError("PDF target has no native text.")
+            if category == "pixel_limit":
+                raise OverflowError("PDF target exceeds the pixel limit.")
+            if category == "resource_exhausted":
+                raise ResourceExhausted
+            raise ValueError("PDF target extraction failed.")
+        value: dict[str, Any] = result["value"]
+        return value
+
     @staticmethod
     async def _run_worker(module: str, arguments: list[str], deadline: float) -> bytes:
         if deadline - asyncio.get_running_loop().time() <= 0:
             raise TimeoutError
         process: asyncio.subprocess.Process | None = None
+        monitor: asyncio.Task[None] | None = None
+        communication: asyncio.Task[tuple[bytes, bytes]] | None = None
         executable = sys.executable
         environment = None
         base_executable = getattr(sys, "_base_executable", None)
@@ -4251,12 +4502,25 @@ class WebReadService:
                     stderr=asyncio.subprocess.DEVNULL,
                     env=environment,
                 )
-                output, _ = await process.communicate()
+                monitor = asyncio.create_task(monitor_worker(process.pid))
+                communication = asyncio.create_task(process.communicate())
+                done, _ = await asyncio.wait(
+                    {monitor, communication}, return_when=asyncio.FIRST_COMPLETED
+                )
+                if monitor in done:
+                    await monitor
+                output, _ = await communication
         finally:
-            if process is not None and process.returncode is None:
-                with suppress(ProcessLookupError):
-                    process.kill()
-                await process.wait()
+            with anyio.CancelScope(shield=True):
+                if process is not None and process.returncode is None:
+                    with suppress(ProcessLookupError):
+                        process.kill()
+                    await process.wait()
+                for task in (monitor, communication):
+                    if task is not None:
+                        task.cancel()
+                        with suppress(asyncio.CancelledError, OSError):
+                            await task
         if process is None or process.returncode != 0:
             raise RuntimeError(f"{module} worker failed.")
         return output
@@ -4276,7 +4540,9 @@ class WebReadService:
         if not payload.get("ok"):
             category = payload.get("category")
             if category == "resource_exhausted":
-                raise OverflowError(payload.get("message", "Image OCR resource limit exceeded."))
+                if payload.get("pixel_limit"):
+                    raise OverflowError("Image OCR pixel limit exceeded.")
+                raise ResourceExhausted
             raise RuntimeError(payload.get("message", "Image OCR failed."))
         data = payload["extraction"]
         return ImageExtraction(
@@ -4341,32 +4607,22 @@ class WebReadService:
     ) -> tuple[dict[str, Any], bool]:
         artifact_path: Path | None = None
         try:
-            if self._artifact_directory is not None:
-                self._artifact_directory.mkdir(parents=True, exist_ok=True)
-            with tempfile.NamedTemporaryFile(
-                mode="wb",
-                prefix="web-read-",
-                suffix=".pdf",
-                dir=self._artifact_directory,
-                delete=False,
-            ) as artifact:
-                artifact.write(response.content)
-                artifact_path = Path(artifact.name)
+            artifact_path = self._admission.write(
+                response.content, self._artifact_directory, ".pdf"
+            )
             extraction = await self._extract_pdf_in_worker(
                 artifact_path,
                 arguments.get("max_pages", DEFAULT_MAX_PAGES),
                 deadline,
             )
         except PdfExtractionError as error:
-            if artifact_path is not None:
-                with suppress(FileNotFoundError):
-                    artifact_path.unlink()
+            self._remove_artifact(artifact_path)
             return (
                 error_result(
                     "open",
                     error.category,
                     str(error),
-                    retryable=error.category == "timeout",
+                    retryable=error.category in {"timeout", "resource_exhausted"},
                     capture_status="complete",
                     extraction_status=(
                         "unavailable" if error.category == "access_blocked" else "failed"
@@ -4375,9 +4631,7 @@ class WebReadService:
                 True,
             )
         except OSError:
-            if artifact_path is not None:
-                with suppress(FileNotFoundError):
-                    artifact_path.unlink()
+            self._remove_artifact(artifact_path)
             return (
                 error_result(
                     "open",
@@ -4403,10 +4657,7 @@ class WebReadService:
             if failure.get("kind") == "text_layer_unavailable"
             and isinstance(failure.get("locator", {}).get("page"), int)
         }
-        region_budget = min(
-            arguments.get("max_regions", DEFAULT_MAX_REGIONS),
-            MAX_PDF_OCR_REGIONS_PER_CALL,
-        )
+        region_budget = arguments.get("max_regions", DEFAULT_MAX_REGIONS)
         candidate_targets = extraction.ocr_regions
         page_has_heading = {block.page for block in extraction.blocks}
         native_by_page = {
@@ -4446,7 +4697,10 @@ class WebReadService:
                     }
                 )
                 break
-            except (MemoryError, OverflowError):
+            except (MemoryError, OSError):
+                ocr_failures.append(self._resource_failure(target))
+                break
+            except OverflowError:
                 ocr_failures.append(
                     {
                         "kind": "raster_limit",
@@ -4534,12 +4788,13 @@ class WebReadService:
 
         if not extraction.blocks and not ocr_blocks:
             assert artifact_path is not None
-            with suppress(FileNotFoundError):
-                artifact_path.unlink()
+            self._remove_artifact(artifact_path)
+            exhausted = any(item["kind"] == "resource_exhausted" for item in ocr_failures)
             result = error_result(
                 "open",
-                "extraction_failed",
+                "resource_exhausted" if exhausted else "extraction_failed",
                 "The PDF has no readable native text in the processed pages.",
+                retryable=exhausted,
                 capture_status="complete",
                 extraction_status="unavailable",
             )
@@ -4623,7 +4878,7 @@ class WebReadService:
             failures=failures,
         )
         state.documents[version] = document
-        self._states[read_id] = state
+        await self._publish_state(state)
         content, boundaries = render_blocks(document.blocks)
         result, _ = self._content_response(
             action="open",

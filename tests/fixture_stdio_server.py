@@ -6,7 +6,9 @@ from pathlib import Path
 
 import httpx
 from pdf_fixture import scanned_pdf, text_pdf
+from resource_fixture import contract_capacity
 
+from web_search.resources import AdmissionController
 from web_search.server import read_api_key, serve
 
 
@@ -95,5 +97,6 @@ if __name__ == "__main__":
             read_api_key(),
             transport=httpx.MockTransport(respond),
             url_policy=allow_fixture_url,
+            admission=AdmissionController(capacity=contract_capacity),
         )
     )

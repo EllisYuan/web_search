@@ -114,14 +114,12 @@ async def test_same_page_mixed_pdf_reuses_native_text_and_deduplicates_ocr(
             mime_type="image/png",
             blocks=[
                 OcrBlock(
-                    "Native heading ORCHID-4096",
-                    0.99,
-                    {"x": 0.1, "y": 0.05, "width": 0.7, "height": 0.1},
-                ),
-                OcrBlock(
-                    "Scanned table value AX-2026-0917",
+                    (
+                        "Native headlng ORCHID-4096 "
+                        "Scanned table value AX-2026-0917"
+                    ),
                     0.96,
-                    {"x": 0.1, "y": 0.3, "width": 0.7, "height": 0.1},
+                    {"x": 0.1, "y": 0.05, "width": 0.7, "height": 0.35},
                 ),
             ],
             failures=[],
@@ -150,6 +148,7 @@ async def test_same_page_mixed_pdf_reuses_native_text_and_deduplicates_ocr(
     assert opened.structuredContent is not None
     body = opened.structuredContent
     assert body["content_markdown"].count("Native heading ORCHID-4096") == 1
+    assert "Native headlng ORCHID-4096" not in body["content_markdown"]
     assert "Scanned table value AX-2026-0917" in body["content_markdown"]
     assert {locator["processing_lineage"]["source"] for locator in body["locators"]} == {
         "native_text",
@@ -157,6 +156,185 @@ async def test_same_page_mixed_pdf_reuses_native_text_and_deduplicates_ocr(
     }
     assert body["processing"]["ocr_used"] is True
     assert body["failures"] == []
+
+
+async def test_partial_pdf_ocr_region_keeps_text_but_remains_retryable(
+    tmp_path: Path,
+) -> None:
+    image = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
+    payload = scanned_pdf(image)
+    calls = 0
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=payload)
+
+    async def processor(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        nonlocal calls
+        calls += 1
+        failure = [] if calls == 2 else [
+            {
+                "kind": "region_ocr_failed",
+                "message": "One OCR subregion failed.",
+                "locator": {"region": regions[0]},
+                "next_action": "advance",
+            }
+        ]
+        text = "Recovered OCR tail." if calls == 2 else "Reliable OCR prefix."
+        return ImageExtraction(
+            width=1200,
+            height=500,
+            format="PNG",
+            mime_type="image/png",
+            blocks=[
+                OcrBlock(
+                    text,
+                    0.97,
+                    {"x": 0.1, "y": 0.2, "width": 0.7, "height": 0.2},
+                )
+            ],
+            failures=failure,
+            warnings=[],
+            runtime={"execution_providers": ["CPUExecutionProvider"]},
+            processed_regions=regions if not failure else [],
+        )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=processor,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {
+                "url": "https://example.org/partial-region.pdf",
+                "max_pages": 1,
+                "max_regions": 1,
+            },
+        )
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        target = next(
+            item["locator"]
+            for item in initial["unprocessed_ranges"]
+            if item["kind"] == "unprocessed_region"
+        )
+        retried = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "targets": [target],
+                "max_regions": 1,
+            },
+        )
+
+    assert calls == 2
+    assert "Reliable OCR prefix." in initial["content_markdown"]
+    assert initial["processed_targets"] == []
+    assert retried.structuredContent is not None
+    assert retried.structuredContent["version"] != initial["version"]
+    assert "Recovered OCR tail." in retried.structuredContent["content_markdown"]
+    assert not retried.structuredContent["failures"]
+    assert not retried.structuredContent["unprocessed_ranges"]
+
+
+async def test_failure_only_pdf_advance_discloses_ocr_execution(tmp_path: Path) -> None:
+    image = (Path(__file__).parent / "fixtures" / "image-en.png").read_bytes()
+    payload = scanned_pdf(image, image)
+    calls = 0
+
+    def source(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=payload)
+
+    async def processor(
+        artifact_path: Path,
+        regions: list[dict[str, float]],
+        deadline: float,
+    ) -> ImageExtraction:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return ImageExtraction(
+                width=1200,
+                height=500,
+                format="PNG",
+                mime_type="image/png",
+                blocks=[
+                    OcrBlock(
+                        "Initial scanned page.",
+                        0.98,
+                        {"x": 0.1, "y": 0.2, "width": 0.7, "height": 0.2},
+                    )
+                ],
+                failures=[],
+                warnings=[],
+                runtime={"execution_providers": ["CPUExecutionProvider"]},
+                processed_regions=regions,
+            )
+        return ImageExtraction(
+            width=1200,
+            height=500,
+            format="PNG",
+            mime_type="image/png",
+            blocks=[],
+            failures=[
+                {
+                    "kind": "region_ocr_failed",
+                    "message": "Injected OCR failure.",
+                    "locator": {"region": regions[0]},
+                    "next_action": "advance",
+                }
+            ],
+            warnings=[],
+            runtime={"execution_providers": ["CPUExecutionProvider"]},
+            processed_regions=[],
+        )
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=processor,
+    ) as session:
+        opened = await session.call_tool(
+            "web_read",
+            {
+                "url": "https://example.org/failure-trace.pdf",
+                "max_pages": 1,
+                "max_regions": 1,
+            },
+        )
+        assert opened.structuredContent is not None
+        advanced = await session.call_tool(
+            "web_read",
+            {
+                "action": "advance",
+                "read_id": opened.structuredContent["read_id"],
+                "version": opened.structuredContent["version"],
+                "targets": [{"page": 2}],
+                "max_regions": 1,
+            },
+        )
+
+    assert calls == 2
+    assert advanced.structuredContent is not None
+    assert advanced.structuredContent["processing"]["ocr_used"] is True
+    assert advanced.structuredContent["processing"]["path"] == [
+        "captured_pdf",
+        "pdf_rasterize",
+        "cpu_ocr",
+    ]
+    assert advanced.structuredContent["processing"]["execution_providers"] == [
+        "CPUExecutionProvider"
+    ]
 
 
 async def test_advance_scanned_pdf_page_is_nonsequential_atomic_and_keeps_old_cursor(
@@ -794,6 +972,11 @@ async def test_mixed_page_pending_region_advances_once_and_stays_processed(
     ) -> ImageExtraction:
         nonlocal calls
         calls += 1
+        text = (
+            "Top image alpha evidence."
+            if calls == 1
+            else "Bottom image beta result."
+        )
         return ImageExtraction(
             width=600,
             height=300,
@@ -801,7 +984,7 @@ async def test_mixed_page_pending_region_advances_once_and_stays_processed(
             mime_type="image/png",
             blocks=[
                 OcrBlock(
-                    f"Scanned pending region OCR-{calls}",
+                    text,
                     0.99,
                     {"x": 0.1, "y": 0.1, "width": 0.7, "height": 0.2},
                 )
@@ -862,8 +1045,8 @@ async def test_mixed_page_pending_region_advances_once_and_stays_processed(
         )
 
     assert calls == 2
-    assert "Scanned pending region OCR-1" in initial["content_markdown"]
-    assert "Scanned pending region OCR-2" in updated["content_markdown"]
+    assert "Top image alpha evidence." in initial["content_markdown"]
+    assert "Bottom image beta result." in updated["content_markdown"]
     assert not any(item["locator"] == target for item in updated["unprocessed_ranges"])
     assert not repeated.isError
     assert repeated.structuredContent is not None

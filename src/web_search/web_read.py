@@ -19,6 +19,7 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager, suppress
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from difflib import SequenceMatcher
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
@@ -1019,19 +1020,18 @@ class WebReadService:
             {**failure, "locator": target_locator}
             for failure in extraction.failures
         ]
-        native_key = re.sub(r"\s+", " ", cls._normalize(native_text)).strip()
         blocks: list[Block] = []
         heading_available = has_page_heading
         for item in extraction.blocks:
-            item_key = re.sub(r"\s+", " ", cls._normalize(item.text)).strip()
-            if not item_key or (native_key and item_key in native_key):
+            unique_text = cls._remove_native_overlap(item.text, native_text)
+            if not unique_text:
                 continue
             blocks.append(
                 Block(
                     secrets.token_urlsafe(9),
                     f"pdf-page-{page}",
-                    item.text if heading_available else f"## Page {page}\n\n{item.text}",
-                    item.text,
+                    unique_text if heading_available else f"## Page {page}\n\n{unique_text}",
+                    unique_text,
                     page=page,
                     source_region=cls._project_region(region, item.source_region),
                     confidence=item.confidence,
@@ -1043,6 +1043,58 @@ class WebReadService:
             )
             heading_available = True
         return PdfOcrOutcome(blocks, failures, warnings)
+
+    @classmethod
+    def _remove_native_overlap(cls, ocr_text: str, native_text: str) -> str:
+        """Remove exact or near-exact native spans from a combined OCR block."""
+        if not ocr_text.strip() or not native_text.strip():
+            return ocr_text.strip()
+
+        token_pattern = re.compile(r"\w+(?:[-.]\w+)*", re.UNICODE)
+        ocr_matches = list(token_pattern.finditer(ocr_text))
+        if not ocr_matches:
+            return ocr_text.strip()
+        ocr_tokens = [cls._normalize(match.group()) for match in ocr_matches]
+        removals: list[tuple[int, int]] = []
+        native_segments = [
+            segment.strip()
+            for segment in native_text.splitlines()
+            if len(cls._normalize(segment).strip()) >= 8
+        ]
+        for segment in native_segments:
+            native_tokens = [
+                cls._normalize(match.group()) for match in token_pattern.finditer(segment)
+            ]
+            if not native_tokens:
+                continue
+            best: tuple[float, int, int] | None = None
+            minimum = max(1, len(native_tokens) - 1)
+            maximum = min(len(ocr_tokens), len(native_tokens) + 1)
+            expected = " ".join(native_tokens)
+            for width in range(minimum, maximum + 1):
+                for start in range(0, len(ocr_tokens) - width + 1):
+                    end = start + width
+                    score = SequenceMatcher(
+                        None, expected, " ".join(ocr_tokens[start:end])
+                    ).ratio()
+                    if score >= 0.88 and (best is None or score > best[0]):
+                        best = (score, start, end)
+            if best is not None:
+                _, start, end = best
+                removals.append(
+                    (ocr_matches[start].start(), ocr_matches[end - 1].end())
+                )
+        if not removals:
+            return ocr_text.strip()
+        pieces: list[str] = []
+        offset = 0
+        for start, end in sorted(removals):
+            if start < offset:
+                continue
+            pieces.append(ocr_text[offset:start])
+            offset = end
+        pieces.append(ocr_text[offset:])
+        return re.sub(r"[ \t]+", " ", "".join(pieces)).strip()
 
     @staticmethod
     def _unprocessed_ranges(
@@ -1254,7 +1306,13 @@ class WebReadService:
                                 )
                             if outcome.failures or not page_blocks:
                                 continue
-                        completed.append(PdfTargetCompletion(target, outcome.blocks, [ocr_region]))
+                        completed.append(
+                            PdfTargetCompletion(
+                                target,
+                                outcome.blocks,
+                                [] if outcome.failures else [ocr_region],
+                            )
+                        )
                         continue
                     except Exception:
                         operation_failures.append(
@@ -1285,11 +1343,13 @@ class WebReadService:
                         )
                     ]
                     processed_ocr_regions: list[dict[str, float]] = []
+                    target_incomplete = False
                     try:
                         candidate_regions = await asyncio.to_thread(
                             pdf_image_regions, data, page, region
                         )
                     except Exception:
+                        target_incomplete = True
                         operation_failures.append(
                             {
                                 "kind": "image_region_detection_failed",
@@ -1317,6 +1377,7 @@ class WebReadService:
                             continue
                         candidate_target = {"page": page, "region": candidate_region}
                         if ocr_attempts >= ocr_budget:
+                            target_incomplete = True
                             operation_unprocessed.append(
                                 {
                                     "kind": "unprocessed_region",
@@ -1334,6 +1395,7 @@ class WebReadService:
                         except TimeoutError:
                             raise
                         except (MemoryError, OverflowError):
+                            target_incomplete = True
                             operation_failures.append(
                                 {
                                     "kind": "raster_limit",
@@ -1352,6 +1414,7 @@ class WebReadService:
                             )
                             continue
                         except Exception:
+                            target_incomplete = True
                             operation_failures.append(
                                 {
                                     "kind": "region_ocr_failed",
@@ -1376,12 +1439,22 @@ class WebReadService:
                             page=page,
                             region=candidate_region,
                             target_locator=candidate_target,
-                            native_text=artifact.text,
+                            native_text="\n".join(
+                                [
+                                    artifact.text,
+                                    *[
+                                        block.text
+                                        for block in current.document.blocks
+                                        if block.page == page
+                                    ],
+                                ]
+                            ),
                             has_page_heading=True,
                         )
                         operation_warnings.extend(outcome.warnings)
                         operation_failures.extend(outcome.failures)
                         if outcome.failures:
+                            target_incomplete = True
                             operation_unprocessed.append(
                                 {
                                     "kind": "unprocessed_region",
@@ -1390,9 +1463,13 @@ class WebReadService:
                                     "next_action": "advance",
                                 }
                             )
-                        if outcome.blocks or not outcome.failures:
+                        if not outcome.failures:
                             target_blocks.extend(outcome.blocks)
                             processed_ocr_regions.append(candidate_region)
+                        else:
+                            target_blocks.extend(outcome.blocks)
+                    if region is not None and not target_incomplete:
+                        processed_ocr_regions.append(region)
                     completed.append(
                         PdfTargetCompletion(
                             target,
@@ -1439,11 +1516,20 @@ class WebReadService:
                     ],
                     "failures": failures,
                     "warnings": [*result["warnings"], *duplicate_warnings],
-                    "processing": {
-                        "path": ["captured_pdf", "native_text_extract"],
-                        "source_acquisition": False,
-                        "ocr_used": False,
-                    },
+                    "processing": (
+                        {
+                            "path": ["captured_pdf", "pdf_rasterize", "cpu_ocr"],
+                            "source_acquisition": False,
+                            "ocr_used": True,
+                            **ocr_runtime,
+                        }
+                        if ocr_used
+                        else {
+                            "path": ["captured_pdf", "native_text_extract"],
+                            "source_acquisition": False,
+                            "ocr_used": False,
+                        }
+                    ),
                 }
             )
             return result, False
@@ -1462,8 +1548,6 @@ class WebReadService:
                 if page not in current.processed_pages:
                     blocks = [existing for existing in blocks if existing.page != page]
                 processed_pages.add(page)
-            else:
-                processed_regions.add(self._region_key(page, region))
             processed_regions.update(
                 self._region_key(page, completed_region)
                 for completed_region in completion.processed_regions
@@ -1511,17 +1595,6 @@ class WebReadService:
             for completion in completed
             if isinstance(completion.target.get("region"), dict)
         )
-        unresolved = [
-            item
-            for item in current.failures
-            if not self._locator_was_resolved(
-                item.get("locator", {}),
-                resolved_pages,
-                resolved_region_keys,
-                resolved_targets,
-            )
-        ]
-        failures = [*unresolved, *operation_failures]
         pending_regions = [
             item
             for item in current.unprocessed_ranges
@@ -1534,6 +1607,33 @@ class WebReadService:
                 in resolved_region_keys
             )
         ]
+        completed_ocr_pages = {
+            completion.target["page"]
+            for completion in completed
+            if completion.processed_regions
+        }
+        incomplete_ocr_pages = {
+            item["locator"]["page"]
+            for item in [*pending_regions, *operation_unprocessed]
+            if isinstance(item.get("locator", {}).get("page"), int)
+            and isinstance(item.get("locator", {}).get("region"), dict)
+        }
+        unresolved = [
+            item
+            for item in current.failures
+            if not (
+                item.get("kind") == "text_layer_unavailable"
+                and item.get("locator", {}).get("page") in completed_ocr_pages
+                and item.get("locator", {}).get("page") not in incomplete_ocr_pages
+            )
+            and not self._locator_was_resolved(
+                item.get("locator", {}),
+                resolved_pages,
+                resolved_region_keys,
+                resolved_targets,
+            )
+        ]
+        failures = [*unresolved, *operation_failures]
         unprocessed_ranges = [
             *self._unprocessed_ranges(state.total_pages, processed_pages, failures),
             *[
@@ -3070,7 +3170,8 @@ class WebReadService:
                         }
                     )
                     continue
-            processed_targets.append(target)
+            if not outcome.failures:
+                processed_targets.append(target)
             ocr_blocks.extend(outcome.blocks)
             if outcome.blocks:
                 page_has_heading.add(page)

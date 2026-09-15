@@ -26,9 +26,12 @@ async def javascript_site() -> AsyncIterator[str]:
                 app.innerHTML = `
                   <h1>Initial</h1><p>Original version text</p>
                   <button id="expand" aria-expanded="false">Expand details</button>
-                  <div role="tablist"><button role="tab">Overview</button><button role="tab">Evidence</button></div>
+                  <button hidden aria-expanded="false">Hidden expand</button>
+                  <button disabled aria-expanded="false">Disabled expand</button>
+                  <div role="tablist"><button role="tab">Overview</button><button role="tab">Evidence</button><button role="tab" disabled>Disabled tab</button></div>
                   <p id="tab-body" hidden>Selected tab evidence</p>
-                  <button id="more">Load more</button><div id="tail" style="height:2000px"></div>`;
+                  <button id="more">Load more</button><button hidden>Load more hidden</button>
+                  <div id="tail" style="height:2000px"></div>`;
                 document.querySelector('#expand').onclick = event => {
                   event.currentTarget.setAttribute('aria-expanded', 'true');
                   event.currentTarget.insertAdjacentHTML('afterend', '<p>Expanded evidence</p>');
@@ -65,6 +68,11 @@ async def javascript_site() -> AsyncIterator[str]:
                 script = """
                 setTimeout(() => app.innerHTML =
                   '<h1>Server article</h1><p>Ready after arbitrary inline JavaScript.</p>', 0);
+                """
+            elif path.startswith("/oversize-interaction"):
+                script = """
+                app.innerHTML = '<h1>Bounded</h1><p>Committed evidence.</p><button id="huge">Load more</button>';
+                huge.onclick = () => app.insertAdjacentHTML('beforeend', '<p>' + 'x'.repeat(2000100) + '</p>');
                 """
             elif path.startswith("/placeholder"):
                 script = """

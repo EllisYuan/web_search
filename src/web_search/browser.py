@@ -271,6 +271,7 @@ class BrowserSession:
         if operation != target.operation:
             raise BrowserFailure("invalid_request", "operation does not match the target.")
         self._validate_value(target, operation_value)
+        action_started = False
         try:
             async with asyncio.timeout(self._deadline_seconds):
                 self._raise_resource_failure()
@@ -289,10 +290,12 @@ class BrowserSession:
                     )
                 if target.operation == "scroll":
                     assert isinstance(operation_value, int)
+                    action_started = True
                     for _ in range(operation_value):
                         await self._page.evaluate("window.scrollBy(0, window.innerHeight)")
                         await self._page.wait_for_timeout(100)
                 else:
+                    action_started = True
                     await locator.click()
                     await self._page.wait_for_timeout(100)
                 self._raise_resource_failure()
@@ -301,6 +304,8 @@ class BrowserSession:
             await self.invalidate()
             raise BrowserFailure("timeout", "Browser interaction timed out.") from error
         except BrowserFailure:
+            if action_started:
+                await self.invalidate()
             raise
         except Exception as error:
             await self.invalidate()
@@ -393,6 +398,8 @@ class BrowserSession:
         )
         for index in range(min(await expanded.count(), 20)):
             locator = expanded.nth(index)
+            if not await locator.is_visible() or not await locator.is_enabled():
+                continue
             text = (await locator.inner_text()).strip() or "Expand hidden content"
             targets.append(self._target("expand", text, await self._selector(locator)))
 
@@ -404,6 +411,8 @@ class BrowserSession:
             tabs = tablist.locator("button[role='tab']")
             for tab in range(min(await tabs.count(), 20)):
                 tab_locator = tabs.nth(tab)
+                if not await tab_locator.is_visible() or not await tab_locator.is_enabled():
+                    continue
                 label = (await tab_locator.inner_text()).strip()
                 if label and len(label) <= 200:
                     labels_list.append(label)
@@ -423,6 +432,8 @@ class BrowserSession:
         buttons = self._page.locator("button")
         for index in range(min(await buttons.count(), 50)):
             button = buttons.nth(index)
+            if not await button.is_visible() or not await button.is_enabled():
+                continue
             text = (await button.inner_text()).strip()
             if text and any(
                 term in text.casefold() for term in ("load more", "show more", "加载更多")

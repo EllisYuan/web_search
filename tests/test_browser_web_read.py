@@ -212,6 +212,16 @@ async def test_interact_executes_only_selected_operations_and_preserves_old_vers
                 assert opened.structuredContent is not None
                 original = opened.structuredContent
                 assert "Selected tab evidence" not in original["content_markdown"]
+                descriptions = {item["description"] for item in original["interaction_targets"]}
+                assert "Hidden expand" not in descriptions
+                assert "Disabled expand" not in descriptions
+                assert "Load more hidden" not in descriptions
+                tab_target = next(
+                    item
+                    for item in original["interaction_targets"]
+                    if item["operation"] == "select_tab"
+                )
+                assert "Disabled tab" not in tab_target["operation_values"]
                 original_version = original["version"]
                 original_cursor = original["next_cursor"]
                 original_block = original["locators"][1]["block_id"]
@@ -288,6 +298,49 @@ async def test_interact_executes_only_selected_operations_and_preserves_old_vers
     assert continued_old.structuredContent is not None
     assert continued_old.structuredContent["version"] == original_version
     assert continued_old.structuredContent["content_markdown"]
+
+
+async def test_post_action_snapshot_failure_invalidates_browser_and_preserves_version() -> None:
+    async with javascript_site() as base_url:
+        async with httpx.AsyncClient(trust_env=False) as http:
+            server = create_server(api_key=None, http=http, url_policy=allow_fixture_url)
+            async with create_connected_server_and_client_session(server) as session:
+                opened = await session.call_tool(
+                    "web_read", {"url": f"{base_url}/oversize-interaction"}
+                )
+                assert opened.structuredContent is not None
+                body = opened.structuredContent
+                target = next(
+                    item
+                    for item in body["interaction_targets"]
+                    if item["operation"] == "load_more"
+                )
+                interaction = {
+                    "action": "interact",
+                    "read_id": body["read_id"],
+                    "version": body["version"],
+                    "target_id": target["target_id"],
+                    "operation": "load_more",
+                }
+                failed = await session.call_tool("web_read", interaction)
+                invalid = await session.call_tool("web_read", interaction)
+                preserved = await session.call_tool(
+                    "web_read",
+                    {
+                        "action": "find",
+                        "read_id": body["read_id"],
+                        "version": body["version"],
+                        "query": "Committed evidence",
+                    },
+                )
+
+    assert failed.isError and failed.structuredContent is not None
+    assert failed.structuredContent["error"]["category"] == "resource_exhausted"
+    assert invalid.isError and invalid.structuredContent is not None
+    assert invalid.structuredContent["error"]["category"] == "browser_state_invalid"
+    assert preserved.structuredContent is not None
+    assert preserved.structuredContent["version"] == body["version"]
+    assert preserved.structuredContent["matches"]
 
 
 async def test_interact_validates_target_operation_value_and_real_page_presence() -> None:

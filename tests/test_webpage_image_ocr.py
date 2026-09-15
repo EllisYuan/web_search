@@ -808,24 +808,160 @@ async def test_interaction_cannot_overwrite_a_concurrent_webpage_image_advance(
                 )
             )
             await asyncio.wait_for(browsers[0].started.wait(), timeout=1)
-            advanced, advanced_error = await service.dispatch(
-                {
-                    "action": "advance",
-                    "read_id": opened["read_id"],
-                    "version": opened["version"],
-                    "asset_id": pending_target["asset_id"],
-                    "targets": [{"region": pending_target["region"]}],
-                }
+            advancing = asyncio.create_task(
+                service.dispatch(
+                    {
+                        "action": "advance",
+                        "read_id": opened["read_id"],
+                        "version": opened["version"],
+                        "asset_id": pending_target["asset_id"],
+                        "targets": [{"region": pending_target["region"]}],
+                    }
+                )
             )
+            await asyncio.sleep(0.05)
+            advance_waited = not advancing.done()
             browsers[0].resume.set()
             interacted, interacted_error = await interaction
+            advanced, advanced_error = await advancing
 
-    assert not opened_error and not advanced_error
+    assert not opened_error and not interacted_error
+    assert advance_waited
+    assert interacted["version"] != opened["version"]
+    assert advanced_error
+    assert advanced["error"]["category"] == "version_mismatch"
+    assert advanced["version"] == opened["version"]
+
+
+async def test_release_waits_for_an_inflight_webpage_image_advance(tmp_path: Path) -> None:
+    started = asyncio.Event()
+    resume = asyncio.Event()
+    calls = 0
+
+    async def blocking_ocr(
+        path: Path, regions: list[dict[str, float]], deadline: float
+    ) -> ImageExtraction:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return await fixture_ocr(path, regions, deadline)
+        started.set()
+        await resume.wait()
+        return await fixture_ocr(path, regions, deadline)
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(multi_image_source)) as http:
+        service = WebReadService(
+            http,
+            url_policy=allow_public_url,
+            artifact_directory=tmp_path,
+            image_processor=blocking_ocr,
+        )
+        async with service.lifecycle():
+            opened, opened_error = await service.dispatch(
+                {"url": "https://example.org/gallery", "max_regions": 1}
+            )
+            target = opened["unprocessed_ranges"][0]["locator"]
+            advancing = asyncio.create_task(
+                service.dispatch(
+                    {
+                        "action": "advance",
+                        "read_id": opened["read_id"],
+                        "version": opened["version"],
+                        "asset_id": target["asset_id"],
+                        "targets": [{"region": target["region"]}],
+                    }
+                )
+            )
+            await asyncio.wait_for(started.wait(), timeout=1)
+            releasing = asyncio.create_task(
+                service.dispatch({"action": "release", "read_id": opened["read_id"]})
+            )
+            await asyncio.sleep(0.05)
+            release_waited = not releasing.done()
+            resume.set()
+            advanced, advanced_error = await advancing
+            released, released_error = await releasing
+
+    assert not opened_error and not advanced_error and not released_error
+    assert release_waited
     assert advanced["version"] != opened["version"]
-    assert interacted_error
-    assert interacted["error"]["category"] == "version_mismatch"
-    assert interacted["version"] == advanced["version"]
-    assert browsers[0].invalidated is True
+    assert released["released"] is True
+    assert list(tmp_path.glob("*.image")) == []
+
+
+async def test_interaction_updates_caption_and_drops_removed_duplicate_image_occurrence(
+    tmp_path: Path,
+) -> None:
+    class DuplicateImageBrowser(GrowingImageBrowser):
+        @staticmethod
+        def page(url: str, *, expanded: bool) -> RenderedPage:
+            figures = (
+                '<figure><img src="/shared.png"><figcaption>Updated</figcaption></figure>'
+                if expanded
+                else (
+                    '<figure><img src="/shared.png"><figcaption>First</figcaption></figure>'
+                    '<figure><img src="/shared.png"><figcaption>Second</figcaption></figure>'
+                )
+            )
+            html = (
+                f"<html><body><main><p>Rendered.</p>{figures}"
+                "<button>Expand</button></main></body></html>"
+            )
+            return RenderedPage(
+                url=url,
+                html=html,
+                title="Duplicate",
+                language="en",
+                digest=hashlib.sha256(html.encode()).hexdigest(),
+                targets=(InteractionTarget("expand-target", "expand", "Expand", "#expand"),),
+                blocked_requests=0,
+            )
+
+    requests = 0
+
+    def source(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        if request.url.path == "/duplicates":
+            return httpx.Response(
+                200,
+                headers={"content-type": "text/html"},
+                text="<html><body><main></main><script></script></body></html>",
+            )
+        requests += 1
+        return httpx.Response(200, headers={"content-type": "image/png"}, content=PNG_BYTES)
+
+    async with connected(
+        source,
+        api_key=None,
+        url_policy=allow_public_url,
+        artifact_directory=tmp_path,
+        image_processor=fixture_ocr,
+        browser_factory=DuplicateImageBrowser,
+    ) as session:
+        opened = await session.call_tool("web_read", {"url": "https://example.org/duplicates"})
+        assert opened.structuredContent is not None
+        initial = opened.structuredContent
+        interacted = await session.call_tool(
+            "web_read",
+            {
+                "action": "interact",
+                "read_id": initial["read_id"],
+                "version": initial["version"],
+                "target_id": "expand-target",
+                "operation": "expand",
+            },
+        )
+
+    assert not interacted.isError
+    assert requests == 2
+    assert interacted.structuredContent is not None
+    ocr_locators = [
+        locator
+        for locator in interacted.structuredContent["locators"]
+        if locator["lineage"] == "image_ocr"
+    ]
+    assert len(ocr_locators) == 1
+    assert ocr_locators[0]["caption"] == "Updated"
 
 
 async def test_interaction_atomically_adds_new_rendered_image_to_only_the_new_version(

@@ -1130,6 +1130,23 @@ class WebReadService:
         if failure is not None:
             return failure
         assert state is not None
+        if state.media_kind != "html":
+            return await self._advance_locked(state, arguments)
+        async with state.interaction_lock:
+            if self._states.get(state.read_id) is not state:
+                result = error_result(
+                    "advance",
+                    "state_expired",
+                    "The read state is no longer available.",
+                    next_action="open",
+                )
+                result["read_id"] = state.read_id
+                return result, True
+            return await self._advance_locked(state, arguments)
+
+    async def _advance_locked(
+        self, state: ReadState, arguments: dict[str, Any]
+    ) -> tuple[dict[str, Any], bool]:
         current = self._snapshot(state)
         if state.media_kind == "image":
             return await self._advance_image(state, current, arguments)
@@ -2079,17 +2096,37 @@ class WebReadService:
                 if changed:
                     references = discover_html_images(rendered.html, rendered.url)
                     active_urls = {reference.source_url for reference in references}
-                    retained_assets = {
-                        asset_id: asset
-                        for asset_id, asset in previous_assets.items()
-                        if asset.source_url in active_urls
-                    }
+                    remaining_references = list(references)
+                    retained_assets: dict[str, WebpageImage] = {}
+                    for asset_id, asset in previous_assets.items():
+                        reference_index = next(
+                            (
+                                index
+                                for index, reference in enumerate(remaining_references)
+                                if reference.source_url == asset.source_url
+                            ),
+                            None,
+                        )
+                        if reference_index is None:
+                            continue
+                        reference = remaining_references.pop(reference_index)
+                        retained_assets[asset_id] = replace(
+                            asset,
+                            caption=reference.caption,
+                            alt=reference.alt,
+                        )
                     retained_ids = set(retained_assets)
-                    retained_ocr = [
-                        block
-                        for block in previous_document.blocks
-                        if block.lineage == "image_ocr" and block.asset_id in retained_ids
-                    ]
+                    retained_ocr: list[Block] = []
+                    for block in previous_document.blocks:
+                        if block.lineage != "image_ocr" or block.asset_id not in retained_ids:
+                            continue
+                        assert block.asset_id is not None
+                        retained_ocr.append(
+                            replace(
+                                block,
+                                caption=retained_assets[block.asset_id].caption,
+                            )
+                        )
                     retained_unprocessed = [
                         item
                         for item in previous_snapshot.unprocessed_ranges

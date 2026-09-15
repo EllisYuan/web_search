@@ -7,6 +7,7 @@ from __future__ import annotations
 import asyncio
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 
 @asynccontextmanager
@@ -15,12 +16,40 @@ async def javascript_site() -> AsyncIterator[str]:
         try:
             head = await reader.readuntil(b"\r\n\r\n")
             path = head.split(b" ", 2)[1].decode("ascii")
+            image_fixtures = {
+                "/image-en.png": "image-en.png",
+                "/image-zh.png": "image-zh.png",
+            }
+            if path in image_fixtures:
+                payload = (Path(__file__).parent / "fixtures" / image_fixtures[path]).read_bytes()
+                writer.write(
+                    b"HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n"
+                    + f"Content-Length: {len(payload)}\r\nConnection: close\r\n\r\n".encode()
+                    + payload
+                )
+                await writer.drain()
+                return
             language = "zh" if path.startswith("/zh") else "en"
             text = (
                 "浏览器渲染的中文正文" if language == "zh" else "English body rendered by browser"
             )
             initial = ""
-            if path.startswith("/interactions"):
+            if path.startswith("/image-app"):
+                script = """
+                const app = document.querySelector('#app');
+                app.innerHTML = `
+                  <h1>图片证据</h1><p>浏览器正文</p>
+                  <img src="/image-zh.png" alt="中文票据">
+                  <button id="more">Load more</button>`;
+                document.querySelector('#more').onclick = event => {
+                  event.currentTarget.insertAdjacentHTML(
+                    'beforebegin',
+                    '<p>New rendered image</p><img src="/image-en.png" alt="English receipt">'
+                  );
+                  event.currentTarget.remove();
+                };
+                """
+            elif path.startswith("/interactions"):
                 script = """
                 const app = document.querySelector('#app');
                 app.innerHTML = `

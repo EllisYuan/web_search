@@ -193,6 +193,39 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
                     html = await session.call_tool(
                         "web_read", {"url": "https://example.org/source"}
                     )
+                    webpage = await session.call_tool(
+                        "web_read", {"url": "https://example.org/source-page"}
+                    )
+                    assert webpage.structuredContent is not None
+                    webpage_body = webpage.structuredContent
+                    webpage_ocr = next(
+                        locator
+                        for locator in webpage_body["locators"]
+                        if locator["lineage"] == "image_ocr"
+                    )
+                    webpage_found = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "find",
+                            "read_id": webpage_body["read_id"],
+                            "version": webpage_body["version"],
+                            "query": "AX-2026-0917",
+                        },
+                    )
+                    webpage_asset = await session.call_tool(
+                        "web_read",
+                        {
+                            "action": "asset",
+                            "read_id": webpage_body["read_id"],
+                            "version": webpage_body["version"],
+                            "asset_type": "image",
+                            "asset_id": webpage_ocr["asset_id"],
+                        },
+                    )
+                    webpage_released = await session.call_tool(
+                        "web_read",
+                        {"action": "release", "read_id": webpage_body["read_id"]},
+                    )
                     image = await session.call_tool(
                         "web_read", {"url": "https://example.org/source.png"}
                     )
@@ -317,6 +350,19 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
 
     assert not html.isError and html.structuredContent is not None
     assert "Search 后读取的原文" in html.structuredContent["content_markdown"]
+    assert not webpage.isError
+    assert "Webpage image fixture." in webpage_body["content_markdown"]
+    assert "AX-2026-0917" in webpage_body["content_markdown"]
+    assert webpage_ocr["caption"] == "Captured evidence"
+    assert webpage_body["processing"]["image_ocr"][0]["execution_providers"] == [
+        "CPUExecutionProvider"
+    ]
+    assert webpage_found.structuredContent is not None
+    assert webpage_found.structuredContent["matches"][0]["asset_id"] == webpage_ocr["asset_id"]
+    assert not webpage_asset.isError
+    assert any(isinstance(part, ImageContent) for part in webpage_asset.content)
+    assert webpage_released.structuredContent is not None
+    assert webpage_released.structuredContent["released"] is True
     assert not pdf.isError
     assert not image.isError
     assert "AX-2026-0917" in image_body["content_markdown"]

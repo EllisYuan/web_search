@@ -25,6 +25,17 @@ def respond(request: httpx.Request) -> httpx.Response:
                     outline=True,
                 ),
             )
+        if request.url.path == "/source-page":
+            return httpx.Response(
+                200,
+                headers={"content-type": "text/html"},
+                text=(
+                    "<html><body><main><p>Webpage image fixture.</p>"
+                    '<figure><img src="/source.png" alt="Evidence image">'
+                    "<figcaption>Captured evidence</figcaption></figure>"
+                    "</main></body></html>"
+                ),
+            )
         if request.url.path == "/source.png":
             return httpx.Response(
                 200,

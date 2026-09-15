@@ -2,7 +2,7 @@
 
 为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-当前交付支持 static HTML、需要 JavaScript 的页面、born-digital text PDF，以及独立 image URL 的 CPU-only OCR。JavaScript 页面支持 caller 显式选择 `expand`、`select_tab`、`load_more` 和有界 `scroll`；PDF capture 可通过显式 `advance` 按 page / normalized region 追加处理并取得 page crop；image capture 可按 normalized region 追加 OCR 并取回原始 image。`read` / `find` 只读取指定 version 已完成的 extraction。网页内 image OCR 与 scanned PDF OCR 仍是后续 v1 能力。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+当前交付支持 static HTML、需要 JavaScript 的页面、网页内 text image、born-digital text PDF，以及独立 image URL 的 CPU-only OCR。JavaScript 页面支持 caller 显式选择 `expand`、`select_tab`、`load_more` 和有界 `scroll`；PDF capture 可通过显式 `advance` 按 page / normalized region 追加处理并取得 page crop；网页和独立 image capture 可按 normalized region 追加 OCR 并取回原始 image。`read` / `find` 只读取指定 version 已完成的 extraction。scanned PDF OCR 仍是后续 v1 能力。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -77,6 +77,16 @@ uv run playwright install chromium
 {"action":"asset","read_id":"...","version":"...","asset_type":"image","asset_id":"..."}
 ```
 
+static 或 rendered HTML 中的 `<img src>` / `<img data-src>` 会在同一次 `open` 或显式 `interact` deadline 内单独 capture。可靠 DOM text 与 OCR text 同时保留；每个 locator 以 `lineage=native_text` 或 `lineage=image_ocr` 区分来源，OCR locator 还包含 opaque `asset_id`、normalized `source_region`，以及可得的 `figcaption`。图片不可访问时不会删除已抽取的 DOM，也不会隐式 click、scroll 或穷举页面。
+
+`max_regions` 只控制本次最多处理多少个已 capture image region；未处理范围通过 `unprocessed_ranges` 返回。caller 可使用该 version 中的精确 `asset_id` 显式追加 OCR：
+
+```json
+{"action":"advance","read_id":"...","version":"...","asset_id":"...","targets":[{"region":{"x":0,"y":0,"width":1,"height":1}}]}
+```
+
+成功 `advance` 原子创建新 `version`；旧 version 的 text、cursor 和 asset 不迁移。`asset_type=image` 只返回对应 version 已 capture 的 bytes，不会重新请求网页或图片。普通 `read` / `find` 同样不执行网络、render 或 OCR。image capture 不完整、已 capture 但未 OCR、OCR failure 与 output truncation 分别通过 `capture_status`、`unprocessed_ranges` / `failures`、`extraction_status` 和 `output_status` 表达。
+
 OCR 固定使用 RapidOCR 3.x bundled PP-OCR models 与 ONNX Runtime `CPUExecutionProvider`，intra/inter threads 固定为 2/1；caller 不能选择 engine、model、execution provider 或 process concurrency。响应记录实际 package version、每个 session 的 provider、model source/SHA-256/license。RapidOCR 及 PP-OCR models 为 Apache-2.0，ONNX Runtime 为 MIT，Pillow 为 MIT-CMU。
 
 静态抽取只得到可识别的 JavaScript shell 或 loading placeholder 时，`open` 在同一 deadline 内启动隔离 Chromium context，并从 rendered DOM 抽取正文。响应以 `processing.browser_rendered=true` 披露该路径，并返回可操作元素的 opaque `target_id`、描述、operation 与可用 value。interaction 必须携带返回 target 时的当前 `version`：
@@ -87,7 +97,7 @@ OCR 固定使用 RapidOCR 3.x bundled PP-OCR models 与 ONNX Runtime `CPUExecuti
 
 成功 interaction 返回本次新增正文、`previous_version`、实际 `version`、`version_changed` 和新页面上的 targets。若 DOM 改变但没有新增正文，`content_markdown` 为空；若 DOM 未改变，version 保持不变。每个 read 最多保留 16 个 browser version，达到上限后停止 interaction；旧 version、locator 和 cursor 在 state TTL 内仍绑定旧 artifact。`read`、`find` 与 cursor 不会触发 navigation、render 或 interaction。target、operation/value 或 version 不匹配会明确失败；target 消失和 browser session 失效分别返回 `not_found` 与 `browser_state_invalid`。若 browser rendering 失败但 static extraction 已取得可靠 blocks，响应保留 static 正文与 locator，并以 `browser_render_failed` warning 和 partial status 披露降级；没有可靠 static blocks 时返回原 browser error。
 
-当前 limits 为每次 output 100,000 chars、HTTP acquisition 和 rendered DOM 各 2,000,000 bytes、browser response 累计 10,000,000 bytes、browser process RSS 512,000,000 bytes、每个 browser session 100 次 request、5 个 viewport scroll step、16 个保留 version、单 browser page、最多 2 个 renderer process 与 256 MiB V8 old-space；`max_pages=100`、schema `max_regions=1000`、单次 image OCR 最多 4 regions、decoded image 12,000,000 pixels、PDF crop 12,000,000 pixels / 5,000,000 bytes。response bytes 通过 Chromium DevTools Protocol 计数；RSS 每 50 ms 检查并在超限时关闭 page，因此可能存在一个采样周期内的瞬时超量。默认 `open` deadline 为 30 秒，HTTP acquisition 与后续 browser/PDF/image extraction 共用该 deadline，interaction 也有 deadline；最多 5 次 HTTP redirect。初始 URL、redirect 与 browser request 都检查 scheme、userinfo、DNS/IP public boundary；browser 不继承 cookies/credentials、阻止 service worker、download、popup navigation、image/font/media/WebSocket 和 interaction 导航，不会自动 click 或 scroll，也不会绕过登录、paywall、CAPTCHA 或访问控制。PDF 使用 native text layer，不执行 OCR；table / column reading order 不可靠时保留文字并返回 `structure_incomplete`，caller 可用 page crop 或原始 image 核对。
+当前 limits 为每次 output 100,000 chars、HTTP acquisition 和 rendered DOM 各 2,000,000 bytes、每次网页 operation 最多 capture 8 张新 image / 累计 8,000,000 encoded bytes、browser response 累计 10,000,000 bytes、browser process RSS 512,000,000 bytes、每个 browser session 100 次 request、5 个 viewport scroll step、16 个保留 version、单 browser page、最多 2 个 renderer process 与 256 MiB V8 old-space；`max_pages=100`、schema `max_regions=1000`、单次 image OCR 最多 4 regions、decoded image 12,000,000 pixels、PDF crop 12,000,000 pixels / 5,000,000 bytes。response bytes 通过 Chromium DevTools Protocol 计数；RSS 每 50 ms 检查并在超限时关闭 page，因此可能存在一个采样周期内的瞬时超量。默认 `open` deadline 为 30 秒，主 HTML acquisition、显式 browser rendering / interaction、网页 image capture 与 CPU OCR 共用同一次 operation deadline；最多 5 次 HTTP redirect。初始 URL、redirect、browser request 与网页 image URL 都检查 scheme、userinfo、DNS/IP public boundary；browser 不继承 cookies/credentials、阻止 service worker、download、popup navigation、image/font/media/WebSocket 和 interaction 导航，网页 image 由 service 按已提交 DOM reference 单独 capture，不会自动 click 或 scroll，也不会绕过登录、paywall、CAPTCHA 或访问控制。PDF 使用 native text layer，不执行 OCR；table / column / image reading order 不可靠时保留可靠 text、caption 与 asset，并返回 `structure_incomplete`，caller 可用 page crop 或原始 image 核对。
 
 ## 调用与结果
 
@@ -231,5 +241,7 @@ HTTP 400 的 `message` 提示检查参数值及组合；401 提示检查 MCP cli
 Windows 目标 client 为 MCP Inspector CLI 2.6.0（独立 Node client），transport 为真实 subprocess `stdio`。最新 [#15 Windows smoke 与父 spec 验收矩阵](docs/testing/issue15-windows-smoke.md) 覆盖最终 discovery、正常 batch、partial、全部失败、rate limit 和 timeout 展示，完整输出见 [issue15-smoke.json](docs/testing/issue15-smoke.json)。历史 [#13 单 query smoke](docs/testing/issue13-windows-smoke.md)、[#14 batch smoke](docs/testing/issue14-windows-smoke.md) 保留原证据。三者都是 contract smoke，不是 live Tavily Search；[#11 的历史 live evidence](https://github.com/EllisYuan/web_search/issues/11#issuecomment-5652708001) 单独记录，不因本次实施关闭或改变结论。
 
 [#20 Windows browser stdio smoke](docs/testing/issue20-windows-smoke.md) 使用真实 Chromium、真实 subprocess stdio MCP session 和 loopback JavaScript fixture，覆盖 rendered DOM 与显式 interaction；它不代表任意公开网站的兼容率。
+
+[#23 Windows 网页 image OCR smoke](docs/testing/issue23-windows-smoke.md) 使用真实 subprocess stdio MCP session、真实 Chromium、RapidOCR 与 `CPUExecutionProvider`，覆盖 static/rendered HTML 的中英文 image、interaction 新 version、`find`、`asset` 和 lifecycle cleanup；它不代表任意公开网站、CSS background image 或复杂 layout 的兼容率。
 
 实现参考：[MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk/tree/v1.x)、[HTTPX timeout](https://www.python-httpx.org/advanced/timeouts/)、[HTTPX transport fixtures](https://www.python-httpx.org/advanced/transports/)。

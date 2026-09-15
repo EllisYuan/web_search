@@ -211,6 +211,14 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
                         "web_read",
                         {"action": "release", "read_id": image_body["read_id"]},
                     )
+                    scanned_pdf_result = await session.call_tool(
+                        "web_read",
+                        {
+                            "url": "https://example.org/source-scan.pdf",
+                            "max_pages": 1,
+                            "max_regions": 1,
+                        },
+                    )
                     pdf = await session.call_tool(
                         "web_read",
                         {
@@ -324,6 +332,10 @@ async def test_real_stdio_pdf_advance_and_asset_without_key() -> None:
     assert any(isinstance(part, ImageContent) for part in image_asset.content)
     assert image_released.structuredContent is not None
     assert image_released.structuredContent["released"] is True
+    assert not scanned_pdf_result.isError
+    assert scanned_pdf_result.structuredContent is not None
+    assert "京东20260917" in scanned_pdf_result.structuredContent["content_markdown"]
+    assert scanned_pdf_result.structuredContent["processing"]["ocr_used"] is True
     assert body["metadata"]["page_count"] == 3
     assert body["capture_status"] == "complete"
     assert body["extraction_status"] == "partial"

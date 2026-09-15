@@ -26,6 +26,10 @@ class PdfExtractionError(Exception):
         self.category = category
 
 
+class PdfTextUnavailableError(ValueError):
+    """The selected PDF target has no native text layer to reuse."""
+
+
 @dataclass(frozen=True)
 class PdfBlock:
     block_id: str
@@ -44,6 +48,7 @@ class PdfExtraction:
     blocks: list[PdfBlock]
     total_pages: int
     processed_pages: frozenset[int]
+    ocr_regions: list[dict[str, Any]]
     unprocessed_ranges: list[dict[str, Any]]
     failures: list[dict[str, Any]]
     warnings: list[dict[str, Any]]
@@ -96,6 +101,36 @@ def _has_layout_ambiguity(text_page: Any) -> bool:
     return False
 
 
+def _page_image_regions(page: Any) -> list[dict[str, float]]:
+    width, height = page.get_size()
+    regions: list[dict[str, float]] = []
+    for image in page.get_objects(filter=[pdfium.raw.FPDF_PAGEOBJ_IMAGE]):
+        try:
+            left, bottom, right, top = image.get_bounds()
+        except pdfium.PdfiumError:
+            continue
+        left = max(0.0, min(width, left))
+        right = max(0.0, min(width, right))
+        bottom = max(0.0, min(height, bottom))
+        top = max(0.0, min(height, top))
+        if right <= left or top <= bottom:
+            continue
+        region = {
+            "x": left / width,
+            "y": (height - top) / height,
+            "width": (right - left) / width,
+            "height": (top - bottom) / height,
+        }
+        if region["width"] * region["height"] < 0.001:
+            continue
+        if not any(
+            all(abs(region[key] - existing[key]) < 1e-6 for key in region)
+            for existing in regions
+        ):
+            regions.append(region)
+    return sorted(regions, key=lambda item: (item["y"], item["x"]))
+
+
 def extract_pdf_text(
     data: bytes,
     page_number: int,
@@ -120,7 +155,7 @@ def extract_pdf_text(
                     text = text_page.get_text_bounded(left, bottom, right, top)
     normalized = text.replace("\r\n", "\n").replace("\r", "\n").strip()
     if not normalized:
-        raise ValueError("PDF target has no readable text layer.")
+        raise PdfTextUnavailableError("PDF target has no readable text layer.")
     structure_incomplete = (
         structure_incomplete
         or "\t" in normalized
@@ -276,6 +311,7 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
         processed_pages: set[int] = set()
         failures: list[dict[str, Any]] = []
         warnings: list[dict[str, Any]] = []
+        ocr_regions: list[dict[str, Any]] = []
         extracted_chars = 0
         for page_number in range(1, min(total_pages, max_pages) + 1):
             if time.monotonic() >= deadline:
@@ -290,6 +326,7 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
                 break
             try:
                 with closing(document[page_number - 1]) as page:
+                    page_image_regions = _page_image_regions(page)
                     with closing(page.get_textpage()) as text_page:
                         if text_page.count_chars() > MAX_PDF_PAGE_CHARS:
                             failures.append(
@@ -315,6 +352,11 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
                 )
                 continue
             processed_pages.add(page_number)
+            if not text and not page_image_regions:
+                page_image_regions = [{"x": 0.0, "y": 0.0, "width": 1.0, "height": 1.0}]
+            ocr_regions.extend(
+                {"page": page_number, "region": region} for region in page_image_regions
+            )
             if not text:
                 failures.append(
                     {
@@ -374,6 +416,7 @@ def extract_pdf(path: Path, *, max_pages: int, deadline_seconds: float) -> PdfEx
         blocks=blocks,
         total_pages=total_pages,
         processed_pages=frozen_pages,
+        ocr_regions=ocr_regions,
         unprocessed_ranges=_unprocessed_ranges(total_pages, processed_pages),
         failures=failures,
         warnings=warnings,

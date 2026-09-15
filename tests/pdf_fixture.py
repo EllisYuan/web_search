@@ -2,7 +2,8 @@
 
 from io import BytesIO
 
-from pypdf import PdfWriter
+from PIL import Image
+from pypdf import PdfReader, PdfWriter, Transformation
 from pypdf.generic import (
     ArrayObject,
     DecodedStreamObject,
@@ -87,6 +88,61 @@ def encrypted_pdf() -> bytes:
     writer = PdfWriter()
     writer.add_blank_page(width=612, height=792)
     writer.encrypt("fixture-password")
+    output = BytesIO()
+    writer.write(output)
+    return output.getvalue()
+
+
+def scanned_pdf(*images: bytes) -> bytes:
+    """Wrap raster fixtures in PDF pages without adding a text layer."""
+    pages = []
+    for payload in images:
+        with Image.open(BytesIO(payload)) as source:
+            pages.append(source.convert("RGB"))
+    output = BytesIO()
+    pages[0].save(output, format="PDF", save_all=True, append_images=pages[1:], resolution=144)
+    return output.getvalue()
+
+
+def mixed_page_pdf(image: bytes, native_text: str) -> bytes:
+    """Put native text over a raster PDF page to model same-page mixed content."""
+    writer = PdfWriter(clone_from=PdfReader(BytesIO(scanned_pdf(image))))
+    overlay = PdfWriter(clone_from=PdfReader(BytesIO(text_pdf(native_text))))
+    scanned_page = writer.pages[0]
+    native_page = overlay.pages[0]
+    native_page.scale_to(float(scanned_page.mediabox.width), float(scanned_page.mediabox.height))
+    scanned_page.merge_page(native_page)
+    output = BytesIO()
+    writer.write(output)
+    return output.getvalue()
+
+
+def combine_pdfs(*documents: bytes) -> bytes:
+    writer = PdfWriter()
+    for payload in documents:
+        for page in PdfReader(BytesIO(payload)).pages:
+            writer.add_page(page)
+    output = BytesIO()
+    writer.write(output)
+    return output.getvalue()
+
+
+def mixed_regions_pdf(image: bytes, native_text: str) -> bytes:
+    """Create one native page with two separate raster regions."""
+    writer = PdfWriter(clone_from=PdfReader(BytesIO(text_pdf(native_text))))
+    raster = PdfWriter(clone_from=PdfReader(BytesIO(scanned_pdf(image))))
+    page = writer.pages[0]
+    image_page = raster.pages[0]
+    page.merge_transformed_page(
+        image_page,
+        Transformation().scale(0.7).translate(60, 430),
+        over=False,
+    )
+    page.merge_transformed_page(
+        image_page,
+        Transformation().scale(0.7).translate(60, 160),
+        over=False,
+    )
     output = BytesIO()
     writer.write(output)
     return output.getvalue()

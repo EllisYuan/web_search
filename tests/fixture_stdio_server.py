@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 import httpx
-from pdf_fixture import text_pdf
+from pdf_fixture import scanned_pdf, text_pdf
 
 from web_search.server import read_api_key, serve
 
@@ -34,6 +34,14 @@ def respond(request: httpx.Request) -> httpx.Response:
                     '<figure><img src="/source.png" alt="Evidence image">'
                     "<figcaption>Captured evidence</figcaption></figure>"
                     "</main></body></html>"
+                ),
+            )
+        if request.url.path == "/source-scan.pdf":
+            return httpx.Response(
+                200,
+                headers={"content-type": "application/pdf"},
+                content=scanned_pdf(
+                    (Path(__file__).parent / "fixtures" / "image-zh.png").read_bytes()
                 ),
             )
         if request.url.path == "/source.png":

@@ -2,7 +2,7 @@
 
 为本机 agent 提供可组合的 Search 与 Web Read MCP tools。`web_search` 接受含 1–20 项的 `queries`，返回候选 Source URL 与 Tavily SERP metadata；`web_read` 由 caller 显式打开选中的公开 URL，并渐进读取抽取后的原文。
 
-当前交付支持 static HTML、需要 JavaScript 的页面、网页内 text image、born-digital text PDF，以及独立 image URL 的 CPU-only OCR。JavaScript 页面支持 caller 显式选择 `expand`、`select_tab`、`load_more` 和有界 `scroll`；PDF capture 可通过显式 `advance` 按 page / normalized region 追加处理并取得 page crop；网页和独立 image capture 可按 normalized region 追加 OCR 并取回原始 image。`read` / `find` 只读取指定 version 已完成的 extraction。scanned PDF OCR 仍是后续 v1 能力。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
+当前交付支持 static HTML、需要 JavaScript 的页面、网页内 text image、text / mixed / scanned PDF，以及独立 image URL 的 CPU-only OCR。JavaScript 页面支持 caller 显式选择 `expand`、`select_tab`、`load_more` 和有界 `scroll`；PDF capture 复用可靠 native text，对 image 或无 text layer 的 region rasterize / OCR，并通过显式 `advance` 追加处理及取得 page crop；网页和独立 image capture 可按 normalized region 追加 OCR 并取回原始 image。`read` / `find` 只读取指定 version 已完成的 extraction。Deep Research 的 planning 与 synthesis 由 caller agent 负责。自建代码使用 [MIT License](LICENSE)，支持 Windows、CPU-only。
 
 ## 安装与启动
 
@@ -51,13 +51,13 @@ uv run playwright install chromium
 
 也可用响应中的 opaque `section_id` / `block_id` 或已处理 PDF `page` 发起新的 selection。`find` 使用 Unicode NFKC + casefold 做 deterministic matching，返回原文位置和短上下文，并披露实际 `searched_scope`。完成后调用 `{"action":"release","read_id":"..."}`；重复 release 是幂等成功，其他 action 使用已释放或 idle-expired（默认 15 分钟）的 handle 会得到 `state_expired`，不会隐式 refetch。
 
-长 PDF 可在首次 `max_pages` 之后显式追加处理；每次只处理 `targets`，并创建新 `version`：
+长 PDF 的首次处理同时受 `max_pages`、`max_regions` 与单次 4 个 PDF OCR regions 的 server hard limit 约束；不会等待全文 OCR。可显式追加非顺序 page / region，每次只处理 `targets`，并创建新 `version`：
 
 ```json
 {"action":"advance","read_id":"...","version":"...","targets":[{"page":7},{"page":9,"region":{"x":0,"y":0.4,"width":1,"height":0.3}}]}
 ```
 
-旧 version 在 state 有效期内仍可显式读取。cursor 固定 version；省略 `version` 时，旧 cursor 不会迁移到当前 version。重复 target 返回 `already_processed` warning，不追加重复正文。部分 target 失败时，完整成功的 target 原子提交到新 version，并在 `failures` 和 `unprocessed_ranges` 中保留 locator。
+旧 version 在 state 有效期内仍可显式读取。cursor 固定 version；省略 `version` 时，旧 cursor 不会迁移到当前 version。重复 target 返回 `already_processed` warning，不追加重复正文。部分 target 失败时，完整成功的 target 原子提交到新 version，并在 `failures` 和 `unprocessed_ranges` 中保留 locator。每个 PDF text block 的 locator 披露 `native_text` 或 `ocr` processing lineage；与可靠 native text 重复的 OCR block 不会再次返回。
 
 `asset` 只使用已捕获 PDF，不进行新的 HTTP acquisition。结果包含 page / region / version locator，并通过 MCP `ImageContent` 返回 PNG，而不是本机路径：
 

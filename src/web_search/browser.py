@@ -18,11 +18,16 @@ from playwright.async_api import (
     Browser,
     BrowserContext,
     CDPSession,
+    Frame,
     Locator,
     Page,
     Playwright,
     Route,
+    WebSocketRoute,
     async_playwright,
+)
+from playwright.async_api import (
+    Error as PlaywrightError,
 )
 from playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError,
@@ -114,6 +119,9 @@ class BrowserSession:
         self._admission = admission
         self._artifact_directory = artifact_directory
         self._temporary_path: Path | None = None
+        self._network_tasks: set[asyncio.Task[Any]] = set()
+        self._guarded_targets: set[str] = set()
+        self._guard_lock = asyncio.Lock()
 
     async def open(self, url: str) -> RenderedPage:
         task = asyncio.create_task(self._open(url))
@@ -156,10 +164,12 @@ class BrowserSession:
                 assert self._browser is not None
                 self._ensure_valid()
                 await self._context.route("**/*", self._route)
+                await self._context.route_web_socket("**/*", self._block_websocket)
                 self._page = self._context.pages[0]
                 self._ensure_valid()
                 self._page.on("popup", lambda popup: asyncio.create_task(popup.close()))
                 self._page.on("download", lambda download: asyncio.create_task(download.cancel()))
+                await self._guard_frame(self._page.main_frame)
                 self._cdp = await self._context.new_cdp_session(self._page)
                 await self._cdp.send("Network.enable")
                 self._cdp.on("Network.dataReceived", self._record_response_bytes)
@@ -273,7 +283,7 @@ class BrowserSession:
             self._blocked_requests += 1
             await route.abort("blockedbyclient")
             return
-        if request.resource_type in {"font", "image", "media", "websocket"}:
+        if request.resource_type in {"font", "image", "media"}:
             self._blocked_requests += 1
             await route.abort("blockedbyclient")
             return
@@ -281,7 +291,87 @@ class BrowserSession:
             self._blocked_requests += 1
             await route.abort("blockedbyclient")
             return
+        try:
+            frame = request.frame
+        except PlaywrightError:
+            # A popup's first request can precede its Frame. Such navigation is
+            # outside this session's page; reject it before any upstream I/O.
+            self._blocked_requests += 1
+            await route.abort("blockedbyclient")
+            return
+        if frame.page is not self._page:
+            self._blocked_requests += 1
+            await route.abort("blockedbyclient")
+            return
+        await self._guard_frame(frame)
         await route.continue_()
+
+    async def _block_websocket(self, route: WebSocketRoute) -> None:
+        # WebSockets are outside the bounded page acquisition scope. HTTP route
+        # handlers never see their handshake; do not connect to the upstream.
+        self._blocked_requests += 1
+        await route.close(code=1008, reason="WebSocket acquisition is disabled")
+
+    async def _guard_frame(self, frame: Frame) -> None:
+        # Playwright routes only the first request of a redirect chain. A second
+        # CDP session checks the actual URL before Chromium sends every hop.
+        async with self._guard_lock:
+            assert self._context is not None and self._page is not None
+            # Same-process frames share the nearest ancestor's target; after
+            # navigation a frame can move to a new target, so resolve it anew.
+            while True:
+                if frame is self._page.main_frame and self._guarded_targets:
+                    return
+                try:
+                    session = await self._context.new_cdp_session(frame)
+                    break
+                except PlaywrightError as error:
+                    if "part of the parent frame's session" not in str(error):
+                        raise
+                    parent = frame.parent_frame
+                    if parent is None:
+                        raise
+                    frame = parent
+            info = await session.send("Target.getTargetInfo")
+            target_id = info["targetInfo"]["targetId"]
+            if target_id in self._guarded_targets:
+                # Detaching while this target has paused requests can stall
+                # Chromium. The context owns this session until close().
+                return
+            else:
+                session.on(
+                    "Fetch.requestPaused", lambda event: self._schedule_request(session, event)
+                )
+                await session.send("Fetch.enable", {"patterns": [{"urlPattern": "*"}]})
+                self._guarded_targets.add(target_id)
+
+    def _schedule_request(self, session: CDPSession, event: dict[str, Any]) -> None:
+        task = asyncio.create_task(self._check_request(session, event))
+        self._network_tasks.add(task)
+        task.add_done_callback(self._network_tasks.discard)
+
+    async def _check_request(self, session: CDPSession, event: dict[str, Any]) -> None:
+        try:
+            try:
+                async with asyncio.timeout(self._deadline_seconds):
+                    allowed = self._valid and await self._url_policy(event["request"]["url"])
+            except Exception:
+                allowed = False
+            if event.get("redirectedRequestId"):
+                self._request_count += 1
+            if not self._valid or not allowed or self._request_count > MAX_BROWSER_REQUESTS:
+                self._blocked_requests += 1
+                self._policy_blocked = self._policy_blocked or not allowed
+                await session.send(
+                    "Fetch.failRequest",
+                    {"requestId": event["requestId"], "errorReason": "BlockedByClient"},
+                )
+            else:
+                await session.send("Fetch.continueRequest", {"requestId": event["requestId"]})
+        except Exception:
+            # A detached/closed target cannot continue its pending requests.
+            if self._valid:
+                self._fail_resource("Browser network policy became unavailable.")
 
     async def interact(
         self,
@@ -531,6 +621,13 @@ class BrowserSession:
             await self._close()
 
     async def _close(self) -> None:
+        self._valid = False
+        network_tasks = self._network_tasks - {asyncio.current_task()}
+        for task in network_tasks:
+            task.cancel()
+        if network_tasks:
+            await asyncio.gather(*network_tasks, return_exceptions=True)
+        self._guarded_targets.clear()
         context, browser, playwright = self._context, self._browser, self._playwright
         memory_task = self._memory_task
         self._page = None
